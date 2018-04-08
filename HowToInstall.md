@@ -33,6 +33,6 @@
 ---
 you should now be able to see the blood sugars on the watch.
 
-# Resourses
-- This is a great resorese for genereal fitbit studio/SDK answers.  https://dev.fitbit.com/getting-started/
+# Resources
+- This is a great resource for general fitbit studio/SDK answers.   https://dev.fitbit.com/getting-started/
 - If your Fitbit device is unable to connect to the developer bridge, ensure that wifi is configured correctly, and that you are using the same Fitbit user account on your mobile device, and in Fitbit Studio.
