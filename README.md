@@ -3,5 +3,9 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ## features 
 ## Instructions for use
 ## Requirements 
+- CGM data on a cloud service ( e.g. xdrip, nightscout ). 
+
 ## Resources 
-## License info
+## License
+- `GPL v3`
+- `Commercial License` contact me for details
