@@ -196,6 +196,7 @@ function processWeatherData(data) {
 // Display the  data received from the companion
 function processOneBg(data) {
   console.log("bg is: " + JSON.stringify(data));
+  setArrowDirection(data.delta)
   if(data.nextPull) {
     if(data.units_hint === 'mmol') {
       data.sgv = mmol( data.sgv ) 
@@ -204,7 +205,6 @@ function processOneBg(data) {
     
     document.getElementById("bg").text = data.sgv
     document.getElementById("delta").text = data.delta + ' ' + data.units_hint
-    setArrowDirection(data.delta)
     totalSeconds = 0;
     setStatusImage('checked.png')
     clearTimeout(timeOut);
