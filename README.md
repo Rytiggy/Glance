@@ -20,7 +20,15 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 - Date
 - Battery levels
 ## Instructions For Use
-- Follow this step by step guide:
+### User setup
+- On your phone go to the [published version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the Select button. 
+  - if you have the dev environment on the phone set up, delete the version of glance under developer menu
+- You will need to configure your settings of the watch face 
+  - API endpoint
+  - weather API key
+  - location (city)
+### Dev environment setup
+- Follow this step by step guide for development:
   - https://github.com/Rytiggy/Glance/blob/master/HowToInstall.md
 ## Requirements 
 - CGM data on a cloud service ( e.g. xdrip, nightscout, Spike ). 
