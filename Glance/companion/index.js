@@ -22,12 +22,10 @@ function queryOpenWeather() {
       .then(function(data) {
         // We just want the current temperature
         var weather = {
-          type:"weather",
           temperature: Math.round(data["main"]["temp"])
         }
         // Send the weather data to the device
         return weather;
-        // returnData(weather);
       });
   })
   .catch(function (err) {
@@ -111,7 +109,8 @@ messaging.peerSocket.onmessage = function(evt) {
         'settings': {
           'bgColor': getSettings('bgColor'),
           'highThreshold': ((getSettings("highThreshold")) ? getSettings("highThreshold").name : 200),
-          'lowThreshold': ((getSettings("lowThreshold")) ? getSettings("lowThreshold").name : 70)
+          'lowThreshold': ((getSettings("lowThreshold")) ? getSettings("lowThreshold").name : 70),
+          'timeFormat' : getSettings('timeFormat')
         }
       }
       returnData(dataToSend)
