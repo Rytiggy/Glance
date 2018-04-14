@@ -26,10 +26,19 @@
 ![connect to fitbit studio](https://image.ibb.co/fe0Wmc/7.png "step 7")
 - You should now see the watch face on yout watch.
 
-# xDrip app
+# Tested Web services 
+## xDrip app
 - In the xDrip navigate to `Settings` -> `Inter-App settings` -> `xDrip Web Service` -> `ON` 
 - You should now be able to open your phone browser and go to `http://127.0.0.1:17580/sgv.json`
 ![json blob](https://image.ibb.co/bZAE6c/65.png "step 8")
+
+## Spike app
+How to set up coming soon. -Help requested 
+
+End point that looks like this:
+
+https://<USERNAME>.herokuapp.com/api/v1/entries.json
+
 ---
 you should now be able to see the blood sugars on the watch.
 
