@@ -4,7 +4,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ![High](https://image.ibb.co/bvOBj7/high.png "High")
 
 ### Settings 
-![settings](https://image.ibb.co/bvW61n/settings.png "settings")
+![settings](https://image.ibb.co/jpoKMn/settings.jpg "settings")
 
 ## Features 
 - Current BG
