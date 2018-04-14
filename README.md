@@ -35,3 +35,5 @@ units_hint:
 ## License
 - `GPL v3`
 - `Commercial License` contact me for details
+## User Agreement 
+Glance must not be used to make medical decision
