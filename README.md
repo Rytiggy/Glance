@@ -27,6 +27,8 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
   - API endpoint
   - weather API key from https://openweathermap.org/
   - location (city)
+- After the settings are set up you should now be able to see the blood sugars on the watch.
+
 ### Dev environment setup
 - Follow this step by step guide for development:
   - https://github.com/Rytiggy/Glance/blob/master/HowToInstall.md
