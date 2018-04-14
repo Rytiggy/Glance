@@ -25,7 +25,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
   - if you have the dev environment on the phone set up, delete the version of glance under developer menu
 - You will need to configure your settings of the watch face 
   - API endpoint
-  - weather API key
+  - weather API key from https://openweathermap.org/
   - location (city)
 ### Dev environment setup
 - Follow this step by step guide for development:
