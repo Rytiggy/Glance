@@ -4,7 +4,7 @@
 - Click `new project` 
 ![click new project](https://image.ibb.co/eQsGKx/1.png "step 1")
 
-- Then give the project a `name` (sensors in my case) and select  `Empty Project`  then click `create`
+- Then give the project a `name` (Glance in my case) and select  `Empty Project`  then click `create`
 ![Name the project](https://image.ibb.co/cQ3vCH/2.png "step 2")
 
 - This will bring you to the fitbit studio. 
@@ -12,12 +12,12 @@
 
 - Go to  [github.com/Rytiggy/Glance](https://github.com/Rytiggy/Glance) and click the green `clone and download` button. 
 - Click `Download ZIP`
-![click clone or download](https://image.ibb.co/gDryXH/4.png "step 4")
+![click clone or download](https://image.ibb.co/fqpOxS/repo.png "step 4")
 
-- Open the ZIP and extract the `app folder` to your desktop. then open the `app folder` 
-![app folder](https://image.ibb.co/f5KACH/5.png "step 5")
+- Open the ZIP and extract the `Glance folder` to your desktop. then open the `Glance folder`
+![app folder](https://image.ibb.co/dnk7P7/step_5.png "step 5")
 
-- Copy the `contents` of the folder to `fitbit studio`
+- Copy the `contents` of the `Glance folder` to `fitbit studio`
 ![files on fitbit studio](https://image.ibb.co/j8XDXH/6.png "step 6")
 - You now need to turn on the `Developer Bridge` in the `Fitbit mobile app` and the `Developer Bridge` menu on your `Fitbit device`.
 - `Fitbit app:` To enable the Developer Bridge. On the phone app, click the fitbit watch icon in the top right hand corner. Click Developer Menu then enable the Developer Bridge.
