@@ -178,7 +178,9 @@ function fetchCompaionData(cmd) {
 // Display the weather data received from the companion
 function processWeatherData(data) {
   console.log("The temperature is: " + JSON.stringify(data));
-  document.getElementById("temp").text = data.temperature
+  if(data) {
+    document.getElementById("temp").text = data.temperature
+  }
 }
 
 // Display the  data received from the companion

@@ -31,14 +31,14 @@ function queryOpenWeather() {
       });
   })
   .catch(function (err) {
-    console.log("Error fetching weather: " + err);
+    console.log("Error fetching weather.You need an API key from openweathermap.org to view weather data. otherwise this error is fine to ignore. " + err);
   });
 }
 
 
 function queryBGD() {
-  let temp = getSgvURL()
-  return fetch(temp)
+  let url = getSgvURL()
+  return fetch(url)
   .then(function (response) {
       return response.json()
       .then(function(data) {
@@ -73,7 +73,7 @@ function queryBGD() {
       });
   })
   .catch(function (err) {
-    console.log("Error fetching weather: " + err);
+    console.log("Error fetching bloodSugars: " + err);
   });
 }
 
@@ -103,8 +103,8 @@ messaging.peerSocket.onmessage = function(evt) {
         'BGD':values[1],
         'settings': {
           'bgColor': getSettings('bgColor'),
-          'highThreshold': getSettings('highThreshold').name,
-          'lowThreshold': getSettings('lowThreshold').name
+          'highThreshold': ((getSettings("highThreshold")) ? getSettings("highThreshold").name : 200),
+          'lowThreshold': ((getSettings("lowThreshold")) ? getSettings("lowThreshold").name : 70)
         }
       }
       returnData(dataToSend)
@@ -131,11 +131,15 @@ messaging.peerSocket.onerror = function(err) {
 
 // getters 
 function getSettings(key) {
-  return JSON.parse(settingsStorage.getItem( key ));
+  if(settingsStorage.getItem( key )) {
+    return JSON.parse(settingsStorage.getItem( key ));
+  } else {
+    return undefined
+  }
 }
 
 function getSgvURL() {
-  if(getSettings('endpoint').name){
+  if(getSettings('endpoint')){
     return getSettings('endpoint').name  
   } else {
     // Default xDrip web service 
@@ -144,7 +148,7 @@ function getSgvURL() {
 }
 
 function getWeatherApiKey() {
-  if(getSettings('owmAPI').name){
+  if(getSettings('owmAPI')){
      return getSettings('owmAPI').name;
   } else {
     return false;
@@ -153,7 +157,9 @@ function getWeatherApiKey() {
 
 
 function getWeatherEndPoint() {
-  return "https://api.openweathermap.org/data/2.5/weather?q=" + getSettings("city").name + "&units=" +  getTempType();
+  let city = ((getSettings("city")) ? getSettings("city").name : 'charlottesville');
+
+  return "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" +  getTempType();
 }
 
 function getTempType() {

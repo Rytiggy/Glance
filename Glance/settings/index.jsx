@@ -11,7 +11,7 @@ function mySettings(props) {
           settingsKey="endpoint"
         />
         <TextInput
-          label="High threshold | default 140"
+          label="High threshold | default 200"
           settingsKey="highThreshold"
         />
         <TextInput
