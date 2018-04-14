@@ -90,11 +90,8 @@ function returnData(data) {
    
 }
 
-// Listen for messages from the device
-messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data) {
-   
-    let weatherPromise = new Promise(function(resolve, reject) {
+function formatReturnData() {
+     let weatherPromise = new Promise(function(resolve, reject) {
       resolve( queryOpenWeather() );
     });
     
@@ -116,7 +113,17 @@ messaging.peerSocket.onmessage = function(evt) {
       returnData(dataToSend)
     });
   }
+
+
+// Listen for messages from the device
+messaging.peerSocket.onmessage = function(evt) {
+  if (evt.data) {
+    formatReturnData()
+  }
 }
+
+
+
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = function(err) {
@@ -130,10 +137,10 @@ messaging.peerSocket.onerror = function(err) {
 // This section deals with settings
 //
 //----------------------------------------------------------
-// settingsStorage.onchange = function(evt) {
-//  console.log( getSettings(evt.key) )
-
-// }
+settingsStorage.onchange = function(evt) {
+ console.log( getSettings(evt.key) )
+    formatReturnData()
+}
 
 // getters 
 function getSettings(key) {
