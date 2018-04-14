@@ -11,6 +11,7 @@ import * as fs from "fs";
 
 let heartRate = new HeartRateSensor();
 let totalSeconds = 0;
+let timeFormat = false;
 
 let timeOut;
 // Init 
@@ -39,16 +40,18 @@ function setTime() {
   let timeNow = new Date();
   let hh = timeNow.getHours();  
   let mm = timeNow.getMinutes();
-  let ss = timeNow.getSeconds();    
-  let formatAMPM = (hh >= 12?'PM':'AM');
-  hh = hh % 12 || 12;
-  
-  if(hh < 10) {
-    hh = '0' + hh;
+  let ss = timeNow.getSeconds();
+  if(!timeFormat) {
+    let formatAMPM = (hh >= 12?'PM':'AM');
+    hh = hh % 12 || 12;
+
+    if(hh < 10) {
+      hh = '0' + hh;
+    } 
   }
-    if(mm < 10) {
-    mm = '0' + mm;
-  }  
+   if(mm < 10) {
+      mm = '0' + mm;
+    } 
   document.getElementById("time").text = (hh + ':' + mm);
   
 }
@@ -155,6 +158,13 @@ function mmol( bg ) {
   return mmolBG;
 }
 
+// converts mmoL to  mg/dL 
+function  mgdl( bg ) {
+    let mgdlBG = Math.round( (bg * 18) / 10 ) * 10;
+  return mgdlBG;
+}
+
+
 // set the image of the status image 
 function setStatusImage(status) {
     document.getElementById("status-image").href = "img/" + status
@@ -228,13 +238,13 @@ inbox.onnewfile = () => {
       
       let count = data.BGD.length - 1;
       processOneBg(data.BGD[count])
+      settings(data.settings, data.BGD[count].units_hint)
       data.BGD.forEach(function(bg, index) {
         plotPoint(bg.sgv, graphPoints[count], data.settings.highThreshold)
         count--;
       })
       
       processWeatherData(data.weather)
-      settings(data.settings)
     }
   } while (fileName);
 };
@@ -275,16 +285,24 @@ messaging.peerSocket.onerror = function(err) {
 // Settings
 //
 //----------------------------------------------------------
-function settings(settings){
-   document.getElementById("high").y = returnPoint(settings.highThreshold)
-   document.getElementById("high").text = settings.highThreshold
+function settings(settings, unitsHint){   
+  timeFormat = settings.timeFormat
+  let highThreshold =settings.highThreshold
+  let lowThreshold =  settings.lowThreshold
 
-   document.getElementById("middle").y = ((returnPoint(settings.highThreshold) + returnPoint(settings.lowThreshold)) / 2)
-   document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
+  if(unitsHint === "mmol") {
+    highThreshold = mgdl( settings.highThreshold )
+    lowThreshold = mgdl( settings.lowThreshold )
+  }
+
+  document.getElementById("high").y = returnPoint(highThreshold)
+  document.getElementById("high").text = settings.highThreshold
+
+  document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
+  document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
   
-   document.getElementById("low").y = returnPoint(settings.lowThreshold)
-   document.getElementById("low").text = settings.lowThreshold
-
+  document.getElementById("low").y =  returnPoint(lowThreshold)
+  document.getElementById("low").text = settings.lowThreshold
 }
 
 //----------------------------------------------------------
