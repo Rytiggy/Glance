@@ -35,7 +35,7 @@
 ## Spike app
 - How to set up coming soon. -Help requested 
 - End point that looks like this:
-  - https://<USERNAME>.herokuapp.com/api/v1/entries.json
+  - https://USERNAME.herokuapp.com/api/v1/entries.json
 
 ---
 you should now be able to see the blood sugars on the watch.
