@@ -1,5 +1,8 @@
 # Glance ![twerp logo](https://image.ibb.co/gbWF2H/twerp_bowtie_64.png)
 Glance is a solution for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!
+
+![High](https://image.ibb.co/bvOBj7/high.png "High")
+
 ## features 
 - Current BG
 - Trend direction
