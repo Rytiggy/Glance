@@ -1,0 +1,11 @@
+<svg>
+  <defs>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="import" href="/mnt/sysassets/widgets_common.gui" />
+     <!-- Additional Imports -->
+    <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/scrollview_widget.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/combo_button_widget.gui" />
+
+  </defs>
+</svg>

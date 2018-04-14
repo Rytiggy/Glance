@@ -1,0 +1,87 @@
+<svg id="app">
+  <use href="#scrollview">
+    <use href="#scrollview-item">
+      <svg>
+        <gradientRect id="bgColor" width="100%" height="100%"
+          gradient-type="linear"
+          gradient-x1="0" gradient-y1="20"
+          gradient-x2="0" gradient-y2="100%-80"
+          gradient-color1="#390263" gradient-color2="black" />
+      </svg>
+
+      <rect id="battery-level" x="7%" y="4%"/>
+      <image class="image"x="7%" y="1%" href="img/battery.png" fill="white"/>
+      
+      <text id="battery" class="status-text" x="17%" y="10%"></text> 
+      <text id="date" class="status-text h3" x="7%" y="20%"></text> 
+      
+      <text id="temp" class="h2 status-text" x="54%" y="17%" text-anchor="end">--</text>
+      <image class="image" x="55%" y="6%" href="img/degree.png" width="8" height="8" fill="white"/> 
+      
+      <image id="status-image" class="image" x="63%" y="7%" href="img/refresh.png" pointer-events="visible" />      
+
+      <text id="delta" class="status-text" x="95%" y="8%" text-anchor="end">loading...</text>
+      <text id="bg" class="h1 status-text" x="95%" y="20%"  text-anchor="end">---</text>
+      <text id="minutes" class="status-text" x="95%" y="27%"  text-anchor="end">0 mins</text>
+
+     <!-- Direction line -->   
+     <line id="direction" x1="80%" x2="90%" y1="36%" y2="36%" fill="white" stroke-width="2" />
+     <circle id="direction-dot" cx="90%" cy="36%" r="5" fill="#3db39e"/> 
+     
+     <line id="direction-two" x1="80%" x2="90%" y1="36%" y2="36%" fill="white" stroke-width="2"  />
+     <circle id="direction-two-dot" cx="90%" cy="36%"  r="5" fill="#3db39e" /> 
+  
+      
+       <!-- Graph -->
+      <text id="high" class="status-text" x="93%" y="57%"  text-anchor="end">200</text>
+      <text id="middle" class="status-text" x="93%" y="73%"  text-anchor="end">140</text>      
+      <text id="low" class="status-text" x="93%" y="90%"  text-anchor="end">70</text>
+
+      <!-- 85% ~= 90bg -->
+       <g id="graph" > 
+          <circle class="graph-point" cx="93%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="91%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="89%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="87%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="85%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="83%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="81%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="79%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="77%" cy="85%" r="1"/>  
+          <circle class="graph-point" cx="75%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="73%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="71%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="69%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="67%" cy="85%" r="1"/>        
+          <circle class="graph-point" cx="65%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="63%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="61%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="59%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="57%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="55%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="53%" cy="85%" r="1"/>
+          <circle class="graph-point" cx="51%" cy="85%" r="1"/>       
+          <circle class="graph-point" cx="49%" cy="85%" r="1"/> 
+          <circle class="graph-point" cx="47%" cy="85%" r="1"/> 
+       </g>
+      
+      
+     <text id="time" x="5%" y="68%">00:00</text>
+
+     <image class="image" x="7%" y="75%" href="img/heart.png" />
+     <text id="heart" class="h2 status-text"  x="12%" y="97%" text-anchor="middle">--</text>
+      
+     <image class="image" x="25%" y="75%" href="img/steps.png" />
+     <text id="step" class="h2 status-text"  x="30%" y="97%" text-anchor="middle">--</text>
+      
+
+    </use>
+    
+<!--     <use href="#scrollview-item">
+
+     <line id="target-range-top" x1="7%" x2="93%" y1="55" y2="55" fill="#a27b27" stroke-width="1" />
+     <line  id="target-range-bottom" x1="7%" x2="93%" y1="130" y2="130" fill="#a27b27" stroke-width="1" />
+           
+    </use> -->
+  </use>
+</svg>

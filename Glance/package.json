@@ -1,0 +1,26 @@
+{
+  "fitbit": {
+    "appUUID": "7b5d9822-7e8e-41f9-a2a7-e823548c001c",
+    "appType": "clockface",
+    "appDisplayName": "Glance",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#e91e63",
+    "requestedPermissions": [
+      "run_background",
+      "access_internet",
+      "access_location",
+      "access_heart_rate",
+      "access_user_profile",
+      "access_activity"
+    ],
+    "buildTargets": [
+      "higgs",
+      "meson"
+    ],
+    "i18n": {
+      "en": {
+        "name": "Glance"
+      }
+    }
+  }
+}
