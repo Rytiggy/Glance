@@ -6,20 +6,20 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ### Settings 
 ![settings](https://image.ibb.co/bvW61n/settings.png "settings")
 
-## features 
+## Features 
 - Current BG
 - Trend direction
 - Delta 
 - Time sense last pull (syncd with device)
-- graph of BG's over time
+- Graph of BG's over time
 - Error reporting
-- temperature (requires API token from https://openweathermap.org/) 
+- Temperature (requires API token from https://openweathermap.org/) 
 - Step count
-- heart rate
+- Heart rate
 - Time
 - Date
 - Battery levels
-## Instructions for use
+## Instructions For Use
 - Follow this step by step guide:
   - https://github.com/Rytiggy/Glance/blob/master/HowToInstall.md
 ## Requirements 
