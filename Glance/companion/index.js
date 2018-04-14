@@ -45,7 +45,7 @@ function queryBGD() {
         let date = new Date();
         let currentBgDate = new Date(data[0].dateString);
         let diffMs = (date - currentBgDate); // milliseconds between now & today
- 
+
         // Check sense last pull and see if time is over 15 mins 
         if(diffMs > 900000) {
           diffMs = false
@@ -59,16 +59,23 @@ function queryBGD() {
         }
         let bloodSugars = []
         
+        // if there is no delta calc it 
+        let delta = 0;
+        let count = data.length - 1;
+        if(!data[count].delta) {
+          delta = data[count].sgv - data[count - 1].sgv 
+        }
+        
         data.forEach(function(bg, index){
            bloodSugars.push({
              sgv: bg.sgv,
-             delta: Math.round(bg.delta),
+             delta: ((Math.round(bg.delta)) ? Math.round(bg.delta) : delta),
              nextPull: diffMs,
-             units_hint: bg.units_hint
+             units_hint: ((bg.units_hint) ? bg.units_hint : 'mgdl')
 
           })
         })   
-         // Send the data to the device
+        // Send the data to the device
         return bloodSugars.reverse();
       });
   })
@@ -139,7 +146,7 @@ function getSettings(key) {
 }
 
 function getSgvURL() {
-  if(getSettings('endpoint')){
+  if(getSettings('endpoint').name) {
     return getSettings('endpoint').name  
   } else {
     // Default xDrip web service 

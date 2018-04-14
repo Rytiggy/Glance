@@ -227,7 +227,7 @@ inbox.onnewfile = () => {
       const data = fs.readFileSync('file.txt', 'cbor');  
       
       let count = data.BGD.length - 1;
-      processOneBg(data.BGD[23])
+      processOneBg(data.BGD[count])
       data.BGD.forEach(function(bg, index) {
         plotPoint(bg.sgv, graphPoints[count], data.settings.highThreshold)
         count--;
