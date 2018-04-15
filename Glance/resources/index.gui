@@ -12,7 +12,7 @@
       <rect id="battery-level" x="7%" y="4%"/>
       <image class="image"x="7%" y="1%" href="img/battery.png" fill="white"/>
       
-      <text id="battery" class="status-text" x="17%" y="10%"></text> 
+      <text id="battery" class="status-text" x="$+5" y="$-10"></text> 
       <text id="date" class="status-text h3" x="7%" y="20%"></text> 
       
       <text id="temp" class="h2 status-text" x="54%" y="17%" text-anchor="end">--</text>
