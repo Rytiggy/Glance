@@ -51,7 +51,7 @@ units_hint:
   - If you are using **NightScout** you can follow [these step](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku)
   - If you are using **Spike**  
     - Activate internal server in `Settings` -> `integration` -> `internal HTTP server` -> `ON` click back to confirm the changes.
-    - Point the watch face to the following URL (API Endpoint): http://127.0.0.1:1979/sgv.json?count=24
+    - Point the watch face to the following URL (API Endpoint): `http://127.0.0.1:1979/sgv.json?count=24`
 - How do I get an Open Weather Map API key?
    - To get the weather you need to go to https://openweathermap.org/appid and sigh up
    - After you sign up you should be able to view your API key under your account page on open weather maps
