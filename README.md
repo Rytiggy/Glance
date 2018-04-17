@@ -42,13 +42,16 @@ units_hint:
 ```
 - Open Weather Map API key (https://openweathermap.org/)
 ## Resources / QA
-- What is an API endpoint: 
+- What is an API endpoint?
   - An API endpoint is a unique URL that represents your data.
-    - If you are using xDrip navigate to `Settings` -> `Inter-App settings` -> `xDrip Web Service` -> `ON` 
-    - You should now be able to open your phone browser and go to `http://127.0.0.1:17580/sgv.json`
-  ![json blob](https://image.ibb.co/bZAE6c/65.png "step 8")
-  - If you are using `NightScout` you can follow [these step](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku)
-
+- How do I use it with the watch? 
+  - If you are using **xDrip** 
+    - Navigate to `Settings` -> `Inter-App settings` -> `xDrip Web Service` -> `ON` 
+    - Point the watch face to the following URL (API Endpoint): `http://127.0.0.1:17580/sgv.json`
+  - If you are using **NightScout** you can follow [these step](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku)
+  - If you are using **Spike**  
+    - Activate internal server in `Settings` -> `integration` -> `internal HTTP server` -> `ON` click back to confirm the changes.
+    - Point the watch face to the following URL (API Endpoint): http://127.0.0.1:1979/sgv.json?count=24
 ## License
 - `GPL v3`
 - `Commercial License` contact me for details
