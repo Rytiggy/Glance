@@ -1,0 +1,35 @@
+
+<symbol id="graph">
+    <svg>
+      <rect id="bg" x="0" y="0" width="100%" height="100%" fill="none" />
+      
+      <line id="tHigh" x1="0" y1="0" x2="100%" y2="0" fill="none" stroke-width="1"/>
+      <line id="tLow" x1="0" y1="100%" x2="100%" y2="100%" fill="none" stroke-width="1"/>
+      
+      <circle class="gval" cx="4%" cy="50%" r="2" />
+      <circle class="gval" cx="8%" cy="50%" r="2" />
+      <circle class="gval" cx="12%" cy="50%" r="2" />
+      <circle class="gval" cx="16%" cy="50%" r="2" />
+      <circle class="gval" cx="20%" cy="50%" r="2" />
+      <circle class="gval" cx="24%" cy="50%" r="2" />
+      <circle class="gval" cx="28%" cy="50%" r="2" />
+      <circle class="gval" cx="32%" cy="50%" r="2" />
+      <circle class="gval" cx="36%" cy="50%" r="2" />
+      <circle class="gval" cx="40%" cy="50%" r="2" />
+      <circle class="gval" cx="44%" cy="50%" r="2" />
+      <circle class="gval" cx="48%" cy="50%" r="2" />
+      <circle class="gval" cx="52%" cy="50%" r="2" />
+      <circle class="gval" cx="56%" cy="50%" r="2" />
+      <circle class="gval" cx="60%" cy="50%" r="2" />
+      <circle class="gval" cx="64%" cy="50%" r="2" />
+      <circle class="gval" cx="68%" cy="50%" r="2" />
+      <circle class="gval" cx="72%" cy="50%" r="2" />
+      <circle class="gval" cx="76%" cy="50%" r="2" />
+      <circle class="gval" cx="80%" cy="50%" r="2" />
+      <circle class="gval" cx="84%" cy="50%" r="2" />
+      <circle class="gval" cx="88%" cy="50%" r="2" />
+      <circle class="gval" cx="92%" cy="50%" r="2" />
+      <circle class="gval" cx="96%" cy="50%" r="2" />
+      
+    </svg>
+ </symbol>
