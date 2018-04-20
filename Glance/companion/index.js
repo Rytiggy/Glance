@@ -36,25 +36,34 @@ function queryOpenWeather() {
 
 function queryBGD() {
   let url = getSgvURL()
+  console.log(url)
   return fetch(url)
   .then(function (response) {
       return response.json()
       .then(function(data) {
         let date = new Date();
+        console.log(date)
         let currentBgDate = new Date(data[0].dateString);
-        let diffMs = (date - currentBgDate); // milliseconds between now & today
+        let diffMs = (date - currentBgDate); // milliseconds between now & today      
+        
+        // This needs work 
+        if(isNaN(diffMs)) {
+           console.log('Not a number set to 5 mins')
+           diffMs = 300000
+        } else {
 
-        // Check sense last pull and see if time is over 15 mins 
-        if(diffMs > 900000) {
-          diffMs = false
-        }else {
-           if(diffMs > 300000) {
-            diffMs = 300000
-          } else {
-            diffMs = Math.round(300000 - diffMs)
+          if(diffMs > 900000) {
+            diffMs = false
+          }else {
+             if(diffMs > 300000) {
+              diffMs = 300000
+            } else {
+              diffMs = Math.round(300000 - diffMs)
+            }
+
           }
-          
         }
+        
         let bloodSugars = []
         
         // if there is no delta calc it 
@@ -153,7 +162,7 @@ function getSettings(key) {
 
 function getSgvURL() {
   if(getSettings('endpoint').name) {
-    return getSettings('endpoint').name  
+    return getSettings('endpoint').name+"?count=24"
   } else {
     // Default xDrip web service 
     return  "http://127.0.0.1:17580/sgv.json"
