@@ -33,11 +33,13 @@
   
       
        <!-- Graph -->
-      <text id="high" class="status-text" x="93%" y="57%"  text-anchor="end">200</text>
-      <text id="middle" class="status-text" x="93%" y="73%"  text-anchor="end">140</text>      
-      <text id="low" class="status-text" x="93%" y="90%"  text-anchor="end">70</text>
+      <text id="high" class="status-text" x="93%" y="65%+18"  text-anchor="end">200</text>
+      <text id="middle" class="status-text" x="93%" y="65%+53"  text-anchor="end">140</text>      
+      <text id="low" class="status-text" x="93%" y="65%+88"  text-anchor="end">70</text>
 
+      <use href="#graph" id="docGraph" x="50%-30" y="65%+14" width="125" height="70" />
       <!-- 85% ~= 90bg -->
+      <!--
        <g id="graph" > 
           <circle class="graph-point" cx="93%" cy="85%" r="1"/>
           <circle class="graph-point" cx="91%" cy="85%" r="1"/>
@@ -64,7 +66,7 @@
           <circle class="graph-point" cx="49%" cy="85%" r="1"/> 
           <circle class="graph-point" cx="47%" cy="85%" r="1"/> 
        </g>
-      
+      -->
       
      <text id="time" x="5%" y="68%">00:00</text>
 
