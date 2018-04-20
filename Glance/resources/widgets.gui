@@ -7,7 +7,5 @@
     <link rel="import" href="/mnt/sysassets/widgets/scrollview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/combo_button_widget.gui" />
 
-    <!-- line below required to import the graph -->
-    <link rel="import" href="graph.gui" />
   </defs>
 </svg>

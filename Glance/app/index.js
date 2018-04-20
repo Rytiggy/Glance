@@ -8,19 +8,10 @@ import fs from "fs";
 
 import * as fs from "fs";
 
-import Graph from "graph.js"
 
 let heartRate = new HeartRateSensor();
 let totalSeconds = 0;
 let timeFormat = false;
-
-let high = document.getElementById("high");
-let middle = document.getElementById("middle");
-let low = document.getElementById("low");
-
-let docGraph = document.getElementById("docGraph");
-let myGraph = new Graph(docGraph);
-
 
 let timeOut;
 // Init 
@@ -248,44 +239,10 @@ inbox.onnewfile = () => {
       let count = data.BGD.length - 1;
       processOneBg(data.BGD[count])
       settings(data.settings, data.BGD[count].units_hint)
-
-      
-      // Added by NiVZ
-            
-      let ymin = 999;
-      let ymax = 0;
-      
-      data.BGD.forEach(function(bg, index) {
-        if (bg.sgv < ymin) { ymin = bg.sgv; }
-        if (bg.sgv > ymax) { ymax = bg.sgv; }
-      })
-      
-      ymin -=20;
-      ymax +=20;
-      
-      ymin = Math.floor((ymin/10))*10;
-      ymax = Math.floor(((ymax+9)/10))*10;
-            
-      ymin = ymin < 40 ? ymin : 40;
-      ymax = ymax < 210 ? 210 : ymax;
-
-      
-      high.text = ymax;
-      middle.text = Math.floor(ymin + ((ymax-ymin) *0.5));
-      low.text = ymin;
-            
-      // Set the graph scale
-      myGraph.setYRange(ymin, ymax);
-      
-      // Update the graph
-      myGraph.update(data.BGD);
-      
-      /*
       data.BGD.forEach(function(bg, index) {
         plotPoint(bg.sgv, graphPoints[count], data.settings.highThreshold)
         count--;
       })
-      */
       
       processWeatherData(data.weather)
     }
@@ -299,7 +256,7 @@ inbox.onnewfile = () => {
 //
 //----------------------------------------------------------
 let appHeight =  document.getElementById("app").height;
-//let graphPoints = document.getElementsByClassName('graph-point'); 
+let graphPoints = document.getElementsByClassName('graph-point'); 
 let bgArray = []
 // Takes in a bg, dom element
 function plotPoint(bloodSugar , domElement, highThreshold) {  
@@ -338,13 +295,13 @@ function settings(settings, unitsHint){
     lowThreshold = mgdl( settings.lowThreshold )
   }
 
-  //document.getElementById("high").y = returnPoint(highThreshold)
+  document.getElementById("high").y = returnPoint(highThreshold)
   document.getElementById("high").text = settings.highThreshold
 
-  //document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
+  document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
   document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
   
-  //document.getElementById("low").y =  returnPoint(lowThreshold)
+  document.getElementById("low").y =  returnPoint(lowThreshold)
   document.getElementById("low").text = settings.lowThreshold
 }
 
