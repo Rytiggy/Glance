@@ -5,8 +5,10 @@ import { HeartRateSensor } from "heart-rate";
 import { today } from "user-activity";
 import { inbox } from "file-transfer";
 import fs from "fs";
-
 import * as fs from "fs";
+import { vibration } from "haptics";
+
+
 
 
 let heartRate = new HeartRateSensor();
@@ -197,6 +199,12 @@ function processWeatherData(data) {
 function processOneBg(data) {
   console.log("bg is: " + JSON.stringify(data));
   setArrowDirection(data.delta)
+  // Temp fix for Spike endpoint 
+  // Next pull does not get caculated right
+   if(data.nextPull === null) {
+    data.nextPull = 300000
+   }
+  
   if(data.nextPull) {
     if(data.units_hint === 'mmol') {
       data.sgv = mmol( data.sgv ) 
@@ -235,10 +243,21 @@ inbox.onnewfile = () => {
     if (fileName) {
      
       const data = fs.readFileSync('file.txt', 'cbor');  
-      
       let count = data.BGD.length - 1;
+      
+            
+      if(data.BGD[count].sgv >=  data.settings.highThreshold) {
+        startVibration("nudge", 3000)
+      }
+      
+      if(data.BGD[count].sgv <=  data.settings.lowThreshold) {
+        startVibration("nudge", 3000)
+      }
+      
       processOneBg(data.BGD[count])
+      
       settings(data.settings, data.BGD[count].units_hint)
+      
       data.BGD.forEach(function(bg, index) {
         plotPoint(bg.sgv, graphPoints[count], data.settings.highThreshold)
         count--;
@@ -305,13 +324,54 @@ function settings(settings, unitsHint){
   document.getElementById("low").text = settings.lowThreshold
 }
 
+
+
+//----------------------------------------------------------
+//
+// Deals with Vibrations 
+//
+//----------------------------------------------------------
+let vibrationTimeout; 
+
+function startVibration(type, length) {
+  showAlert() 
+  vibration.start(type);
+  if(length){
+     vibrationTimeout = setTimeout(function(){ startVibration(type, length) }, length);
+  }
+  
+}
+
+function stopVibration() {
+  hideAlert()
+  vibration.stop();
+  clearTimeout(vibrationTimeout);
+}
+//----------------------------------------------------------
+//
+// Alerts
+//
+//----------------------------------------------------------
+function showAlert(alertMsg) {
+ document.getElementById("alertBtn").y = 70
+}
+
+function hideAlert() {
+  document.getElementById("alertBtn").y=-400
+}
+
 //----------------------------------------------------------
 //
 // Action listeners 
 //
 //----------------------------------------------------------
 
- document.getElementById("status-image").onclick = (e) => {
+document.getElementById("status-image").onclick = (e) => {
   fiveMinUpdater()
 }
+ 
+document.getElementById("alertBtn").onclick = (e) => {
+  stopVibration()
+}
+
 

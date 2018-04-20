@@ -6,6 +6,8 @@
     <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/scrollview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/combo_button_widget.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/push_button_widget.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/square_button_widget.gui" />
 
   </defs>
 </svg>

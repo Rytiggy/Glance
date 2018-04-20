@@ -12,7 +12,7 @@
       <rect id="battery-level" x="7%" y="4%"/>
       <image class="image"x="7%" y="1%" href="img/battery.png" fill="white"/>
       
-      <text id="battery" class="status-text" x="$+5" y="$-10"></text> 
+      <text id="battery" class="status-text" x="17%" y="10%"></text> 
       <text id="date" class="status-text h3" x="7%" y="20%"></text> 
       
       <text id="temp" class="h2 status-text" x="54%" y="17%" text-anchor="end">--</text>
@@ -74,6 +74,13 @@
      <image class="image" x="25%" y="75%" href="img/steps.png" />
      <text id="step" class="h2 status-text"  x="30%" y="97%" text-anchor="middle">--</text>
       
+      
+  <use id="alertBtn" href="#push-button" y="-400" height="100"
+    fill="fb-red" font-family="System-Regular" font-size="40">
+    <set href="#text" attributeName="text-buffer" to="Low" />
+    <set href="#text" attributeName="fill" to="fb-peach" />
+    <set href="#text" attributeName="y" to="12" />
+  </use>
 
     </use>
     
