@@ -75,13 +75,7 @@ export default class Graph {
   
   
   update(v){
-    
-    
-    
-    v.forEach(function(bg, index) {
-      console.log(`UG: ${bg.sgv}`);
-    })
-   
+     
    console.log("Updating Graph...");
       
    //this._bg.style.fill = this._bgcolor;
