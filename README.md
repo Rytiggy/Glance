@@ -1,10 +1,12 @@
 # Glance ![twerp logo](https://image.ibb.co/gbWF2H/twerp_bowtie_64.png)
 Glance is a solution for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!
 ### Interface 
-![Flat](https://image.ibb.co/n3MACS/flat.png "Flat")
-![High](https://image.ibb.co/bvOBj7/high.png "High")
+![ionic and versa](https://image.ibb.co/g7u5Bx/ionic_and_versa.png "ionic and versa")
+
+### Alert 
+![alert](https://image.ibb.co/eRBVdc/alert.png "alert")
 ### Settings 
-![settings](https://image.ibb.co/fQTP6n/settings.png "settings")
+![settings](https://image.ibb.co/i90WJc/settings.png "settings")
 
 ## Features 
 - Current BG
@@ -19,6 +21,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 - Time
 - Date
 - Battery levels
+- Vibration Alerts 
 ## Instructions For Use
 ### User setup
 - On your phone go to the [published version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the Select button. 
@@ -51,7 +54,7 @@ units_hint:
   - If you are using **NightScout** you can follow [these steps](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku)
   - If you are using **Spike**  
     - Activate internal server in `Settings` -> `integration` -> `internal HTTP server` -> `ON` click back to confirm the changes.
-    - Point the watch face to the following URL (API Endpoint): `http://127.0.0.1:1979/sgv.json?count=24`
+    - Point the watch face to the following URL (API Endpoint): `http://127.0.0.1:1979/sgv.json`
 - How do I get an Open Weather Map API key?
    - To get the weather you need to go to https://openweathermap.org/appid and sign up
    - After you sign up you should be able to view your API key under your account page on open weather maps

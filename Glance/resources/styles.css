@@ -6,7 +6,7 @@
   font-family: Tungsten-Medium;
   fill: white;
   text-length: 65;
-  font-size:160;
+  font-size:140;
 }
 
 #battery {
@@ -22,13 +22,13 @@
 .status-text {
   fill: white;
   text-length: 65;
-  font-size:15;
+  font-size:20;
 }
 
 .h1 {
   fill: white;
   font-family: SevilleSharp-Bold;
-  font-size:35;
+  font-size:45;
 }
 
 .h2 {
