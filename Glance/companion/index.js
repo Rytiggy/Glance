@@ -105,15 +105,31 @@ function formatReturnData() {
     let BGDPromise = new Promise(function(resolve, reject) {
       resolve( queryBGD() );
     });
+    let highThreshold = null
+    let lowThreshold = null
     
+    if(getSettings("highThreshold")){
+      highThreshold = getSettings("highThreshold").name
+    }
+    if(getSettings("highThreshold").name == ""){
+      highThreshold = 200
+    }
+  
+    if(getSettings("lowThreshold")){
+     lowThreshold = getSettings("lowThreshold").name
+    }
+    if(getSettings("lowThreshold").name == ""){
+     lowThreshold = 70
+    }
+      
     Promise.all([weatherPromise, BGDPromise]).then(function(values) {
       let dataToSend = {
         'weather':values[0],
         'BGD':values[1],
         'settings': {
           'bgColor': getSettings('bgColor'),
-          'highThreshold': ((getSettings("highThreshold")) ? getSettings("highThreshold").name : 200),
-          'lowThreshold': ((getSettings("lowThreshold")) ? getSettings("lowThreshold").name : 70),
+          'highThreshold': highThreshold,
+          'lowThreshold': lowThreshold,
           'timeFormat' : getSettings('timeFormat')
         }
       }

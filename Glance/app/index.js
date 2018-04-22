@@ -254,12 +254,12 @@ inbox.onnewfile = () => {
       const data = fs.readFileSync('file.txt', 'cbor');  
       let count = data.BGD.length - 1;
       document.getElementById("bg").style.fill="white"
-      
       // High || Low alert      
       if(data.BGD[count].sgv >=  data.settings.highThreshold) {
         if((data.BGD[count].delta > 0)){
+          console.log('BG HIGH') 
           startVibration("nudge", 3000, data.BGD[count].sgv)
-          document.getElementById("bg").style.fill="#c10057"
+          document.getElementById("bg").style.fill="#e2574c"
         } else {
           console.log('BG still HIGH, But you are going down') 
           showAlertModal = true;
@@ -268,8 +268,10 @@ inbox.onnewfile = () => {
       
       if(data.BGD[count].sgv <=  data.settings.lowThreshold) {
          if((data.BGD[count].delta < 0)){
+            console.log('BG LOW') 
+           
             startVibration("nudge", 3000, data.BGD[count].sgv)
-            document.getElementById("bg").style.fill="#c10057"
+            document.getElementById("bg").style.fill="#e2574c"
            } else {
           console.log('BG still LOW, But you are going UP') 
           showAlertModal = true;
