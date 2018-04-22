@@ -7,15 +7,15 @@ function mySettings(props) {
         icon="https://image.ibb.co/gbWF2H/twerp_bowtie_64.png"
       />
         <TextInput
-          label="Api endpoint | defaults xDrip"
+          label="Api endpoint"
           settingsKey="endpoint"
         />
         <TextInput
-          label="High threshold | default 200"
+          label="High threshold"
           settingsKey="highThreshold"
         />
         <TextInput
-        label="Low threshold | default 70"
+        label="Low threshold"
         settingsKey="lowThreshold"
         />
         <Toggle
