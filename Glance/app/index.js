@@ -252,13 +252,24 @@ inbox.onnewfile = () => {
     if (fileName) {
      
       const data = fs.readFileSync('file.txt', 'cbor');  
-      let count = data.BGD.length - 1;
+      const CONST_COUNT = data.BGD.length - 1;
+      let count = CONST_COUNT;
+      
       document.getElementById("bg").style.fill="white"
-      // High || Low alert      
-      if(data.BGD[count].sgv >=  data.settings.highThreshold) {
+      
+      // High || Low alert  
+      
+      let sgv = data.BGD[count].sgv;
+      
+      if( data.BGD[CONST_COUNT].units_hint == 'mmol' ){
+        sgv = mmol(sgv)
+      }
+      
+      
+      if( sgv >=  data.settings.highThreshold) {
         if((data.BGD[count].delta > 0)){
           console.log('BG HIGH') 
-          startVibration("nudge", 3000, data.BGD[count].sgv)
+          startVibration("nudge", 3000, sgv)
           document.getElementById("bg").style.fill="#e2574c"
         } else {
           console.log('BG still HIGH, But you are going down') 
@@ -266,18 +277,18 @@ inbox.onnewfile = () => {
         }
       }
       
-      if(data.BGD[count].sgv <=  data.settings.lowThreshold) {
+      if(sgv <=  data.settings.lowThreshold) {
          if((data.BGD[count].delta < 0)){
             console.log('BG LOW') 
            
-            startVibration("nudge", 3000, data.BGD[count].sgv)
+            startVibration("nudge", 3000, sgv)
             document.getElementById("bg").style.fill="#e2574c"
            } else {
           console.log('BG still LOW, But you are going UP') 
           showAlertModal = true;
         }
       }
-      //EMD High || Low alert      
+      //End High || Low alert      
     
       processOneBg(data.BGD[count])
       
@@ -301,16 +312,26 @@ inbox.onnewfile = () => {
             
       ymin = ymin < 40 ? ymin : 40;
       ymax = ymax < 210 ? 210 : ymax;
-
       
       high.text = ymax;
       middle.text = Math.floor(ymin + ((ymax-ymin) *0.5));
       low.text = ymin;
-            
+      
+      //If mmol is requested format
+      if( data.BGD[CONST_COUNT].units_hint == 'mmol' ){
+        
+        high.text = mmol(ymax);
+        middle.text = mmol(Math.floor(ymin + ((ymax-ymin) *0.5)));
+        low.text = mmol(ymin = ymin < 0 ? 0 : ymin);
+        data.BGD[CONST_COUNT].sgv = mgdl(data.BGD[CONST_COUNT].sgv)
+      }
+      
+      
       // Set the graph scale
       myGraph.setYRange(ymin, ymax);
       // Update the graph
       myGraph.update(data.BGD);  
+      
       processWeatherData(data.weather)
     }
   } while (fileName);
@@ -322,29 +343,29 @@ inbox.onnewfile = () => {
 // Plotting the graph
 //
 //----------------------------------------------------------
-let appHeight =  document.getElementById("app").height;
-//let graphPoints = document.getElementsByClassName('graph-point'); 
-let bgArray = []
-// Takes in a bg, dom element
-function plotPoint(bloodSugar , domElement, highThreshold) {  
-  domElement.cy = (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
+// let appHeight =  document.getElementById("app").height;
+// //let graphPoints = document.getElementsByClassName('graph-point'); 
+// let bgArray = []
+// // Takes in a bg, dom element
+// function plotPoint(bloodSugar , domElement, highThreshold) {  
+//   domElement.cy = (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
   
-  //TODO this should set the color of the graph 
-  // if(bloodSugar > highThreshold ) {
-  //   console.log('Hight' + JSON.stringify(domElement))
-  //   domElement.fill = 'red'
-  // }
-}
+//   //TODO this should set the color of the graph 
+//   if(bloodSugar > highThreshold ) {
+//     console.log('Hight' + JSON.stringify(domElement))
+//     domElement.style.fill = 'red'
+//   }
+// }
 
-function returnPoint(bloodSugar) {
-  return (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
-}
+// function returnPoint(bloodSugar) {
+//   return (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
+// }
 
-// Listen for the onerror event
-messaging.peerSocket.onerror = function(err) {
-  // Handle any errors
-  console.log("Connection error: " + err.code + " - " + err.message);
-}
+// // Listen for the onerror event
+// messaging.peerSocket.onerror = function(err) {
+//   // Handle any errors
+//   console.log("Connection error: " + err.code + " - " + err.message);
+// }
 
 
 //----------------------------------------------------------
@@ -354,22 +375,21 @@ messaging.peerSocket.onerror = function(err) {
 //----------------------------------------------------------
 function settings(settings, unitsHint){   
   timeFormat = settings.timeFormat
-  let highThreshold =settings.highThreshold
+  let highThreshold = settings.highThreshold
   let lowThreshold =  settings.lowThreshold
 
   if(unitsHint === "mmol") {
     highThreshold = mgdl( settings.highThreshold )
     lowThreshold = mgdl( settings.lowThreshold )
   }
+  //   //document.getElementById("high").y = returnPoint(highThreshold)
+  //   document.getElementById("high").text = settings.highThreshold
 
-  //document.getElementById("high").y = returnPoint(highThreshold)
-  document.getElementById("high").text = settings.highThreshold
+  //   //document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
+  //   document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
 
-  //document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
-  document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
-  
-  //document.getElementById("low").y =  returnPoint(lowThreshold)
-  document.getElementById("low").text = settings.lowThreshold
+  //   //document.getElementById("low").y =  returnPoint(lowThreshold)
+  //   document.getElementById("low").text = settings.lowThreshold
 }
 
 
@@ -409,9 +429,9 @@ let alertHeader = document.getElementById("alertHeader");
 
 function showAlert(message) {
   console.log('ALERT BG')
-  console.log(message)
-    alertHeader.text = message
-    myPopup.style.display = "inline";
+  console.log(message) 
+  alertHeader.text = message
+  myPopup.style.display = "inline";
  
 }
 
