@@ -18,6 +18,18 @@ function mySettings(props) {
         label="Low threshold"
         settingsKey="lowThreshold"
         />
+        <Select
+          label={`Glucose Units`}
+          settingsKey="units"
+          options={[
+            {name:"mgdl"},
+            {name:"mmol"}
+          ]}
+        />
+        <Toggle
+            settingsKey="disableAlert"
+            label="Disable Alerts"
+          />
         <Toggle
           label="12hr | 24hr"
           settingsKey="timeFormat"

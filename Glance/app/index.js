@@ -258,41 +258,52 @@ inbox.onnewfile = () => {
       document.getElementById("bg").style.fill="white"
       
       // High || Low alert  
-      
+       // data.BGD[count].sgv = 50
+       // data.BGD[count].delta = -4
       let sgv = data.BGD[count].sgv;
       
       if( data.BGD[CONST_COUNT].units_hint == 'mmol' ){
         sgv = mmol(sgv)
       }
       
-      
-      if( sgv >=  data.settings.highThreshold) {
-        if((data.BGD[count].delta > 0)){
-          console.log('BG HIGH') 
-          startVibration("nudge", 3000, sgv)
-          document.getElementById("bg").style.fill="#e2574c"
-        } else {
-          console.log('BG still HIGH, But you are going down') 
-          showAlertModal = true;
-        }
-      }
-      
-      if(sgv <=  data.settings.lowThreshold) {
-         if((data.BGD[count].delta < 0)){
-            console.log('BG LOW') 
-           
+      if(!(data.settings.disableAlert)) {
+        if( sgv >=  data.settings.highThreshold) {
+          if((data.BGD[count].delta > 0)){
+            console.log('BG HIGH') 
             startVibration("nudge", 3000, sgv)
             document.getElementById("bg").style.fill="#e2574c"
-           } else {
-          console.log('BG still LOW, But you are going UP') 
-          showAlertModal = true;
+          } else {
+            console.log('BG still HIGH, But you are going down') 
+            showAlertModal = true;
+          }
+        }
+
+        if(sgv <=  data.settings.lowThreshold) {
+           if((data.BGD[count].delta < 0)){
+              console.log('BG LOW') 
+
+              startVibration("nudge", 3000, sgv)
+              document.getElementById("bg").style.fill="#e2574c"
+             } else {
+            console.log('BG still LOW, But you are going UP') 
+            showAlertModal = true;
+          }
         }
       }
       //End High || Low alert      
     
       processOneBg(data.BGD[count])
       
-      settings(data.settings, data.BGD[count].units_hint)
+      
+      timeFormat = data.settings.timeFormat
+      let highThreshold = data.settings.highThreshold
+      let lowThreshold =  data.settings.lowThreshold
+
+      if(data.BGD[count].units_hint === "mmol") {
+        highThreshold = mgdl( data.settings.highThreshold )
+        lowThreshold = mgdl( data.settings.lowThreshold )
+      }
+   //   settings(data.settings, data.BGD[count].units_hint)
 
       
       // Added by NiVZ    
@@ -374,14 +385,9 @@ inbox.onnewfile = () => {
 //
 //----------------------------------------------------------
 function settings(settings, unitsHint){   
-  timeFormat = settings.timeFormat
-  let highThreshold = settings.highThreshold
-  let lowThreshold =  settings.lowThreshold
 
-  if(unitsHint === "mmol") {
-    highThreshold = mgdl( settings.highThreshold )
-    lowThreshold = mgdl( settings.lowThreshold )
-  }
+  
+ // console.log(settings.disableAlert)
   //   //document.getElementById("high").y = returnPoint(highThreshold)
   //   document.getElementById("high").text = settings.highThreshold
 

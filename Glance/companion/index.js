@@ -34,7 +34,7 @@ function queryOpenWeather() {
 }
 
 
-function queryBGD() {
+function queryBGD(unitsHint) {
   let url = getSgvURL()
   console.log(url)
   return fetch(url)
@@ -68,15 +68,22 @@ function queryBGD() {
         let delta = 0;
         let count = data.length - 1;
         if(!data[count].delta) {
-          delta = data[count].sgv - data[count - 1].sgv 
+          delta = data[count].sgv - data[count - 1].sgv // DEBUGGGG LOOK HERERERERERERER
         }
         
+    
         data.forEach(function(bg, index){
-           bloodSugars.push({
+          let unitType = unitsHint;
+          if(unitType == null) {
+            unitType = bg.units_hint 
+          } else {
+            unitType = unitType.values[0].name
+          }          
+          bloodSugars.push({
              sgv: bg.sgv,
              delta: ((Math.round(bg.delta)) ? Math.round(bg.delta) : delta),
              nextPull: diffMs,
-             units_hint: ((bg.units_hint) ? bg.units_hint : 'mgdl')
+             units_hint: unitType
 
           })
         })   
@@ -103,25 +110,25 @@ function formatReturnData() {
     });
     
     let BGDPromise = new Promise(function(resolve, reject) {
-      resolve( queryBGD() );
+      resolve( queryBGD(getSettings("units") ) );
     });
     let highThreshold = null
     let lowThreshold = null
     
     if(getSettings("highThreshold")){
       highThreshold = getSettings("highThreshold").name
-    }
-    if(getSettings("highThreshold").name == ""){
+    } else {
       highThreshold = 200
     }
   
     if(getSettings("lowThreshold")){
      lowThreshold = getSettings("lowThreshold").name
-    }
-    if(getSettings("lowThreshold").name == ""){
+    } else {
      lowThreshold = 70
     }
-      
+        console.log("disableAlert")
+
+      console.log( getSettings('disableAlert'))
     Promise.all([weatherPromise, BGDPromise]).then(function(values) {
       let dataToSend = {
         'weather':values[0],
@@ -130,7 +137,8 @@ function formatReturnData() {
           'bgColor': getSettings('bgColor'),
           'highThreshold': highThreshold,
           'lowThreshold': lowThreshold,
-          'timeFormat' : getSettings('timeFormat')
+          'timeFormat' : getSettings('timeFormat'),
+           'disableAlert' : getSettings('disableAlert')
         }
       }
       returnData(dataToSend)
