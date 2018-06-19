@@ -22,6 +22,8 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 - Date
 - Battery levels
 - Vibration Alerts 
+- Changing background color
+
 ## Instructions For Use
 ### User setup
 - On your phone go to the [published version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the Select button. 
