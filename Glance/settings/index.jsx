@@ -6,6 +6,9 @@ function mySettings(props) {
         sublabel="https://github.com/Rytiggy/Glance"
         icon="https://image.ibb.co/gbWF2H/twerp_bowtie_64.png"
       />
+        <Text align="center" bold>
+         BG Setting
+        </Text>
         <TextInput
           label="Api endpoint"
           settingsKey="endpoint"
@@ -30,21 +33,43 @@ function mySettings(props) {
             settingsKey="disableAlert"
             label="Disable Alerts"
           />
+        <Text align="center" bold>
+         📅Date/Time
+        </Text>
         <Toggle
           label="12hr | 24hr"
           settingsKey="timeFormat"
         />
+        <Select
+          label={`Date Format`}
+          settingsKey="dateFormat"
+          options={[
+            {name:"MM/DD/YYYY"},
+            {name:"DD/MM/YYYY"}
+          ]}
+        />
+        <Text align="center" bold>
+         🌤️Weather
+        </Text>
         <Toggle
           label="Celsius | Fahrenheit"
           settingsKey="tempType"
         />
         <TextInput
-        label="Open Weather Map API Key"
-        settingsKey="owmAPI"
-        />
-        <TextInput
         label="City"
         settingsKey="city"
+        />
+        <Text align="center" bold>
+        Background Color
+        </Text>
+        <ColorSelect
+          settingsKey="bgColor"
+          colors={[
+            {color: "#390263"},
+            {color: "#1F618D"},
+            {color: "#aa2c73"},
+            {color: "#117A65"}
+          ]}
         />
     </Page>
   );

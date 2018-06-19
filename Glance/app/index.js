@@ -30,10 +30,11 @@ setDate()
 setBattery()
 startMonitors() 
 
+
 // The updater is used to update the screen every 1 SECONDS 
 function updater() {
   setTime() 
-  setDate()
+  //setDate()
   setBattery()
   startMonitors()
   addSecond()
@@ -66,17 +67,27 @@ function setTime() {
   
 }
 
-function setDate() { 
+function setDate(dateFormat) { 
+  console.log('Set date format ' + JSON.stringify(dateFormat))
   let dateObj = new Date();
   let month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
   let date = ('0' + dateObj.getDate()).slice(-2);
   let year = dateObj.getFullYear();
   let shortDate = month + '/' + date  + '/' + year;
+  if(dateFormat) {
+    if(dateFormat.values[0].name == 'DD/MM/YYYY') {
+       console.log('UK date format')
+       shortDate = date + '/' +  month + '/' + year;
+    }   
+  }
+
+
+  
   document.getElementById("date").text = shortDate;
 }
 
 function setBattery() {
-  document.getElementById("battery").text = (Math.floor(battery.chargeLevel) + "%");
+  //document.getElementById("battery").text = (Math.floor(battery.chargeLevel) + "%");
   document.getElementById("battery-level").width =  (.3 * Math.floor(battery.chargeLevel))
 }
 
@@ -164,8 +175,13 @@ function setDirection(x1, x2, y1, y2, cx, cy, direction, directionDot) {
 }
 
 // converts a mg/dL to mmoL
-function mmol( bg ) {
-    let mmolBG = Math.round( (0.0555 * bg) * 10 ) / 10;
+function mmol( bg , roundToHundredths) {
+  if(roundToHundredths) {
+    let mmolBG = Math.round( (bg / 18.1) * 100 ) / 100;
+    
+  } else {
+    let mmolBG = Math.round( (bg / 18.1) * 10 ) / 10;
+  }
   return mmolBG;
 }
 
@@ -215,13 +231,18 @@ function processOneBg(data) {
    }
   
   if(data.nextPull) {
+    
     if(data.units_hint === 'mmol') {
       data.sgv = mmol( data.sgv ) 
-      data.delta = mmol( data.delta ) 
+      data.delta = mmol( data.delta, true ) 
     }
     
     document.getElementById("bg").text = data.sgv
-    document.getElementById("delta").text = data.delta + ' ' + data.units_hint
+    
+     document.getElementById("delta").text = data.delta + ' ' + 'mgdl'
+    if(data.units_hint) {
+      document.getElementById("delta").text = data.delta + ' ' + data.units_hint
+    }
     totalSeconds = 0;
     setStatusImage('checked.png')
     clearTimeout(timeOut);
@@ -281,7 +302,6 @@ inbox.onnewfile = () => {
         if(sgv <=  data.settings.lowThreshold) {
            if((data.BGD[count].delta < 0)){
               console.log('BG LOW') 
-
               startVibration("nudge", 3000, sgv)
               document.getElementById("bg").style.fill="#e2574c"
              } else {
@@ -344,40 +364,18 @@ inbox.onnewfile = () => {
       myGraph.update(data.BGD);  
       
       processWeatherData(data.weather)
+      setDate(data.settings.dateFormat) 
+      
+      //set background color:
+      console.log('set background color ' + JSON.stringify( data.settings.bgColor))
+      document.getElementById("bgColor").gradient.colors.c1 = '#390263'
+      if (data.settings.bgColor) {
+        document.getElementById("bgColor").gradient.colors.c1 = data.settings.bgColor
+      }
+
     }
   } while (fileName);
 };
-
-
-//----------------------------------------------------------
-//
-// Plotting the graph
-//
-//----------------------------------------------------------
-// let appHeight =  document.getElementById("app").height;
-// //let graphPoints = document.getElementsByClassName('graph-point'); 
-// let bgArray = []
-// // Takes in a bg, dom element
-// function plotPoint(bloodSugar , domElement, highThreshold) {  
-//   domElement.cy = (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
-  
-//   //TODO this should set the color of the graph 
-//   if(bloodSugar > highThreshold ) {
-//     console.log('Hight' + JSON.stringify(domElement))
-//     domElement.style.fill = 'red'
-//   }
-// }
-
-// function returnPoint(bloodSugar) {
-//   return (.85 - Math.pow(0.05, 2)*(bloodSugar - 90)) * appHeight;
-// }
-
-// // Listen for the onerror event
-// messaging.peerSocket.onerror = function(err) {
-//   // Handle any errors
-//   console.log("Connection error: " + err.code + " - " + err.message);
-// }
-
 
 //----------------------------------------------------------
 //

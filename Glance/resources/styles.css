@@ -24,6 +24,11 @@
   text-length: 65;
   font-size:20;
 }
+.status-bar-text {
+  fill: white;
+  font-family: SevilleSharp-Bold;
+  font-size:18;
+}
 
 .h1 {
   fill: white;
@@ -45,6 +50,10 @@
 .image {
    width:32;
    height:32;
+}
+.image-status {
+   width:20;
+   height:20;
 }
 
 .graph-point {
