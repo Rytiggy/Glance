@@ -12,10 +12,10 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 - Current BG
 - Trend direction
 - Delta 
-- Time sense last pull (syncd with device)
+- Time sense last pull 
 - Graph of BG's over time
 - Error reporting
-- Temperature (requires API token from https://openweathermap.org/) 
+- Temperature 
 - Step count
 - Heart rate
 - Time
