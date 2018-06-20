@@ -10,16 +10,16 @@
       </svg>
 
       <rect id="battery-level" x="7%" y="4%"/>
-      <image class="image"x="7%" y="1%" href="img/battery.png" fill="white"/>
+      <image class="image" x="7%" y="1%" href="img/battery.png" fill="white"/>
+      <!--  <text id="battery" class="status-text" x="$+5" y="10%"></text>  -->
       
-      <text id="battery" class="status-text" x="$+5" y="10%"></text> 
       <text id="date" class="status-text h3" x="7%" y="20%"></text> 
-      
-      <text id="temp" class="h2 status-text" x="54%" y="17%" text-anchor="end">--</text>
-      <image class="image" x="55%" y="6%" href="img/degree.png" width="8" height="8" fill="white"/> 
-      
-      <image id="status-image" class="image" x="$+1" y="7%" href="img/refresh.png" pointer-events="visible" />      
 
+      <image id="status-image" class="image-status" x="20%" y="3.5%" href="img/refresh.png" pointer-events="visible" />           
+      <text id="temp" class="status-bar-text" x="$+6" y="9%" text-anchor="start">temp</text>
+      <image class="image" x="$+1" y="4%" href="img/degree.png" width="8" height="8" fill="white"/> 
+
+      
       <text id="delta" class="status-text" x="95%" y="10%" text-anchor="end">loading...</text>
       <text id="bg" class="h1 status-text" x="95%" y="25%"  text-anchor="end" >---</text>
       <text id="minutes" class="status-text" x="95%" y="32%"  text-anchor="end">0 mins</text>

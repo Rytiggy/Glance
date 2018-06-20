@@ -16,13 +16,15 @@ var ENDPOINT = null
 
 // Fetch the weather from OpenWeather
 function queryOpenWeather() {
-  return fetch(getWeatherEndPoint() + "&APPID=" + getWeatherApiKey())
+  let city = ((getSettings("city")) ? getSettings("city").name : 'charlottesville');
+  let searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='"+getTempType()+"'"  
+  return fetch("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json")
   .then(function (response) {
      return response.json()
       .then(function(data) {
         // We just want the current temperature
         var weather = {
-          temperature: Math.round(data["main"]["temp"])
+          temperature:data.query.results.channel.item.condition.temp 
         }
         // Send the weather data to the device
         return weather;
@@ -31,6 +33,7 @@ function queryOpenWeather() {
   .catch(function (err) {
     console.log("Error fetching weather.You need an API key from openweathermap.org to view weather data. otherwise this error is fine to ignore. " + err);
   });
+  
 }
 
 
@@ -64,14 +67,9 @@ function queryBGD(unitsHint) {
         
         let bloodSugars = []
         
-        // if there is no delta calc it 
         let delta = 0;
         let count = data.length - 1;
-        if(!data[count].delta) {
-          delta = data[count].sgv - data[count - 1].sgv // DEBUGGGG LOOK HERERERERERERER
-        }
-        
-    
+        delta = data[0].sgv - data[1].sgv 
         data.forEach(function(bg, index){
           let unitType = unitsHint;
           if(unitType == null) {
@@ -81,7 +79,7 @@ function queryBGD(unitsHint) {
           }          
           bloodSugars.push({
              sgv: bg.sgv,
-             delta: ((Math.round(bg.delta)) ? Math.round(bg.delta) : delta),
+             delta: delta,
              nextPull: diffMs,
              units_hint: unitType
 
@@ -97,7 +95,7 @@ function queryBGD(unitsHint) {
 }
 
 
-// Send the weather data to the device
+// Send the  data to the device
 function returnData(data) {  
   const myFileInfo = encode(data);
   outbox.enqueue('file.txt', myFileInfo)
@@ -137,8 +135,9 @@ function formatReturnData() {
           'bgColor': getSettings('bgColor'),
           'highThreshold': highThreshold,
           'lowThreshold': lowThreshold,
-          'timeFormat' : getSettings('timeFormat'),
-           'disableAlert' : getSettings('disableAlert')
+          'timeFormat': getSettings('timeFormat'),
+          'dateFormat': getSettings('dateFormat'),
+          'disableAlert': getSettings('disableAlert')
         }
       }
       returnData(dataToSend)
@@ -191,26 +190,11 @@ function getSgvURL() {
   }
 }
 
-function getWeatherApiKey() {
-  if(getSettings('owmAPI')){
-     return getSettings('owmAPI').name;
-  } else {
-    return false;
-  }
-}
-
-
-function getWeatherEndPoint() {
-  let city = ((getSettings("city")) ? getSettings("city").name : 'charlottesville');
-
-  return "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=" +  getTempType();
-}
-
 function getTempType() {
    if(getSettings('tempType')){
-     return 'imperial'
+     return 'f'
    } else {
-      return 'metric'
+      return 'c'
    }
 }
 
