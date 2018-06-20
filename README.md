@@ -6,7 +6,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ### Alert 
 ![alert](https://image.ibb.co/eRBVdc/alert.png "alert")
 ### Settings 
-![settings](https://image.ibb.co/n7bL5J/settings.png "settings")
+![settings](https://image.ibb.co/d8224d/step_2.png "settings")
 
 ## Features 
 - Current BG
@@ -27,7 +27,19 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ## Instructions For Use
 ### User setup guide
 - **Before you start!** you must have your bloodsugars accessable through a URL. (Examples include [xDrip+](https://github.com/jamorham/xDrip-plus), [Nightscout](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku), [Spike](https://spike-app.com/) )
-- Starting on your Phone navigate to the [published version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the Select button. 
+- Starting on your Phone navigate to the [Latest version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the **Select button**. Then click **install**. 
+- ![step 1](https://image.ibb.co/f7SKjd/step_1.png)
+- After the installation has finished open the **fitbit** app and navigate to **clock faces** then click the **green gear** to access **Glance's settings**.
+- ![step 2](https://image.ibb.co/jQzkqJ/step.png)
+- Once in Glance's settings, Go through each input and fill them out.
+  - Api Endpoint (URL where your bloodsugars are accessable)
+  - High and low thresholds 
+  - Glucose units (mgdl / mmol)
+  - Date format
+  - Location 
+- ![step 3](https://image.ibb.co/d8224d/step_2.png)
+- After entering the above mentioned settings you should be able to see the blood sugars on the watch! 
+
 
 
 
