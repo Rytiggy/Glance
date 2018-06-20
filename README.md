@@ -52,14 +52,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 ### Dev environment setup
 - Follow this step by step guide for development:
   - https://github.com/Rytiggy/Glance/blob/master/HowToInstall.md
-## Requirements 
-- CGM data on a cloud service ( e.g. xdrip, nightscout, Spike ). 
-- JSON data similar to this
-```
-sgv: 
-delta:  
-units_hint: 
-```
+
 ## Resources / QA
 - What is an API endpoint?
   - An API endpoint is a unique URL that represents your data.
