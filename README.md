@@ -14,7 +14,7 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 - Current BG
 - Trend direction
 - Delta 
-- Time sense last pull 
+- Time since last pull 
 - Graph of BG's over time
 - Error reporting
 - Temperature 
@@ -28,19 +28,19 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 
 ## Instructions For Use
 ### User setup guide
-- **Before you start!** you must have your bloodsugars accessable through a URL. (Examples include [xDrip+](https://github.com/jamorham/xDrip-plus), [Nightscout](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku), [Spike](https://spike-app.com/) )
-- Starting on your Phone navigate to the [Latest version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the **Select button**. Then click **install**. 
+- **Before you start!** you must have your blood sugars accessible through a URL. (Examples include [xDrip+](https://github.com/jamorham/xDrip-plus), [Nightscout](http://www.nightscout.info/wiki/welcome/set-up-nightscout-using-heroku), [Spike](https://spike-app.com/) )
+- Starting on your phone, navigate to the [Latest version of Glance](https://gam.fitbit.com/gallery/clock/7b5d9822-7e8e-41f9-a2a7-e823548c001c) And click the **Select** button. Then click **install**. 
 - ![step 1](https://image.ibb.co/f7SKjd/step_1.png)
-- After the installation has finished open the **fitbit** app and navigate to **clock faces** then click the **green gear** to access **Glance's settings**.
+- After the installation has finished open the **Fitbit** app and navigate to **clock faces** then click the **green gear** to access **Glance's settings**.
 - ![step 2](https://image.ibb.co/jQzkqJ/step.png)
-- Once in Glance's settings, Go through each input and fill them out.
-  - Api Endpoint (URL where your bloodsugars are accessable)
+- Once in Glance's settings, go through each input and fill them out.
+  - API Endpoint (URL where your blood sugars are accessible)
   - High and low thresholds 
   - Glucose units (mgdl / mmol)
   - Date format
   - Location 
 - ![step 3](https://image.ibb.co/d8224d/step_2.png)
-- After entering the above mentioned settings you should be able to see the blood sugars on the watch! 
+- After entering the above settings you should be able to see the blood sugars on the watch! 
 
 
 
