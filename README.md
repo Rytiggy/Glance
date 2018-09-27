@@ -1,7 +1,12 @@
 # Glance ![twerp logo](https://image.ibb.co/gbWF2H/twerp_bowtie_64.png)
 Glance is a solution for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!
-### Interface 
-![ionic and versa](https://image.ibb.co/d4JNKd/ionic_and_versa.png "ionic and versa")
+### [Click here to lean how set up Glance!](https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance) 
+
+<img src="https://image.ibb.co/en0i2U/versa_Ionic.png">
+
+## Donation
+I developed Glance to help people with diabetes If this project help you, you can give me a cup of coffee :) 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/ryanmasonjar)
 
 ## Features 
 - Current BG
