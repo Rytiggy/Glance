@@ -73,14 +73,24 @@ function setDate(dateFormat) {
   let month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
   let date = ('0' + dateObj.getDate()).slice(-2);
   let year = dateObj.getFullYear();
-  let shortDate = month + '/' + date  + '/' + year;
-  if(dateFormat) {
-    if(dateFormat.values[0].name == 'DD/MM/YYYY') {
-       console.log('UK date format')
-       shortDate = date + '/' +  month + '/' + year;
-    }   
-  }
 
+  let shortDate = month + '/' + date  + '/' + year;
+
+  if (dateFormat) {
+    switch (dateFormat.values[0].name) {
+      case 'YYYY-MM-DD':
+        console.log('ISO 8601 date format')
+          shortDate = year + '-' + month + '-' + date;
+        break;
+      case 'DD/MM/YYYY':
+        console.log('UK date format')
+        shortDate = date + '/' + month  + '/' + year;
+        break;
+      case 'MM/DD/YYYY':
+      default:
+        console.log('US date format')
+   }
+  }
 
   
   document.getElementById("date").text = shortDate;
