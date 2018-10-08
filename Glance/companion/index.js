@@ -182,7 +182,8 @@ function getSettings(key) {
 }
 
 function getSgvURL() {
-  if(getSettings('endpoint').name) {
+  var endpoint = getSettings('endpoint');
+  if(endpoint && getSettings('endpoint').name) {
     return getSettings('endpoint').name+"?count=24"
   } else {
     // Default xDrip web service 
