@@ -351,8 +351,8 @@ inbox.onnewfile = () => {
       ymin = Math.floor((ymin/10))*10;
       ymax = Math.floor(((ymax+9)/10))*10;
             
-      ymin = ymin < 40 ? ymin : 40;
-      ymax = ymax < 210 ? 210 : ymax;
+      ymin = ymin < lowThreshold ? ymin : lowThreshold;
+      ymax = ymax < highThreshold ? highThreshold : ymax;
       
       high.text = ymax;
       middle.text = Math.floor(ymin + ((ymax-ymin) *0.5));
