@@ -45,7 +45,8 @@ function mySettings(props) {
           settingsKey="dateFormat"
           options={[
             {name:"MM/DD/YYYY"},
-            {name:"DD/MM/YYYY"}
+            {name:"DD/MM/YYYY"},
+            {name:"YYYY-MM-DD"}
           ]}
         />
         <Text align="center" bold>

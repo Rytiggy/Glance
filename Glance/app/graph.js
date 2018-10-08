@@ -92,7 +92,12 @@ export default class Graph {
      
      //console.log("SGV" + index + ": " + v[index].sgv + " TIME: " + v[index].date);
      //this._vals[index].cx = this._width - ((v[index].date-this._xmin) / this._xscale);
-     this._vals[index].cy = this._id.height - ((v[index].sgv-this._ymin) / this._yscale);
+
+     // v[index] may be undefined when a sensor was started
+     // because there aren't enough sensor values for a
+     // full graph drawing yet
+     if (v[index] !== undefined)
+       this._vals[index].cy = this._id.height - ((v[index].sgv-this._ymin) / this._yscale);
      
      //this._vals[index].cy = this._height - 20;
      //this._vals[index].r = this._pointsize;

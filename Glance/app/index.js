@@ -73,14 +73,24 @@ function setDate(dateFormat) {
   let month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
   let date = ('0' + dateObj.getDate()).slice(-2);
   let year = dateObj.getFullYear();
-  let shortDate = month + '/' + date  + '/' + year;
-  if(dateFormat) {
-    if(dateFormat.values[0].name == 'DD/MM/YYYY') {
-       console.log('UK date format')
-       shortDate = date + '/' +  month + '/' + year;
-    }   
-  }
 
+  let shortDate = month + '/' + date  + '/' + year;
+
+  if (dateFormat) {
+    switch (dateFormat.values[0].name) {
+      case 'YYYY-MM-DD':
+        console.log('ISO 8601 date format')
+          shortDate = year + '-' + month + '-' + date;
+        break;
+      case 'DD/MM/YYYY':
+        console.log('UK date format')
+        shortDate = date + '/' + month  + '/' + year;
+        break;
+      case 'MM/DD/YYYY':
+      default:
+        console.log('US date format')
+   }
+  }
 
   
   document.getElementById("date").text = shortDate;
@@ -341,8 +351,8 @@ inbox.onnewfile = () => {
       ymin = Math.floor((ymin/10))*10;
       ymax = Math.floor(((ymax+9)/10))*10;
             
-      ymin = ymin < 40 ? ymin : 40;
-      ymax = ymax < 210 ? 210 : ymax;
+      ymin = ymin < lowThreshold ? ymin : lowThreshold;
+      ymax = ymax < highThreshold ? highThreshold : ymax;
       
       high.text = ymax;
       middle.text = Math.floor(ymin + ((ymax-ymin) *0.5));
