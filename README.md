@@ -5,9 +5,9 @@ Glance is a solution for use with Fitbit devices to view your blood glucose leve
 <img src="https://image.ibb.co/en0i2U/versa_Ionic.png">
 
 ## Donation
-I developed Glance to help people with diabetes If this project helped you, you can give me a cup of coffee :) 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/ryanmasonjar)
+I developed Glance to help people with diabetes! 75% of all donations will go directly to the faustman lab. The remaining 25% will be dedicated to future research and development of Glance
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/ryanmasonjar)
 ## Features 
 - Current BG
 - Insulin on Board (IOB)
