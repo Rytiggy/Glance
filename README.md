@@ -27,4 +27,5 @@ I developed Glance to help people with diabetes! 75% of all donations will go di
 - Changing background color
 
 ## [User Agreement](https://github.com/Rytiggy/Glance/wiki/User-Agreement) 
-Glance must not be used to make medical decisions, by using glance you agree to the [user agreement](https://github.com/Rytiggy/Glance/wiki/User-Agreement)
+Glance must not be used to make medical decisions, by using glance you agree to the [user agreement](https://github.com/Rytiggy/Glance/wiki/User-Agreement).
+
