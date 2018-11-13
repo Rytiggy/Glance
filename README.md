@@ -1,4 +1,11 @@
-# Glance ![twerp logo](https://image.ibb.co/gbWF2H/twerp_bowtie_64.png)
+<p align="right">
+  <a href="https://discord.gg/RUa7U6F">
+    <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
+  </a>
+</p>
+
+# Glance ![twerp logo](https://image.ibb.co/gbWF2H/twerp_bowtie_64.png) 
+
 Glance is a solution for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!
 <a style="text-align: center;" href="https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance">Click here to learn how to set up Glance!</a> 
 
