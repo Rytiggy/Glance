@@ -17,16 +17,16 @@
 import asap from "fitbit-asap/app"
 
 export default class transfer {
-  // Send data
-  send(data) {
-    console.log('app - transfer - send')
-      // Send a command to the companion
-      asap.send({
-        command: 'forceCompanionTransfer',
-        data: data,
-    });
+	// Send data
+	send(data) {
+		console.log('app - transfer - send')
+		// Send a command to the companion
+		asap.send({
+			command: 'forceCompanionTransfer',
+			data: data,
+		});
 
-  }
+	}
 };
 
 
@@ -50,4 +50,3 @@ export default class transfer {
 //   // Handle any errors
 //   console.log("Connection error: " + err.code + " - " + err.message);
 // }
-

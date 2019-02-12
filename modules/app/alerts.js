@@ -153,18 +153,18 @@ export default class alerts {
 			}
 		}
 
-    // check if stale data
-		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter ) {
+		// check if stale data
+		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
-          if (settings.staleData) {
-            alertArrows.style.display = 'none';
-            popupTitle.style.fill = "#de4430";
-            vibration.start("ring");
-            popup.style.display = "inline";
-            popupTitle.style.display = "inline";
-            popupTitle.text = i18n('stale_data');
-          }
+					if (settings.staleData) {
+						alertArrows.style.display = 'none';
+						popupTitle.style.fill = "#de4430";
+						vibration.start("ring");
+						popup.style.display = "inline";
+						popupTitle.style.display = "inline";
+						popupTitle.text = i18n('stale_data');
+					}
 				}
 			}
 		}

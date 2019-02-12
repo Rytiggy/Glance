@@ -19,12 +19,12 @@ import { HeartRateSensor } from "heart-rate";
 let hrm = new HeartRateSensor();
 hrm.start();
 
-export default class userActivity { 
-  get() {
-    const userActivity = {
-      steps: today.adjusted.steps,
-      heartRate: hrm.heartRate,
-    }
-    return userActivity;
-  }
+export default class userActivity {
+	get() {
+		const userActivity = {
+			steps: today.adjusted.steps,
+			heartRate: hrm.heartRate,
+		}
+		return userActivity;
+	}
 };
