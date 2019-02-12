@@ -1,0 +1,359 @@
+.text {
+  font-size: 23;
+  font-family:  Colfax-Medium;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+.xs-text {
+  font-size: 15;
+  font-family: Seville-Condensed;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+.h2 {
+  font-size: 60;
+  font-family: SevilleSharp-Regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+.h1 {
+  font-size: 110;
+  font-family: Tungsten-Medium;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+.text-gray{
+  fill: #B8C3C4;
+}
+
+#battery-level {
+ width: 30; 
+ height: 15; 
+ fill: white;
+ x: 3%;
+ y: 4%; 
+}
+
+.battery-image {
+ width: 32;
+ height: 33;
+ x: 3%;
+ y: 1%;
+}
+#batteryPercent {
+/*   x: 13%-2;
+  y: 7%+2;  */
+   x: 15%;
+   y: 8%+3;
+/*   font-size: 11;
+  fill: #7f7f7f;
+  font-family: Colfax-Medium; */
+}
+
+#date {
+  x: 3%;
+  y: 18%;
+}
+
+#error {
+ x: 95%+3;
+ y: 59%+2;
+}
+
+
+#iob {
+ x: 11%+3;
+ y: 64%+2;
+}
+
+#cob {
+ x: 11%+3;
+ y: 75%;
+}
+
+#delta {
+ x: 97%;
+ y: 8%+3;
+}
+
+
+#sgv {
+ text-anchor:"end";
+ x: 97%;
+ y: 26%;
+}
+
+#timeOfLastSgv{
+ x: 97%;
+ y: 33%;
+}
+
+#time {
+ x: 3%;
+ y: 47%;
+}
+
+#arrows {
+ x: 83%;
+ y: 32%;
+ width: 45;
+ height: 45;
+ fill: white;
+}
+
+#weather {
+ x: 36%;
+ y: 8%+3;
+}
+
+#steps {
+ x: 10%+3;
+ y: 85%+2;
+}
+#heart {
+ x: 10%+3;
+ y: 95%;
+}
+
+#stepIcon {
+ x: 3%;
+ y: 80%; 
+}
+#heartIcon {
+ x: 3%;
+ y: 90%; 
+}
+.stat-image{
+ width: 16;
+ height: 16;
+}
+
+#graph {
+  x: 49%-24; 
+  y: 60%+3; 
+  width: 175; 
+  height: 100;
+}
+
+.graph-point {
+  fill:#b0b1b2;
+}
+
+.gval {
+  fill:#b0b1b2;
+}
+
+#dismiss {
+  y: 59%;
+  x: 5%;
+  width: 100;
+  height: 115;
+}
+
+#goToTreatment {
+  y: 66%;
+  x: 2%;
+  width: 145;
+  height: 100;
+  fill: black;
+}
+#goToLargeGraph {
+  y: 25%;
+  x: 20%;
+  width: 145;
+  height: 90;
+  fill: black;
+}
+
+#errorLine {
+  x1: 68%;
+  y1: 19%;
+  x2: 96%;
+  y2: 19%;
+  fill: white;
+}
+
+#high {
+  x: 97%;
+  y: 30%;
+  width: 40;
+}
+#largeGraphHigh {
+  x: 98%;
+  y: 30%;
+  width: 40;
+}
+
+#mean {
+  x: 100%+9;
+  y: 65; 
+}
+
+#low {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}
+#largeGraphLow {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}
+
+#degreeIcon {
+  width: 8;
+  height: 8;
+  fill: #B8C3C4;
+   x: 45%;
+   y: 2%;
+}
+
+#syringe {
+ x: 3%;
+ y: 60%;   
+}
+#hamburger {
+ x: 3%;
+ y: 70%;   
+}
+#popup-title {
+  x: 50%;
+  y: 30%
+}
+
+#carbsTreatment {
+  x: 50%;
+  y: 27%;
+  width: 50%;
+}
+
+#insulinTreatment {
+  x: 50%;
+  y: $;
+  width: 50%;
+}
+
+#graphPoints {
+ fill: red; 
+}
+
+.item { height: 90;  width:50; }
+.item text { font-size: 80; fill: white; x: 10;  }
+
+.itemTenth { height: 90; width:30; }
+.itemTenth text { font-size: 80; fill: white; x: 0;  }
+
+.treatment-image {
+  width: 50;
+  height: 50;
+}
+
+#largeGraphsSgv {
+ text-anchor:"end";
+ x: 79%;
+ y: 25%;
+}
+
+#largeGraphArrows {
+ x: 83%;
+ y: 11%;
+ width: 45;
+ height: 45;
+ fill: white;
+}
+
+#largeGraphDelta {
+ x: 97%;
+ y: 8%+3;
+}
+#largeGraphTimeOfLastSgv {
+ x: 97%;
+ y: 33%;
+}
+
+#rawbg {
+ x: 97%;
+ y: 40%;
+}
+
+#largeGraph {
+  y: 61%;
+  x: 3%;
+  width:97%;
+}
+
+#exitLargeGraph {
+  y: 67%;
+  x: 43%;
+  width: 170;
+  height: 100;
+  fill: black;
+}
+
+
+#largeGraphSyringe {
+ x: 3%;
+ y: 4%;   
+}
+#largeGraphHamburger {
+ x: 3%;
+ y: 12%;   
+}
+#largeGraphIob {
+ x: 10%;
+ y: 8%+4;
+}
+
+#largeGraphCob {
+ x: 10%;
+ y: 17%;
+}
+
+#predictedBg {
+ x: 3%;
+ y: 25%;
+}
+
+#tempBasal {
+ x: 3%;
+ y: 33%;
+}
+
+#largeGraphTime {
+  x: 50%;
+  y: 8%+4;
+}
+
+#largeGraphLoopStatus {
+  x: 3%;
+  y: 40%;
+}
+
+#largeGraphErrorLine {
+  x1: 52%;
+  y1: 19%;
+  x2: 79%;
+  y2: 19%;
+  fill: white;
+}
+
+#alertArrows {
+ x: 70%;
+ y: 15%;
+ width: 45;
+ height: 45;
+ fill: white;
+}
