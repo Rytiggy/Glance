@@ -1,0 +1,4 @@
+*
+!lib/**
+!.npmignore
+!npm-shrinkwrap.json

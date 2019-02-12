@@ -1,0 +1,7 @@
+{
+  "libs": ["ecma5"],
+  "plugins": {
+    "doc_comment": true,
+    "node": {}
+  }
+}

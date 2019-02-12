@@ -1,210 +1,131 @@
-// Import the messaging module
-import * as messaging from "messaging";
-import { encode } from 'cbor';
-import { outbox } from "file-transfer";
+/*
+ * Copyright (C) 2018 Ryan Mason - All Rights Reserved
+ *
+ * Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+ *
+ * https://github.com/Rytiggy/Glance/blob/master/LICENSE
+ * ------------------------------------------------
+ *
+ * You are free to modify the code but please leave the copyright in the header.
+ *
+ * ------------------------------------------------
+ */
+
+
+
 import { settingsStorage } from "settings";
+
+import Settings from "../modules/companion/settings.js";
+import Transfer from "../modules/companion/transfer.js";
+import Fetch from "../modules/companion/fetch.js";
+import Standardize from "../modules/companion/standardize.js";
+// import Weather from "../modules/companion/weather.js";
+import Logs from "../modules/companion/logs.js";
+import Sizeof from "../modules/companion/sizeof.js";
+import Dexcom from "../modules/companion/dexcom.js";
+
+import * as messaging from "messaging";
 import { me } from "companion";
-import { geolocation } from "geolocation";
+
+const settings = new Settings();
+const transfer = new Transfer();
+const fetch = new Fetch();
+const standardize = new Standardize();
+const dexcom = new Dexcom();
 
 
-// // default URL pointing at xDrip Plus endpoint
- var URL = null;
-//WeatheyAPI connection
-var API_KEY = null;
-var ENDPOINT = null
+// const weatherURL = new Weather();
+const logs = new Logs();
+const sizeof = new Sizeof();
+let dataReceivedFromWatch = null;
 
-
-// Fetch the weather from OpenWeather
-function queryOpenWeather() {
-  let city = ((getSettings("city")) ? getSettings("city").name : 'charlottesville');
-  let searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='"+getTempType()+"'"  
-  return fetch("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json")
-  .then(function (response) {
-     return response.json()
-      .then(function(data) {
-        // We just want the current temperature
-        var weather = {
-          temperature:data.query.results.channel.item.condition.temp 
-        }
-        // Send the weather data to the device
-        return weather;
-      });
-  })
-  .catch(function (err) {
-    console.log("Error fetching weather.You need an API key from openweathermap.org to view weather data. otherwise this error is fine to ignore. " + err);
-  });
+async function sendData() {
+  logs.add('companion - sendData: Version: 2.1.100')
+  // Get settings 
+  const store = await settings.get(dataReceivedFromWatch);
   
-}
 
-
-function queryBGD(unitsHint) {
-  let url = getSgvURL()
-  console.log(url)
-  return fetch(url)
-  .then(function (response) {
-      return response.json()
-      .then(function(data) {
-        let date = new Date();
-       
-        let currentBgDate = new Date(data[0].dateString);
-        let diffMs =date.getTime() - JSON.stringify(data[0].date) // milliseconds between now & today              
-        if(isNaN(diffMs)) {
-           console.log('Not a number set to 5 mins')
-           diffMs = 300000
-        } else {
-          // If the time sense last pull is larger then 15mins send false to display error
-          if(diffMs > 900000) {
-            diffMs = false
-          }else {
-             if(diffMs > 300000) {
-              diffMs = 300000
-            } else {
-              diffMs = Math.round(300000 - diffMs) + 60000 // add 1 min to account for delay in communications 
-            }
-
-          }
-        }
-        
-        let bloodSugars = []
-        
-        let delta = 0;
-        let count = data.length - 1;
-        delta = data[0].sgv - data[1].sgv 
-        data.forEach(function(bg, index){
-          let unitType = unitsHint;
-          if(unitType == null) {
-            unitType = bg.units_hint 
-          } else {
-            unitType = unitType.values[0].name
-          }          
-          bloodSugars.push({
-             sgv: bg.sgv,
-             delta: delta,
-             nextPull: diffMs,
-             units_hint: unitType
-
-          })
-        })   
-        // Send the data to the device
-        return bloodSugars.reverse();
-      });
-  })
-  .catch(function (err) {
-    console.log("Error fetching bloodSugars: " + err);
-  });
-}
-
-
-// Send the  data to the device
-function returnData(data) {  
-  const myFileInfo = encode(data);
-  outbox.enqueue('file.txt', myFileInfo)
-   
-}
-
-function formatReturnData() {
-     let weatherPromise = new Promise(function(resolve, reject) {
-      resolve( queryOpenWeather() );
-    });
-    
-    let BGDPromise = new Promise(function(resolve, reject) {
-      resolve( queryBGD(getSettings("units") ) );
-    });
-    let highThreshold = null
-    let lowThreshold = null
-    
-    if(getSettings("highThreshold")){
-      highThreshold = getSettings("highThreshold").name
-    } else {
-      highThreshold = 200
+  // Get SGV data
+   let bloodsugars = null;
+   let extraData = null;
+  if (store.url === 'dexcom') {
+    let USAVSInternational = store.USAVSInternational;
+    let subDomain = 'share2';
+    if(USAVSInternational) {
+      subDomain = 'shareous2';
     }
-  
-    if(getSettings("lowThreshold")){
-     lowThreshold = getSettings("lowThreshold").name
+    let sessionId = await dexcom.getSessionId(store.dexcomUsername, store.dexcomPassword, subDomain);
+    if(store.dexcomUsername && store.dexcomPassword) {
+       bloodsugars = await dexcom.getData(sessionId, subDomain); 
     } else {
-     lowThreshold = 70
-    }
-        console.log("disableAlert")
-
-      console.log( getSettings('disableAlert'))
-    Promise.all([weatherPromise, BGDPromise]).then(function(values) {
-      let dataToSend = {
-        'weather':values[0],
-        'BGD':values[1],
-        'settings': {
-          'bgColor': getSettings('bgColor'),
-          'highThreshold': highThreshold,
-          'lowThreshold': lowThreshold,
-          'timeFormat': getSettings('timeFormat'),
-          'dateFormat': getSettings('dateFormat'),
-          'disableAlert': getSettings('disableAlert')
+      bloodsugars = {
+        error : {
+          status : "500"
         }
       }
-      returnData(dataToSend)
-    });
+    }
+    
+  } else {
+    bloodsugars = await fetch.get(store.url);
+    if(store.extraDataUrl) {
+       extraData = await fetch.get(store.extraDataUrl); 
+    }  
   }
+
+  
+  // Get weather data   
+  // let weather = await fetch.get(await weatherURL.get(store.tempType));
+  Promise.all([bloodsugars, extraData]).then(function(values) {
+    let dataToSend = {
+      bloodSugars: standardize.bloodsugars(values[0], values[1], store),
+      settings: standardize.settings(store),
+      // weather: values[2].query.results.channel.item.condition,
+    };
+    logs.add('Line 59: companion - sendData - DataToSend size: ' + sizeof.size(dataToSend) + ' bytes')
+    logs.add('Line 60: companion - sendData - DataToSend: ' + JSON.stringify(dataToSend))
+    transfer.send(dataToSend);
+  });
+}
 
 
 // Listen for messages from the device
 messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data) {
-    formatReturnData()
+  if (evt.data.command === 'forceCompanionTransfer') {
+    logs.add('Line 58: companion - Watch to Companion Transfer request')
+    // pass in data that was recieved from the watch 
+    console.log(JSON.stringify(evt.data.data))
+    dataReceivedFromWatch = evt.data.data;
+    sendData()
   }
-}
-
-
-
+};
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = function(err) {
   // Handle any errors
   console.log("Connection error: " + err.code + " - " + err.message);
-}
+};
 
-
-//----------------------------------------------------------
-//
-// This section deals with settings
-//
-//----------------------------------------------------------
 settingsStorage.onchange = function(evt) {
- console.log( getSettings(evt.key) )
-    formatReturnData()
-}
+  logs.add('Line 70: companion - Settings changed send to watch');
+  sendData()
+  if (evt.key === "authorizationCode") {
+    // Settings page sent us an oAuth token
+    let data = JSON.parse(evt.newValue);
+    dexcom.getAccessToken(data.name);
 
-// getters 
-function getSettings(key) {
-  if(settingsStorage.getItem( key )) {
-    return JSON.parse(settingsStorage.getItem( key ));
-  } else {
-    return undefined
   }
 }
 
-function getSgvURL() {
-  var endpoint = getSettings('endpoint');
-  if(endpoint && getSettings('endpoint').name) {
-    return getSettings('endpoint').name+"?count=24"
-  } else {
-    // Default xDrip web service 
-    return  "http://127.0.0.1:17580/sgv.json"
-  }
-}
+const MINUTE = 1000 * 60;
+me.wakeInterval = 5 * MINUTE;
 
-function getTempType() {
-   if(getSettings('tempType')){
-     return 'f'
-   } else {
-      return 'c'
-   }
+if (me.launchReasons.wokenUp) {
+  // The companion started due to a periodic timer
+  console.error("Started due to wake interval!")
+  sendData()
+} else {
+  // Close the companion and wait to be awoken
+  me.yield()
 }
-
-// TODO make this work Lat and Lon auto detect based on location. 
-function locationSuccess(position) {
-  return "lat=" + position.coords.latitude + "&lon=" + position.coords.longitude;
-}
-
-function locationError(error) {
-  console.log("Error: " + error.code,
-              "Message: " + error.message);
-}
+// wait 1 seconds before getting things started
+setTimeout(sendData, 1000);

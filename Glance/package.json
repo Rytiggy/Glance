@@ -1,17 +1,17 @@
 {
   "fitbit": {
-    "appUUID": "7b5d9822-7e8e-41f9-a2a7-e823548c001c",
+    "appUUID": "f89ff99d-4365-4a39-aa2f-f66aaa970587",
     "appType": "clockface",
-    "appDisplayName": "Glance",
+    "appDisplayName": "Glance 2.0",
     "iconFile": "resources/icon.png",
-    "wipeColor": "#e91e63",
+    "wipeColor": "#673ab7",
     "requestedPermissions": [
-      "run_background",
-      "access_internet",
-      "access_location",
-      "access_heart_rate",
       "access_user_profile",
-      "access_activity"
+      "access_location",
+      "access_internet",
+      "run_background",
+      "access_activity",
+      "access_heart_rate"
     ],
     "buildTargets": [
       "higgs",
@@ -19,8 +19,16 @@
     ],
     "i18n": {
       "en": {
-        "name": "Glance"
+        "name": "Glance 2.0"
       }
     }
+  },
+  "devDependencies": {
+    "@fitbit/sdk": "~3.0.0",
+    "@fitbit/sdk-cli": "^1.0.0"
+  },
+  "scripts": {
+    "build": "fitbit-build",
+    "build-and-install": "printf 'build-and-install' | npx fitbit"
   }
 }

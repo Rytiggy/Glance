@@ -1,482 +1,398 @@
-import * as messaging from "messaging";
+/*
+ * Copyright (C) 2018 Ryan Mason - All Rights Reserved
+ *
+ * Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+ *
+ * https://github.com/Rytiggy/Glance/blob/master/LICENSE
+ * ------------------------------------------------
+ *
+ * You are free to modify the code but please leave the copyright in the header.
+ *
+ * ------------------------------------------------
+ */
+
+
+
 import document from "document";
-import { charger, battery } from "power";
-import { HeartRateSensor } from "heart-rate";
-import { today } from "user-activity";
 import { inbox } from "file-transfer";
 import fs from "fs";
-import * as fs from "fs";
 import { vibration } from "haptics";
+import DateTime from "../modules/app/dateTime.js";
+import BatteryLevels from "../modules/app/batteryLevels.js";
+import Graph from "../modules/app/bloodline.js"
+import UserActivity from "../modules/app/userActivity.js"
+import Alerts from "../modules/app/alerts.js"
+import Errors from "../modules/app/errors.js"
+import Transfer from "../modules/app/transfer.js"
+// import { preferences, save, load } from "../modules/app/sharedPreferences";
+import { memory } from "system";
 
-import Graph from "graph.js"
+const dateTime = new DateTime();
+const batteryLevels = new BatteryLevels();
+const graph = new Graph();
+const userActivity = new UserActivity();
+const alerts = new Alerts();
+const errors = new Errors();
+const transfer = new Transfer();
 
-let heartRate = new HeartRateSensor();
-let totalSeconds = 0;
-let timeFormat = false;
+let main = document.getElementById("main");
+let sgv = document.getElementById("sgv");
+let rawbg = document.getElementById("rawbg");
+let tempBasal = document.getElementById("tempBasal");
+let largeGraphsSgv = document.getElementById("largeGraphsSgv");
+let delta = document.getElementById('delta');
+let largeGraphDelta = document.getElementById('largeGraphDelta');
+let timeOfLastSgv = document.getElementById("timeOfLastSgv");
+let largeGraphTimeOfLastSgv = document.getElementById("largeGraphTimeOfLastSgv");
+let largeGraphIob = document.getElementById("largeGraphIob");
+let largeGraphCob = document.getElementById("largeGraphCob");
+let iob = document.getElementById("iob");
+let cob = document.getElementById("cob");
 
-let high = document.getElementById("high");
-let middle = document.getElementById("middle");
-let low = document.getElementById("low");
+let dateElement = document.getElementById("date");
+let timeElement = document.getElementById("time");
+let largeGraphTime = document.getElementById("largeGraphTime");
+let weather  = document.getElementById("weather");
+let arrows = document.getElementById("arrows");
+let largeGraphArrows = document.getElementById("largeGraphArrows");
+let alertArrows =  document.getElementById("alertArrows");
+let batteryLevel  = document.getElementById("battery-level");
+let steps  = document.getElementById("steps");
+let stepIcon  = document.getElementById("stepIcon");
+let heart  = document.getElementById("heart");
+let heartIcon  = document.getElementById("heartIcon");
+let bgColor = document.getElementById("bgColor");
+let largeGraphBgColor = document.getElementById("largeGraphBgColor");
+let batteryPercent = document.getElementById("batteryPercent");
+let popup = document.getElementById("popup");
+let dismiss = popup.getElementById("dismiss");
+let errorText = document.getElementById("error");
+let popupTitle  = document.getElementById("popup-title");
+let degreeIcon = document.getElementById("degreeIcon");
+let goToLargeGraph = document.getElementById("goToLargeGraph");
 
-let docGraph = document.getElementById("docGraph");
-let myGraph = new Graph(docGraph);
+let largeGraphLoopStatus = document.getElementById("largeGraphLoopStatus");
+let largeGraphView = document.getElementById("largeGraphView");
+let exitLargeGraph = document.getElementById("exitLargeGraph");
 
-let showAlertModal = true;
+let largeGraphSyringe = document.getElementById("largeGraphSyringe");
+let largeGraphHamburger = document.getElementById("largeGraphHamburger");
+let syringe = document.getElementById("syringe");
+let hamburger = document.getElementById("hamburger");
+let predictedBg = document.getElementById("predictedBg");
 
-let timeOut;
-// Init 
-setTime() 
-setDate()
-setBattery()
-startMonitors() 
+let dismissHighFor = 120;
+let dismissLowFor = 15;
 
+let data = null;
+let DISABLE_ALERTS = false;   
 
-// The updater is used to update the screen every 1 SECONDS 
-function updater() {
-  setTime() 
-  //setDate()
-  setBattery()
-  startMonitors()
-  addSecond()
-}
-setInterval(updater, 5000);
+// Data to send back to phone
+let dataToSend = {
+  heart: 0,
+  steps: userActivity.get().steps
+};
+dismiss.onclick = function(evt) {
+  console.log("DISMISS");
+  popup.style.display = "none";
+  popupTitle.style.display = "none";
+  vibration.stop();
+  DISABLE_ALERTS = true;
+  let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
 
-// The fiveMinUpdater is used to update the screen every 5 MINUTES 
-function fiveMinUpdater() {
-  fetchCompaionData();
-  // fetchCompaionData('weather');
-}
-
-function setTime() {
-  let timeNow = new Date();
-  let hh = timeNow.getHours();  
-  let mm = timeNow.getMinutes();
-  let ss = timeNow.getSeconds();
-  if(!timeFormat) {
-    let formatAMPM = (hh >= 12?'PM':'AM');
-    hh = hh % 12 || 12;
-
-    if(hh < 10) {
-      hh = '0' + hh;
-    } 
-  }
-   if(mm < 10) {
-      mm = '0' + mm;
-    } 
-  document.getElementById("time").text = (hh + ':' + mm);
-  
-}
-
-function setDate(dateFormat) { 
-  console.log('Set date format ' + JSON.stringify(dateFormat))
-  let dateObj = new Date();
-  let month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
-  let date = ('0' + dateObj.getDate()).slice(-2);
-  let year = dateObj.getFullYear();
-
-  let shortDate = month + '/' + date  + '/' + year;
-
-  if (dateFormat) {
-    switch (dateFormat.values[0].name) {
-      case 'YYYY-MM-DD':
-        console.log('ISO 8601 date format')
-          shortDate = year + '-' + month + '-' + date;
-        break;
-      case 'DD/MM/YYYY':
-        console.log('UK date format')
-        shortDate = date + '/' + month  + '/' + year;
-        break;
-      case 'MM/DD/YYYY':
-      default:
-        console.log('US date format')
-   }
-  }
-
-  
-  document.getElementById("date").text = shortDate;
-}
-
-function setBattery() {
-  //document.getElementById("battery").text = (Math.floor(battery.chargeLevel) + "%");
-  document.getElementById("battery-level").width =  (.3 * Math.floor(battery.chargeLevel))
-}
-
-function startMonitors() {  
-  heartRate.start();
-  let data = {
-      heartRate: heartRate.heartRate ? heartRate.heartRate : 0
-  };
-  
-   let stepCount = (today.local.steps || 0)+"";
-
-  if(stepCount >= 999 && stepCount <= 9999) {
-    stepCount = stepCount.substring(0, 1);
-    stepCount.trim();
-    stepCount += "k"
-  } 
-  if(stepCount >= 9999) {
-    stepCount = stepCount.substring(0, 2);
-    stepCount.trim();
-    stepCount += "k"
-  }
-   document.getElementById("heart").text = JSON.stringify(data.heartRate);
-   document.getElementById("step").text = stepCount
-}
-
-//minutes sense last pull 
-function addSecond() {
-  totalSeconds += 5;
-  // document.getElementById("seconds").text = pad(totalSeconds % 60);
-  document.getElementById("minutes").text = parseInt(totalSeconds / 60) + ' mins';
-}
-
-function setArrowDirection(delta) {
-  let direction = document.getElementById("direction")
-  let directionDot =  document.getElementById("direction-dot")
-  
-  let directionTwo = document.getElementById("direction-two")
-  let directionTwoDot =  document.getElementById("direction-two-dot")
-  // TODO find a better way to handle doulbe and single arrows
-  if(delta <= 4 || delta >= -4){
-    setDirection(.8, .9, .44, .44, .9, .44, direction, directionDot)
-    setDirection(.8, .9, .44, .44, .9, .44, directionTwo, directionTwoDot)
-  } 
- 
-  if(delta > 5) {
-    setDirection(.89, .81, .39, .52, .89, .39, direction, directionDot)
-    setDirection(.89, .81, .39, .52, .89, .39, directionTwo, directionTwoDot)
-  }
-  if(delta >= 7) {
-    setDirection(.85, .85, .38, .51, .85, .38, direction, directionDot)
-    setDirection(.85, .85, .38, .51, .85, .38,  directionTwo, directionTwoDot)
-  }
-  if(delta >= 10) {
-    setDirection(.82, .82, .38, .51, .82, .38, direction, directionDot)
-    setDirection(.90, .90, .38, .51, .90, .38, directionTwo, directionTwoDot)
-  }
-  
-  if(delta < -5) {
-    setDirection(.89, .81, .52, .39, .89, .52, direction, directionDot)
-    setDirection(.89, .81, .52, .39, .89, .52, directionTwo, directionTwoDot)
-  }
-  if(delta <= -7) {
-   setDirection(.85, .85, .38, .51, .85, .51, direction, directionDot)
-   setDirection(.85, .85, .38, .51, .85, .51, directionTwo, directionTwoDot)
-  }
-  if(delta <= -10) {
-    setDirection(.82, .82, .38, .51, .82, .51, direction, directionDot)
-    setDirection(.90, .90, .38, .51, .90, .51, directionTwo, directionTwoDot)
-  }
-}
-
-//Takes in  % of device you want to take in and the direction lines x1 x2 y1 y2 as well as thedirection dots cx cy
-function setDirection(x1, x2, y1, y2, cx, cy, direction, directionDot) {
-    let appWidth =  document.getElementById("app").width
-    let appHeight =  document.getElementById("app").height
-
-    direction.x1 = x1 * appWidth;
-    direction.x2 = x2 * appWidth;
-   
-    direction.y1 =  y1 * appHeight;
-    direction.y2 = y2 * appHeight;
-    
-    directionDot.cx =  cx * appWidth;
-    directionDot.cy = cy * appHeight;
-}
-
-// converts a mg/dL to mmoL
-function mmol( bg , roundToHundredths) {
-  if(roundToHundredths) {
-    let mmolBG = Math.round( (bg / 18.1) * 100 ) / 100;
-    
+  if (currentBgFromBloodSugars.sgv >= parseInt(data.settings.highThreshold)) {
+    console.log("HIGH " + dismissHighFor);
+    setTimeout(disableAlertsFalse, (dismissHighFor*1000)*60);
   } else {
-    let mmolBG = Math.round( (bg / 18.1) * 10 ) / 10;
-  }
-  return mmolBG;
-}
+    // 15 mins 
+    console.log("LOW " + dismissLowFor);
 
-// converts mmoL to  mg/dL 
-function  mgdl( bg ) {
-    let mgdlBG = Math.round( (bg * 18) / 10 ) * 10;
-  return mgdlBG;
-}
-
-
-// set the image of the status image 
-function setStatusImage(status) {
-    document.getElementById("status-image").href = "img/" + status
-}
-//----------------------------------------------------------
-//
-// This section deals with getting data from the compaion app 
-//
-//----------------------------------------------------------
-// Request data from the companion
-function fetchCompaionData(cmd) {
-  setStatusImage('refresh.png')
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    // Send a command to the companion
-    messaging.peerSocket.send({
-      command: cmd
-    });
+    setTimeout(disableAlertsFalse, (dismissLowFor*1000)*60);
   }
 }
 
-// Display the weather data received from the companion
-function processWeatherData(data) {
-  console.log("The temperature is: " + JSON.stringify(data));
-  if(data) {
-    document.getElementById("temp").text = data.temperature
-  }
-}
-
-// Display the  data received from the companion
-function processOneBg(data) {
-  console.log("bg is: " + JSON.stringify(data));
-  setArrowDirection(data.delta)
-  // Temp fix for Spike endpoint 
-  // Next pull does not get caculated right
-   if(data.nextPull === null) {
-    data.nextPull = 300000
-   }
-  
-  if(data.nextPull) {
-    
-    if(data.units_hint === 'mmol') {
-      data.sgv = mmol( data.sgv ) 
-      data.delta = mmol( data.delta, true ) 
-    }
-    
-    document.getElementById("bg").text = data.sgv
-    
-     document.getElementById("delta").text = data.delta + ' ' + 'mgdl'
-    if(data.units_hint) {
-      document.getElementById("delta").text = data.delta + ' ' + data.units_hint
-    }
-    totalSeconds = 0;
-    setStatusImage('checked.png')
-    clearTimeout(timeOut);
-    timeOut = setTimeout(fiveMinUpdater, data.nextPull) 
-   
-  } else {
-    document.getElementById("bg").text = '???'
-    document.getElementById("delta").text = 'no data'
-    setArrowDirection(0)
-    setStatusImage('warrning.png')
-    // call function every 10 or 15 mins to check again and see if the data is there   
-    setTimeout(fiveMinUpdater, 900000)    
-  }
-}
-
-// Listen for the onopen event
-messaging.peerSocket.onopen = function() {
-  fetchCompaionData();
-}
+function disableAlertsFalse() { 
+  DISABLE_ALERTS = false;
+};
 
 
-// Event occurs when new file(s) are received
+
+sgv.text = '---';
+rawbg.text = ''
+delta.text = '';
+largeGraphDelta.text = '';
+iob.text = '0.0';
+cob.text = '0.0';
+largeGraphIob.text = '0.0';
+largeGraphCob.text = '0.0';
+dateElement.text = '';
+timeOfLastSgv.text = '';
+weather.text = '--';
+steps.text = '--';
+heart.text = '--';
+batteryPercent.text = '%';
+bgColor.gradient.colors.c1 = '#390263';
+largeGraphBgColor.gradient.colors.c1 = '#390263';
+errorText.text = '';
+update()
+setInterval(update, 10000);
+
+timeElement.text = dateTime.getTime();
+largeGraphTime.text = dateTime.getTime();
+batteryLevel.width = batteryLevels.get().level;
+
 inbox.onnewfile = () => {
+  console.log("New file!");
   let fileName;
   do {
     // If there is a file, move it from staging into the application folder
     fileName = inbox.nextFile();
     if (fileName) {
-     
-      const data = fs.readFileSync('file.txt', 'cbor');  
-      const CONST_COUNT = data.BGD.length - 1;
-      let count = CONST_COUNT;
-      
-      document.getElementById("bg").style.fill="white"
-      
-      // High || Low alert  
-       // data.BGD[count].sgv = 50
-       // data.BGD[count].delta = -4
-      let sgv = data.BGD[count].sgv;
-      
-      if( data.BGD[CONST_COUNT].units_hint == 'mmol' ){
-        sgv = mmol(sgv)
-      }
-      
-      if(!(data.settings.disableAlert)) {
-        if( sgv >=  data.settings.highThreshold) {
-          if((data.BGD[count].delta > 0)){
-            console.log('BG HIGH') 
-            startVibration("nudge", 3000, sgv)
-            document.getElementById("bg").style.fill="#e2574c"
-          } else {
-            console.log('BG still HIGH, But you are going down') 
-            showAlertModal = true;
-          }
-        }
-
-        if(sgv <=  data.settings.lowThreshold) {
-           if((data.BGD[count].delta < 0)){
-              console.log('BG LOW') 
-              startVibration("nudge", 3000, sgv)
-              document.getElementById("bg").style.fill="#e2574c"
-             } else {
-            console.log('BG still LOW, But you are going UP') 
-            showAlertModal = true;
-          }
-        }
-      }
-      //End High || Low alert      
-    
-      processOneBg(data.BGD[count])
-      
-      
-      timeFormat = data.settings.timeFormat
-      let highThreshold = data.settings.highThreshold
-      let lowThreshold =  data.settings.lowThreshold
-
-      if(data.BGD[count].units_hint === "mmol") {
-        highThreshold = mgdl( data.settings.highThreshold )
-        lowThreshold = mgdl( data.settings.lowThreshold )
-      }
-   //   settings(data.settings, data.BGD[count].units_hint)
-
-      
-      // Added by NiVZ    
-      let ymin = 999;
-      let ymax = 0;
-      
-      data.BGD.forEach(function(bg, index) {
-        if (bg.sgv < ymin) { ymin = bg.sgv; }
-        if (bg.sgv > ymax) { ymax = bg.sgv; }
-      })
-      
-      ymin -=20;
-      ymax +=20;
-      
-      ymin = Math.floor((ymin/10))*10;
-      ymax = Math.floor(((ymax+9)/10))*10;
-            
-      ymin = ymin < lowThreshold ? ymin : lowThreshold;
-      ymax = ymax < highThreshold ? highThreshold : ymax;
-      
-      high.text = ymax;
-      middle.text = Math.floor(ymin + ((ymax-ymin) *0.5));
-      low.text = ymin;
-      
-      //If mmol is requested format
-      if( data.BGD[CONST_COUNT].units_hint == 'mmol' ){
-        
-        high.text = mmol(ymax);
-        middle.text = mmol(Math.floor(ymin + ((ymax-ymin) *0.5)));
-        low.text = mmol(ymin = ymin < 0 ? 0 : ymin);
-        data.BGD[CONST_COUNT].sgv = mgdl(data.BGD[CONST_COUNT].sgv)
-      }
-      
-      
-      // Set the graph scale
-      myGraph.setYRange(ymin, ymax);
-      // Update the graph
-      myGraph.update(data.BGD);  
-      
-      processWeatherData(data.weather)
-      setDate(data.settings.dateFormat) 
-      
-      //set background color:
-      console.log('set background color ' + JSON.stringify( data.settings.bgColor))
-      document.getElementById("bgColor").gradient.colors.c1 = '#390263'
-      if (data.settings.bgColor) {
-        document.getElementById("bgColor").gradient.colors.c1 = data.settings.bgColor
-      }
-
+      data = fs.readFileSync(fileName, "cbor");  
+      update();
     }
   } while (fileName);
 };
 
-//----------------------------------------------------------
-//
-// Settings
-//
-//----------------------------------------------------------
-function settings(settings, unitsHint){   
-
-  
- // console.log(settings.disableAlert)
-  //   //document.getElementById("high").y = returnPoint(highThreshold)
-  //   document.getElementById("high").text = settings.highThreshold
-
-  //   //document.getElementById("middle").y = (returnPoint(highThreshold) + returnPoint(lowThreshold)) / 2
-  //   document.getElementById("middle").text = ( parseInt(settings.highThreshold) + parseInt(settings.lowThreshold ))/2
-
-  //   //document.getElementById("low").y =  returnPoint(lowThreshold)
-  //   document.getElementById("low").text = settings.lowThreshold
-}
 
 
-
-//----------------------------------------------------------
-//
-// Deals with Vibrations 
-//
-//----------------------------------------------------------
-let vibrationTimeout; 
-
-function startVibration(type, length, message) {
-  if(showAlertModal){
-    showAlert(message) 
-    vibration.start(type);
-    if(length){
-       vibrationTimeout = setTimeout(function(){ startVibration(type, length, message) }, length);
-    }
+function update() {
+  console.log('app - update()'); 
+  console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+  let heartrate = userActivity.get().heartRate; 
+  if(!heartrate) {
+    heartrate = 0;
   }
+  // Data to send back to phone
+  dataToSend = {
+    heart: heartrate,
+    steps: userActivity.get().steps
+  };
+
   
+  if(data) {
+    console.warn('GOT DATA');
+    batteryLevel.width = batteryLevels.get().level;
+    batteryLevel.style.fill = batteryLevels.get().color;
+    batteryPercent.text = '' + batteryLevels.get().percent + '%';   
+    timeElement.text = dateTime.getTime(data.settings.timeFormat);
+    largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
+    
+    dismissHighFor = data.settings.dismissHighFor;
+    dismissLowFor = data.settings.dismissLowFor;
+    weather.text = '';// data.weather.temp;
+    degreeIcon.style.display = "none";
+    
+    bgColor.gradient.colors.c1 = data.settings.bgColor;
+    largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
+
+    // bloodsugars
+    let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
+       
+    
+    // Layout options
+    if( currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob' ){
+      iob.text =  currentBgFromBloodSugars[data.settings.layoutOne];
+      syringe.style.display = 'none';
+      iob.x  = 10;
+    } else {
+       iob.text = commas(userActivity.get().steps);
+       syringe.style.display = 'inline';
+       iob.x  = 35;
+      if(currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob != 0) {
+        iob.text = currentBgFromBloodSugars.iob + '';
+        largeGraphIob.text = currentBgFromBloodSugars.iob + '';
+        syringe.style.display = "inline";
+        largeGraphSyringe.style.display = "inline";
+      } else {
+        iob.text = '';
+        largeGraphIob.text = '';
+        syringe.style.display = "none";
+        largeGraphSyringe.style.display = "none";
+      }
+
+    }    
+    
+    if( currentBgFromBloodSugars[data.settings.layoutTwo] && data.settings.layoutTwo != 'cob' ){
+      cob.text =  currentBgFromBloodSugars[data.settings.layoutTwo];
+      hamburger.style.display = 'none';
+      cob.x  = 10;
+    } else {
+      cob.text = userActivity.get().heartRate;
+      hamburger.style.display = 'inline';
+      cob.x  = 35;
+      if(currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob != 0) {
+        cob.text = currentBgFromBloodSugars.cob + '';  
+        largeGraphCob.text = currentBgFromBloodSugars.cob + '';  
+        hamburger.style.display = "inline";
+        largeGraphHamburger.style.display = "inline";
+      } else {
+         cob.text = '';
+         largeGraphCob.text = '';
+         hamburger.style.display = "none";
+         largeGraphHamburger.style.display = "none";
+      }
+    }
+    
+    if( currentBgFromBloodSugars[data.settings.layoutThree] && data.settings.layoutThree != 'steps' ){
+      steps.text =  currentBgFromBloodSugars[data.settings.layoutThree];
+      stepIcon.style.display = 'none';
+      steps.x  = 10;
+    } else {
+      steps.text = commas(userActivity.get().steps);
+      stepIcon.style.display = 'inline';
+      steps.x  = 35;
+    }    
+    
+    if( currentBgFromBloodSugars[data.settings.layoutFour] && data.settings.layoutFour != 'heart' ){
+      heart.text =  currentBgFromBloodSugars[data.settings.layoutFour];
+      heartIcon.style.display = 'none';
+      heart.x  = 10;
+    } else {
+      heart.text = userActivity.get().heartRate;
+      heartIcon.style.display = 'inline';
+      heart.x  = 35;
+    }
+
+    
+    
+    sgv.text = currentBgFromBloodSugars.currentbg;   
+    largeGraphsSgv.text = currentBgFromBloodSugars.currentbg; 
+    if (currentBgFromBloodSugars.rawbg) {
+      rawbg.text = currentBgFromBloodSugars.rawbg + ' ';
+    } else {
+      rawbg.text = '';
+    }
+    
+    if (currentBgFromBloodSugars.tempbasal) {
+      tempBasal.text =  currentBgFromBloodSugars.tempbasal;
+    } else {
+       tempBasal.text =  '';
+    }
+    
+     if (currentBgFromBloodSugars.predictedbg) {
+      predictedBg.text =  currentBgFromBloodSugars.predictedbg;
+    } else {
+      predictedBg.text =  '';
+    }
+    
+    timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
+    largeGraphTimeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
+    
+    dateElement.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
+    
+    
+    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1];
+    // if DISABLE_ALERTS is true check if user is in range 
+    if(DISABLE_ALERTS && data.settings.resetAlertDismissal) {
+      if( parseInt(timeSenseLastSGV, 10) < data.settings.staleDataAlertAfter && currentBgFromBloodSugars.direction != 'DoubleDown' && currentBgFromBloodSugars.direction != 'DoubleUp' && currentBgFromBloodSugars.loopstatus != 'Warning') { // Dont reset alerts for LOS, DoubleUp, doubleDown, Warning
+        if (currentBgFromBloodSugars.sgv > parseInt(data.settings.lowThreshold) && currentBgFromBloodSugars.sgv < parseInt(data.settings.highThreshold)) { // if the BG is between the threshold 
+          console.error('here', DISABLE_ALERTS,  parseInt(timeSenseLastSGV, 10))
+          disableAlertsFalse()
+        }
+      }
+    }
+      
+    alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, currentBgFromBloodSugars.currentbg, currentBgFromBloodSugars.loopstatus, timeSenseLastSGV);
+    
+    errors.check(dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1], currentBgFromBloodSugars.currentbg);
+    let deltaText = currentBgFromBloodSugars.bgdelta 
+    // add Plus
+    if (deltaText > 0) {
+      deltaText = '+' + deltaText;
+     }
+    delta.text = deltaText  +' '+ data.settings.glucoseUnits; 
+    largeGraphDelta.text = deltaText  +' '+ data.settings.glucoseUnits;
+    largeGraphLoopStatus.text = currentBgFromBloodSugars.loopstatus;
+    
+    arrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png'
+    largeGraphArrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png';
+    
+    graph.update(data.bloodSugars.bgs,
+                 data.settings.highThreshold,
+                 data.settings.lowThreshold,
+                 data.settings
+                );
+    
+    if (data.settings.largeGraph) {
+      goToLargeGraph.style.display = "inline";
+    } else {
+      goToLargeGraph.style.display = "none";
+    }
+    // if (data.settings.treatments) {
+    //   goToTreatment.style.display = "inline";
+    // } else {
+    //   goToTreatment.style.display = "none";
+    // }
+    
+  } else {
+    console.warn('NO DATA');
+    steps.text = commas(userActivity.get().steps);    
+    heart.text = userActivity.get().heartRate;
+    batteryLevel.width = batteryLevels.get().level;
+    batteryPercent.text = '' + batteryLevels.get().percent + '%';
+    
+    timeElement.text = dateTime.getTime();
+    largeGraphTime.text = dateTime.getTime();
+
+    dateElement.text = dateTime.getDate();
+  }
 }
 
-function stopVibration() {
-  vibration.stop();
-  clearTimeout(vibrationTimeout);
+function commas(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-//----------------------------------------------------------
-//
-// Alerts
-//
-//----------------------------------------------------------
-let myPopup = document.getElementById("popup");
-let btnLeft = myPopup.getElementById("btnLeft");
-let btnRight = myPopup.getElementById("btnRight");
-let alertHeader = document.getElementById("alertHeader");
-
-
-function showAlert(message) {
-  console.log('ALERT BG')
-  console.log(message) 
-  alertHeader.text = message
-  myPopup.style.display = "inline";
- 
-}
-
-btnLeft.onclick = function(evt) {
-  console.log("Mute");
-  // TODO This needs to mute it for 15 mins
-  myPopup.style.display = "none";
-  stopVibration()
-   showAlertModal = false;
-}
-
-btnRight.onclick = function(evt) {
-  console.log("Snooze");
-  myPopup.style.display = "none";
-  stopVibration()
+/**
+* Get Fist BG that is not a predictive BG
+* @param {Array} bgs
+* @returns {Array}
+*/
+function getFistBgNonpredictiveBG(bgs){
+  return bgs.filter((bg) => {
+    if(bg.bgdelta || bg.bgdelta === 0) {
+      return true;
+    }
+  })[0];
 }
 
 
 
-//----------------------------------------------------------
-//
-// Action listeners 
-//
-//----------------------------------------------------------
 
-document.getElementById("status-image").onclick = (e) => {
-  fiveMinUpdater()
+goToLargeGraph.onclick = (e) => {
+  console.log("goToLargeGraph Activated!");
+  vibration.start('bump');
+  largeGraphView.style.display = 'inline'; 
+  main.style.display = 'none'; 
 }
- 
-// document.getElementById("alertBtn").onclick = (e) => {
-//   stopVibration()
-// }
 
+exitLargeGraph.onclick = (e) => {
+  console.log("exitLargeGraph Activated!");
+  vibration.start('bump');
+  largeGraphView.style.display = 'none'; 
+  main.style.display = 'inline'; 
+}
+
+
+
+timeElement.onclick = (e) => {
+  console.log("FORCE Activated!");
+  transfer.send(dataToSend)
+  vibration.start('bump');
+  arrows.href = '../resources/img/arrows/loading.png';
+  largeGraphArrows.href = '../resources/img/arrows/loading.png';
+  alertArrows.href = '../resources/img/arrows/loading.png';
+}
+
+
+// wait 2 seconds
+setTimeout(function() {
+    transfer.send(dataToSend);
+}, 1500);
+setInterval(  function() {
+     transfer.send(dataToSend);
+}, 180000);
+
+
+
+//<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/designerz-base" title="Designerz Base">Designerz Base</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
