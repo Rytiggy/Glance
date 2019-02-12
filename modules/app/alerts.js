@@ -13,12 +13,10 @@
 
 
 import document from "document";
-import {
-	vibration
-} from "haptics";
+import { vibration } from "haptics";
 import Transfer from "./transfer.js";
-
 import DateTime from "./dateTime.js";
+import { __ } from 'fitbit-i18n';
 
 const transfer = new Transfer();
 
@@ -35,6 +33,10 @@ let popupLeadText = popup.getElementById('copy')
 
 const dateTime = new DateTime();
 
+let i18n = (key) => {
+	return __(`alert_${key}`);
+}
+
 export default class alerts {
 	check(bg, settings, DISABLE_ALERTS, currentBG, loopstatus, timeSenseLastSGV) {
 		alertArrows.href = '../resources/img/arrows/' + bg.direction + '.png';
@@ -44,7 +46,7 @@ export default class alerts {
 		largeGraphsSgv.style.fill = "#75bd78";
 		errorLine.style.fill = "#75bd78";
 		// largeGraphErrorLine.style.fill ="#75bd78";
-		popupLeadText.text = 'Check Blood Sugar!';
+		popupLeadText.text = i18n('check_blood_glucose');
 
 
 		let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(bg.datetime)[1];
@@ -113,7 +115,7 @@ export default class alerts {
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
 						popupTitle.text = loopstatus;
-						popupLeadText.text = 'Loop Status';
+						popupLeadText.text = i18n('loop_status');
 					}
 				}
 			}
@@ -131,7 +133,7 @@ export default class alerts {
 						vibration.start("ring");
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
-						popupTitle.text = 'Rapid Fall!';
+						popupTitle.text = i18n('rapid_fall');
 					}
 				}
 			}
@@ -145,13 +147,13 @@ export default class alerts {
 						vibration.start("ring");
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
-						popupTitle.text = 'Rapid Rise!';
+						popupTitle.text = i18n('rapid_rise');
 					}
 				}
 			}
 		}
 
-    // check if stale data 
+    // check if stale data
 		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter ) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
@@ -161,7 +163,7 @@ export default class alerts {
             vibration.start("ring");
             popup.style.display = "inline";
             popupTitle.style.display = "inline";
-            popupTitle.text = 'Stale data';
+            popupTitle.text = i18n('stale_data');
           }
 				}
 			}
