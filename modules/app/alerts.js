@@ -14,11 +14,9 @@
 
 import document from "document";
 import { vibration } from "haptics";
-import Transfer from "./transfer.js";
 import DateTime from "./dateTime.js";
 import { __ } from 'fitbit-i18n';
 
-const transfer = new Transfer();
 
 let sgv = document.getElementById("sgv");
 let largeGraphsSgv = document.getElementById("largeGraphsSgv");
@@ -36,6 +34,9 @@ const dateTime = new DateTime();
 let i18n = (key) => {
 	return __(`alert_${key}`);
 }
+
+// set i18n for some elements
+dismiss.text = i18n('dismiss');
 
 export default class alerts {
 	check(bg, settings, DISABLE_ALERTS, currentBG, loopstatus, timeSenseLastSGV) {

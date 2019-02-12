@@ -29,7 +29,6 @@
   },
   "scripts": {
     "build": "fitbit-build",
-    "build-and-install": "printf 'build-and-install' | npx fitbit",
     "install": "printf 'install' | npx fitbit"
   },
   "dependencies": {

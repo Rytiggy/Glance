@@ -10,11 +10,6 @@
 		},
 		{
 			"type": "npm",
-			"script": "build-and-install",
-			"problemMatcher": []
-		},
-		{
-			"type": "npm",
 			"script": "install",
 			"problemMatcher": []
 		}
