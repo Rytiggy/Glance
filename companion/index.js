@@ -24,7 +24,7 @@ import Logs from "../modules/companion/logs.js";
 import Sizeof from "../modules/companion/sizeof.js";
 import Dexcom from "../modules/companion/dexcom.js";
 
-import * as messaging from "messaging";
+import asap from "fitbit-asap/companion"
 import { me } from "companion";
 
 const settings = new Settings();
@@ -41,9 +41,9 @@ let dataReceivedFromWatch = null;
 
 async function sendData() {
   logs.add('companion - sendData: Version: 2.1.100')
-  // Get settings 
+  // Get settings
   const store = await settings.get(dataReceivedFromWatch);
-  
+
 
   // Get SGV data
    let bloodsugars = null;
@@ -56,7 +56,7 @@ async function sendData() {
     }
     let sessionId = await dexcom.getSessionId(store.dexcomUsername, store.dexcomPassword, subDomain);
     if(store.dexcomUsername && store.dexcomPassword) {
-       bloodsugars = await dexcom.getData(sessionId, subDomain); 
+       bloodsugars = await dexcom.getData(sessionId, subDomain);
     } else {
       bloodsugars = {
         error : {
@@ -64,16 +64,16 @@ async function sendData() {
         }
       }
     }
-    
+
   } else {
     bloodsugars = await fetch.get(store.url);
     if(store.extraDataUrl) {
-       extraData = await fetch.get(store.extraDataUrl); 
-    }  
+       extraData = await fetch.get(store.extraDataUrl);
+    }
   }
 
-  
-  // Get weather data   
+
+  // Get weather data
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
   Promise.all([bloodsugars, extraData]).then(function(values) {
     let dataToSend = {
@@ -88,11 +88,12 @@ async function sendData() {
 }
 
 
+
 // Listen for messages from the device
-messaging.peerSocket.onmessage = function(evt) {
+asap.onmessage = function(evt) {
   if (evt.data.command === 'forceCompanionTransfer') {
     logs.add('Line 58: companion - Watch to Companion Transfer request')
-    // pass in data that was recieved from the watch 
+    // pass in data that was recieved from the watch
     console.log(JSON.stringify(evt.data.data))
     dataReceivedFromWatch = evt.data.data;
     sendData()
@@ -100,10 +101,10 @@ messaging.peerSocket.onmessage = function(evt) {
 };
 
 // Listen for the onerror event
-messaging.peerSocket.onerror = function(err) {
+//messaging.peerSocket.onerror = function(err) {
   // Handle any errors
-  console.log("Connection error: " + err.code + " - " + err.message);
-};
+//  console.log("Connection error: " + err.code + " - " + err.message);
+//};
 
 settingsStorage.onchange = function(evt) {
   logs.add('Line 70: companion - Settings changed send to watch');
