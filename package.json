@@ -31,5 +31,8 @@
     "build": "fitbit-build",
     "build-and-install": "printf 'build-and-install' | npx fitbit",
     "install": "printf 'install' | npx fitbit"
+  },
+  "dependencies": {
+    "fitbit-asap": "^1.0.6"
   }
 }
