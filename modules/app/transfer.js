@@ -16,6 +16,10 @@
 // Import the messaging module
 import asap from "fitbit-asap/app"
 
+asap.ondebug = (msg) => {
+	console.log('--- FITBIT ASAP---', msg);
+}
+
 export default class transfer {
 	// Send data
 	send(data) {

@@ -85,15 +85,17 @@ async function sendData() {
 	});
 }
 
-
+asap.ondebug = (msg) => {
+	console.log('--- FITBIT ASAP---',msg);
+}
 
 // Listen for messages from the device
 asap.onmessage = function (evt) {
-	if (evt.data.command === 'forceCompanionTransfer') {
+	if (evt.command === 'forceCompanionTransfer') {
 		logs.add('Line 58: companion - Watch to Companion Transfer request')
 		// pass in data that was recieved from the watch
-		console.log(JSON.stringify(evt.data.data))
-		dataReceivedFromWatch = evt.data.data;
+		console.log(JSON.stringify(evt.data));
+		dataReceivedFromWatch = evt.data;
 		sendData()
 	}
 };

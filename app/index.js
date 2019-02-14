@@ -27,6 +27,9 @@ import Transfer from "../modules/app/transfer.js"
 // import { preferences, save, load } from "../modules/app/sharedPreferences";
 import { memory } from "system";
 
+import asap from "fitbit-asap/app";
+
+
 const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
 const graph = new Graph();
@@ -141,6 +144,22 @@ timeElement.text = dateTime.getTime();
 largeGraphTime.text = dateTime.getTime();
 batteryLevel.width = batteryLevels.get().level;
 
+let updateData = (d) => {
+	data = d;
+};
+
+/**
+ * Handle data receivers. We use ASAP for small payloads, but
+ * fallback to files for large payloads.
+ */
+asap.onmessage = function (evt) {
+	if (evt.command === 'file') {
+		console.log('Receiver payload from ASAP interface');
+		updateData(evt.data);
+		update();
+	}
+};
+
 inbox.onnewfile = () => {
 	console.log("New file!");
 	let fileName;
@@ -148,7 +167,8 @@ inbox.onnewfile = () => {
 		// If there is a file, move it from staging into the application folder
 		fileName = inbox.nextFile();
 		if (fileName) {
-			data = fs.readFileSync(fileName, "cbor");
+			let newData = fs.readFileSync(fileName, "cbor");
+			updateData(newData);
 			update();
 		}
 	} while (fileName);

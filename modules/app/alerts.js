@@ -14,9 +14,11 @@
 
 import document from "document";
 import { vibration } from "haptics";
+import Transfer from "./transfer.js";
 import DateTime from "./dateTime.js";
 import { __ } from 'fitbit-i18n';
 
+const transfer = new Transfer();
 
 let sgv = document.getElementById("sgv");
 let largeGraphsSgv = document.getElementById("largeGraphsSgv");
@@ -34,9 +36,6 @@ const dateTime = new DateTime();
 let i18n = (key) => {
 	return __(`alert_${key}`);
 }
-
-// set i18n for some elements
-dismiss.text = i18n('dismiss');
 
 export default class alerts {
 	check(bg, settings, DISABLE_ALERTS, currentBG, loopstatus, timeSenseLastSGV) {
@@ -154,18 +153,18 @@ export default class alerts {
 			}
 		}
 
-		// check if stale data
-		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter) {
+    // check if stale data
+		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter ) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
-					if (settings.staleData) {
-						alertArrows.style.display = 'none';
-						popupTitle.style.fill = "#de4430";
-						vibration.start("ring");
-						popup.style.display = "inline";
-						popupTitle.style.display = "inline";
-						popupTitle.text = i18n('stale_data');
-					}
+          if (settings.staleData) {
+            alertArrows.style.display = 'none';
+            popupTitle.style.fill = "#de4430";
+            vibration.start("ring");
+            popup.style.display = "inline";
+            popupTitle.style.display = "inline";
+            popupTitle.text = i18n('stale_data');
+          }
 				}
 			}
 		}
