@@ -13,9 +13,8 @@
 
 
 import Logs from "./logs.js";
-import Sizeof from "./sizeof.js";
+//import sizeof from 'object-sizeof';
 
-const sizeof = new Sizeof();
 const logs = new Logs();
 
 // this module handles standardizing return data from various APIS
@@ -332,10 +331,10 @@ export default class standardize {
 				bgs: cleanedBgs,
 			}
 
-			// console.warn(sizeof.size(returnBloodsugars) + ' bytes')
+			// console.warn(sizeof(returnBloodsugars) + ' bytes')
 			// logs.add(JSON.stringify(cleanedBgs))
-			// console.warn(sizeof.size(cleanedBgs) + ' bytes')
-			// console.warn(sizeof.size(JSON.stringify(cleanedBgs)) + ' bytes')
+			// console.warn(sizeof(cleanedBgs) + ' bytes')
+			// console.warn(sizeof(JSON.stringify(cleanedBgs)) + ' bytes')
 
 
 			return returnBloodsugars;

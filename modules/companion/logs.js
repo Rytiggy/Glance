@@ -14,16 +14,14 @@
 
 
 import { settingsStorage } from "settings";
-import Sizeof from "./sizeof.js";
-
-const sizeof = new Sizeof();
+import sizeof from 'object-sizeof';
 
 export default class logs {
 	add(value) {
 		console.log(value)
 		let d = new Date();
-		// console.error(sizeof.size(settingsStorage.getItem('logs')))
-		if (settingsStorage.getItem('logs') && sizeof.size(settingsStorage.getItem('logs')) > 130000) {
+		// console.error(sizeof(settingsStorage.getItem('logs')))
+		if (settingsStorage.getItem('logs') && sizeof(settingsStorage.getItem('logs')) > 130000) {
 			settingsStorage.setItem('logs', JSON.stringify({
 				"name": ''
 			}));

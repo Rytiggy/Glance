@@ -19,7 +19,7 @@ import Fetch from "../modules/companion/fetch.js";
 import Standardize from "../modules/companion/standardize.js";
 // import Weather from "../modules/companion/weather.js";
 import Logs from "../modules/companion/logs.js";
-import Sizeof from "../modules/companion/sizeof.js";
+import sizeof from 'object-sizeof';
 import Dexcom from "../modules/companion/dexcom.js";
 
 import asap from "fitbit-asap/companion"
@@ -34,7 +34,6 @@ const dexcom = new Dexcom();
 
 // const weatherURL = new Weather();
 const logs = new Logs();
-const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
 
 async function sendData() {
@@ -79,7 +78,7 @@ async function sendData() {
 			settings: standardize.settings(store),
 			// weather: values[2].query.results.channel.item.condition,
 		};
-		logs.add('Line 59: companion - sendData - DataToSend size: ' + sizeof.size(dataToSend) + ' bytes')
+		logs.add('Line 59: companion - sendData - DataToSend size: ' + sizeof(dataToSend) + ' bytes')
 		logs.add('Line 60: companion - sendData - DataToSend: ' + JSON.stringify(dataToSend))
 		transfer.send(dataToSend);
 	});
