@@ -39,4 +39,4 @@ export default class transfer {
 			outbox.enqueue("payload.json", encode(data));
 		}
 	}
-};
+}

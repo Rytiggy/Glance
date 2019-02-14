@@ -95,7 +95,7 @@ let dataToSend = {
 	heart: 0,
 	steps: userActivity.get().steps
 };
-dismiss.onclick = function (evt) {
+dismiss.onclick = function () {
 	console.log("DISMISS");
 	popup.style.display = "none";
 	popupTitle.style.display = "none";
@@ -116,7 +116,7 @@ dismiss.onclick = function (evt) {
 
 function disableAlertsFalse() {
 	DISABLE_ALERTS = false;
-};
+}
 
 
 
@@ -219,7 +219,7 @@ function update() {
 			iob.text = commas(userActivity.get().steps);
 			syringe.style.display = 'inline';
 			iob.x = 35;
-			if (currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob != 0) {
+			if (currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob !== 0) {
 				iob.text = currentBgFromBloodSugars.iob + '';
 				largeGraphIob.text = currentBgFromBloodSugars.iob + '';
 				syringe.style.display = "inline";
@@ -241,7 +241,7 @@ function update() {
 			cob.text = userActivity.get().heartRate;
 			hamburger.style.display = 'inline';
 			cob.x = 35;
-			if (currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob != 0) {
+			if (currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob !== 0) {
 				cob.text = currentBgFromBloodSugars.cob + '';
 				largeGraphCob.text = currentBgFromBloodSugars.cob + '';
 				hamburger.style.display = "inline";
@@ -378,14 +378,14 @@ function getFistBgNonpredictiveBG(bgs) {
 
 
 
-goToLargeGraph.onclick = (e) => {
+goToLargeGraph.onclick = () => {
 	console.log("goToLargeGraph Activated!");
 	vibration.start('bump');
 	largeGraphView.style.display = 'inline';
 	main.style.display = 'none';
 }
 
-exitLargeGraph.onclick = (e) => {
+exitLargeGraph.onclick = () => {
 	console.log("exitLargeGraph Activated!");
 	vibration.start('bump');
 	largeGraphView.style.display = 'none';
@@ -394,7 +394,7 @@ exitLargeGraph.onclick = (e) => {
 
 
 
-timeElement.onclick = (e) => {
+timeElement.onclick = () => {
 	console.log("FORCE Activated!");
 	transfer.send(dataToSend)
 	vibration.start('bump');

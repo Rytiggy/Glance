@@ -11,14 +11,7 @@
  * ------------------------------------------------
  */
 
-
-
-// Import the messaging module
 import asap from "fitbit-asap/app"
-
-asap.ondebug = (msg) => {
-	console.log('--- FITBIT ASAP---', msg);
-}
 
 export default class transfer {
 	// Send data
@@ -29,28 +22,5 @@ export default class transfer {
 			command: 'forceCompanionTransfer',
 			data: data,
 		});
-
 	}
-};
-
-
-// Events
-
-// // Listen for the onopen event
-// messaging.peerSocket.onopen = function() {
-//   // Fetch weather when the connection opens
-//   fetchWeather();
-// }
-
-// Listen for messages from the companion
-// messaging.peerSocket.onmessage = function(evt) {
-//   if (evt.data) {
-//   console.log("The temperature is: " + evt.data.temperature);
-//   }
-// }
-
-// // Listen for the onerror event
-// messaging.peerSocket.onerror = function(err) {
-//   // Handle any errors
-//   console.log("Connection error: " + err.code + " - " + err.message);
-// }
+}

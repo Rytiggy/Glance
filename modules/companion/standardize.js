@@ -24,8 +24,8 @@ export default class standardize {
 	// datetime:
 	// bgdelta:
 	bloodsugars(data, extraData, settings) {
-		logs.add('Line 29: companion - standardize - bloodsugars()')
-		logs.add('Line 30: companion - standardize - bloodsugars() - PARAMERTERS')
+		logs.add('Line 29: companion - standardize - bloodsugars()');
+		logs.add('Line 30: companion - standardize - bloodsugars() - PARAMERTERS');
 		logs.add(`data: ${JSON.stringify(data)}}`);
 		logs.add(`extraData ${JSON.stringify(extraData)}`);
 		settings.dexcomUsername = '';
