@@ -14,24 +14,27 @@
 
 
 import { settingsStorage } from "settings";
-import Sizeof from "./sizeof.js";
-
-const sizeof = new Sizeof();
+import sizeof from 'object-sizeof';
 
 export default class logs {
-  add(value) {
-    console.log(value)
-    let d = new Date(); 
-    // console.error(sizeof.size(settingsStorage.getItem('logs')))
-    if (settingsStorage.getItem('logs') && sizeof.size(settingsStorage.getItem('logs'))  > 130000) {
-      settingsStorage.setItem('logs', JSON.stringify({"name":''}));   
-    }
+	add(value) {
+		console.log(value)
+		let d = new Date();
+		// console.error(sizeof(settingsStorage.getItem('logs')))
+		if (settingsStorage.getItem('logs') && sizeof(settingsStorage.getItem('logs')) > 130000) {
+			settingsStorage.setItem('logs', JSON.stringify({
+				"name": ''
+			}));
+		}
 
-    if( settingsStorage.getItem('logs') && JSON.parse(settingsStorage.getItem('logs')).name ) {
-      settingsStorage.setItem('logs', JSON.stringify({"name":( `${ d.getHours() } : ${ d.getMinutes() } ${ value } |,| ${JSON.parse(settingsStorage.getItem('logs')).name}`)}));   
-    } else {// if there are no logs
-      settingsStorage.setItem('logs', JSON.stringify({'name':( `${ d.getHours() } : ${ d.getMinutes() } ${ value } `)}));   
-    }
-  }
-};
- 
+		if (settingsStorage.getItem('logs') && JSON.parse(settingsStorage.getItem('logs')).name) {
+			settingsStorage.setItem('logs', JSON.stringify({
+				"name": (`${ d.getHours() } : ${ d.getMinutes() } ${ value } |,| ${JSON.parse(settingsStorage.getItem('logs')).name}`)
+			}));
+		} else { // if there are no logs
+			settingsStorage.setItem('logs', JSON.stringify({
+				'name': (`${ d.getHours() } : ${ d.getMinutes() } ${ value } `)
+			}));
+		}
+	}
+}

@@ -16,19 +16,22 @@
 import { geolocation } from "geolocation";
 
 export default class weather {
-  async get(tempType) {
-    console.log('companion - weather - get()')
-    const position = await getCurrentPosition();
-    const { latitude, longitude } = position.coords;
-    let query = 'select item.condition from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text="('+ latitude + "," +longitude+')") and u="'+tempType+'"';
-    let endPointURL = "https://query.yahooapis.com/v1/public/yql?q=" +escape(query)  + "&format=json";    
-    return endPointURL;  
-  };
+	async get(tempType) {
+		console.log('companion - weather - get()')
+		const position = await getCurrentPosition();
+		const {
+			latitude,
+			longitude
+		} = position.coords;
+		let query = 'select item.condition from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text="(' + latitude + "," + longitude + ')") and u="' + tempType + '"';
+		let endPointURL = "https://query.yahooapis.com/v1/public/yql?q=" + escape(query) + "&format=json";
+		return endPointURL;
+	};
 };
 
 
 function getCurrentPosition(options = {}) {
-  return new Promise((resolve, reject) => {
-    geolocation.getCurrentPosition(resolve, reject, options);
-  });
+	return new Promise((resolve, reject) => {
+		geolocation.getCurrentPosition(resolve, reject, options);
+	});
 };
