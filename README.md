@@ -36,12 +36,3 @@ I developed Glance to help people with diabetes! 50% of all donations will go to
 ## [User Agreement](https://github.com/Rytiggy/Glance/wiki/User-Agreement)
 Glance must not be used to make medical decisions, by using glance you agree to the [user agreement](https://github.com/Rytiggy/Glance/wiki/User-Agreement).
 
-
-## How to Build & Install
-Full instruction can be found at [https://dev.fitbit.com/build/guides/command-line-interface/](https://dev.fitbit.com/build/guides/command-line-interface/)
-
-- Clone this repo
-- Run `npm init`
-- Run `npx fitbit-build`
-- Run `npx fitbit` and type `install` into the fitbit console
-
