@@ -316,7 +316,7 @@ export default class standardize {
 					bg.predictedbg = predictedBg;
 					bg.loopstatus = checkLoopStatus(loopStatus);
 					bg.upbat = upbat;
-					bg.sage = 'SA:' + sage;
+					bg.sage = ((sage) ? ( 'SA:' + sage) : '');
 					if (nonPredictiveBg.direction === 'NOT COMPUTABLE') {
 						bg.direction = 'none';
 					}
