@@ -183,9 +183,14 @@ function update() {
     weather.text = '';// data.weather.temp;
     degreeIcon.style.display = "none";
     
+    // colors
     bgColor.gradient.colors.c1 = data.settings.bgColor;
-    largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
+    bgColor.gradient.colors.c2 = data.settings.bgColorTwo;
 
+    largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
+    largeGraphBgColor.gradient.colors.c2 =  data.settings.bgColorTwo;
+    
+    setTextColor(data.settings.textColor)
     // bloodsugars
     let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
        
@@ -356,6 +361,12 @@ function getFistBgNonpredictiveBG(bgs){
 }
 
 
+function setTextColor(color){
+  let domElemets = ['iob', 'cob', 'heart', 'steps', 'batteryPercent', 'date', 'delta', 'timeOfLastSgv', 'time', 'high', 'low', 'largeGraphHigh', 'largeGraphLow', 'largeGraphDelta', 'largeGraphTimeOfLastSgv', 'largeGraphIob', 'largeGraphCob', 'predictedBg', 'largeGraphTime', 'largeGraphLoopStatus', 'tempBasal'];
+  domElemets.forEach(ele => {
+    document.getElementById(ele).style.fill = color
+  })
+}
 
 
 goToLargeGraph.onclick = (e) => {

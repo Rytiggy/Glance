@@ -206,6 +206,7 @@ export default class settings {
    } 
     
    let bgColor = null;
+   let bgColorTwo = "black";
    if (settingsStorage.getItem('bgColor')) {
      bgColor = JSON.parse(settingsStorage.getItem('bgColor'));
      if(bgColor === '#FFFFFF') {
@@ -219,14 +220,28 @@ export default class settings {
        } 
        if (!saveColor) {
          settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor}));  
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":'black'}));  
        } else {
-         bgColor = JSON.parse(settingsStorage.getItem('hexColor')).name;
-         settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor}));  
+         bgColor = JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,"");
+         bgColorTwo = JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,"");
+         settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor})); 
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":bgColorTwo}));  
+ 
        }
      }
    } else if (!bgColor) {
      bgColor = '#390263';
    } 
+
+
+   let textColor = null;
+   if (settingsStorage.getItem('textColor')) {
+    textColor =  JSON.parse(settingsStorage.getItem('textColor')).name.replace(/ /g,"");
+    settingsStorage.setItem("textColor", JSON.stringify({"name":textColor})); 
+   } else if (!textColor) {
+    textColor = '#ffffff';
+    settingsStorage.setItem("textColor", JSON.stringify({"name":textColor})); 
+  } 
    
    let largeGraph = null;
    if (settingsStorage.getItem('largeGraph')) {
@@ -363,6 +378,8 @@ export default class settings {
      dateFormat,
      tempType,
      bgColor,
+     bgColorTwo,
+     textColor,
      dismissHighFor,
      dismissLowFor,
      largeGraph,
