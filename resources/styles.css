@@ -80,7 +80,7 @@
  y: 28%;
 }
 
-#timeOfLastSgv{
+#timeOfLastSgv {
  x: 98%;
  y: 40%;
 }
@@ -224,6 +224,7 @@
 #iob {
  x: 9%+3;
  y: 60%+2;
+ fill: white;
 }
 
 #cob {
