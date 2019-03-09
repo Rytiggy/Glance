@@ -13,24 +13,27 @@
 
 
 import document from "document";
-import { vibration } from "haptics";
+import {
+	vibration
+} from "haptics";
+import Transfer from "./transfer.js";
+
 import DateTime from "./dateTime.js";
-import { __ } from 'fitbit-i18n';
+
+const transfer = new Transfer();
 
 let sgv = document.getElementById("sgv");
 let largeGraphsSgv = document.getElementById("largeGraphsSgv");
 let errorLine = document.getElementById("errorLine");
 // let largeGraphErrorLine = document.getElementById("largeGraphErrorLine");
 let popup = document.getElementById("popup");
+let alertHeader = document.getElementById("alertHeader");
+let dismiss = popup.getElementById("dismiss");
 let popupTitle = document.getElementById("popup-title");
 let alertArrows = document.getElementById("alertArrows");
-let popupLeadText = popup.getElementById('copy');
+let popupLeadText = popup.getElementById('copy')
 
 const dateTime = new DateTime();
-
-let i18n = (key) => {
-	return __(`alert_${key}`);
-}
 
 export default class alerts {
 	check(bg, settings, DISABLE_ALERTS, currentBG, loopstatus, timeSenseLastSGV) {
@@ -41,10 +44,10 @@ export default class alerts {
 		largeGraphsSgv.style.fill = "#75bd78";
 		errorLine.style.fill = "#75bd78";
 		// largeGraphErrorLine.style.fill ="#75bd78";
-		popupLeadText.text = i18n('check_blood_glucose');
+		popupLeadText.text = 'Check Blood Sugar!';
 
 
-		timeSenseLastSGV = dateTime.getTimeSenseLastSGV(bg.datetime)[1];
+		let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(bg.datetime)[1];
 		if (bg.sgv <= parseInt(settings.lowThreshold)) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
@@ -110,7 +113,7 @@ export default class alerts {
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
 						popupTitle.text = loopstatus;
-						popupLeadText.text = i18n('loop_status');
+						popupLeadText.text = 'Loop Status';
 					}
 				}
 			}
@@ -128,7 +131,7 @@ export default class alerts {
 						vibration.start("ring");
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
-						popupTitle.text = i18n('rapid_fall');
+						popupTitle.text = 'Rapid Fall!';
 					}
 				}
 			}
@@ -142,24 +145,24 @@ export default class alerts {
 						vibration.start("ring");
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
-						popupTitle.text = i18n('rapid_rise');
+						popupTitle.text = 'Rapid Rise!';
 					}
 				}
 			}
 		}
 
-		// check if stale data
+    // check if stale data 
 		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter ) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
-					if (settings.staleData) {
-						alertArrows.style.display = 'none';
-						popupTitle.style.fill = "#de4430";
-						vibration.start("ring");
-						popup.style.display = "inline";
-						popupTitle.style.display = "inline";
-						popupTitle.text = i18n('stale_data');
-					}
+          if (settings.staleData) {
+            alertArrows.style.display = 'none';
+            popupTitle.style.fill = "#de4430";
+            vibration.start("ring");
+            popup.style.display = "inline";
+            popupTitle.style.display = "inline";
+            popupTitle.text = 'Stale data';
+          }
 				}
 			}
 		}
@@ -169,4 +172,4 @@ export default class alerts {
 		console.log('app - Alerts - stop()')
 		vibration.stop();
 	}
-}
+};
