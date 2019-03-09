@@ -11,16 +11,44 @@
  * ------------------------------------------------
  */
 
-import asap from "fitbit-asap/app"
 
-export default class transfer {
-	// Send data
-	send(data) {
-		console.log('app - transfer - send')
-		// Send a command to the companion
-		asap.send({
-			command: 'forceCompanionTransfer',
-			data: data,
-		});
-	}
-}
+
+// Import the messaging module
+import * as messaging from "messaging";
+
+export default class transfer { 
+  // Send data
+  send(data) {
+    console.log('app - transfer - send')
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      // Send a command to the companion
+      messaging.peerSocket.send({
+        command: 'forceCompanionTransfer',
+        data: data,
+    });
+    }
+  }
+};
+
+
+// Events
+
+// // Listen for the onopen event
+// messaging.peerSocket.onopen = function() {
+//   // Fetch weather when the connection opens
+//   fetchWeather();
+// }
+
+// Listen for messages from the companion
+// messaging.peerSocket.onmessage = function(evt) {
+//   if (evt.data) {
+//   console.log("The temperature is: " + evt.data.temperature);
+//   }
+// }
+
+// // Listen for the onerror event
+// messaging.peerSocket.onerror = function(err) {
+//   // Handle any errors
+//   console.log("Connection error: " + err.code + " - " + err.message);
+// }
+

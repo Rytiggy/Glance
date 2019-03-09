@@ -16,8 +16,14 @@
 import document from "document";
 let enterTreatment = document.getElementById("enterTreatment");
 
-export default class treatments {
-	check() {
-		console.log('app - treatments - check()')
-	}
+export default class treatments { 
+  check() {
+    console.log('app - treatments - check()')   
+  
+  }
+  
 };
+
+
+
+

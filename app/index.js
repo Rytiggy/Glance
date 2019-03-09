@@ -27,9 +27,6 @@ import Transfer from "../modules/app/transfer.js"
 // import { preferences, save, load } from "../modules/app/sharedPreferences";
 import { memory } from "system";
 
-import asap from "fitbit-asap/app";
-
-
 const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
 const graph = new Graph();
@@ -55,22 +52,22 @@ let cob = document.getElementById("cob");
 let dateElement = document.getElementById("date");
 let timeElement = document.getElementById("time");
 let largeGraphTime = document.getElementById("largeGraphTime");
-let weather = document.getElementById("weather");
+let weather  = document.getElementById("weather");
 let arrows = document.getElementById("arrows");
 let largeGraphArrows = document.getElementById("largeGraphArrows");
-let alertArrows = document.getElementById("alertArrows");
-let batteryLevel = document.getElementById("battery-level");
-let steps = document.getElementById("steps");
-let stepIcon = document.getElementById("stepIcon");
-let heart = document.getElementById("heart");
-let heartIcon = document.getElementById("heartIcon");
+let alertArrows =  document.getElementById("alertArrows");
+let batteryLevel  = document.getElementById("battery-level");
+let steps  = document.getElementById("steps");
+let stepIcon  = document.getElementById("stepIcon");
+let heart  = document.getElementById("heart");
+let heartIcon  = document.getElementById("heartIcon");
 let bgColor = document.getElementById("bgColor");
 let largeGraphBgColor = document.getElementById("largeGraphBgColor");
 let batteryPercent = document.getElementById("batteryPercent");
 let popup = document.getElementById("popup");
 let dismiss = popup.getElementById("dismiss");
 let errorText = document.getElementById("error");
-let popupTitle = document.getElementById("popup-title");
+let popupTitle  = document.getElementById("popup-title");
 let degreeIcon = document.getElementById("degreeIcon");
 let goToLargeGraph = document.getElementById("goToLargeGraph");
 
@@ -88,35 +85,35 @@ let dismissHighFor = 120;
 let dismissLowFor = 15;
 
 let data = null;
-let DISABLE_ALERTS = false;
+let DISABLE_ALERTS = false;   
 
 // Data to send back to phone
 let dataToSend = {
-	heart: 0,
-	steps: userActivity.get().steps
+  heart: 0,
+  steps: userActivity.get().steps
 };
-dismiss.onclick = function () {
-	console.log("DISMISS");
-	popup.style.display = "none";
-	popupTitle.style.display = "none";
-	vibration.stop();
-	DISABLE_ALERTS = true;
-	let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
+dismiss.onclick = function(evt) {
+  console.log("DISMISS");
+  popup.style.display = "none";
+  popupTitle.style.display = "none";
+  vibration.stop();
+  DISABLE_ALERTS = true;
+  let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
 
-	if (currentBgFromBloodSugars.sgv >= parseInt(data.settings.highThreshold)) {
-		console.log("HIGH " + dismissHighFor);
-		setTimeout(disableAlertsFalse, (dismissHighFor * 1000) * 60);
-	} else {
-		// 15 mins
-		console.log("LOW " + dismissLowFor);
+  if (currentBgFromBloodSugars.sgv >= parseInt(data.settings.highThreshold)) {
+    console.log("HIGH " + dismissHighFor);
+    setTimeout(disableAlertsFalse, (dismissHighFor*1000)*60);
+  } else {
+    // 15 mins 
+    console.log("LOW " + dismissLowFor);
 
-		setTimeout(disableAlertsFalse, (dismissLowFor * 1000) * 60);
-	}
+    setTimeout(disableAlertsFalse, (dismissLowFor*1000)*60);
+  }
 }
 
-function disableAlertsFalse() {
-	DISABLE_ALERTS = false;
-}
+function disableAlertsFalse() { 
+  DISABLE_ALERTS = false;
+};
 
 
 
@@ -144,274 +141,258 @@ timeElement.text = dateTime.getTime();
 largeGraphTime.text = dateTime.getTime();
 batteryLevel.width = batteryLevels.get().level;
 
-let updateData = (d) => {
-	data = d;
-};
-
-/**
- * Handle data receivers. We use ASAP for small payloads, but
- * fallback to files for large payloads.
- */
-asap.onmessage = function (evt) {
-	if (evt.command === 'file') {
-		console.log('Receiver payload from ASAP interface');
-		updateData(evt.data);
-		update();
-	}
-};
-
 inbox.onnewfile = () => {
-	console.log("New file!");
-	let fileName;
-	do {
-		// If there is a file, move it from staging into the application folder
-		fileName = inbox.nextFile();
-		if (fileName) {
-			let newData = fs.readFileSync(fileName, "cbor");
-			updateData(newData);
-			update();
-		}
-	} while (fileName);
+  console.log("New file!");
+  let fileName;
+  do {
+    // If there is a file, move it from staging into the application folder
+    fileName = inbox.nextFile();
+    if (fileName) {
+      data = fs.readFileSync(fileName, "cbor");  
+      update();
+    }
+  } while (fileName);
 };
 
 
 
 function update() {
-	console.log('app - update()');
-	console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
-	let heartrate = userActivity.get().heartRate;
-	if (!heartrate) {
-		heartrate = 0;
-	}
-	// Data to send back to phone
-	dataToSend = {
-		heart: heartrate,
-		steps: userActivity.get().steps
-	};
+  console.log('app - update()'); 
+  console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+  let heartrate = userActivity.get().heartRate; 
+  if(!heartrate) {
+    heartrate = 0;
+  }
+  // Data to send back to phone
+  dataToSend = {
+    heart: heartrate,
+    steps: userActivity.get().steps
+  };
 
+  
+  if(data) {
+    console.warn('GOT DATA');
+    batteryLevel.width = batteryLevels.get().level;
+    batteryLevel.style.fill = batteryLevels.get().color;
+    batteryPercent.text = '' + batteryLevels.get().percent + '%';   
+    timeElement.text = dateTime.getTime(data.settings.timeFormat);
+    largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
+    
+    dismissHighFor = data.settings.dismissHighFor;
+    dismissLowFor = data.settings.dismissLowFor;
+    weather.text = '';// data.weather.temp;
+    degreeIcon.style.display = "none";
+    
+    bgColor.gradient.colors.c1 = data.settings.bgColor;
+    largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
 
-	if (data) {
-		console.warn('GOT DATA');
-		batteryLevel.width = batteryLevels.get().level;
-		batteryLevel.style.fill = batteryLevels.get().color;
-		batteryPercent.text = '' + batteryLevels.get().percent + '%';
-		timeElement.text = dateTime.getTime(data.settings.timeFormat);
-		largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
+    // bloodsugars
+    let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
+       
+    
+    // Layout options
+    if( currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob' ){
+      iob.text =  currentBgFromBloodSugars[data.settings.layoutOne];
+      syringe.style.display = 'none';
+      iob.x  = 10;
+    } else {
+       iob.text = commas(userActivity.get().steps);
+       syringe.style.display = 'inline';
+       iob.x  = 35;
+      if(currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob != 0) {
+        iob.text = currentBgFromBloodSugars.iob + '';
+        largeGraphIob.text = currentBgFromBloodSugars.iob + '';
+        syringe.style.display = "inline";
+        largeGraphSyringe.style.display = "inline";
+      } else {
+        iob.text = '';
+        largeGraphIob.text = '';
+        syringe.style.display = "none";
+        largeGraphSyringe.style.display = "none";
+      }
 
-		dismissHighFor = data.settings.dismissHighFor;
-		dismissLowFor = data.settings.dismissLowFor;
-		weather.text = ''; // data.weather.temp;
-		degreeIcon.style.display = "none";
+    }    
+    
+    if( currentBgFromBloodSugars[data.settings.layoutTwo] && data.settings.layoutTwo != 'cob' ){
+      cob.text =  currentBgFromBloodSugars[data.settings.layoutTwo];
+      hamburger.style.display = 'none';
+      cob.x  = 10;
+    } else {
+      cob.text = userActivity.get().heartRate;
+      hamburger.style.display = 'inline';
+      cob.x  = 35;
+      if(currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob != 0) {
+        cob.text = currentBgFromBloodSugars.cob + '';  
+        largeGraphCob.text = currentBgFromBloodSugars.cob + '';  
+        hamburger.style.display = "inline";
+        largeGraphHamburger.style.display = "inline";
+      } else {
+         cob.text = '';
+         largeGraphCob.text = '';
+         hamburger.style.display = "none";
+         largeGraphHamburger.style.display = "none";
+      }
+    }
+    
+    if( currentBgFromBloodSugars[data.settings.layoutThree] && data.settings.layoutThree != 'steps' ){
+      steps.text =  currentBgFromBloodSugars[data.settings.layoutThree];
+      stepIcon.style.display = 'none';
+      steps.x  = 10;
+    } else {
+      steps.text = commas(userActivity.get().steps);
+      stepIcon.style.display = 'inline';
+      steps.x  = 35;
+    }    
+    
+    if( currentBgFromBloodSugars[data.settings.layoutFour] && data.settings.layoutFour != 'heart' ){
+      heart.text =  currentBgFromBloodSugars[data.settings.layoutFour];
+      heartIcon.style.display = 'none';
+      heart.x  = 10;
+    } else {
+      heart.text = userActivity.get().heartRate;
+      heartIcon.style.display = 'inline';
+      heart.x  = 35;
+    }
 
-		bgColor.gradient.colors.c1 = data.settings.bgColor;
-		largeGraphBgColor.gradient.colors.c1 = data.settings.bgColor;
+    
+    
+    sgv.text = currentBgFromBloodSugars.currentbg;   
+    largeGraphsSgv.text = currentBgFromBloodSugars.currentbg; 
+    if (currentBgFromBloodSugars.rawbg) {
+      rawbg.text = currentBgFromBloodSugars.rawbg + ' ';
+    } else {
+      rawbg.text = '';
+    }
+    
+    if (currentBgFromBloodSugars.tempbasal) {
+      tempBasal.text =  currentBgFromBloodSugars.tempbasal;
+    } else {
+       tempBasal.text =  '';
+    }
+    
+     if (currentBgFromBloodSugars.predictedbg) {
+      predictedBg.text =  currentBgFromBloodSugars.predictedbg;
+    } else {
+      predictedBg.text =  '';
+    }
+    
+    timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
+    largeGraphTimeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
+    
+    dateElement.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
+    
+    
+    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1];
+    // if DISABLE_ALERTS is true check if user is in range 
+    if(DISABLE_ALERTS && data.settings.resetAlertDismissal) {
+      if( parseInt(timeSenseLastSGV, 10) < data.settings.staleDataAlertAfter && currentBgFromBloodSugars.direction != 'DoubleDown' && currentBgFromBloodSugars.direction != 'DoubleUp' && currentBgFromBloodSugars.loopstatus != 'Warning') { // Dont reset alerts for LOS, DoubleUp, doubleDown, Warning
+        if (currentBgFromBloodSugars.sgv > parseInt(data.settings.lowThreshold) && currentBgFromBloodSugars.sgv < parseInt(data.settings.highThreshold)) { // if the BG is between the threshold 
+          console.error('here', DISABLE_ALERTS,  parseInt(timeSenseLastSGV, 10))
+          disableAlertsFalse()
+        }
+      }
+    }
+      
+    alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, currentBgFromBloodSugars.currentbg, currentBgFromBloodSugars.loopstatus, timeSenseLastSGV);
+    
+    errors.check(dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1], currentBgFromBloodSugars.currentbg);
+    let deltaText = currentBgFromBloodSugars.bgdelta 
+    // add Plus
+    if (deltaText > 0) {
+      deltaText = '+' + deltaText;
+     }
+    delta.text = deltaText  +' '+ data.settings.glucoseUnits; 
+    largeGraphDelta.text = deltaText  +' '+ data.settings.glucoseUnits;
+    largeGraphLoopStatus.text = currentBgFromBloodSugars.loopstatus;
+    
+    arrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png'
+    largeGraphArrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png';
+    
+    graph.update(data.bloodSugars.bgs,
+                 data.settings.highThreshold,
+                 data.settings.lowThreshold,
+                 data.settings
+                );
+    
+    if (data.settings.largeGraph) {
+      goToLargeGraph.style.display = "inline";
+    } else {
+      goToLargeGraph.style.display = "none";
+    }
+    // if (data.settings.treatments) {
+    //   goToTreatment.style.display = "inline";
+    // } else {
+    //   goToTreatment.style.display = "none";
+    // }
+    
+  } else {
+    console.warn('NO DATA');
+    steps.text = commas(userActivity.get().steps);    
+    heart.text = userActivity.get().heartRate;
+    batteryLevel.width = batteryLevels.get().level;
+    batteryPercent.text = '' + batteryLevels.get().percent + '%';
+    
+    timeElement.text = dateTime.getTime();
+    largeGraphTime.text = dateTime.getTime();
 
-		// bloodsugars
-		let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
-
-
-		// Layout options
-		if (currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob') {
-			iob.text = currentBgFromBloodSugars[data.settings.layoutOne];
-			syringe.style.display = 'none';
-			iob.x = 10;
-		} else {
-			iob.text = commas(userActivity.get().steps);
-			syringe.style.display = 'inline';
-			iob.x = 35;
-			if (currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob !== 0) {
-				iob.text = currentBgFromBloodSugars.iob + '';
-				largeGraphIob.text = currentBgFromBloodSugars.iob + '';
-				syringe.style.display = "inline";
-				largeGraphSyringe.style.display = "inline";
-			} else {
-				iob.text = '';
-				largeGraphIob.text = '';
-				syringe.style.display = "none";
-				largeGraphSyringe.style.display = "none";
-			}
-
-		}
-
-		if (currentBgFromBloodSugars[data.settings.layoutTwo] && data.settings.layoutTwo != 'cob') {
-			cob.text = currentBgFromBloodSugars[data.settings.layoutTwo];
-			hamburger.style.display = 'none';
-			cob.x = 10;
-		} else {
-			cob.text = userActivity.get().heartRate;
-			hamburger.style.display = 'inline';
-			cob.x = 35;
-			if (currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob !== 0) {
-				cob.text = currentBgFromBloodSugars.cob + '';
-				largeGraphCob.text = currentBgFromBloodSugars.cob + '';
-				hamburger.style.display = "inline";
-				largeGraphHamburger.style.display = "inline";
-			} else {
-				cob.text = '';
-				largeGraphCob.text = '';
-				hamburger.style.display = "none";
-				largeGraphHamburger.style.display = "none";
-			}
-		}
-
-		if (currentBgFromBloodSugars[data.settings.layoutThree] && data.settings.layoutThree != 'steps') {
-			steps.text = currentBgFromBloodSugars[data.settings.layoutThree];
-			stepIcon.style.display = 'none';
-			steps.x = 10;
-		} else {
-			steps.text = commas(userActivity.get().steps);
-			stepIcon.style.display = 'inline';
-			steps.x = 35;
-		}
-
-		if (currentBgFromBloodSugars[data.settings.layoutFour] && data.settings.layoutFour != 'heart') {
-			heart.text = currentBgFromBloodSugars[data.settings.layoutFour];
-			heartIcon.style.display = 'none';
-			heart.x = 10;
-		} else {
-			heart.text = userActivity.get().heartRate;
-			heartIcon.style.display = 'inline';
-			heart.x = 35;
-		}
-
-
-
-		sgv.text = currentBgFromBloodSugars.currentbg;
-		largeGraphsSgv.text = currentBgFromBloodSugars.currentbg;
-		if (currentBgFromBloodSugars.rawbg) {
-			rawbg.text = currentBgFromBloodSugars.rawbg + ' ';
-		} else {
-			rawbg.text = '';
-		}
-
-		if (currentBgFromBloodSugars.tempbasal) {
-			tempBasal.text = currentBgFromBloodSugars.tempbasal;
-		} else {
-			tempBasal.text = '';
-		}
-
-		if (currentBgFromBloodSugars.predictedbg) {
-			predictedBg.text = currentBgFromBloodSugars.predictedbg;
-		} else {
-			predictedBg.text = '';
-		}
-
-		timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
-		largeGraphTimeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
-
-		dateElement.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
-
-
-		let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1];
-		// if DISABLE_ALERTS is true check if user is in range
-		if (DISABLE_ALERTS && data.settings.resetAlertDismissal) {
-			if (parseInt(timeSenseLastSGV, 10) < data.settings.staleDataAlertAfter && currentBgFromBloodSugars.direction != 'DoubleDown' && currentBgFromBloodSugars.direction != 'DoubleUp' && currentBgFromBloodSugars.loopstatus != 'Warning') { // Dont reset alerts for LOS, DoubleUp, doubleDown, Warning
-				if (currentBgFromBloodSugars.sgv > parseInt(data.settings.lowThreshold) && currentBgFromBloodSugars.sgv < parseInt(data.settings.highThreshold)) { // if the BG is between the threshold
-					console.error('here', DISABLE_ALERTS, parseInt(timeSenseLastSGV, 10))
-					disableAlertsFalse()
-				}
-			}
-		}
-
-		alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, currentBgFromBloodSugars.currentbg, currentBgFromBloodSugars.loopstatus, timeSenseLastSGV);
-
-		errors.check(dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1], currentBgFromBloodSugars.currentbg);
-		let deltaText = currentBgFromBloodSugars.bgdelta
-		// add Plus
-		if (deltaText > 0) {
-			deltaText = '+' + deltaText;
-		}
-		delta.text = deltaText + ' ' + data.settings.glucoseUnits;
-		largeGraphDelta.text = deltaText + ' ' + data.settings.glucoseUnits;
-		largeGraphLoopStatus.text = currentBgFromBloodSugars.loopstatus;
-
-		arrows.href = '../resources/img/arrows/' + currentBgFromBloodSugars.direction + '.png'
-		largeGraphArrows.href = '../resources/img/arrows/' + currentBgFromBloodSugars.direction + '.png';
-
-		graph.update(data.bloodSugars.bgs,
-			data.settings.highThreshold,
-			data.settings.lowThreshold,
-			data.settings
-		);
-
-		if (data.settings.largeGraph) {
-			goToLargeGraph.style.display = "inline";
-		} else {
-			goToLargeGraph.style.display = "none";
-		}
-		// if (data.settings.treatments) {
-		//   goToTreatment.style.display = "inline";
-		// } else {
-		//   goToTreatment.style.display = "none";
-		// }
-
-	} else {
-		console.warn('NO DATA');
-		steps.text = commas(userActivity.get().steps);
-		heart.text = userActivity.get().heartRate;
-		batteryLevel.width = batteryLevels.get().level;
-		batteryPercent.text = '' + batteryLevels.get().percent + '%';
-
-		timeElement.text = dateTime.getTime();
-		largeGraphTime.text = dateTime.getTime();
-
-		dateElement.text = dateTime.getDate();
-	}
+    dateElement.text = dateTime.getDate();
+  }
 }
 
 function commas(value) {
-	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 /**
- * Get Fist BG that is not a predictive BG
- * @param {Array} bgs
- * @returns {Array}
- */
-function getFistBgNonpredictiveBG(bgs) {
-	return bgs.filter((bg) => {
-		if (bg.bgdelta || bg.bgdelta === 0) {
-			return true;
-		}
-	})[0];
+* Get Fist BG that is not a predictive BG
+* @param {Array} bgs
+* @returns {Array}
+*/
+function getFistBgNonpredictiveBG(bgs){
+  return bgs.filter((bg) => {
+    if(bg.bgdelta || bg.bgdelta === 0) {
+      return true;
+    }
+  })[0];
 }
 
 
 
 
-goToLargeGraph.onclick = () => {
-	console.log("goToLargeGraph Activated!");
-	vibration.start('bump');
-	largeGraphView.style.display = 'inline';
-	main.style.display = 'none';
+goToLargeGraph.onclick = (e) => {
+  console.log("goToLargeGraph Activated!");
+  vibration.start('bump');
+  largeGraphView.style.display = 'inline'; 
+  main.style.display = 'none'; 
 }
 
-exitLargeGraph.onclick = () => {
-	console.log("exitLargeGraph Activated!");
-	vibration.start('bump');
-	largeGraphView.style.display = 'none';
-	main.style.display = 'inline';
+exitLargeGraph.onclick = (e) => {
+  console.log("exitLargeGraph Activated!");
+  vibration.start('bump');
+  largeGraphView.style.display = 'none'; 
+  main.style.display = 'inline'; 
 }
 
 
 
-timeElement.onclick = () => {
-	console.log("FORCE Activated!");
-	transfer.send(dataToSend)
-	vibration.start('bump');
-	arrows.href = '../resources/img/arrows/loading.png';
-	largeGraphArrows.href = '../resources/img/arrows/loading.png';
-	alertArrows.href = '../resources/img/arrows/loading.png';
+timeElement.onclick = (e) => {
+  console.log("FORCE Activated!");
+  transfer.send(dataToSend)
+  vibration.start('bump');
+  arrows.href = '../resources/img/arrows/loading.png';
+  largeGraphArrows.href = '../resources/img/arrows/loading.png';
+  alertArrows.href = '../resources/img/arrows/loading.png';
 }
 
 
 // wait 2 seconds
-setTimeout(function () {
-	transfer.send(dataToSend);
+setTimeout(function() {
+    transfer.send(dataToSend);
 }, 1500);
-setInterval(function () {
-	transfer.send(dataToSend);
+setInterval(  function() {
+     transfer.send(dataToSend);
 }, 180000);
 
 
 
 //<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/designerz-base" title="Designerz Base">Designerz Base</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
