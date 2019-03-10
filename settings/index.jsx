@@ -96,7 +96,7 @@ function mySettings(props) {
                 <Text bold align="center">Random Color Generator</Text><Text>The white color circle will generate a random color for you, if you find a color that you like turn on save color to save it! Need help finding a hex color code? <Link source="https://www.color-hex.com/">check out this site.</Link></Text><Toggle settingsKey="saveColor" label="Save Color"/><TextInput label="Hex Color One" settingsKey="hexColor" /> <TextInput label="Hex Color Two" settingsKey="hexColorTwo" /> <TextInput label="Text Color" settingsKey="textColor" /></Section>: null) : null)} 
         
         
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? 
+          {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') ?
           <Section>
               <Text bold align="center">Customize</Text>
               <Text>The customize section is used for customizing the user interface of Glance, you can replace the default values of Glance with other values present.</Text>
