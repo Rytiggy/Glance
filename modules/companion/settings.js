@@ -206,7 +206,7 @@ export default class settings {
    } 
     
    let bgColor = null;
-   let bgColorTwo = "black";
+   let bgColorTwo = "#000000";
    if (settingsStorage.getItem('bgColor')) {
      bgColor = JSON.parse(settingsStorage.getItem('bgColor'));
      if(bgColor === '#FFFFFF') {
@@ -220,7 +220,7 @@ export default class settings {
        } 
        if (!saveColor) {
          settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor}));  
-         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":'black'}));  
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":bgColorTwo}));  
        } else {
          bgColor = JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,"");
          bgColorTwo = JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,"");
