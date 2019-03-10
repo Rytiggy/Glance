@@ -241,7 +241,7 @@ export default class standardize {
 
 						let delta = (bgs[0].Value - bgs[1].Value);
 						// Set values to template
-						bgsTemplate.bgs[index].direction = caculateTrendArrow(bgs[0].Value - bgs[5].Value, bgs);
+						bgsTemplate.bgs[index].direction = slopeDirection(bgs[0].Trend);
 						bgsTemplate.bgs[index].bgdelta = delta;
 					}
 				})
@@ -754,41 +754,24 @@ function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 }
 
 
-function caculateTrendArrow(deltaOLD, bgs) {
-
-	let lastFiveBgs = bgs.filter((bg, index) => {
-		if (index <= 6) {
-			return bg;
-		}
-	})
-	let delta = [];
-	for (let index in lastFiveBgs) {
-		let nextIndex = parseInt(index) + 1;
-		delta.push(bgs[index].Value - bgs[nextIndex].Value)
-
+function slopeDirection(trend) {
+	logs.add('Dexcom trend: ' + trend)
+	switch(trend) {
+		case 1:
+			return "DoubleUp";
+		case 2:
+			return "SingleUp";
+		case 3:
+			return "FortyFiveUp";
+		case 4:
+			return "Flat";
+		case 5:
+			return "FortyFiveDown";
+		case 6:
+			return "SingleDown";
+		case 7:
+			return "DoubleDown";
+		default:
+			return "";
 	}
-
-	const add = (a, b) => a + b
-
-	delta = delta.reduce(add)
-  console.error('--------------------------------------------')
-	console.log(delta)
-	if (delta >= -29 && delta <= 29) {
-		return 'Flat';
-	} else if (delta >= 30 && delta <= 59) {
-		return 'FortyFiveUp';
-	} else if (delta >= 60 && delta <= 90) {
-		return 'SingleUp';
-	} else if (delta >= 90) {
-		return 'DoubleUp';
-	} else if (delta <= -30 && delta >= -59) {
-		return 'FortyFiveDown';
-	} else if (delta <= -60 && delta >= -90) {
-		return 'SingleDown';
-	} else if (delta <= -90) {
-		return 'DoubleDown';
-	} else {
-		return 'None';
-	}
-
 }
