@@ -15,12 +15,12 @@
 
 import { settingsStorage } from "settings";
 import Logs from "./logs.js";
+const logs = new Logs();
 
 export default class settings { 
  get(dataReceivedFromWatch) {
    let queryParms = '?count=47';
-   const logs = new Logs();
-   logs.add('Line 15: companion - settings - get()');
+   logs.add('companion - settings - get()');
    let dataSource = null;
    if (settingsStorage.getItem('dataSource')) {
      dataSource = JSON.parse(settingsStorage.getItem('dataSource')).values[0].value;
@@ -171,15 +171,6 @@ export default class settings {
      settingsStorage.setItem("rapidFall", true);
    } 
   
-   
-   
-   // let timeFormat = null;
-   // if (settingsStorage.getItem('timeFormat')) {
-   //   timeFormat = JSON.parse(settingsStorage.getItem('timeFormat'));
-   // } else if (!timeFormat) {
-   //   timeFormat = false;
-   // }
-   
    let timeFormat = null;
    if (settingsStorage.getItem('timeFormat')) {
      timeFormat = JSON.parse(settingsStorage.getItem('timeFormat')).values[0].value;
@@ -208,9 +199,10 @@ export default class settings {
    let bgColor = null;
    let bgColorTwo = "#000000";
    if (settingsStorage.getItem('bgColor')) {
-     bgColor = JSON.parse(settingsStorage.getItem('bgColor'));
+     bgColor = validateHexCode(JSON.parse(settingsStorage.getItem('bgColor', false)));
      if(bgColor === '#FFFFFF') {
        bgColor = "#" + Math.random().toString(16).slice(2, 8);
+       bgColorTwo = "#" + Math.random().toString(16).slice(2, 8);
        let saveColor = null;
        if (settingsStorage.getItem('saveColor')) {
          saveColor = JSON.parse(settingsStorage.getItem('saveColor'));
@@ -219,11 +211,11 @@ export default class settings {
          saveColor = false;
        } 
        if (!saveColor) {
-         settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor}));  
-         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":bgColorTwo}));  
+         settingsStorage.setItem("hexColor", JSON.stringify({"name":validateHexCode(bgColor, false)}));  
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":validateHexCode(bgColorTwo, false)}));  
        } else {
-         bgColor = JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,"");
-         bgColorTwo = JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,"");
+         bgColor = validateHexCode(JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,""), false);
+         bgColorTwo = validateHexCode(JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,""), false);
          settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor})); 
          settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":bgColorTwo}));  
  
@@ -236,7 +228,7 @@ export default class settings {
 
    let textColor = null;
    if (settingsStorage.getItem('textColor')) {
-    textColor =  JSON.parse(settingsStorage.getItem('textColor')).name.replace(/ /g,"");
+    textColor =  validateHexCode(JSON.parse(settingsStorage.getItem('textColor')).name.replace(/ /g,""), true);
     settingsStorage.setItem("textColor", JSON.stringify({"name":textColor})); 
    } else if (!textColor) {
     textColor = '#ffffff';
@@ -428,4 +420,18 @@ function  mgdl( bg ) {
 function isURL(s) {
    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
    return regexp.test(s);
+}
+
+function validateHexCode(code, text) {
+  var isOk  = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
+  console.log(isOk)
+  if(isOk) {
+    logs.add('companion - validateHexCode - Hex code valid');
+    return code;
+  }
+  logs.add(`companion - validateHexCode - Error with hex code set to black (#000000) user entered ${code}`);
+  if(text) {
+    return '#ffffff';
+  }
+  return '#000000';
 }
