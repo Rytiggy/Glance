@@ -199,7 +199,7 @@ export default class settings {
    let bgColor = null;
    let bgColorTwo = "#000000";
    if (settingsStorage.getItem('bgColor')) {
-     bgColor = JSON.parse(settingsStorage.getItem('bgColor'));
+     bgColor = validateHexCode(JSON.parse(settingsStorage.getItem('bgColor', false)));
      if(bgColor === '#FFFFFF') {
        bgColor = "#" + Math.random().toString(16).slice(2, 8);
        bgColorTwo = "#" + Math.random().toString(16).slice(2, 8);
@@ -211,13 +211,13 @@ export default class settings {
          saveColor = false;
        } 
        if (!saveColor) {
-         settingsStorage.setItem("hexColor", JSON.stringify({"name":validateHexCode(bgColor)}));  
-         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":validateHexCode(bgColorTwo)}));  
+         settingsStorage.setItem("hexColor", JSON.stringify({"name":validateHexCode(bgColor, false)}));  
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":validateHexCode(bgColorTwo, false)}));  
        } else {
-         bgColor = JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,"");
-         bgColorTwo = JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,"");
-         settingsStorage.setItem("hexColor", JSON.stringify({"name":validateHexCode(bgColor)})); 
-         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":validateHexCode(bgColorTwo)}));  
+         bgColor = validateHexCode(JSON.parse(settingsStorage.getItem('hexColor')).name.replace(/ /g,""), false);
+         bgColorTwo = validateHexCode(JSON.parse(settingsStorage.getItem('hexColorTwo')).name.replace(/ /g,""), false);
+         settingsStorage.setItem("hexColor", JSON.stringify({"name":bgColor})); 
+         settingsStorage.setItem("hexColorTwo", JSON.stringify({"name":bgColorTwo}));  
  
        }
      }
@@ -228,8 +228,8 @@ export default class settings {
 
    let textColor = null;
    if (settingsStorage.getItem('textColor')) {
-    textColor =  JSON.parse(settingsStorage.getItem('textColor')).name.replace(/ /g,"");
-    settingsStorage.setItem("textColor", JSON.stringify({"name":validateHexCode(textColor)})); 
+    textColor =  validateHexCode(JSON.parse(settingsStorage.getItem('textColor')).name.replace(/ /g,""), true);
+    settingsStorage.setItem("textColor", JSON.stringify({"name":textColor})); 
    } else if (!textColor) {
     textColor = '#ffffff';
     settingsStorage.setItem("textColor", JSON.stringify({"name":textColor})); 
@@ -422,7 +422,7 @@ function isURL(s) {
    return regexp.test(s);
 }
 
-function validateHexCode(code) {
+function validateHexCode(code, text) {
   var isOk  = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
   console.log(isOk)
   if(isOk) {
@@ -430,5 +430,8 @@ function validateHexCode(code) {
     return code;
   }
   logs.add(`companion - validateHexCode - Error with hex code set to black (#000000) user entered ${code}`);
+  if(text) {
+    return '#ffffff';
+  }
   return '#000000';
 }
