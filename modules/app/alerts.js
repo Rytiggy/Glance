@@ -36,7 +36,11 @@ let popupLeadText = popup.getElementById('copy')
 const dateTime = new DateTime();
 
 export default class alerts {
-	check(bg, settings, DISABLE_ALERTS, currentBG, loopstatus, timeSenseLastSGV) {
+	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV) {
+		let currentBG = bg.currentbg;
+		let loopstatus = bg.loopstatus;
+        let staleData = parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
+
 		alertArrows.href = '../resources/img/arrows/' + bg.direction + '.png';
 		alertArrows.style.display = 'inline';
 		console.log('app - Alerts - Check()')
@@ -48,7 +52,7 @@ export default class alerts {
 
 
 		let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(bg.datetime)[1];
-		if (bg.sgv <= parseInt(settings.lowThreshold)) {
+        if (bg.sgv <= parseInt(settings.lowThreshold) && !staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
 					if (settings.lowAlerts) {
@@ -70,7 +74,7 @@ export default class alerts {
 			// largeGraphErrorLine.style.fill ="#de4430";
 
 		}
-		if (bg.sgv >= parseInt(settings.highThreshold)) {
+		if (bg.sgv >= parseInt(settings.highThreshold) && !staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
 					if (settings.highAlerts) {
@@ -102,7 +106,7 @@ export default class alerts {
 		/**
 		 * loopstatus
 		 */
-		if (loopstatus === 'Warning') {
+		if (loopstatus === 'Warning' && !staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
 					if (settings.loopstatus) {
@@ -121,7 +125,7 @@ export default class alerts {
 
 
 		// Check for rapid change in bg
-		if (bg.direction === 'DoubleDown') {
+		if (bg.direction === 'DoubleDown' && !staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
 					if (settings.rapidFall) {
@@ -135,7 +139,7 @@ export default class alerts {
 					}
 				}
 			}
-		} else if (bg.direction === 'DoubleUp') {
+		} else if (bg.direction === 'DoubleUp' && !staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
 					if (settings.rapidRise) {
@@ -152,17 +156,17 @@ export default class alerts {
 		}
 
     // check if stale data 
-		if (parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter ) {
+		if (staleData) {
 			if (!settings.disableAlert) {
 				if (!DISABLE_ALERTS) {
-          if (settings.staleData) {
-            alertArrows.style.display = 'none';
-            popupTitle.style.fill = "#de4430";
-            vibration.start("ring");
-            popup.style.display = "inline";
-            popupTitle.style.display = "inline";
-            popupTitle.text = 'Stale data';
-          }
+					if (settings.staleData) {
+						alertArrows.style.display = 'none';
+						popupTitle.style.fill = "#de4430";
+						vibration.start("ring");
+						popup.style.display = "inline";
+						popupTitle.style.display = "inline";
+						popupTitle.text = 'Stale data';
+					}
 				}
 			}
 		}

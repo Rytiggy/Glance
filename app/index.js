@@ -298,9 +298,9 @@ function update() {
       }
     }
       
-    alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, currentBgFromBloodSugars.currentbg, currentBgFromBloodSugars.loopstatus, timeSenseLastSGV);
+    alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV);
     
-    errors.check(dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1], currentBgFromBloodSugars.currentbg);
+    errors.check(timeSenseLastSGV, currentBgFromBloodSugars.currentbg);
     let deltaText = currentBgFromBloodSugars.bgdelta 
     // add Plus
     if (deltaText > 0) {
