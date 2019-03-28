@@ -52,7 +52,7 @@ async function sendData() {
     let USAVSInternational = store.USAVSInternational;
     let subDomain = 'share2';
     if(USAVSInternational) {
-      subDomain = 'shareous2';
+      subDomain = 'shareous1';
     }
     let sessionId = await dexcom.getSessionId(store.dexcomUsername, store.dexcomPassword, subDomain);
     if(store.dexcomUsername && store.dexcomPassword) {
