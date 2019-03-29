@@ -68,7 +68,10 @@ export default class settings {
    // 47 42
    }else if(dataSource === 'dexcom') {
      url = 'dexcom';
-   }  
+   } else if(dataSource === 'tomato') { // tomato
+    url = 'http://127.0.0.1:11111' + queryParms;
+   }
+    
    let glucoseUnits = null;
    if (settingsStorage.getItem('glucoseUnits')) {
      glucoseUnits = JSON.parse(settingsStorage.getItem('glucoseUnits')).values[0].value;
