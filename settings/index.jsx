@@ -1,8 +1,6 @@
-import { settings } from "settings";
-import { XMLHttpRequest } from "xmlhttprequest";
-
 function mySettings(props) {
-  return (
+
+  let template = (
    <Page>
 
       <Text>
@@ -25,28 +23,28 @@ function mySettings(props) {
       </Text>
 
       <Section title={<Text bold align="center">Data Source Settings</Text>}>
-        <Select label={`Data Source`} settingsKey="dataSource" options={[ {name:"Dexcom", value:"dexcom"}, {name:"Nightscout", value:"nightscout"}, {name:"xDrip+", value:"xdrip"}, {name:"Spike", value:"spike"}, {name:"custom", value:"custom"}, ]} />
-
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'custom') ?
-        <TextInput label="Api endpoint" settingsKey="customEndpoint" /> : null) : null)}
-       
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-         <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> : null) : null)}
-        
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-        <TextInput title="Nightscout" label="Site Name" settingsKey="nightscoutSiteName" /> : null) : null)}
-         
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-         <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text> : null) : null)}
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Select label="Nightscout Host Site" settingsKey="nightscoutSiteHost" options={[{name:"Heroku", value:"herokuapp.com"},{name:"Azure", value:"azurewebsites.net"}]} /> : null) : null)}
-        
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'dexcom') ? 
-        <Section title={<Text bold align="center">Dexcom</Text>}>
-          <Text bold align="center">Dexcom</Text>                                        
-          <TextInput title="Username" label="Username" settingsKey="dexcomUsername" />
-          <TextInput title="Password" label="Password" settingsKey="dexcomPassword" />
-          <Toggle settingsKey="USAVSInternational" label="International (Not in USA)"/>            
-         </Section> : null) : null)} 
+        <Select
+          label={`Number Of Data sources`}
+          settingsKey="numOfDataSources"
+          options={[
+            {name:"One Data Source", value:"dataSource"},
+            {name:"Two Data Sources", value:"dataSourceTwo"},
+          ]}
+        />
+        {renderDataSource(
+          props,
+          'dataSource',
+          'Data Source One',
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational"]
+        )}
+        {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 'dataSourceTwo') ?
+          renderDataSource(
+            props,
+            'dataSourceTwo',
+            'Data Source Two',
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo"]
+          )
+        : null) : null)}
       </Section>      
       
       <Section title={<Text bold align="center">Glucose Settings</Text>}>
@@ -128,10 +126,66 @@ function mySettings(props) {
  
   </Page>
   );
+
+
+  return template;
 }
 
 registerSettingsPage(mySettings);
 
+function renderDataSource(props, id, title, keys) {
+  return (
+    <Section>
+      <Text bold align="center">{title}</Text>
+      <Select
+        label={`Data Source`}
+        settingsKey={id}
+        options={
+          [
+            {name:"Dexcom", value:"dexcom"},
+            {name:"Nightscout", value:"nightscout"},
+            {name:"xDrip+", value:"xdrip"},
+            {name:"Spike", value:"spike"},
+            {name:"custom", value:"custom"},
+          ]
+        }
+      />
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'custom') ?
+      <TextInput label="Api endpoint" settingsKey={keys[0]} /> : null) : null)}
+    
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'nightscout') ?
+        <Section>
+          <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> 
+          <TextInput title="Nightscout" label="Site Name" settingsKey={keys[1]} />
+          <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text>
+          <Select
+            label="Nightscout Host Site"
+            settingsKey={keys[2]}
+            options={
+              [
+                {
+                  name:"Heroku",
+                  value:"herokuapp.com"
+                },
+                {
+                  name:"Azure",
+                  value:"azurewebsites.net"
+                }
+              ]
+            } 
+          />
+        </Section>
+      : null) : null)}
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
+      <Section title={<Text bold align="center">Dexcom</Text>}>
+        <Text bold align="center">Dexcom</Text>                                        
+        <TextInput title="Username" label="Username" settingsKey={keys[3]} />
+        <TextInput title="Password" label="Password" settingsKey={keys[4]} />
+        <Toggle settingsKey={keys[5]} label="International (Not in USA)"/>            
+      </Section> : null) : null)} 
+    </Section>
+  )
+}
 // <Text align="center" bold>
 //     Weather
 // </Text>
