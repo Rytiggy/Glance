@@ -72,13 +72,40 @@ async function sendData() {
     }  
   }
 
+  // Get SGV data
+  let bloodsugarsTwo = null;
+  let extraDataTwo = null;
+  if (store.url === 'dexcom') {
+    let USAVSInternationalTwo = store.USAVSInternationalTwo;
+    let subDomainTwo = 'share2';
+    if(USAVSInternationalTwo) {
+      subDomainTwo = 'shareous1';
+    }
+    let sessionIdTwo = await dexcom.getSessionId(store.dexcomUsernameTwo, store.dexcomPasswordTwo, subDomainTwo);
+    if(store.dexcomUsernameTwo && store.dexcomPasswordTwo) {
+       bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo); 
+    } else {
+      bloodsugarsTwo = {
+        error : {
+          status : "500"
+        }
+      }
+    }
+    
+  } else {
+    bloodsugarsTwo = await fetch.get(store.urlTwo);
+    if(store.extraDataUrlTwo) {
+       extraDataTwo = await fetch.get(store.extraDataUrlTwo); 
+    }  
+  }
   
   // Get weather data   
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
-  Promise.all([bloodsugars, extraData]).then(function(values) {
+  Promise.all([bloodsugars, extraData, bloodsugarsTwo, extraDataTwo]).then(function(values) {
     let dataToSend = {
       bloodSugars: standardize.bloodsugars(values[0], values[1], store),
-      settings: standardize.settings(store),
+      bloodSugarsTwo: standardize.bloodsugars(values[2], values[3], store),
+      settings: standardize.settings(store)
       // weather: values[2].query.results.channel.item.condition,
     };
     logs.add('Line 59: companion - sendData - DataToSend size: ' + sizeof.size(dataToSend) + ' bytes')

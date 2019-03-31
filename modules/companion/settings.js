@@ -21,6 +21,17 @@ export default class settings {
  get(dataReceivedFromWatch) {
    let queryParms = '?count=47';
    logs.add('companion - settings - get()');
+  
+   let numOfDataSources = null;
+  if (settingsStorage.getItem('numOfDataSources')) {
+    console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
+    numOfDataSources = JSON.parse(settingsStorage.getItem('numOfDataSources')).values[0].value;
+  } else if (!numOfDataSources) {
+    settingsStorage.setItem("numOfDataSources", JSON.stringify({"selected":[0], "values":[{"name":"One Data Source","value":"dataSource"}]}));
+    numOfDataSources = 'dataSource';
+  }   
+    
+  
    let dataSource = null;
    if (settingsStorage.getItem('dataSource')) {
      dataSource = JSON.parse(settingsStorage.getItem('dataSource')).values[0].value;
@@ -68,7 +79,59 @@ export default class settings {
    // 47 42
    }else if(dataSource === 'dexcom') {
      url = 'dexcom';
-   }  
+   }
+   
+   let dataSourceTwo = null;
+   if (settingsStorage.getItem('dataSourceTwo')) {
+    dataSourceTwo = JSON.parse(settingsStorage.getItem('dataSourceTwo')).values[0].value;
+   } else if (!dataSourceTwo) {
+     settingsStorage.setItem("dataSourceTwo", JSON.stringify({"selected":[0],"values":[{"name":"Dexcom","value":"dexcom"}]}));
+     dataSourceTwo = 'dexcom';
+   }   
+    
+   let urlTwo = 'http://127.0.0.1:17580/sgv.json' + queryParms;
+   let extraDataUrlTwo = null;
+   if(dataSourceTwo === 'nightscout') { // Nightscout
+       let nightscoutSiteNameTwo = null;
+       if (settingsStorage.getItem('nightscoutSiteNameTwo') &&   JSON.parse(settingsStorage.getItem('nightscoutSiteNameTwo')).name) {
+        nightscoutSiteNameTwo = JSON.parse(settingsStorage.getItem('nightscoutSiteNameTwo')).name;
+         if(isURL(nightscoutSiteNameTwo)) {
+          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split('.')[0];
+          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split('//')[1];
+          console.log((nightscoutSiteNameTwo))
+         }
+       } else if (!nightscoutSiteNameTwo) {
+        nightscoutSiteNameTwo = 'placeholder';
+        settingsStorage.setItem("nightscoutSiteNameTwo", JSON.stringify({"name":''}));
+       }  
+       let nightscoutSiteHostTwo = null;
+       if (settingsStorage.getItem('nightscoutSiteHostTwo')) {
+        nightscoutSiteHostTwo = JSON.parse(settingsStorage.getItem('nightscoutSiteHostTwo')).values[0].value;
+       } else if (!nightscoutSiteHostTwo) {
+        nightscoutSiteHostTwo = 'herokuapp.com';
+         settingsStorage.setItem("nightscoutSiteHostTwo", JSON.stringify({"selected":[0],"values":[{"name":'Heroku',"value":'herokuapp.com'}]}));
+       } 
+       
+      urlTwo = 'https://'+nightscoutSiteNameTwo.toLowerCase()+'.'+nightscoutSiteHostTwo+'/pebble' + queryParms;
+      extraDataUrlTwo = 'https://'+nightscoutSiteNameTwo.toLowerCase()+'.'+nightscoutSiteHostTwo+'/api/v2/properties';  
+   } else if(dataSourceTwo === 'xdrip') { // xDrip+
+     if(dataReceivedFromWatch && dataReceivedFromWatch != null) {
+       queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
+     }
+     urlTwo = 'http://127.0.0.1:17580/sgv.json' + queryParms;
+   } else if(dataSourceTwo === 'spike') { // spike 
+     urlTwo = 'http://127.0.0.1:1979/pebble' + queryParms; 
+     // local spike addr for my comp
+     // url = 'http://192.168.86.91:1979/pebble' + queryParms;     
+   } else if(dataSourceTwo === 'custom') {
+    urlTwo = JSON.parse(settingsStorage.getItem('customEndpointTwo')).name + queryParms;
+   // 47 42
+   }else if(dataSourceTwo === 'dexcom') {
+    urlTwo = 'dexcom';
+   }
+
+
+
    let glucoseUnits = null;
    if (settingsStorage.getItem('glucoseUnits')) {
      glucoseUnits = JSON.parse(settingsStorage.getItem('glucoseUnits')).values[0].value;
@@ -325,12 +388,37 @@ export default class settings {
      dexcomPassword = null;
      settingsStorage.setItem("dexcomPassword", JSON.stringify({"name":dexcomPassword}));
    }
-   
+
    let USAVSInternational = null;
    if (settingsStorage.getItem('USAVSInternational')) {
      USAVSInternational = JSON.parse(settingsStorage.getItem('USAVSInternational'));
    } else if (!USAVSInternational) {
      USAVSInternational = false;
+   } 
+
+   let dexcomUsernameTwo = null;
+   if (settingsStorage.getItem('dexcomUsernameTwo')) {
+     console.log(settingsStorage.getItem('dexcomUsernameTwo'))
+     dexcomUsernameTwo = JSON.parse(settingsStorage.getItem('dexcomUsernameTwo')).name;
+   } else if (!dexcomUsernameTwo) {
+    dexcomUsernameTwo = null;
+     settingsStorage.setItem("dexcomUsernameTwo", JSON.stringify({"name":dexcomUsernameTwo}));
+   }
+  
+   let dexcomPasswordTwo = null;
+   if (settingsStorage.getItem('dexcomPasswordTwo')) {
+     console.log(settingsStorage.getItem('dexcomPasswordTwo'))
+     dexcomPasswordTwo = JSON.parse(settingsStorage.getItem('dexcomPasswordTwo')).name;
+   } else if (!dexcomPasswordTwo) {
+    dexcomPasswordTwo = null;
+     settingsStorage.setItem("dexcomPasswordTwo", JSON.stringify({"name":dexcomPasswordTwo}));
+   }
+   
+   let USAVSInternationalTwo = null;
+   if (settingsStorage.getItem('USAVSInternationalTwo')) {
+    USAVSInternationalTwo = JSON.parse(settingsStorage.getItem('USAVSInternationalTwo'));
+   } else if (!USAVSInternationalTwo) {
+    USAVSInternationalTwo = false;
    } 
    
    let resetAlertDismissal = null;
@@ -362,6 +450,9 @@ export default class settings {
      url,
      extraDataUrl,
      dataSource,
+     urlTwo,
+     extraDataUrlTwo,
+     dataSourceTwo,
      highThreshold,
      lowThreshold,
      glucoseUnits,
@@ -390,6 +481,9 @@ export default class settings {
      dexcomUsername,
      dexcomPassword,
      USAVSInternational,
+     dexcomUsernameTwo,
+     dexcomPasswordTwo,
+     USAVSInternationalTwo,
      resetAlertDismissal,
      staleData,
      staleDataAlertAfter
