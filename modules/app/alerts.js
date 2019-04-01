@@ -22,24 +22,24 @@ import DateTime from "./dateTime.js";
 
 const transfer = new Transfer();
 
-let sgv = document.getElementById("sgv");
-let largeGraphsSgv = document.getElementById("largeGraphsSgv");
-let errorLine = document.getElementById("errorLine");
-// let largeGraphErrorLine = document.getElementById("largeGraphErrorLine");
-let popup = document.getElementById("popup");
-let alertHeader = document.getElementById("alertHeader");
-let dismiss = popup.getElementById("dismiss");
-let popupTitle = document.getElementById("popup-title");
-let alertArrows = document.getElementById("alertArrows");
-let popupLeadText = popup.getElementById('copy')
-
 const dateTime = new DateTime();
 
 export default class alerts {
-	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV) {
+	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV, keys) {
+		let popup = document.getElementById("popup");
+		let popupTitle = document.getElementById("popup-title");
+		let popupLeadText = popup.getElementById('copy')
+		let alertArrows = document.getElementById("alertArrows");
+
+		let sgv = document.getElementById(keys[0]);
+		let largeGraphsSgv = document.getElementById("largeGraphsSgv");
+		let errorLine = document.getElementById(keys[1]);
+
+
+
 		let currentBG = bg.currentbg;
 		let loopstatus = bg.loopstatus;
-        let staleData = parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
+    let staleData = parseInt(timeSenseLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
 
 		alertArrows.href = '../resources/img/arrows/' + bg.direction + '.png';
 		alertArrows.style.display = 'inline';

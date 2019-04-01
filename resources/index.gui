@@ -171,6 +171,47 @@
         </use>
 
         <!-- End Graph -->
-    </svg>   
+    </svg>
 
+    <svg id="multipleBgView" display="inline">
+        <gradientRect id ="multipleBgBgColor" width="100%" height="100%" gradient-type="linear" gradient-x1="0" gradient-y1="20" gradient-x2="0" gradient-y2="100%-80" gradient-color1="#390263" gradient-color2="black" />
+        <text text-anchor="middle" class="text text-gray" id="multipleBGTime" />
+
+            
+        <text class="h2" id="secondSgv">---</text>
+        <line stroke-width="4" id="secondErrorLine" display="none" />
+        <text class="text text-gray" id="secondDelta" />
+        <image href="img/arrows/None.png" id="secondArrows"/>
+        <text class="text text-gray" id="secondTimeOfLastSgv" />
+    
+        <text class="text text-gray" id="secondIob" />
+        <image class="stat-image" href="img/syringe.png" fill="white" id="secondSyringe" />
+        <text class="text text-gray" id="secondCob" />
+        <image class="stat-image" href="img/hamburger.png" fill="white" id="secondHamburger" />
+        <textclass="text text-gray" id="secondTempBasal" />
+        <text class="text text-gray" id="secondTempBasal" />
+
+
+        <text display="none" class="text text-gray" id="secondRawbg"/>
+        <text display="none" class="text text-gray" id="secondPredictedBg" />
+       
+
+        <text class="h2" id="firstSgv">---</text>
+        <line stroke-width="4" id="firstErrorLine" display="none" />
+        <text text-anchor="end" class="text text-gray" id="firstDelta" />
+        <image href="img/arrows/None.png" id="firstArrows"/>
+        <text text-anchor="end" class="text text-gray" id="firstTimeOfLastSgv" />
+
+        <text text-anchor="end" class="text text-gray" id="firstIob" />
+        <image class="stat-image" href="img/syringe.png" fill="white" id="firstSyringe" />
+        <text text-anchor="end" class="text text-gray" id="firstCob" />
+        <image class="stat-image" href="img/hamburger.png" fill="white" id="firstHamburger" />
+        <text text-anchor="end" class="text text-gray" id="firstTempBasal" />
+        <text text-anchor="end" class="text text-gray" id="firstTempBasal" />
+
+
+        <text display="none" text-anchor="end" class="text text-gray" id="firstRawbg"/>
+        <text display="none" class="text text-gray" id="firstPredictedBg" />
+    
+    </svg>   
 </svg>

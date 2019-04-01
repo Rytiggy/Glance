@@ -486,7 +486,8 @@ export default class settings {
      USAVSInternationalTwo,
      resetAlertDismissal,
      staleData,
-     staleDataAlertAfter
+     staleDataAlertAfter,
+     numOfDataSources
    }
    return settings;
   };

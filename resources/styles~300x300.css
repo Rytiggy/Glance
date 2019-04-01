@@ -240,11 +240,11 @@
   width: 50%;
 }
 
-#insulinTreatment {
+/* #insulinTreatment {
   x: 50%;
   y: $;
   width: 50%;
-}
+} */
 
 #graphPoints {
  fill: red; 
@@ -357,3 +357,134 @@
  height: 45;
  fill: white;
 }
+
+/* Multiple BG display */
+#multipleBGTime {
+  x: 50%;
+  y: 8%+4;
+}
+
+/* left side */
+#secondDelta {
+  x: 2%;
+  y: 8%+3;
+}
+
+#secondSgv {
+  x: 2%;
+  y: 25%;
+}
+
+#secondArrows {
+  x: 31%;
+  y: 11%;
+  width: 45;
+  height: 45;
+  fill: white;
+}
+
+ #secondErrorLine {
+  x1: 52%;
+  y1: 19%;
+  x2: 79%;
+  y2: 19%;
+  fill: white;
+}
+
+ #secondTimeOfLastSgv {
+  x: 2%;
+  y: 33%;
+}
+
+#secondIob {
+  x: 9%;
+  y: 42%; 
+ }
+
+ #secondCob {
+  x: 9%;
+  y: 50%;  
+ }
+
+ #secondSyringe {
+  x: 2%;
+  y: 37%; 
+ }
+
+ #secondHamburger {
+  x: 2%;
+  y: 45%;  
+ }
+
+ #secondRawbg {
+  x: 2%;
+  y: 40%;
+ }
+
+ #secondTempBasal {
+  x: 2%;
+  y: 58%;
+ }
+
+ /* right side */
+ #firstDelta {
+  x: 98%;
+  y: 8%+3;
+}
+
+ #firstSgv {
+  text-anchor:"end";
+  x: 83%;
+  y: 25%;
+}
+
+#firstArrows {
+  x: 83%;
+  y: 11%;
+  width: 45;
+  height: 45;
+  fill: white;
+}
+
+#firstErrorLine {
+  x1: 52%;
+  y1: 19%;
+  x2: 79%;
+  y2: 19%;
+  fill: white;
+}
+
+#firstTimeOfLastSgv {
+  x: 98%;
+  y: 33%;
+ }
+
+ #firstIob {
+  x: 91%;
+  y: 42%; 
+ }
+
+ #firstCob {
+  x: 91%;
+  y: 50%;  
+ }
+
+ #firstSyringe {
+  x: 92%;
+  y: 37%; 
+ }
+
+ #firstHamburger {
+  x: 92%;
+  y: 45%;  
+ }
+
+ #firstRawbg {
+  x: 98%;
+  y: 40%;
+ }
+
+ #firstTempBasal {
+  x: 98%;
+  y: 58%;
+ }
