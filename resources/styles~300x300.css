@@ -247,7 +247,7 @@
 } */
 
 #graphPoints {
- fill: red; 
+ fill:black; 
 }
 
 .item { height: 90;  width:50; }
@@ -365,17 +365,17 @@
 }
 
 /* left side */
-#secondDelta {
+#firstDelta {
   x: 2%;
   y: 8%+3;
 }
 
-#secondSgv {
+#firstSgv {
   x: 2%;
   y: 25%;
 }
 
-#secondArrows {
+#firstArrows {
   x: 31%;
   y: 11%;
   width: 45;
@@ -383,62 +383,84 @@
   fill: white;
 }
 
- #secondErrorLine {
-  x1: 52%;
+ #firstErrorLine {
+  x1: 2%;
   y1: 19%;
-  x2: 79%;
+  x2: 29%;
   y2: 19%;
   fill: white;
 }
 
- #secondTimeOfLastSgv {
+ #firstTimeOfLastSgv {
   x: 2%;
   y: 33%;
 }
 
-#secondIob {
+#firstIob {
   x: 9%;
   y: 42%; 
  }
 
- #secondCob {
+ #firstCob {
   x: 9%;
   y: 50%;  
  }
 
- #secondSyringe {
+ #firstSyringe {
   x: 2%;
   y: 37%; 
  }
 
- #secondHamburger {
+ #firstHamburger {
   x: 2%;
   y: 45%;  
  }
 
- #secondRawbg {
+ #firstRawbg {
   x: 2%;
   y: 40%;
  }
 
- #secondTempBasal {
+ #firstTempBasal {
   x: 2%;
   y: 58%;
  }
 
+ #firstGraph {
+  x: 2%; 
+  y: 60%+3; 
+  width: 50%; 
+  height: 100;
+}
+#firstHigh {
+  x: 97%;
+  y: 30%;
+  width: 40;
+}
+#firstMean {
+  x: 100%+9;
+  y: 65; 
+}
+
+#firstLow {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}
+
  /* right side */
- #firstDelta {
+ #secondDelta {
   x: 98%;
   y: 8%+3;
 }
 
- #firstSgv {
+ #secondSgv {
   text-anchor:"end";
   x: 83%;
   y: 25%;
 }
 
-#firstArrows {
+#secondArrows {
   x: 83%;
   y: 11%;
   width: 45;
@@ -446,7 +468,7 @@
   fill: white;
 }
 
-#firstErrorLine {
+#secondErrorLine {
   x1: 52%;
   y1: 19%;
   x2: 79%;
@@ -454,37 +476,59 @@
   fill: white;
 }
 
-#firstTimeOfLastSgv {
+#secondTimeOfLastSgv {
   x: 98%;
   y: 33%;
  }
 
- #firstIob {
+ #secondIob {
   x: 91%;
   y: 42%; 
  }
 
- #firstCob {
+ #secondCob {
   x: 91%;
   y: 50%;  
  }
 
- #firstSyringe {
+ #secondSyringe {
   x: 92%;
   y: 37%; 
  }
 
- #firstHamburger {
+ #secondHamburger {
   x: 92%;
   y: 45%;  
  }
 
- #firstRawbg {
+ #secondRawbg {
   x: 98%;
   y: 40%;
  }
 
- #firstTempBasal {
+ #secondTempBasal {
   x: 98%;
   y: 58%;
  }
+ #secondGraph {
+  x: 50%; 
+  y: 60%+3; 
+  width: 50%; 
+  height: 100;
+}
+
+#secondHigh {
+  x: 97%;
+  y: 30%;
+  width: 40;
+}
+#secondMean {
+  x: 100%+9;
+  y: 65; 
+}
+
+#secondLow {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}

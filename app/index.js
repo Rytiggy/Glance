@@ -36,6 +36,7 @@ const errors = new Errors();
 const transfer = new Transfer();
 
 let main = document.getElementById("main");
+let multipleBgView = document.getElementById("multipleBgView");
 
 let dateElement = document.getElementById("date");
 let timeElement = document.getElementById("time");
@@ -50,8 +51,11 @@ let steps = document.getElementById("steps");
 let stepIcon = document.getElementById("stepIcon");
 let heart = document.getElementById("heart");
 let heartIcon = document.getElementById("heartIcon");
+
 let bgColor = document.getElementById("bgColor");
 let largeGraphBgColor = document.getElementById("largeGraphBgColor");
+let multipleBgBgColor = document.getElementById("multipleBgBgColor");
+
 let batteryPercent = document.getElementById("batteryPercent");
 let popup = document.getElementById("popup");
 let dismiss = popup.getElementById("dismiss");
@@ -173,6 +177,9 @@ function update() {
 
     largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
     largeGraphBgColor.gradient.colors.c2 =  data.settings.bgColorTwo;
+   
+    multipleBgBgColor.gradient.colors.c1 =  data.settings.bgColor;
+    multipleBgBgColor.gradient.colors.c2 =  data.settings.bgColorTwo;
     
     setTextColor(data.settings.textColor)
     // bloodsugars
@@ -181,11 +188,81 @@ function update() {
     
 
     // main display
-    //  updateBgsDisplay(currentBgFromBloodSugars, ['sgv', 'rawbg', 'tempBasal', 'predictedBg', 'timeOfLastSgv', 'delta', 'arrows', 'errorLine', 'iob', 'cob', 'syringe', 'hamburger']);
-    
-    // update two BGs at once
-    updateBgsDisplay(currentBgFromBloodSugars, ['firstSgv', 'firstRawbg', 'firstTempBasal', 'firstPredictedBg', 'firstTimeOfLastSgv', 'firstDelta', 'firstArrows', 'firstErrorLine', 'firstIob', 'firstCob', 'firstSyringe', 'firstHamburger']);
-    updateBgsDisplay(currentBgFromBloodSugarsTwo, ['secondSgv', 'secondRawbg', 'secondTempBasal', 'secondPredictedBg', 'secondTimeOfLastSgv', 'secondDelta', 'secondArrows', 'secondErrorLine', 'secondIob', 'secondCob', 'secondSyringe', 'secondHamburger']);
+    let classes = {
+      bloodSugars:'bloodSugars',
+      sgv:'sgv',
+      rawbg: 'rawbg',
+      tempBasal: 'tempBasal',
+      predictedBg:'predictedBg',
+      timeOfLastSgv: 'timeOfLastSgv',
+      delta: 'delta',
+      arrows: 'arrows',
+      errorLine: 'errorLine',
+      iob: 'iob',
+      cob: 'cob', 
+      syringe: 'syringe',
+      hamburger: 'hamburger',
+      high: 'high',
+      low: 'low',
+      highLine: 'highLine',
+      meanLine: 'meanLine',
+      lowLine: 'lowLine',
+      graphPoints: 'graphPoints'
+    }  
+
+    if(data.settings.numOfDataSources === "dataSource") {
+      multipleBgView.style.display = "none";
+      updateBgsDisplay(currentBgFromBloodSugars, classes);
+
+    } else if(data.settings.numOfDataSources === "dataSourceTwo") {
+      multipleBgView.style.display = "inline";
+      // update two BGs at once
+      classes = {
+        bloodSugars:'bloodSugars',
+        sgv:'firstSgv',
+        rawbg: 'firstRawbg',
+        tempBasal: 'firstTempBasal',
+        predictedBg:'firstPredictedBg',
+        timeOfLastSgv: 'firstTimeOfLastSgv',
+        delta: 'firstDelta',
+        arrows: 'firstArrows',
+        errorLine: 'firstErrorLine',
+        iob: 'firstIob',
+        cob: 'firstCob', 
+        syringe: 'firstSyringe',
+        hamburger: 'firstHamburger',
+        high: 'firstHigh',
+        low: 'firstLow',
+        highLine: 'firstHighLine',
+        meanLine: 'firstMeanLine',
+        lowLine: 'firstLowLine',
+        graphPoints: 'firstGraphPoints'
+      }  
+      updateBgsDisplay(currentBgFromBloodSugars, classes);
+      
+      classes = {
+        bloodSugars:'bloodSugarsTwo',
+        sgv:'secondSgv',
+        rawbg: 'secondRawbg',
+        tempBasal: 'secondTempBasal',
+        predictedBg:'secondPredictedBg',
+        timeOfLastSgv: 'secondTimeOfLastSgv',
+        delta: 'secondDelta',
+        arrows: 'secondArrows',
+        errorLine: 'secondErrorLine',
+        iob: 'secondIob',
+        cob: 'secondCob', 
+        syringe: 'secondSyringe',
+        hamburger: 'secondHamburger',
+        high: 'secondHigh',
+        low: 'secondLow',
+        highLine: 'secondHighLine',
+        meanLine: 'secondMeanLine',
+        lowLine: 'secondLowLine',
+        graphPoints: 'secondGraphPoints'
+      } 
+      updateBgsDisplay(currentBgFromBloodSugarsTwo, classes);
+    }
 
     dateElement.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
     
@@ -273,31 +350,29 @@ setInterval(  function() {
      transfer.send(dataToSend);
 }, 180000);
 
-//keys: ['sgv', 'rawbg', 'tempBasal', 'predictedBg', 'timeOfLastSgv', 'delta', 'arrows', 'errorLine', 'iob', 'cob', 'syringe', 'hamburger']
-function updateBgsDisplay(currentBgFromBloodSugars, keys) {
-  let sgv = document.getElementById(keys[0]);
+function updateBgsDisplay(currentBgFromBloodSugars, classes) {
+  let sgv = document.getElementById(classes.sgv);
   let largeGraphsSgv = document.getElementById("largeGraphsSgv");
-  let rawbg = document.getElementById(keys[1]);
-  let tempBasal = document.getElementById(keys[2]);
-  let predictedBg = document.getElementById(keys[3]);
-  let timeOfLastSgv = document.getElementById(keys[4]);
+  let rawbg = document.getElementById(classes.rawbg);
+  let tempBasal = document.getElementById(classes.tempBasal);
+  let predictedBg = document.getElementById(classes.predictedBg);
+  let timeOfLastSgv = document.getElementById(classes.timeOfLastSgv);
   let largeGraphTimeOfLastSgv = document.getElementById("largeGraphTimeOfLastSgv");
-  let delta = document.getElementById(keys[5]);
+  let delta = document.getElementById(classes.delta);
   let largeGraphDelta = document.getElementById('largeGraphDelta');
   let largeGraphLoopStatus = document.getElementById("largeGraphLoopStatus");
-  let arrows = document.getElementById(keys[6]);
+  let arrows = document.getElementById(classes.arrows);
   let largeGraphArrows = document.getElementById("largeGraphArrows");
 
-  let iob = document.getElementById(keys[8]);
-  let cob = document.getElementById(keys[9]);
-  let syringe = document.getElementById(keys[10]);
-  let hamburger = document.getElementById(keys[11]);
+  let iob = document.getElementById(classes.iob);
+  let cob = document.getElementById(classes.cob);
+  let syringe = document.getElementById(classes.syringe);
+  let hamburger = document.getElementById(classes.hamburger);
   let largeGraphIob = document.getElementById("largeGraphIob");
   let largeGraphCob = document.getElementById("largeGraphCob");
   let largeGraphSyringe = document.getElementById("largeGraphSyringe");
   let largeGraphHamburger = document.getElementById("largeGraphHamburger");
 
-  
   // Layout options
   if( currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob' ){
     iob.text =  currentBgFromBloodSugars[data.settings.layoutOne];
@@ -398,9 +473,9 @@ function updateBgsDisplay(currentBgFromBloodSugars, keys) {
     }
   }
     
-  alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV, [keys[0], keys[7]]);
+  alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV, classes);
   
-  errors.check(timeSenseLastSGV, currentBgFromBloodSugars.currentbg);
+  errors.check(timeSenseLastSGV, classes);
   let deltaText = currentBgFromBloodSugars.bgdelta 
   // add Plus
   if (deltaText > 0) {
@@ -414,10 +489,11 @@ function updateBgsDisplay(currentBgFromBloodSugars, keys) {
   arrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png'
   largeGraphArrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png';
   
-  graph.update(data.bloodSugars.bgs,
+  graph.update(data[classes.bloodSugars].bgs,
                data.settings.highThreshold,
                data.settings.lowThreshold,
-               data.settings
+               data.settings,
+               classes
               );
   
 }

@@ -35,14 +35,14 @@ function mySettings(props) {
           props,
           'dataSource',
           'Data Source One',
-          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational"]
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceNameOne"]
         )}
         {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 'dataSourceTwo') ?
           renderDataSource(
             props,
             'dataSourceTwo',
             'Data Source Two',
-            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo"]
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameOne"]
           )
         : null) : null)}
       </Section>      
@@ -82,7 +82,7 @@ function mySettings(props) {
                                              
                                           
              <Text bold align="center">Graph</Text>
-            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
+            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout' ) || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
             <Toggle settingsKey="largeGraph" label="Large graph popup screen"/>
             <Text>Tap the lower right hand side of the watch faces screen to view the larger graph popup screen.</Text>
               
@@ -95,7 +95,7 @@ function mySettings(props) {
                    like turn on save color to save it! Need help finding a hex color code? <Link source="https://www.color-hex.com/">check out this site.</Link></Text><Toggle settingsKey="saveColor" label="Save Color"/><TextInput label="Hex Color One" settingsKey="hexColor" /> <TextInput label="Hex Color Two" settingsKey="hexColorTwo" /> <TextInput label="Text Color" settingsKey="textColor" /></Section>: null) : null)} 
         
         
-          {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') ?
+          {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'spike') ?
           <Section>
               <Text bold align="center">Customize</Text>
               <Text>The customize section is used for customizing the user interface of Glance, you can replace the default values of Glance with other values present.</Text>
@@ -136,7 +136,12 @@ registerSettingsPage(mySettings);
 function renderDataSource(props, id, title, keys) {
   return (
     <Section>
-      <Text bold align="center">{title}</Text>
+      <TextImageRow
+        label={title}
+        sublabel=""
+        icon="https://i.ibb.co/R42vWmg/Blood-drop-plain-svg.png"
+      />
+      <TextInput label="Data Source Name" settingsKey={keys[6]} /> 
       <Select
         label={`Data Source`}
         settingsKey={id}

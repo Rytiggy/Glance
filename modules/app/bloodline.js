@@ -16,21 +16,22 @@
 import { me as device } from "device";
 import document from "document";
 
-let highNumber = document.getElementById("high");
-let lowNumber = document.getElementById("low");
+
 let largeGraphHigh = document.getElementById("largeGraphHigh");
 let largeGraphLow = document.getElementById("largeGraphLow");
-
-let meanNumber = document.getElementsByClassName("mean");
-let highLine = document.getElementsByClassName("highLine");
-let meanLine = document.getElementsByClassName("meanLine");
-let lowLine = document.getElementsByClassName("lowLine");
-
-let graphPoints = document.getElementsByClassName("graphPoints");
 let largeGraphGraphPoints = document.getElementsByClassName("largeGraphGraphPoints");
     
 export default class bloodline { 
-  update(bloodsugars, high, low, settings) {
+  update(bloodsugars, high, low, settings, classes) {
+
+    let highNumber = document.getElementById(classes.high);
+    let lowNumber = document.getElementById(classes.low);
+    let highLine = document.getElementsByClassName(classes.highLine);
+    let meanLine = document.getElementsByClassName(classes.meanLine);
+    let lowLine = document.getElementsByClassName(classes.lowLine);
+    let graphPoints = document.getElementsByClassName(classes.graphPoints);
+
+
     let isMmol = settings.glucoseUnits === 'mmol';
     
     console.log('app - bloodline - update()')
@@ -100,12 +101,12 @@ export default class bloodline {
     lowLine[0].y1 = lowY;
     lowLine[0].y2 = lowY;
     
-    highLine[1].y1 = highY;
-    highLine[1].y2 = highY;
-    meanLine[1].y1 = (highY + lowY)/2;
-    meanLine[1].y2 = (highY + lowY)/2;
-    lowLine[1].y1 = lowY;
-    lowLine[1].y2 = lowY;
+    // highLine[1].y1 = highY;
+    // highLine[1].y2 = highY;
+    // meanLine[1].y1 = (highY + lowY)/2;
+    // meanLine[1].y2 = (highY + lowY)/2;
+    // lowLine[1].y1 = lowY;
+    // lowLine[1].y2 = lowY;
     
     highNumber.y = highY;
     lowNumber.y = lowY; 

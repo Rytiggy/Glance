@@ -25,28 +25,7 @@
         <image class="stat-image" href="img/hamburger.png" fill="white" id="hamburger" />
         <text class="text" id="iob" />
         <image class="stat-image" href="img/syringe.png" fill="white" id="syringe" />      
-        
-         <!-- Alert -->
-         <svg id="popup" display="none">
-            <!-- Black background -->
-            <rect class="full-size" fill="fb-black" />
-            <!-- Title and text -->
-            <use href="#mixed-text-center-mid" class="dialog-mixed-text" id="alertHeader">
-                <set href="#top-padding" attributeName="display" to="none" />
-                <set href="#header/text" attributeName="fill" to="fb-magenta" />
-                <set href="#copy/text" attributeName="text-buffer" to="Check blood sugar!" />
-                <set href="#header/text" attributeName="text-length" to="128" />
-                <set href="#bottom-padding" attributeName="display" to="none" />
-            </use>
-            <text display="none" text-anchor="middle" id="popup-title" class="h2 text-gray">--</text>
-            <image href="img/arrows/None.png" id="alertArrows"/>
-            <!-- Right button -->
-            <use id="dismiss" class="dialog-half-button-left" href="#square-button-negative">
-                <set href="#text" attributeName="text-buffer" to="Dismiss" />
-                <set href="#text" attributeName="text-anchor" to="middle" />
-            </use>
-        </svg>
-        <!-- End Alert -->
+
       
         <!-- Graph -->
         <svg id="graph">
@@ -173,45 +152,127 @@
         <!-- End Graph -->
     </svg>
 
-    <svg id="multipleBgView" display="inline">
+    <!-- Multiple Bg View -->  
+    <svg id="multipleBgView" display="none">
         <gradientRect id ="multipleBgBgColor" width="100%" height="100%" gradient-type="linear" gradient-x1="0" gradient-y1="20" gradient-x2="0" gradient-y2="100%-80" gradient-color1="#390263" gradient-color2="black" />
         <text text-anchor="middle" class="text text-gray" id="multipleBGTime" />
 
-            
-        <text class="h2" id="secondSgv">---</text>
-        <line stroke-width="4" id="secondErrorLine" display="none" />
-        <text class="text text-gray" id="secondDelta" />
-        <image href="img/arrows/None.png" id="secondArrows"/>
-        <text class="text text-gray" id="secondTimeOfLastSgv" />
-    
-        <text class="text text-gray" id="secondIob" />
-        <image class="stat-image" href="img/syringe.png" fill="white" id="secondSyringe" />
-        <text class="text text-gray" id="secondCob" />
-        <image class="stat-image" href="img/hamburger.png" fill="white" id="secondHamburger" />
-        <textclass="text text-gray" id="secondTempBasal" />
-        <text class="text text-gray" id="secondTempBasal" />
-
-
-        <text display="none" class="text text-gray" id="secondRawbg"/>
-        <text display="none" class="text text-gray" id="secondPredictedBg" />
-       
-
         <text class="h2" id="firstSgv">---</text>
         <line stroke-width="4" id="firstErrorLine" display="none" />
-        <text text-anchor="end" class="text text-gray" id="firstDelta" />
+        <text class="text text-gray" id="firstDelta" />
         <image href="img/arrows/None.png" id="firstArrows"/>
-        <text text-anchor="end" class="text text-gray" id="firstTimeOfLastSgv" />
-
-        <text text-anchor="end" class="text text-gray" id="firstIob" />
+        <text class="text text-gray" id="firstTimeOfLastSgv" />
+        <text class="text text-gray" id="firstIob" />
         <image class="stat-image" href="img/syringe.png" fill="white" id="firstSyringe" />
-        <text text-anchor="end" class="text text-gray" id="firstCob" />
+        <text class="text text-gray" id="firstCob" />
         <image class="stat-image" href="img/hamburger.png" fill="white" id="firstHamburger" />
-        <text text-anchor="end" class="text text-gray" id="firstTempBasal" />
-        <text text-anchor="end" class="text text-gray" id="firstTempBasal" />
-
-
-        <text display="none" text-anchor="end" class="text text-gray" id="firstRawbg"/>
+        <text class="text text-gray" id="firstTempBasal" />
+        
+        <text display="none" class="text text-gray" id="firstRawbg"/>
         <text display="none" class="text text-gray" id="firstPredictedBg" />
-    
-    </svg>   
+
+
+        <text class="h2" id="secondSgv">---</text>
+        <line stroke-width="4" id="secondErrorLine" display="none" />
+        <text text-anchor="end" class="text text-gray" id="secondDelta" />
+        <image href="img/arrows/None.png" id="secondArrows"/>
+        <text text-anchor="end" class="text text-gray" id="secondTimeOfLastSgv" />
+        <text text-anchor="end" class="text text-gray" id="secondIob" />
+        <image class="stat-image" href="img/syringe.png" fill="white" id="secondSyringe" />
+        <text text-anchor="end" class="text text-gray" id="secondCob" />
+        <image class="stat-image" href="img/hamburger.png" fill="white" id="secondHamburger" />
+        <text text-anchor="end"   class="text text-gray" id="secondTempBasal" />
+        
+        <text text-anchor="end"  display="none" class="text text-gray" id="secondRawbg"/>
+        <text text-anchor="end"  display="none" class="text text-gray" id="secondPredictedBg" />
+        
+        <svg id="firstGraph">
+            <line class="firstHighLine" x1="0" y1="40%+1" x2="95%" y2="40%+1" fill="#FFA500" stroke-width="1" />
+            <line class="firstMeanLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#616161" stroke-width="1" />
+            <line class="firstLowLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#de4430" stroke-width="1" />
+
+            <text id="firstHigh" class="xs-text" text-anchor="end" />
+            <text id="firstLow" class="xs-text" text-anchor="end" />
+            <circle class="firstGraphPoints" cx="4%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="8%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="12%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="16%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="20%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="24%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="28%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="32%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="36%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="40%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="44%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="48%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="52%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="56%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="60%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="64%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="68%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="72%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="76%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="80%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="84%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="88%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="92%" cy="50%" r="3" />
+            <circle class="firstGraphPoints" cx="96%" cy="50%" r="3" />
+        </svg>
+
+        <svg id="secondGraph">
+            <line class="secondHighLine" x1="0" y1="40%+1" x2="95%" y2="40%+1" fill="#FFA500" stroke-width="1" />
+            <line class="secondMeanLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#616161" stroke-width="1" />
+            <line class="secondLowLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#de4430" stroke-width="1" />
+
+            <text id="secondHigh" class="xs-text" text-anchor="end" />
+            <text id="secondLow" class="xs-text" text-anchor="end" />
+            <circle class="secondGraphPoints" cx="4%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="8%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="12%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="16%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="20%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="24%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="28%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="32%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="36%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="40%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="44%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="48%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="52%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="56%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="60%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="64%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="68%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="72%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="76%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="80%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="84%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="88%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="92%" cy="50%" r="3" />
+            <circle class="secondGraphPoints" cx="96%" cy="50%" r="3" />
+        </svg>
+    </svg> 
+    <!-- End Multiple Bg View -->  
+
+    <!-- Alert -->
+    <svg id="popup" display="none">
+        <!-- Black background -->
+        <rect class="full-size" fill="fb-black" />
+        <!-- Title and text -->
+        <use href="#mixed-text-center-mid" class="dialog-mixed-text" id="alertHeader">
+            <set href="#top-padding" attributeName="display" to="none" />
+            <set href="#header/text" attributeName="fill" to="fb-magenta" />
+            <set href="#copy/text" attributeName="text-buffer" to="Check blood sugar!" />
+            <set href="#header/text" attributeName="text-length" to="128" />
+            <set href="#bottom-padding" attributeName="display" to="none" />
+        </use>
+        <text display="none" text-anchor="middle" id="popup-title" class="h2 text-gray">--</text>
+        <image href="img/arrows/None.png" id="alertArrows"/>
+        <!-- Right button -->
+        <use id="dismiss" class="dialog-half-button-left" href="#square-button-negative">
+            <set href="#text" attributeName="text-buffer" to="Dismiss" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+    </svg>
+    <!-- End Alert -->  
 </svg>

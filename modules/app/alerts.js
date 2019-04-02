@@ -25,15 +25,15 @@ const transfer = new Transfer();
 const dateTime = new DateTime();
 
 export default class alerts {
-	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV, keys) {
+	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV, classes) {
 		let popup = document.getElementById("popup");
 		let popupTitle = document.getElementById("popup-title");
 		let popupLeadText = popup.getElementById('copy')
 		let alertArrows = document.getElementById("alertArrows");
 
-		let sgv = document.getElementById(keys[0]);
+		let sgv = document.getElementById(classes.sgv);
 		let largeGraphsSgv = document.getElementById("largeGraphsSgv");
-		let errorLine = document.getElementById(keys[1]);
+		let errorLine = document.getElementById(classes.errorLine);
 
 
 

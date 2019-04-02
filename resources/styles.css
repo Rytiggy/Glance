@@ -354,3 +354,177 @@
  height: 45;
  fill: white;
 }
+/* Multiple BG display */
+#multipleBGTime {
+  x: 50%;
+  y: 8%+4;
+}
+
+/* left side */
+#firstDelta {
+  x: 2%;
+  y: 8%+3;
+}
+
+#firstSgv {
+  x: 2%;
+  y: 25%;
+}
+
+#firstArrows {
+  x: 31%;
+  y: 11%;
+  width: 45;
+  height: 45;
+  fill: white;
+}
+
+ #firstErrorLine {
+  x1: 2%;
+  y1: 19%;
+  x2: 29%;
+  y2: 19%;
+  fill: white;
+}
+
+ #firstTimeOfLastSgv {
+  x: 2%;
+  y: 33%;
+}
+
+#firstIob {
+  x: 9%;
+  y: 42%; 
+ }
+
+ #firstCob {
+  x: 9%;
+  y: 50%;  
+ }
+
+ #firstSyringe {
+  x: 2%;
+  y: 37%; 
+ }
+
+ #firstHamburger {
+  x: 2%;
+  y: 45%;  
+ }
+
+ #firstRawbg {
+  x: 2%;
+  y: 40%;
+ }
+
+ #firstTempBasal {
+  x: 2%;
+  y: 58%;
+ }
+
+ #firstGraph {
+  x: 2%; 
+  y: 60%+3; 
+  width: 50%; 
+  height: 100;
+}
+#firstHigh {
+  x: 97%;
+  y: 30%;
+  width: 40;
+}
+#firstMean {
+  x: 100%+9;
+  y: 65; 
+}
+
+#firstLow {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}
+
+ /* right side */
+ #secondDelta {
+  x: 98%;
+  y: 8%+3;
+}
+
+ #secondSgv {
+  text-anchor:"end";
+  x: 83%;
+  y: 25%;
+}
+
+#secondArrows {
+  x: 83%;
+  y: 11%;
+  width: 45;
+  height: 45;
+  fill: white;
+}
+
+#secondErrorLine {
+  x1: 52%;
+  y1: 19%;
+  x2: 79%;
+  y2: 19%;
+  fill: white;
+}
+
+#secondTimeOfLastSgv {
+  x: 98%;
+  y: 33%;
+ }
+
+ #secondIob {
+  x: 91%;
+  y: 42%; 
+ }
+
+ #secondCob {
+  x: 91%;
+  y: 50%;  
+ }
+
+ #secondSyringe {
+  x: 92%;
+  y: 37%; 
+ }
+
+ #secondHamburger {
+  x: 92%;
+  y: 45%;  
+ }
+
+ #secondRawbg {
+  x: 98%;
+  y: 40%;
+ }
+
+ #secondTempBasal {
+  x: 98%;
+  y: 58%;
+ }
+ #secondGraph {
+  x: 50%; 
+  y: 60%+3; 
+  width: 50%; 
+  height: 100;
+}
+
+#secondHigh {
+  x: 97%;
+  y: 30%;
+  width: 40;
+}
+#secondMean {
+  x: 100%+9;
+  y: 65; 
+}
+
+#secondLow {
+  x: 97%;
+  y: 88%;
+  width: 40;
+}

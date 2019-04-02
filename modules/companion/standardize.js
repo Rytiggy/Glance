@@ -24,13 +24,14 @@ export default class standardize {
 	// sgv:
 	// datetime:
 	// bgdelta:
-	bloodsugars(data, extraData, settings) {
+	bloodsugars(data, extraData, settings, keys) {
 		logs.add('Line 29: companion - standardize - bloodsugars()')
 		logs.add('Line 30: companion - standardize - bloodsugars() - PARAMERTERS')
 		logs.add(`data: ${JSON.stringify(data)}}`);
 		logs.add(`extraData ${JSON.stringify(extraData)}`);
-		settings.dexcomUsername = '';
-		settings.dexcomPassword = '';
+
+		settings[keys.dexcomUsername] = '';
+		settings[keys.dexcomPassword] = '';
 		logs.add(`settings ${JSON.stringify(settings)}`);
 
 		let bgs = data;
@@ -41,7 +42,7 @@ export default class standardize {
 		let upbat = '';
     let sage = ''
 		if (bgs && !data.error && data && bgs !== 'undefined') {
-			if (settings.dataSource === 'nightscout') {
+			if (settings[keys.dataSource] === 'nightscout') {
 				bgs = data.bgs;
 				// SPIKE WORK AROUND 
 				// this check is here for old versions of spike where the /pebble endpoint was returning mmol svg data 
@@ -61,7 +62,7 @@ export default class standardize {
 				upbat = standardizedExtraData.upbat;
         sage = standardizedExtraData.sage;
 				// add any extra data
-			} else if (settings.dataSource === 'xdrip') { // xdrip using the sgv endpoint still
+			} else if (settings[keys.dataSource] === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
 				if (Array.isArray(bgs)) {
 					bgs[0].datetime = bgs[0].date;
@@ -69,11 +70,11 @@ export default class standardize {
 				} else {
 					bgs = null;
 				}
-			} else if (settings.dataSource === 'spike') {
+			} else if (settings[keys.dataSource] === 'spike') {
 				bgs = data.bgs;
-			} else if (settings.dataSource === 'custom') {
+			} else if (settings[keys.dataSource] === 'custom') {
 				bgs = data.bgs;
-			} else if (settings.dataSource === 'dexcom') {
+			} else if (settings[keys.dataSource] === 'dexcom') {
 				let bgsTemplate = {
 					bgs: [{
 							sgv: '120',
@@ -343,8 +344,6 @@ export default class standardize {
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
-		console.error("currentTime---------------------------")
-		console.error(currentTime)
 		return {
 			bgs: [{
 					sgv: '120',

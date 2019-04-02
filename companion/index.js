@@ -75,7 +75,7 @@ async function sendData() {
   // Get SGV data
   let bloodsugarsTwo = null;
   let extraDataTwo = null;
-  if (store.url === 'dexcom') {
+  if (store.urlTwo === 'dexcom') {
     let USAVSInternationalTwo = store.USAVSInternationalTwo;
     let subDomainTwo = 'share2';
     if(USAVSInternationalTwo) {
@@ -102,9 +102,20 @@ async function sendData() {
   // Get weather data   
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
   Promise.all([bloodsugars, extraData, bloodsugarsTwo, extraDataTwo]).then(function(values) {
+    
+		let keysOne = {
+			dexcomUsername: 'dexcomUsername',
+			dexcomPassword: 'dexcomPassword',
+			dataSource: 'dataSource',
+    }
+    let keysTwo = {
+			dexcomUsername: 'dexcomUsernameTwo',
+			dexcomPassword: 'dexcomPasswordTwo',
+			dataSource: 'dataSourceTwo',
+		}
     let dataToSend = {
-      bloodSugars: standardize.bloodsugars(values[0], values[1], store),
-      bloodSugarsTwo: standardize.bloodsugars(values[2], values[3], store),
+      bloodSugars: standardize.bloodsugars(values[0], values[1], store, keysOne),
+      bloodSugarsTwo: standardize.bloodsugars(values[2], values[3], store, keysTwo),
       settings: standardize.settings(store)
       // weather: values[2].query.results.channel.item.condition,
     };

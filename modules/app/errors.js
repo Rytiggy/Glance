@@ -14,14 +14,16 @@
 
 
 import document from "document";
-let errorLine = document.getElementById("errorLine");
+
+let largeGraphsSgv = document.getElementById("largeGraphsSgv");
 let largeGraphErrorLine = document.getElementById("largeGraphErrorLine");
 
-let sgv = document.getElementById("sgv");
-let largeGraphsSgv = document.getElementById("largeGraphsSgv");
 
 export default class errors { 
-  check(timeSenseLastSGV) {
+  check(timeSenseLastSGV, classes) {
+    let sgv = document.getElementById(classes.sgv);
+    let errorLine = document.getElementById(classes.errorLine);
+
     console.log('app - errors - check()')   
     // if the bloodsugar is stale 
     if (parseInt(timeSenseLastSGV, 10) >= 15) {
