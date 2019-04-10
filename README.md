@@ -1,4 +1,7 @@
 <p align="right">
+  <a href="https://www.facebook.com/groups/Glance/">
+    <img src="https://img.shields.io/badge/Facebook-Join-%234267b2.svg" />
+  </a>
   <a href="https://discord.gg/Nuc86HJ">
     <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
   </a>

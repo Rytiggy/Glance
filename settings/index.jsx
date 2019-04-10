@@ -25,7 +25,7 @@ function mySettings(props) {
       </Text>
 
       <Section title={<Text bold align="center">Data Source Settings</Text>}>
-        <Select label={`Data Source`} settingsKey="dataSource" options={[ {name:"Dexcom", value:"dexcom"}, {name:"Nightscout", value:"nightscout"}, {name:"xDrip+", value:"xdrip"}, {name:"Spike", value:"spike"}, {name:"custom", value:"custom"}, ]} />
+        <Select label={`Data Source`} settingsKey="dataSource" options={[ {name:"Dexcom", value:"dexcom"}, {name:"Nightscout", value:"nightscout"}, {name:"xDrip+", value:"xdrip"}, {name:"Spike", value:"spike"}, {name:"Tomato", value:"tomato"}, {name:"Custom", value:"custom"}, ]} />
 
         {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'custom') ?
         <TextInput label="Api endpoint" settingsKey="customEndpoint" /> : null) : null)}
