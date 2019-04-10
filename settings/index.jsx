@@ -151,6 +151,7 @@ function renderDataSource(props, id, title, keys) {
             {name:"Nightscout", value:"nightscout"},
             {name:"xDrip+", value:"xdrip"},
             {name:"Spike", value:"spike"},
+            {name:"Tomato", value:"tomato"},
             {name:"custom", value:"custom"},
           ]
         }

@@ -77,8 +77,10 @@ export default class settings {
    } else if(dataSource === 'custom') {
      url = JSON.parse(settingsStorage.getItem('customEndpoint')).name + queryParms;
    // 47 42
-   }else if(dataSource === 'dexcom') {
+   } else if(dataSource === 'dexcom') {
      url = 'dexcom';
+   } else if(dataSource === 'tomato') { // tomato
+     url = 'http://127.0.0.1:11111' + queryParms;
    }
    
    let dataSourceTwo = null;
@@ -126,8 +128,10 @@ export default class settings {
    } else if(dataSourceTwo === 'custom') {
     urlTwo = JSON.parse(settingsStorage.getItem('customEndpointTwo')).name + queryParms;
    // 47 42
-   }else if(dataSourceTwo === 'dexcom') {
+   } else if(dataSourceTwo === 'dexcom') {
     urlTwo = 'dexcom';
+   } else if(dataSource === 'tomato') { // tomato
+    urlTwo = 'http://127.0.0.1:11111' + queryParms;
    }
 
 
