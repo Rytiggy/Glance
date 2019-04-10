@@ -25,8 +25,7 @@ export default class standardize {
 	// datetime:
 	// bgdelta:
 	bloodsugars(data, extraData, settings) {
-		logs.add('Line 29: companion - standardize - bloodsugars()')
-		logs.add('Line 30: companion - standardize - bloodsugars() - PARAMERTERS')
+		logs.add('companion - standardize - bloodsugars()')
 		logs.add(`data: ${JSON.stringify(data)}}`);
 		logs.add(`extraData ${JSON.stringify(extraData)}`);
 		settings.dexcomUsername = '';
@@ -39,7 +38,8 @@ export default class standardize {
 		let predictedBg = '';
 		let loopStatus = '';
 		let upbat = '';
-    let sage = ''
+		let sage = ''
+		logs.add(`BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
 		if (bgs && !data.error && data && bgs !== 'undefined') {
 			if (settings.dataSource === 'nightscout') {
 				bgs = data.bgs;
@@ -247,8 +247,17 @@ export default class standardize {
 				})
         logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
 				bgs = bgsTemplate.bgs;
-			} // End of dexcom endpoint
+			} else if (settings.dataSource === 'tomato') { // tomato
+				bgs = data.bgs;
+				if (Array.isArray(bgs)) {
+					bgs[0].datetime = bgs[0].date;
+					bgs[0].bgdelta = bgs[0].sgv - bgs[1].sgv; //element.delta;
+				} else {
+					bgs = null;
+				}
+			}
 
+			
 			// Look for current non Predictive bg and not the last 5 predictions
 			// this works because only the current bg has a delta so we can filter for it
 			let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];
