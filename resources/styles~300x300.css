@@ -427,7 +427,7 @@
  }
 
  #firstGraph {
-  x: 2%; 
+  x: 1%; 
   y: 60%+3; 
   width: 50%; 
   height: 100;
@@ -446,6 +446,14 @@
   x: 97%;
   y: 88%;
   width: 40;
+}
+
+#dataSourceName {
+  x: 2%;
+  y: 99%;
+  font-size: 13;
+  fill: gray;
+  text-length: 64;
 }
 
  /* right side */
@@ -511,7 +519,7 @@
   y: 58%;
  }
  #secondGraph {
-  x: 50%; 
+  x: 51%; 
   y: 60%+3; 
   width: 50%; 
   height: 100;
@@ -531,4 +539,13 @@
   x: 97%;
   y: 88%;
   width: 40;
+}
+
+#dataSourceNameTwo {
+  x: 98%;
+  y: 99%;
+  font-size: 13;
+  fill: gray;
+  text-anchor:"end";
+  text-length: 64;
 }

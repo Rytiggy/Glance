@@ -211,7 +211,7 @@ export default class settings {
    
    console.log(settingsStorage.getItem('lowAlerts'))    
    let lowAlerts = null;
-   if (settingsStorage.getItem('lowAlerts')) {
+   if (settingsStorage.getItem('lowAlerts')) {1
      lowAlerts = JSON.parse(settingsStorage.getItem('lowAlerts'));
    } else if (!lowAlerts) {
      lowAlerts = true;
@@ -445,6 +445,22 @@ export default class settings {
      settingsStorage.setItem("staleDataAlertAfter", JSON.stringify({"name":staleDataAlertAfter}));
    }
 
+
+   let dataSourceName = null;
+   if (settingsStorage.getItem('dataSourceName')) {
+    dataSourceName = JSON.parse(settingsStorage.getItem('dataSourceName')).name;
+   } else if (!dataSourceName) {
+    dataSourceName = 'user one';
+    settingsStorage.setItem("dataSourceName", JSON.stringify({"name":dataSourceName}));
+   }  
+   let dataSourceNameTwo = null;
+   if (settingsStorage.getItem('dataSourceNameTwo')) {
+    dataSourceNameTwo = JSON.parse(settingsStorage.getItem('dataSourceNameTwo')).name;
+   } else if (!dataSourceNameTwo) {
+    dataSourceNameTwo = 'user two';
+    settingsStorage.setItem("dataSourceNameTwo", JSON.stringify({"name":dataSourceNameTwo}));
+   }  
+
    
    let settings = {
      url,
@@ -487,7 +503,9 @@ export default class settings {
      resetAlertDismissal,
      staleData,
      staleDataAlertAfter,
-     numOfDataSources
+     numOfDataSources,
+     dataSourceName,
+     dataSourceNameTwo
    }
    return settings;
   };

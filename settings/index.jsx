@@ -35,14 +35,14 @@ function mySettings(props) {
           props,
           'dataSource',
           'Data Source One',
-          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceNameOne"]
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName"],
         )}
         {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 'dataSourceTwo') ?
           renderDataSource(
             props,
             'dataSourceTwo',
             'Data Source Two',
-            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameOne"]
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo"],
           )
         : null) : null)}
       </Section>      

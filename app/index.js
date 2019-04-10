@@ -162,12 +162,13 @@ function update() {
     console.warn('GOT DATA');
     batteryLevel.width = batteryLevels.get().level;
     batteryLevel.style.fill = batteryLevels.get().color;
-    batteryPercent.text = '' + batteryLevels.get().percent + '%';   
-    timeElement.text = dateTime.getTime(data.settings.timeFormat);
-    largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
+    batteryPercent.text = batteryLevels.get().percent + '%';   
+
+    updateTimeDisplay()
     
     dismissHighFor = data.settings.dismissHighFor;
     dismissLowFor = data.settings.dismissLowFor;
+   
     weather.text = '';// data.weather.temp;
     degreeIcon.style.display = "none";
     
@@ -236,7 +237,8 @@ function update() {
         highLine: 'firstHighLine',
         meanLine: 'firstMeanLine',
         lowLine: 'firstLowLine',
-        graphPoints: 'firstGraphPoints'
+        graphPoints: 'firstGraphPoints',
+        dataSourceName: 'dataSourceName'
       }  
       updateBgsDisplay(currentBgFromBloodSugars, classes);
       
@@ -259,7 +261,8 @@ function update() {
         highLine: 'secondHighLine',
         meanLine: 'secondMeanLine',
         lowLine: 'secondLowLine',
-        graphPoints: 'secondGraphPoints'
+        graphPoints: 'secondGraphPoints',
+        dataSourceName: 'dataSourceNameTwo'
       } 
       updateBgsDisplay(currentBgFromBloodSugarsTwo, classes);
     }
@@ -281,11 +284,12 @@ function update() {
     console.warn('NO DATA');
     steps.text = commas(userActivity.get().steps);    
     heart.text = userActivity.get().heartRate;
+   
     batteryLevel.width = batteryLevels.get().level;
     batteryPercent.text = '' + batteryLevels.get().percent + '%';
-    
-    timeElement.text = dateTime.getTime();
-    largeGraphTime.text = dateTime.getTime();
+   
+    updateTimeDisplay()
+
 
     dateElement.text = dateTime.getDate();
   }
@@ -372,6 +376,7 @@ function updateBgsDisplay(currentBgFromBloodSugars, classes) {
   let largeGraphCob = document.getElementById("largeGraphCob");
   let largeGraphSyringe = document.getElementById("largeGraphSyringe");
   let largeGraphHamburger = document.getElementById("largeGraphHamburger");
+  let dataSourceName = document.getElementById(classes.dataSourceName);
 
   // Layout options
   if( currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob' ){
@@ -495,7 +500,16 @@ function updateBgsDisplay(currentBgFromBloodSugars, classes) {
                data.settings,
                classes
               );
-  
+  dataSourceName.text = data.settings[classes.dataSourceName];
+}
+
+function updateTimeDisplay(classes) {
+ // no  data
+  timeElement.text = dateTime.getTime();
+  largeGraphTime.text = dateTime.getTime();
+  // // data
+  // timeElement.text = dateTime.getTime(data.settings.timeFormat);
+  // largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
 }
 
 //<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/designerz-base" title="Designerz Base">Designerz Base</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
