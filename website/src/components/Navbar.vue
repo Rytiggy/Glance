@@ -77,7 +77,7 @@
             type="a"
             class="no-underline text-h6 q-px-sm text-grey-7 q-px-md"
             target="_blank"
-            href="https://discord.gg/RUa7U6F/"
+            href="https://www.facebook.com/groups/Glance/"
           >
             <i class="fab fa-facebook"></i>
           </q-btn>
@@ -90,7 +90,7 @@
             type="a"
             class="no-underline text-h6 q-px-sm text-grey-7 q-px-md"
             target="_blank"
-            href="https://www.facebook.com/groups/Glance/"
+            href="https://discord.gg/RUa7U6F/"
           >
             <i class="fab fa-discord"></i>
           </q-btn>
