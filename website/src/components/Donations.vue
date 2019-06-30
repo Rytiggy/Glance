@@ -18,7 +18,7 @@
               <img src="../statics/paypal-logo.png">
             </q-card-section>
 
-            <q-card-section>Donations can be made through paypal</q-card-section>
+            <q-card-section>Donations can be made through PayPal</q-card-section>
             <q-card-section>
               <q-btn-group push>
                 <q-btn

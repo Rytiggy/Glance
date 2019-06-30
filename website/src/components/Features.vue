@@ -5,7 +5,7 @@
       <div class="q-pb-md text-white text-center full-width">
         <div
           class="description-lead text-body1"
-        >Glance is a application for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!</div>
+        >Glance is a watchface for use with Fitbit devices to view your blood glucose levels along with a variety of other health stats on the watch face. You can see your stats at a glance!</div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4">
@@ -44,7 +44,7 @@
               <div class="text-h5 text-weight-medium">Trend Direction</div>
               <div
                 class="text-subtitle1 text-weight-normal"
-              >See past trend data for the last 4 hours to better predict where your blood glucose is heading.</div>
+              >See a graph of trend data for the last 4 hours to better predict where your blood glucose is heading.</div>
             </q-card-section>
           </q-card>
         </div>

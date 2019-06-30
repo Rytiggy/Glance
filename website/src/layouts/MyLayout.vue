@@ -1,31 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout @scroll="scrollHandler" view="lHh Lpr lFf">
     <!-- <q-header class="glance-navebar"> -->
-    <div class="fixed-top z-top">
-      <div class="q-py-sm">
-        <a
-          class="text-h5 q-px-sm text-grey-4"
-          target="_blank"
-          href="https://github.com/Rytiggy/Glance"
-        >
-          <i class="fab fa-github"></i>
-        </a>
-        <a
-          class="text-h5 q-px-sm text-grey-4"
-          target="_blank"
-          href="https://www.facebook.com/groups/Glance/"
-        >
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a
-          class="text-h5 q-px-sm text-grey-4"
-          target="_blank"
-          href="https://discord.gg/RUa7U6F/"
-        >
-          <i class="fab fa-discord"></i>
-        </a>
-      </div>
-    </div>
     <!-- </q-header> -->
     <!-- <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
@@ -98,6 +73,9 @@
       </q-list>
     </q-drawer>-->
 
+    <q-header bordered class="bg-white">
+        <navbar/>
+    </q-header>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -107,31 +85,28 @@
 
 <script>
 import { openURL } from "quasar";
+import navbar from "../components/navbar.vue";
 import glanceFooter from "../components/GlanceFooter.vue";
 
 export default {
   name: "MyLayout",
   components: {
+    navbar,
     glanceFooter,
   },
   data() {
     return {
       leftDrawerOpen: false,
-      slide: 1
+      slide: 1,
+     
     };
   },
   methods: {
-    openURL
+    openURL,
   }
 };
+
 </script>
 
 <style>
-body {
-  min-width: 320px;
-}
-.description-lead {
-  max-width: 600px;
-  margin: auto;
-}
 </style>

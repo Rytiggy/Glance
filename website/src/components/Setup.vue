@@ -176,58 +176,19 @@
           </div>
         </q-step>
 
-        <q-step :name="5" title="Review/Troubleshooting" icon="remove_red_eye">
+        <q-step :name="5" title="Review" icon="remove_red_eye">
           <div class="text-h5 text-grey-10 text-center">Finish</div>
-          <div class="text-h6 text-grey-10">Review/Troubleshooting:</div>
+          <div class="text-h6 text-grey-10">Review:</div>
           <div
             class="text-subtext1"
-          >You should now be receiving BG data on your watchface! If you are not try the troubleshooting steps below.</div>
-          <div class="q-pt-md text-h6 text-grey-10">Troubleshooting:</div>
-          <span id="sync-issue-not-connecting" class="bullet">Sync Issue/Not connecting?</span>
-          <q-carousel
-            v-model="troubleshootingSlide"
-            :fullscreen.sync="troubleshootingFullscreen"
-            infinite
-            class="bg-white"
           >
-            <q-carousel-slide
-              class="troubleshootSlide"
-              :name="1"
-              img-src="https://i.ibb.co/N1nmx40/Glance-Connection-issue-part-1-1.png"
-            />
-
-            <template v-slot:control>
-              <q-carousel-control position="bottom-right" :offset="[18, 18]">
-                <q-btn
-                  push
-                  round
-                  dense
-                  color="white"
-                  text-color="primary"
-                  :icon="troubleshootingFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                  @click="troubleshootingFullscreen = !troubleshootingFullscreen"
-                />
-              </q-carousel-control>
-            </template>
-          </q-carousel>
-          <div class="text-h6 text-grey-10">Common Error Codes:</div>
-          <div
-            class="bullet"
-          >DSE: Data Source error - generic error with <a
-              class="text-primary"
-              target="_blank"
-              href="https://github.com/Rytiggy/Glance/wiki/How-to-configuring-Glance's-settings#datasource"
-            >your data source
-            </a> try opening Glance's settings
+          You should now be receiving BG data on your watchface!
           </div>
-          <div
-            class="bullet"
-          >E500: A very general HTTP status code that means something has gone wrong on your site's server but the server could not be more specific on what the exact problem is.</div>
-          <div
-            class="bullet"
-          >E503: A HTTP status code that means the server is simply not available right now. Or you haven't configured your data source right.</div>
-          <div class="bullet">E504: Gateway Timeout</div>
-          <div class="bullet">E404: Could not locate your data source</div>
+          
+          <div class="q-pt-md text-h6 text-grey-10">Need help:</div>
+          <div class="bullet">
+            <q-btn flat no-caps type="a" to="/troubleshooting" class="text-primary text-weight-regular">Check out the troubleshooting section</q-btn>
+          </div>
           <div class="q-pt-md text-h6 text-grey-10">Comunity Support:</div>
           <div class="bullet">
             <a
@@ -272,8 +233,6 @@ export default {
       stepThreeDisable: true,
       step: 1,
       selectedDataSouce: null,
-      troubleshootingFullscreen: false,
-      troubleshootingSlide: 1,
       dataSoures: [
         {
           title: "Dexcom",
@@ -553,11 +512,6 @@ export default {
 .setup-stepper {
   max-width: 950px;
   margin: auto;
-}
-.bullet {
-  display: list-item;
-  list-style-type: disc;
-  list-style-position: inside;
 }
 .troubleshootSlide {
   background-size: contain !important;
