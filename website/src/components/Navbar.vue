@@ -5,7 +5,7 @@
         <q-avatar>
           <img src="../statics/favicon.png">
         </q-avatar>
-        <span class="text-h5 glance-logo">Glance</span>
+        <span class="gt-xs text-h5 glance-logo">Glance</span>
       </q-btn>
       <q-separator vertical />
     </q-toolbar-title>
@@ -54,7 +54,6 @@
       to="/troubleshooting"
       flat
       fit
-      label="Need Help"
     />
   </q-toolbar>
 </template>
