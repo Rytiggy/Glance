@@ -1,5 +1,5 @@
 <template>
-  <div class="glance-footer q-py-xl">
+  <div class="glance-footer q-py-xl q-px-md">
     <div class="text-white text-center full-width">
       <div class="description-lead text-body1 text-white">
         This program is free software distributed under the terms of the GNU General Public License

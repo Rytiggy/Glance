@@ -42,7 +42,7 @@
             >A project to help manage diabetes</div>
             <q-chip clickable square>
               <a
-                href="https://gallery.fitbit.com/details/7b5d9822-7e8e-41f9-a2a7-e823548c001c"
+                href="https://glance.page.link/download"
                 class="text-grey-10"
                 target="_blank"
               >
