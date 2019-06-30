@@ -19,7 +19,7 @@
             </q-card-section>
 
             <q-card-section>Donations can be made through PayPal</q-card-section>
-            <q-card-section>
+            <q-card-section class="q-px-none">
               <q-btn-group push>
                 <q-btn
                   type="a"

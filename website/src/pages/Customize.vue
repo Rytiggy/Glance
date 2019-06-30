@@ -12,7 +12,7 @@
            <span class="text-subtitle1 text-bold">Data Source:</span> Where your blood sugars are being hosted in the cloud.
             <ul>
               <li>
-                  <a href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Dexcom-as-a-data-source">Dexcom</a>
+                  <a class="text-primary" href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Dexcom-as-a-data-source">Dexcom</a>
                   <ul>
                     <li>Username: Your dexcom username</li>
                     <li>Password: your dexcom password</li>
@@ -20,21 +20,21 @@
                   </ul>
               </li>
               <li>
-                  <a href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Nightscout-as-a-data-source">Nightscout</a>
+                  <a class="text-primary" href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Nightscout-as-a-data-source">Nightscout</a>
                   <ul>
                     <li>Site name: Nighscout app name or nightscout URL both will work in 2.2</li>
                     <li>
                         Acceptable formates 
                         <ul>
-                          <li><a href="https://SiteName.herokuapp.com">https://SiteName.herokuapp.com</a></li>
+                          <li><a class="text-primary" href="https://SiteName.herokuapp.com">https://SiteName.herokuapp.com</a></li>
                           <li>SiteName</li>
                         </ul>
                     </li>
                     <li>Nightscout host site: Where you're nightscout site is hosted at. Heroku or Azure.</li>
                   </ul>
               </li>
-              <li><a href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-xDrip--as-a-data-source">xDrip+</a></li>
-              <li><a href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Spike-as-a-data-source">Spike</a></li>
+              <li><a class="text-primary" href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-xDrip--as-a-data-source">xDrip+</a></li>
+              <li><a class="text-primary" href="https://github.com/Rytiggy/Glance/wiki/How-to-setup-Spike-as-a-data-source">Spike</a></li>
               <li>
                   Tomato
               </li>
@@ -140,7 +140,7 @@
             <p><a>**Background color:**</a> Select a color for the watch background </p>
             <ul>
               <li>
-                  The white circle color is used for randomly generating a color. you can also enter <a href="https://www.color-hex.com/">hex values</a> for any color.
+                  The white circle color is used for randomly generating a color. you can also enter <a class="text-primary" href="https://www.color-hex.com/">hex values</a> for any color.
                   <ul>
                     <li><strong>Hex Color One:</strong> A hex color code that is used for the top background color on the watch</li>
                     <li><strong>Hex Color Two:</strong> A hex color code that is used for the bottom background color on the watch</li>

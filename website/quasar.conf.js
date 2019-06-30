@@ -63,7 +63,9 @@ module.exports = function (ctx) {
         "QTabPanel",
         "QTabPanels",
         "QImg",
-        "QBadge"
+        "QBadge",
+        "QSpace",
+        "QBtnDropdown"
       ],
 
       directives: ["Ripple"],
