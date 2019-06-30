@@ -1,5 +1,5 @@
 <template>
-  <div class="features q-py-xl">
+  <div id="features" class="q-py-xl">
     <div class="q-pa-xl">
       <div class="text-white text-h3 text-center">Features</div>
       <div class="q-pb-md text-white text-center full-width">
@@ -82,13 +82,13 @@
           <q-card flat bordered square class="features-card fit">
             <q-card-section class="text-center">
               <div class="text-h3">
-                <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-puzzle-piece"></i>
               </div>
-              <div class="text-h5 text-weight-medium">Delta</div>
+              <div class="text-h5 text-weight-medium">Compatibility</div>
               <div
                 class="text-subtitle1 text-weight-normal"
               >
-              See the change in glucose from the last BG to the current BG
+              Glance is compatible with Fitbit smartwatchs that includes the Fitbit <b>Versa</b>, <b>Versa lite</b>, and <b>Ionic</b>. 
               </div>
             </q-card-section>
           </q-card>
@@ -103,7 +103,7 @@ export default {};
 </script>
 
 <style scoped>
-.features {
+#features {
   background: linear-gradient(
       rgba(75, 162, 220, 0.9) 100%,
       rgba(75, 162, 220, 0.9) 100%

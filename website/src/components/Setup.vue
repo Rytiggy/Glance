@@ -1,5 +1,5 @@
 <template>
-  <div class="setup q-py-xl">
+  <div id="setup" class="q-py-xl">
     <div class="q-px-sm-none q-px-md-xl">
       <div class="text-white text-h3 text-center">Setup Guide</div>
       <div class="q-pb-md text-white text-center full-width">
@@ -22,8 +22,10 @@
         ref="stepper"
         color="primary"
         animated
+        :vertical="$q.screen.lt.md"
       >
         <q-step class="text-center" :name="1" title="Start" icon="save_alt" :done="step > 1">
+          <div class="text-subtext1 q-pb-sm">This guide will walk you through getting your CGM data to display on Glance.</div>
           <q-btn
             @click="$refs.stepper.next()"
             color="secondary"
@@ -43,7 +45,7 @@
               </span>
               <q-chip clickable square>
                 <a
-                  href="https://gallery.fitbit.com/details/7b5d9822-7e8e-41f9-a2a7-e823548c001c"
+                  href="https://glance.page.link/download"
                   class="text-grey-10"
                   target="_blank"
                 >
@@ -101,9 +103,9 @@
                 <q-card-section>
                   <div class="text-h6 text-grey-10">{{ dataSoure.title }}</div>
                   <div class="text-subtitle1">{{ dataSoure.shortDescription}}</div>
-                  <div v-for="(tag, t) in dataSoure.tags" :key="t" class="text-subtitle1 text-bold">
-                    <q-badge class="text-weight-medium" color="primary">{{ tag.title }}</q-badge>
-                  </div>
+                  <spn v-for="(tag, t) in dataSoure.tags" :key="t" class="text-subtitle1 text-bold q-pr-sm">
+                    <q-badge class="text-weight-medium" :class="tag.textColor" :color="tag.color">{{ tag.title }}</q-badge>
+                  </spn>
                 </q-card-section>
               </q-card>
             </div>
@@ -184,7 +186,15 @@
           >
           You should now be receiving BG data on your watchface!
           </div>
-          
+          <div class="q-pt-md text-h6 text-grey-10">Customize Glance:</div>
+          <div class="bullet">
+            Glance has a very dynamic set of settings allowing it to be used in a variety of
+            different use cases. Customize Glance how you like it, change the background color,
+            unit type (mgdl or mmol), various alerts you want to recieve, and so much more!
+          </div>
+          <div class="bullet">
+            <q-btn flat no-caps type="a" to="/customize" class="text-primary text-weight-regular">Check out the Customization section</q-btn>
+          </div>
           <div class="q-pt-md text-h6 text-grey-10">Need help:</div>
           <div class="bullet">
             <q-btn flat no-caps type="a" to="/troubleshooting" class="text-primary text-weight-regular">Check out the troubleshooting section</q-btn>
@@ -207,6 +217,16 @@
             >
               Join Glance's Discord server
             </a>
+          </div>
+          <div class="bullet">
+            <a
+              class="q-px-sm text-primary"
+              target="_blank"
+              href="https://www.youtube.com/watch?v=3rNK4goaVUE"
+            >
+              Video walkthrough: How to setup Glance
+            </a>
+            made by Type1Tech TipsnTricks
           </div>
           <div class="full-width">
             <q-btn
@@ -240,7 +260,14 @@ export default {
             "Login using the master Dexcom account attached to the CGM",
           tags: [
             {
-              title: "wifi/cell service"
+              title: "Requires: wifi",
+              color: "warning",
+              textColor: "text-grey-10"
+            },
+            {
+              title: "Requires: cell service",
+              color: "warning",
+              textColor: "text-grey-10"
             }
           ],
           requirements: [
@@ -258,7 +285,7 @@ export default {
               title: "Iphone or Android phone"
             },
             {
-              title: "Glance watchface installed"
+              title: "Glance watchface installed on your phone"
             }
           ],
           steps: [
@@ -297,7 +324,14 @@ export default {
             "Uses your Nightscout site name to connect to your CGM data",
           tags: [
             {
-              title: "wifi/cell service"
+              title: "Requires: wifi",
+              color: "warning",
+              textColor: "text-grey-10"
+            },
+            {
+              title: "Requires: cell service",
+              color: "warning",
+              textColor: "text-grey-10"
             }
           ],
           requirements: [
@@ -309,7 +343,7 @@ export default {
               title: "Iphone or Android phone"
             },
             {
-              title: "Glance watchface installed"
+              title: "Glance watchface installed on your phone"
             }
           ],
           steps: [
@@ -335,7 +369,9 @@ export default {
           shortDescription: "Use the Spike app to send CGM data to Glance",
           tags: [
             {
-              title: "iPhone Only"
+              title: "iPhone Only",
+              color: 'primary',
+              textColor: "text-white"
             }
           ],
           requirements: [
@@ -347,7 +383,7 @@ export default {
               title: "An iPhone phone"
             },
             {
-              title: "Glance watchface installed"
+              title: "Glance watchface installed on your phone"
             }
           ],
           steps: [
@@ -363,7 +399,7 @@ export default {
             },
             {
               title: "In Glance's settings select `Spike` as your data source.",
-              img: null
+              img: "https://media.giphy.com/media/JPyxgMeXoifbn34HiK/giphy.gif"
             },
             {
               title:
@@ -377,7 +413,9 @@ export default {
           shortDescription: "Use the xDrip app to send CGM data to Glance",
           tags: [
             {
-              title: "Android Only"
+              title: "Android Only",
+              color: 'primary',
+              textColor: "text-white"
             }
           ],
           requirements: [
@@ -389,7 +427,7 @@ export default {
               title: "An Android phone"
             },
             {
-              title: "Glance watchface installed"
+              title: "Glance watchface installed on your phone"
             }
           ],
           steps: [
@@ -406,7 +444,7 @@ export default {
             {
               title:
                 "In Glance's settings select `xDrip+` as your data source.",
-              img: null
+              img: "https://media.giphy.com/media/XbIhFmEJQcawNIUgIl/giphy.gif"
             },
             {
               title:
@@ -420,7 +458,9 @@ export default {
           shortDescription: "Use the Tomato app to send CGM data to Glance",
           tags: [
             {
-              title: "Currently only working on Android"
+              title: "Currently only working on Android",
+              color: 'primary',
+              textColor: "text-white"
             }
           ],
           requirements: [
@@ -432,7 +472,7 @@ export default {
               title: "An Android phone"
             },
             {
-              title: "Glance watchface installed"
+              title: "Glance watchface installed on your phone"
             }
           ],
           steps: [
@@ -442,8 +482,18 @@ export default {
               img: "../statics/tomato1.jpg"
             },
             {
-              title: "enable your local HTTP server",
+              title: "Enable Tomatos local HTTP server",
               img: "../statics/tomato2.jpg"
+            },
+            {
+              title:
+                "After installing Glance, Navigate to Glance's settings. <br/> <span class='bullet'>Fitbit app => click the watch in the upper corner => clock faces => tap the watch => tap settings button at the bottom</span>",
+              img: "https://media.giphy.com/media/4ZxdAQeUpXuFu8QsyV/giphy.gif"
+            },
+            {
+              title:
+                "In Glance's settings select `Tomato` as your data source.",
+              img: "https://media.giphy.com/media/RIRTkpyiAS2cKZOGxi/giphy.gif"
             },
             {
               title:
@@ -501,7 +551,7 @@ export default {
 </script>
 
 <style>
-.setup {
+#setup {
   background: linear-gradient(
       rgba(75, 162, 220, 1.9) 100%,
       rgba(75, 162, 220, 1.9) 100%

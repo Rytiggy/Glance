@@ -28,7 +28,7 @@
             <i class="fab fa-discord"></i>
           </a>
         </div>
-        Made by <a href="http://ryanmasonjar.com" target="_blank" class="text-grey-10">Ryan Mason</a>
+        Made by <a href="http://ryanmasonjar.com" target="_blank" class="text-grey-10">Ryan Mason</a> | 2019
       </div>
     </div>
   </div>

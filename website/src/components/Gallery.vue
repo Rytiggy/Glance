@@ -1,5 +1,5 @@
 <template>
-  <div class="gallery  q-py-xl">
+  <div id="gallery" class="q-py-xl">
     <div class="q-pa-xl">
       <div class="text-white text-h3 text-center">Gallery</div>
       <div class="q-pb-md text-white text-center full-width">
@@ -25,10 +25,10 @@ export default {
     return {
       galleryImgs: [
         {
-          url: "./statics/gallery.png"
+          url: "./statics/gallery8.png"
         },
         {
-          url: "./statics/gallery2.png"
+          url: "./statics/gallery10.png"
         },
         {
           url: "./statics/gallery6.png"
@@ -40,7 +40,7 @@ export default {
           url: "./statics/gallery5.png"
         },
         {
-          url: "./statics/gallery3.png"
+          url: "./statics/gallery11.jpg"
         }
       ]
     };
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style>
-.gallery {
+#gallery {
   background: linear-gradient(
       rgba(34, 34, 34, 0.95) 100%,
       rgba(34, 34, 34, 0.96) 100%

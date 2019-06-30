@@ -1,5 +1,5 @@
 <template>
-  <div class="donations q-py-xl">
+  <div id="donations" class="q-py-xl">
     <div class="q-pa-xl">
       <div class="text-white text-h3 text-center">Donations</div>
       <div class="q-pb-md text-white text-center full-width">
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style>
-.donations {
+#donations {
   background: linear-gradient(
       rgba(34, 34, 34, 0.9) 100%,
       rgba(34, 34, 34, 0.9) 100%

@@ -66,6 +66,16 @@
           Join Glance's Discord server
         </a>
       </div>
+      <div class="bullet">
+        <a
+          class="q-px-sm text-primary"
+          target="_blank"
+          href="https://www.youtube.com/watch?v=3rNK4goaVUE"
+        >
+          Video walkthrough: How to setup Glance
+        </a>
+        made by Type1Tech TipsnTricks
+      </div>
     </div>
   </q-page>
 </template>
