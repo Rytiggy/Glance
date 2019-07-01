@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="description-lead q-py-xl">
       <div class="text-h3 text-center q-pb-md">Troubleshooting</div>
-      <span id="sync-issue-not-connecting" class="bullet">Sync Issue/Not connecting?</span>
+      <div class="text-h6 text-grey-10">Sync Issue/Not connecting:</div>
       <q-carousel
         v-model="troubleshootingSlide"
         :fullscreen.sync="troubleshootingFullscreen"
