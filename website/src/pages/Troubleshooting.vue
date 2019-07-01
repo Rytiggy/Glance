@@ -12,7 +12,7 @@
         <q-carousel-slide
           class="troubleshootSlide troubleshooting-decision-tree"
           :name="1"
-          img-src="https://i.ibb.co/N1nmx40/Glance-Connection-issue-part-1-1.png"
+          img-src="../statics/decisionTree.png"
         />
 
         <template v-slot:control>
