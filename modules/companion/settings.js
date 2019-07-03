@@ -24,7 +24,7 @@ export default class settings {
   
    let numOfDataSources = null;
   if (settingsStorage.getItem('numOfDataSources')) {
-    console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
+    // console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
     numOfDataSources = JSON.parse(settingsStorage.getItem('numOfDataSources')).values[0].value;
   } else if (!numOfDataSources) {
     settingsStorage.setItem("numOfDataSources", JSON.stringify({"selected":[0], "values":[{"name":"One Data Source","value":"dataSource"}]}));
@@ -213,7 +213,6 @@ export default class settings {
    } 
    
    
-   console.log(settingsStorage.getItem('lowAlerts'))    
    let lowAlerts = null;
    if (settingsStorage.getItem('lowAlerts')) {1
      lowAlerts = JSON.parse(settingsStorage.getItem('lowAlerts'));
@@ -377,7 +376,7 @@ export default class settings {
    
    let dexcomUsername = null;
    if (settingsStorage.getItem('dexcomUsername')) {
-     console.log(settingsStorage.getItem('dexcomUsername'))
+    //  console.log(settingsStorage.getItem('dexcomUsername'))
      dexcomUsername = JSON.parse(settingsStorage.getItem('dexcomUsername')).name;
    } else if (!dexcomUsername) {
      dexcomUsername = null;
@@ -386,7 +385,7 @@ export default class settings {
   
    let dexcomPassword = null;
    if (settingsStorage.getItem('dexcomPassword')) {
-     console.log(settingsStorage.getItem('dexcomPassword'))
+    //  console.log(settingsStorage.getItem('dexcomPassword'))
      dexcomPassword = JSON.parse(settingsStorage.getItem('dexcomPassword')).name;
    } else if (!dexcomPassword) {
      dexcomPassword = null;
@@ -402,7 +401,7 @@ export default class settings {
 
    let dexcomUsernameTwo = null;
    if (settingsStorage.getItem('dexcomUsernameTwo')) {
-     console.log(settingsStorage.getItem('dexcomUsernameTwo'))
+    //  console.log(settingsStorage.getItem('dexcomUsernameTwo'))
      dexcomUsernameTwo = JSON.parse(settingsStorage.getItem('dexcomUsernameTwo')).name;
    } else if (!dexcomUsernameTwo) {
     dexcomUsernameTwo = null;
@@ -411,7 +410,7 @@ export default class settings {
   
    let dexcomPasswordTwo = null;
    if (settingsStorage.getItem('dexcomPasswordTwo')) {
-     console.log(settingsStorage.getItem('dexcomPasswordTwo'))
+    //  console.log(settingsStorage.getItem('dexcomPasswordTwo'))
      dexcomPasswordTwo = JSON.parse(settingsStorage.getItem('dexcomPasswordTwo')).name;
    } else if (!dexcomPasswordTwo) {
     dexcomPasswordTwo = null;
@@ -541,7 +540,7 @@ function isURL(s) {
 
 function validateHexCode(code, text) {
   var isOk  = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
-  console.log(isOk)
+  // console.log(isOk)
   if(isOk) {
     logs.add('companion - validateHexCode - Hex code valid');
     return code;
