@@ -453,7 +453,6 @@
   y: 99%;
   font-size: 13;
   fill: gray;
-  text-length: 64;
 }
 
  /* right side */
@@ -542,10 +541,15 @@
 }
 
 #dataSourceNameTwo {
-  x: 98%;
+  x: 52%;
   y: 99%;
   font-size: 13;
   fill: gray;
-  text-anchor:"end";
-  text-length: 64;
+  text-anchor:"start";
+}
+#alertGraph {
+  x: 57%-25; 
+  y: 55%; 
+  width: 175; 
+  height: 100;
 }

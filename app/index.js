@@ -164,7 +164,7 @@ function update() {
     batteryLevel.style.fill = batteryLevels.get().color;
     batteryPercent.text = batteryLevels.get().percent + '%';   
 
-    updateTimeDisplay()
+    updateTimeDisplay();
     
     dismissHighFor = data.settings.dismissHighFor;
     dismissLowFor = data.settings.dismissLowFor;
@@ -208,7 +208,9 @@ function update() {
       highLine: 'highLine',
       meanLine: 'meanLine',
       lowLine: 'lowLine',
-      graphPoints: 'graphPoints'
+      graphPoints: 'graphPoints',
+      dataSourceName: 'dataSourceName',
+      graphContainer: 'graph'
     }  
 
     if(data.settings.numOfDataSources === "dataSource") {
@@ -238,7 +240,8 @@ function update() {
         meanLine: 'firstMeanLine',
         lowLine: 'firstLowLine',
         graphPoints: 'firstGraphPoints',
-        dataSourceName: 'dataSourceName'
+        dataSourceName: 'dataSourceName',
+        graphContainer: 'firstGraph'
       }  
       updateBgsDisplay(currentBgFromBloodSugars, classes);
       
@@ -262,7 +265,8 @@ function update() {
         meanLine: 'secondMeanLine',
         lowLine: 'secondLowLine',
         graphPoints: 'secondGraphPoints',
-        dataSourceName: 'dataSourceNameTwo'
+        dataSourceName: 'dataSourceNameTwo',
+        graphContainer: 'secondGraph'
       } 
       updateBgsDisplay(currentBgFromBloodSugarsTwo, classes);
     }
@@ -478,14 +482,11 @@ function updateBgsDisplay(currentBgFromBloodSugars, classes) {
     }
   }
     
-  alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV, classes);
-  
-  errors.check(timeSenseLastSGV, classes);
   let deltaText = currentBgFromBloodSugars.bgdelta 
   // add Plus
   if (deltaText > 0) {
     deltaText = '+' + deltaText;
-   }
+  }
 
   delta.text = deltaText  +' '+ data.settings.glucoseUnits; 
   largeGraphDelta.text = deltaText  +' '+ data.settings.glucoseUnits;
@@ -501,6 +502,44 @@ function updateBgsDisplay(currentBgFromBloodSugars, classes) {
                classes
               );
   dataSourceName.text = data.settings[classes.dataSourceName];
+
+
+  let didAlert = alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV, classes);
+  console.error(didAlert)
+  if(didAlert) {
+    let alertGraphClasses = {
+      bloodSugars:'bloodSugars',
+      sgv:'sgv',
+      rawbg: 'rawbg',
+      tempBasal: 'tempBasal',
+      predictedBg:'predictedBg',
+      timeOfLastSgv: 'timeOfLastSgv',
+      delta: 'delta',
+      arrows: 'arrows',
+      errorLine: 'errorLine',
+      iob: 'iob',
+      cob: 'cob', 
+      syringe: 'syringe',
+      hamburger: 'hamburger',
+      high: 'high',
+      low: 'low',
+      highLine: 'highLine',
+      meanLine: 'meanLine',
+      lowLine: 'lowLine',
+      graphPoints: 'graphPoints',
+      dataSourceName: 'dataSourceName',
+      graphContainer: 'alertGraph'
+    }  
+
+
+    graph.update(data[classes.bloodSugars].bgs,
+      data.settings.highThreshold,
+      data.settings.lowThreshold,
+      data.settings,
+      alertGraphClasses
+     );
+  }
+  errors.check(timeSenseLastSGV, classes);
 }
 
 function updateTimeDisplay(classes) {

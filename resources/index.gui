@@ -218,7 +218,7 @@
             <circle class="firstGraphPoints" cx="92%" cy="50%" r="3" />
             <circle class="firstGraphPoints" cx="96%" cy="50%" r="3" />
         </svg>
-        <text id="dataSourceName" />
+        <text id="dataSourceName" text-length="64"/>
         
 
         <svg id="secondGraph">
@@ -253,7 +253,7 @@
             <circle class="secondGraphPoints" cx="92%" cy="50%" r="3" />
             <circle class="secondGraphPoints" cx="96%" cy="50%" r="3" />
         </svg>
-        <text id="dataSourceNameTwo" />
+        <text id="dataSourceNameTwo"  text-length="64" />
     </svg> 
     <!-- End Multiple Bg View -->  
 
@@ -277,7 +277,7 @@
             <set href="#text" attributeName="text-anchor" to="middle" />
         </use>
         
-        <svg id="graph">
+        <svg id="alertGraph">
             <line class="highLine" x1="0" y1="40%+1" x2="95%" y2="40%+1" fill="#FFA500" stroke-width="1" />
             <line class="meanLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#616161" stroke-width="1" />
             <line class="lowLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#de4430" stroke-width="1" />

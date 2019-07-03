@@ -1,6 +1,6 @@
 {
   "fitbit": {
-    "appUUID": "7b5d9822-7e8e-41f9-a2a7-e823548c001c",
+    "appUUID": "f89ff99d-4365-4a39-aa2f-f66aaa970587",
     "appType": "clockface",
     "appDisplayName": "Glance 2.1.112",
     "iconFile": "resources/icon.png",
@@ -25,8 +25,8 @@
     }
   },
   "devDependencies": {
-    "@fitbit/sdk": "~3.1.0",
-    "@fitbit/sdk-cli": "^1.6.0"
+    "@fitbit/sdk": "^3.1.2",
+    "@fitbit/sdk-cli": "^1.6.3"
   },
   "scripts": {
     "build": "fitbit-build",

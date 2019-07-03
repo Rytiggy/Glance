@@ -23,13 +23,14 @@ let largeGraphGraphPoints = document.getElementsByClassName("largeGraphGraphPoin
     
 export default class bloodline { 
   update(bloodsugars, high, low, settings, classes) {
+    const graphContainer = document.getElementById(classes.graphContainer);
 
-    let highNumber = document.getElementById(classes.high);
-    let lowNumber = document.getElementById(classes.low);
-    let highLine = document.getElementsByClassName(classes.highLine);
-    let meanLine = document.getElementsByClassName(classes.meanLine);
-    let lowLine = document.getElementsByClassName(classes.lowLine);
-    let graphPoints = document.getElementsByClassName(classes.graphPoints);
+    const highNumber = document.getElementById(classes.high);
+    const lowNumber = document.getElementById(classes.low);
+    const highLine = document.getElementsByClassName(classes.highLine);
+    const meanLine = document.getElementsByClassName(classes.meanLine);
+    const lowLine = document.getElementsByClassName(classes.lowLine);
+    const graphPoints = graphContainer.getElementsByClassName(classes.graphPoints);
 
 
     let isMmol = settings.glucoseUnits === 'mmol';
@@ -132,7 +133,7 @@ export default class bloodline {
     graphPoints.forEach((point, index) => {
       try {
         let bg = smallReverseBloodsugars[index];
-        if(smallReverseBloodsugars[index].sgv === 'LOS') {
+        if(smallReverseBloodsugars[index] === undefined || smallReverseBloodsugars[index].sgv === 'LOS') {
           graphPoints[index].style.opacity = 0;
         } else {
           graphPoints[index].style.opacity = 1;

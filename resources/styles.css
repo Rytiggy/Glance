@@ -372,11 +372,12 @@
 }
 
 #firstArrows {
-  x: 31%;
+  x: 21%;
   y: 11%;
   width: 45;
   height: 45;
   fill: white;
+  text-anchor:"start";
 }
 
  #firstErrorLine {
@@ -444,11 +445,18 @@
   width: 40;
 }
 
+#dataSourceName {
+  x: 2%;
+  y: 99%;
+  font-size: 13;
+  fill: gray;
+}
  /* right side */
  #secondDelta {
   x: 98%;
   y: 8%+3;
 }
+
 
  #secondSgv {
   text-anchor:"end";
@@ -527,4 +535,17 @@
   x: 97%;
   y: 88%;
   width: 40;
+}
+#dataSourceNameTwo {
+  x: 52%;
+  y: 99%;
+  font-size: 13;
+  fill: gray;
+  text-anchor:"start";
+}
+#alertGraph {
+  x: 57%-25; 
+  y: 55%; 
+  width: 175; 
+  height: 100;
 }

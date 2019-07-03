@@ -27,15 +27,13 @@ const dateTime = new DateTime();
 export default class alerts {
 	check(bg, settings, DISABLE_ALERTS, timeSenseLastSGV, classes) {
 		let popup = document.getElementById("popup");
-		let popupTitle = document.getElementById("popup-title");
+		let popupTitle = popup.getElementById("popup-title");
 		let popupLeadText = popup.getElementById('copy')
-		let alertArrows = document.getElementById("alertArrows");
+		let alertArrows = popup.getElementById("alertArrows");
 
 		let sgv = document.getElementById(classes.sgv);
 		let largeGraphsSgv = document.getElementById("largeGraphsSgv");
 		let errorLine = document.getElementById(classes.errorLine);
-
-
 
 		let currentBG = bg.currentbg;
 		let loopstatus = bg.loopstatus;
@@ -62,6 +60,7 @@ export default class alerts {
 							popup.style.display = "inline";
 							popupTitle.style.display = "inline";
 							popupTitle.text = currentBG;
+							return true;
 						}
 					}
 				}
@@ -79,11 +78,12 @@ export default class alerts {
 				if (!DISABLE_ALERTS) {
 					if (settings.highAlerts) {
 						if (timeSenseLastSGV <= 8) {
-							console.log('high BG')
+							console.log('high BG' + currentBG + popup.style.display)
 							vibration.start("ring");
 							popup.style.display = "inline";
 							popupTitle.style.display = "inline";
 							popupTitle.text = currentBG;
+							return true;
 						}
 					}
 				}
@@ -100,6 +100,7 @@ export default class alerts {
 				popupTitle.style.fill = "#de4430";
 				errorLine.style.fill = "#de4430";
 				// largeGraphErrorLine.style.fill ="#de4430";
+				return true;
 			}
 		}
 
@@ -118,6 +119,7 @@ export default class alerts {
 						popupTitle.style.display = "inline";
 						popupTitle.text = loopstatus;
 						popupLeadText.text = 'Loop Status';
+						return true;
 					}
 				}
 			}
@@ -136,6 +138,7 @@ export default class alerts {
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
 						popupTitle.text = 'Rapid Fall!';
+						return true;
 					}
 				}
 			}
@@ -150,6 +153,7 @@ export default class alerts {
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
 						popupTitle.text = 'Rapid Rise!';
+						return true;
 					}
 				}
 			}
@@ -166,11 +170,12 @@ export default class alerts {
 						popup.style.display = "inline";
 						popupTitle.style.display = "inline";
 						popupTitle.text = 'Stale data';
+						return true;
 					}
 				}
 			}
 		}
-
+		return false;
 	}
 	stop() {
 		console.log('app - Alerts - stop()')

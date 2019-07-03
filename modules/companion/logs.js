@@ -20,7 +20,7 @@ const sizeof = new Sizeof();
 
 export default class logs {
   add(value) {
-    console.log(value)
+    // console.log(value)
     let d = new Date(); 
     // console.error(sizeof.size(settingsStorage.getItem('logs')))
     if (settingsStorage.getItem('logs') && sizeof.size(settingsStorage.getItem('logs'))  > 130000) {

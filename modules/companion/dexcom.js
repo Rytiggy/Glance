@@ -16,7 +16,6 @@ const logs = new Logs();
 export default class dexcom {
   
   async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    console.error(dexcomUsername, dexcomPassword, subDomain);
     let body =   {
       accountName : dexcomUsername,
       applicationId :"d8665ade-9673-4e27-9ff6-92db4ce13d13",
