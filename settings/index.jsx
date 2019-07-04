@@ -27,8 +27,8 @@ function mySettings(props) {
           label={`Number Of Data sources`}
           settingsKey="numOfDataSources"
           options={[
-            {name:"One Data Source", value:"dataSource"},
-            {name:"Two Data Sources", value:"dataSourceTwo"},
+            {name:"One Data Source", value: 1},
+            {name:"Two Data Sources", value: 2},
           ]}
         />
         {renderDataSource(
@@ -37,7 +37,7 @@ function mySettings(props) {
           'Data Source One',
           ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName"],
         )}
-        {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 'dataSourceTwo') ?
+        {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 2) ?
           renderDataSource(
             props,
             'dataSourceTwo',

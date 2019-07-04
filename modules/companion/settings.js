@@ -27,8 +27,8 @@ export default class settings {
     // console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
     numOfDataSources = JSON.parse(settingsStorage.getItem('numOfDataSources')).values[0].value;
   } else if (!numOfDataSources) {
-    settingsStorage.setItem("numOfDataSources", JSON.stringify({"selected":[0], "values":[{"name":"One Data Source","value":"dataSource"}]}));
-    numOfDataSources = 'dataSource';
+    settingsStorage.setItem("numOfDataSources", JSON.stringify({"selected":[0], "values":[{"name":"One Data Source","value":1}]}));
+    numOfDataSources = 1;
   }   
     
   

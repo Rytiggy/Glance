@@ -271,7 +271,6 @@ export default class standardize {
 					hasFoundFirstDelta = true;
 				}
 			})
-      console.log(nonPredictiveBg)
 			// Look at the data that we are getting and if the SGV is below 25 we know the unit type is mmol
 			if (nonPredictiveBg.sgv < 25) {
 				bgs.forEach((bg) => {

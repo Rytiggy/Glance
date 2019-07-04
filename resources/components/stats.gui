@@ -1,0 +1,8 @@
+<symbol id="stats">
+	<svg>
+		<text class="subtext1" id="layoutOne" />
+		<text class="subtext1" id="layoutTwo" />
+		<text class="subtext1" id="layoutThree" />
+		<text class="subtext1" id="layoutFour" />
+	</svg>
+</symbol>

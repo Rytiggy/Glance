@@ -1,6 +1,7 @@
 <svg>
   <defs>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/general.css" />
     <link rel="stylesheet" href="/mnt/sysassets/widgets/dynamic_textarea.css" />
     <!-- Additional Imports -->
     <link rel="import" href="/mnt/sysassets/widgets_common.gui" />
@@ -18,5 +19,10 @@
     
     <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/tumblerview_widget.gui" />
+    
+    <!-- Custom Components -->
+    <link rel="import" href="components/bloodSugar.gui" />
+    <link rel="import" href="components/stats.gui" />
+    <link rel="import" href="components/graph.gui" />
   </defs>
 </svg>

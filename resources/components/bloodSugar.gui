@@ -1,0 +1,9 @@
+<symbol id="bloodSugarDisplay">
+	<svg>
+		<text class="subtext1" text-anchor="end" id="delta" />
+		<text class="h2" id="sgv" pointer-events="all" />
+		<line class="subtext1" stroke-width="4" id="errorLine" display="none" />
+		<text class="subtext1" text-anchor="end" id="timeOfLastSgv" />
+		<image id="arrows" />
+	</svg>
+</symbol>

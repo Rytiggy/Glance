@@ -35,268 +35,132 @@ const alerts = new Alerts();
 const errors = new Errors();
 const transfer = new Transfer();
 
-let main = document.getElementById("main");
-let multipleBgView = document.getElementById("multipleBgView");
-
-let dateElement = document.getElementById("date");
-let timeElement = document.getElementById("time");
-let largeGraphTime = document.getElementById("largeGraphTime");
-let multipleBGTime = document.getElementById("multipleBGTime");
-
-let weather = document.getElementById("weather");
-
-let alertArrows = document.getElementById("alertArrows");
-let batteryLevel = document.getElementById("battery-level");
-let steps = document.getElementById("steps");
-let stepIcon = document.getElementById("stepIcon");
-let heart = document.getElementById("heart");
-let heartIcon = document.getElementById("heartIcon");
-
-let bgColor = document.getElementById("bgColor");
-let largeGraphBgColor = document.getElementById("largeGraphBgColor");
-let multipleBgBgColor = document.getElementById("multipleBgBgColor");
-
-let batteryPercent = document.getElementById("batteryPercent");
-let popup = document.getElementById("popup");
-let dismiss = popup.getElementById("dismiss");
-let errorText = document.getElementById("error");
-let popupTitle  = document.getElementById("popup-title");
-let degreeIcon = document.getElementById("degreeIcon");
-let goToLargeGraph = document.getElementById("goToLargeGraph");
-
-let largeGraphView = document.getElementById("largeGraphView");
-let exitLargeGraph = document.getElementById("exitLargeGraph");
-
-
-let dismissHighFor = 120;
-let dismissLowFor = 15;
-
 let data = null;
-let DISABLE_ALERTS = false;   
-
-// Data to send back to phone
-let dataToSend = {
-  heart: 0,
-  steps: userActivity.get().steps
-};
-dismiss.onclick = function(evt) {
-  console.log("DISMISS");
-  popup.style.display = "none";
-  popupTitle.style.display = "none";
-  vibration.stop();
-  DISABLE_ALERTS = true;
-  let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
-
-  if (currentBgFromBloodSugars.sgv >= parseInt(data.settings.highThreshold)) {
-    console.log("HIGH " + dismissHighFor);
-    setTimeout(disableAlertsFalse, (dismissHighFor*1000)*60);
-  } else {
-    // 15 mins 
-    console.log("LOW " + dismissLowFor);
-
-    setTimeout(disableAlertsFalse, (dismissLowFor*1000)*60);
-  }
-}
-
-function disableAlertsFalse() { 
-  DISABLE_ALERTS = false;
-};
 
 
-// secondSgv.text = "100"
-// sgv.text = '---';
-// rawbg.text = ''
-// delta.text = '';
-// largeGraphDelta.text = '';
-// iob.text = '0.0';
-// cob.text = '0.0';
-// largeGraphIob.text = '0.0';
-// largeGraphCob.text = '0.0';
-dateElement.text = '';
-// timeOfLastSgv.text = '';
-weather.text = '--';
-steps.text = '--';
-heart.text = '--';
-batteryPercent.text = '%';
-bgColor.gradient.colors.c1 = '#390263';
-largeGraphBgColor.gradient.colors.c1 = '#390263';
-errorText.text = '';
-update()
-setInterval(update, 10000);
-
-timeElement.text = dateTime.getTime();
-largeGraphTime.text = dateTime.getTime();
-multipleBGTime.text = dateTime.getTime();
-batteryLevel.width = batteryLevels.get().level;
 
 inbox.onnewfile = () => {
-  console.log("New file!");
   let fileName;
   do {
-    // If there is a file, move it from staging into the application folder
     fileName = inbox.nextFile();
     if (fileName) {
-      data = fs.readFileSync(fileName, "cbor");  
-      update();
+      data = fs.readFileSync(fileName, 'cbor');  
     }
   } while (fileName);
+  updateDisplay(data);
 };
 
+/**
+* Update watchface display
+* @param {Object} data recived from the companion
+*/
+function updateDisplay(data) {
+  updateBloodSugarDisplay(data);
+  updateStats(data);
+  updateGraph(data);
+}
 
-
-function update() {
-  console.log('app - update()'); 
-  console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
-  let heartrate = userActivity.get().heartRate; 
-  if(!heartrate) {
-    heartrate = 0;
-  }
-  // Data to send back to phone
-  dataToSend = {
-    heart: heartrate,
-    steps: userActivity.get().steps
-  };
-
-  
-  if(data) {
-    console.warn('GOT DATA');
-    batteryLevel.width = batteryLevels.get().level;
-    batteryLevel.style.fill = batteryLevels.get().color;
-    batteryPercent.text = batteryLevels.get().percent + '%';   
-
-    updateTimeDisplay();
-    
-    dismissHighFor = data.settings.dismissHighFor;
-    dismissLowFor = data.settings.dismissLowFor;
-   
-    weather.text = '';// data.weather.temp;
-    degreeIcon.style.display = "none";
-    
-    // colors
-    bgColor.gradient.colors.c1 = data.settings.bgColor;
-    bgColor.gradient.colors.c2 = data.settings.bgColorTwo;
-
-    largeGraphBgColor.gradient.colors.c1 =  data.settings.bgColor;
-    largeGraphBgColor.gradient.colors.c2 =  data.settings.bgColorTwo;
-   
-    multipleBgBgColor.gradient.colors.c1 =  data.settings.bgColor;
-    multipleBgBgColor.gradient.colors.c2 =  data.settings.bgColorTwo;
-    
-    setTextColor(data.settings.textColor)
-    // bloodsugars
-    let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
-    let currentBgFromBloodSugarsTwo = getFistBgNonpredictiveBG(data.bloodSugarsTwo.bgs); 
-    
-
-    // main display
-    let classes = {
-      bloodSugars:'bloodSugars',
-      sgv:'sgv',
-      rawbg: 'rawbg',
-      tempBasal: 'tempBasal',
-      predictedBg:'predictedBg',
-      timeOfLastSgv: 'timeOfLastSgv',
-      delta: 'delta',
-      arrows: 'arrows',
-      errorLine: 'errorLine',
-      iob: 'iob',
-      cob: 'cob', 
-      syringe: 'syringe',
-      hamburger: 'hamburger',
-      high: 'high',
-      low: 'low',
-      highLine: 'highLine',
-      meanLine: 'meanLine',
-      lowLine: 'lowLine',
-      graphPoints: 'graphPoints',
-      dataSourceName: 'dataSourceName',
-      graphContainer: 'graph'
-    }  
-
-    if(data.settings.numOfDataSources === "dataSource") {
-      multipleBgView.style.display = "none";
-      updateBgsDisplay(currentBgFromBloodSugars, classes);
-
-    } else if(data.settings.numOfDataSources === "dataSourceTwo") {
-      multipleBgView.style.display = "inline";
-      // update two BGs at once
-      classes = {
-        bloodSugars:'bloodSugars',
-        sgv:'firstSgv',
-        rawbg: 'firstRawbg',
-        tempBasal: 'firstTempBasal',
-        predictedBg:'firstPredictedBg',
-        timeOfLastSgv: 'firstTimeOfLastSgv',
-        delta: 'firstDelta',
-        arrows: 'firstArrows',
-        errorLine: 'firstErrorLine',
-        iob: 'firstIob',
-        cob: 'firstCob', 
-        syringe: 'firstSyringe',
-        hamburger: 'firstHamburger',
-        high: 'firstHigh',
-        low: 'firstLow',
-        highLine: 'firstHighLine',
-        meanLine: 'firstMeanLine',
-        lowLine: 'firstLowLine',
-        graphPoints: 'firstGraphPoints',
-        dataSourceName: 'dataSourceName',
-        graphContainer: 'firstGraph'
-      }  
-      updateBgsDisplay(currentBgFromBloodSugars, classes);
-      
-      classes = {
-        bloodSugars:'bloodSugarsTwo',
-        sgv:'secondSgv',
-        rawbg: 'secondRawbg',
-        tempBasal: 'secondTempBasal',
-        predictedBg:'secondPredictedBg',
-        timeOfLastSgv: 'secondTimeOfLastSgv',
-        delta: 'secondDelta',
-        arrows: 'secondArrows',
-        errorLine: 'secondErrorLine',
-        iob: 'secondIob',
-        cob: 'secondCob', 
-        syringe: 'secondSyringe',
-        hamburger: 'secondHamburger',
-        high: 'secondHigh',
-        low: 'secondLow',
-        highLine: 'secondHighLine',
-        meanLine: 'secondMeanLine',
-        lowLine: 'secondLowLine',
-        graphPoints: 'secondGraphPoints',
-        dataSourceName: 'dataSourceNameTwo',
-        graphContainer: 'secondGraph'
-      } 
-      updateBgsDisplay(currentBgFromBloodSugarsTwo, classes);
-    }
-
-    dateElement.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
-    
-    if (data.settings.largeGraph) {
-      goToLargeGraph.style.display = "inline";
-    } else {
-      goToLargeGraph.style.display = "none";
-    }
-    // if (data.settings.treatments) {
-    //   goToTreatment.style.display = "inline";
-    // } else {
-    //   goToTreatment.style.display = "none";
-    // }
-    
+function updateBloodSugarDisplay(data) {
+  let singleOrMultipleDispaly = document.getElementById('singleBG');
+  if(data.settings.numOfDataSources == 2) {
+    singleOrMultipleDispaly = document.getElementById('dualBG');
+    document.getElementById("dualBG").style.display = "inline";
+    document.getElementById("singleBG").style.display = "none";
   } else {
-    console.warn('NO DATA');
-    steps.text = commas(userActivity.get().steps);    
-    heart.text = userActivity.get().heartRate;
-   
-    batteryLevel.width = batteryLevels.get().level;
-    batteryPercent.text = '' + batteryLevels.get().percent + '%';
-   
-    updateTimeDisplay()
-
-
-    dateElement.text = dateTime.getDate();
+    singleOrMultipleDispaly = document.getElementById('singleBG');
+    document.getElementById("singleBG").style.display = "inline"; 
+    document.getElementById("dualBG").style.display = "none";
   }
+
+  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
+  BloodSugarDisplayContainer.forEach((ele, index) => {
+    const bloodSugar = data.bloodSugars[index];
+    
+    const delta = BloodSugarDisplayContainer[index].getElementById('delta'); 
+    const sgv = BloodSugarDisplayContainer[index].getElementById('sgv'); 
+    const errorLine = BloodSugarDisplayContainer[index].getElementById('errorLine'); 
+    const timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById('timeOfLastSgv'); 
+    const arrows = BloodSugarDisplayContainer[index].getElementById('arrows');
+
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
+    console.log(JSON.stringify(fistBgNonPredictiveBG))
+   
+    let deltaText = fistBgNonPredictiveBG.bgdelta;
+    // add Plus
+    if (deltaText > 0) {
+      deltaText = '+' + deltaText;
+    }
+    delta.text = deltaText  + ' ' + data.settings.glucoseUnits; 
+    sgv.text = fistBgNonPredictiveBG.sgv;
+    // errorLine.text = fistBgNonPredictiveBG.errorLine;
+    timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(fistBgNonPredictiveBG.datetime)[0];
+    arrows.href = '../resources/img/arrows/'+fistBgNonPredictiveBG.direction+'.png';
+  });
+}
+
+function updateStats(data) {
+  let singleOrMultipleDispaly = document.getElementById('singleBG');
+  if(data.settings.numOfDataSources == 2) {
+    singleOrMultipleDispaly = document.getElementById('dualBG');
+    document.getElementById("dualBG").style.display = "inline";
+    document.getElementById("singleBG").style.display = "none";
+  } else {
+    singleOrMultipleDispaly = document.getElementById('singleBG');
+    document.getElementById("singleBG").style.display = "inline"; 
+    document.getElementById("dualBG").style.display = "none";
+  }
+
+  const statsContainer = singleOrMultipleDispaly.getElementsByClassName('stats');
+  statsContainer.forEach((ele, index) => {
+    const bloodSugar = data.bloodSugars[index];
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
+
+    const layoutOne = statsContainer[index].getElementById('layoutOne');
+    const layoutTwo = statsContainer[index].getElementById('layoutTwo'); 
+    const layoutThree = statsContainer[index].getElementById('layoutThree'); 
+    const layoutFour = statsContainer[index].getElementById('layoutFour'); 
+
+
+
+    layoutOne.text = fistBgNonPredictiveBG[data.settings.layoutOne];
+    layoutTwo.text = fistBgNonPredictiveBG[data.settings.layoutTwo];
+    layoutThree.text = fistBgNonPredictiveBG[data.settings.layoutThree];
+    // layoutThree.text = userActivity.get().steps;
+    layoutFour.text = fistBgNonPredictiveBG[data.settings.layoutFour]; 
+    // layoutFour.text = userActivity.get().heartRate;
+  });
+}
+
+
+function updateGraph(data) {
+  let singleOrMultipleDispaly = document.getElementById('singleBG');
+  if(data.settings.numOfDataSources == 2) {
+    singleOrMultipleDispaly = document.getElementById('dualBG');
+    document.getElementById("dualBG").style.display = "inline";
+    document.getElementById("singleBG").style.display = "none";
+  } else {
+    singleOrMultipleDispaly = document.getElementById('singleBG');
+    document.getElementById("singleBG").style.display = "inline"; 
+    document.getElementById("dualBG").style.display = "none";
+  }
+
+  const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
+  graphContainer.forEach((ele, index) => {
+    const bloodSugar = data.bloodSugars[index];
+    // const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
+
+    // const layoutOne = graphContainer[index].getElementById('layoutOne');
+    // const layoutTwo = graphContainer[index].getElementById('layoutTwo'); 
+    // const layoutThree = graphContainer[index].getElementById('layoutThree'); 
+    // const layoutFour = graphContainer[index].getElementById('layoutFour'); 
+
+    graph.update(bloodSugar.data.bgs,
+      data.settings.highThreshold,
+      data.settings.lowThreshold,
+      data.settings,
+      graphContainer[index]
+     );
+  });
 }
 
 function commas(value) {
@@ -307,7 +171,7 @@ function commas(value) {
 * @param {Array} bgs
 * @returns {Array}
 */
-function getFistBgNonpredictiveBG(bgs){
+function getfistBgNonPredictiveBG(bgs){
   return bgs.filter((bg) => {
     if(bg.bgdelta || bg.bgdelta === 0) {
       return true;
@@ -315,42 +179,17 @@ function getFistBgNonpredictiveBG(bgs){
   })[0];
 }
 
-
 function setTextColor(color){
   let domElemets = ['iob', 'cob', 'heart', 'steps', 'batteryPercent', 'date', 'delta', 'timeOfLastSgv', 'time', 'high', 'low', 'largeGraphHigh', 'largeGraphLow', 'largeGraphDelta', 'largeGraphTimeOfLastSgv', 'largeGraphIob', 'largeGraphCob', 'predictedBg', 'largeGraphTime', 'largeGraphLoopStatus', 'tempBasal'];
   domElemets.forEach(ele => {
     document.getElementById(ele).style.fill = color
   })
 }
-
-
-goToLargeGraph.onclick = (e) => {
-  console.log("goToLargeGraph Activated!");
-  vibration.start('bump');
-  largeGraphView.style.display = 'inline'; 
-  main.style.display = 'none'; 
-}
-
-exitLargeGraph.onclick = (e) => {
-  console.log("exitLargeGraph Activated!");
-  vibration.start('bump');
-  largeGraphView.style.display = 'none'; 
-  main.style.display = 'inline'; 
-}
-
-
-
-timeElement.onclick = (e) => {
-  console.log("FORCE Activated!");
-  transfer.send(dataToSend)
-  vibration.start('bump');
-  arrows.href = '../resources/img/arrows/loading.png';
-  largeGraphArrows.href = '../resources/img/arrows/loading.png';
-  alertArrows.href = '../resources/img/arrows/loading.png';
-}
-
-
-// wait 2 seconds
+let dataToSend = {
+  heart: 0,
+  steps: userActivity.get().steps,
+};
+// Request data every 5 mins from companion 
 setTimeout(function() {
     transfer.send(dataToSend);
 }, 1500);
@@ -543,13 +382,7 @@ function updateBgsDisplay(currentBgFromBloodSugars, classes) {
 }
 
 function updateTimeDisplay(classes) {
- // no  data
   timeElement.text = dateTime.getTime();
   largeGraphTime.text = dateTime.getTime();
-  // // data
-  // timeElement.text = dateTime.getTime(data.settings.timeFormat);
-  // largeGraphTime.text = dateTime.getTime(data.settings.timeFormat);
 }
-
-//<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/designerz-base" title="Designerz Base">Designerz Base</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div><div>Icons made by <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 

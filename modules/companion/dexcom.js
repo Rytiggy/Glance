@@ -29,7 +29,6 @@ export default class dexcom {
       method: 'post',
       body: JSON.stringify(body)
     }).then(function(response) {
-      console.log(response)
       return response.text();
     }).then(function(data) {
       return data;

@@ -114,8 +114,14 @@ async function sendData() {
 			dataSource: 'dataSourceTwo',
 		}
     let dataToSend = {
-      bloodSugars: standardize.bloodsugars(values[0], values[1], store, keysOne),
-      bloodSugarsTwo: standardize.bloodsugars(values[2], values[3], store, keysTwo),
+      bloodSugars: [
+        {
+          data: standardize.bloodsugars(values[0], values[1], store, keysOne),
+        },
+        {
+          data: standardize.bloodsugars(values[2], values[3], store, keysTwo),
+        },
+      ],
       settings: standardize.settings(store)
       // weather: values[2].query.results.channel.item.condition,
     };
