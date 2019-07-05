@@ -9,6 +9,14 @@
 				<use href="#graph" class="graph"/>
 			</svg>
 		</svg>
+		<svg class="alertContainer" display="none">
+			<use href="#alerts" class="alerts"/>
+			<svg class="row bottom">
+				<svg class="right width-50">
+					<use href="#graph" id="alertGraph"/>
+				</svg>
+			</svg>
+		</svg>
 	</svg>
 	<svg id="dualBG" display="none">
 		<svg class="row top">
@@ -21,5 +29,22 @@
 			<use href="#graph" class="graph center width-30"/>
 			<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 		</svg>
+		<svg class="alertContainer" display="none">
+			<use href="#alerts" class="alerts"/>
+			<svg class="row bottom">
+				<svg class="right width-50">
+					<use href="#graph" id="alertGraph"/>
+				</svg>
+			</svg>
+		</svg>
+		<svg class="alertContainer" display="none">
+			<use href="#alerts" class="alerts"/>
+			<svg class="row bottom">
+				<svg class="right width-50">
+					<use href="#graph" id="alertGraph"/>
+				</svg>
+			</svg>
+		</svg>
 	</svg>
 </svg>
+

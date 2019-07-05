@@ -24,5 +24,6 @@
     <link rel="import" href="components/bloodSugar.gui" />
     <link rel="import" href="components/stats.gui" />
     <link rel="import" href="components/graph.gui" />
+    <link rel="import" href="components/alerts.gui" />
   </defs>
 </svg>

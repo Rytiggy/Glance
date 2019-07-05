@@ -20,22 +20,21 @@ let largeGraphErrorLine = document.getElementById("largeGraphErrorLine");
 
 
 export default class errors { 
-  check(timeSenseLastSGV, classes) {
-    let sgv = document.getElementById(classes.sgv);
-    let errorLine = document.getElementById(classes.errorLine);
+  check(timeSenseLastSGV, container) {
+    let sgv = container.getElementById('sgv');
+    let errorLine = container.getElementById('errorLine');
 
-    console.log('app - errors - check()')   
     // if the bloodsugar is stale 
     if (parseInt(timeSenseLastSGV, 10) >= 15) {
       errorLine.style.display = "inline";
-      largeGraphErrorLine.style.display = "inline";
+      // largeGraphErrorLine.style.display = "inline";
       errorLine.style.fill = 'gray';
-      largeGraphErrorLine.style.fill = 'gray'
+      // largeGraphErrorLine.style.fill = 'gray'
       sgv.style.fill = 'gray';
-      largeGraphsSgv.style.fill = 'gray'
+      // largeGraphsSgv.style.fill = 'gray'
     } else {
       errorLine.style.display = "none";
-      largeGraphErrorLine.style.display = "none";
+      // largeGraphErrorLine.style.display = "none";
     }
   }
 };

@@ -116,10 +116,10 @@ async function sendData() {
     let dataToSend = {
       bloodSugars: [
         {
-          data: standardize.bloodsugars(values[0], values[1], store, keysOne),
+          user: standardize.bloodsugars(values[0], values[1], store, keysOne),
         },
         {
-          data: standardize.bloodsugars(values[2], values[3], store, keysTwo),
+          user: standardize.bloodsugars(values[2], values[3], store, keysTwo),
         },
       ],
       settings: standardize.settings(store)

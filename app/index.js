@@ -31,11 +31,11 @@ const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
 const graph = new Graph();
 const userActivity = new UserActivity();
-const alerts = new Alerts();
 const errors = new Errors();
 const transfer = new Transfer();
-
-let data = null;
+var alerts = [];
+var data = null;
+var singleOrMultipleDispaly = document.getElementById('singleBG');
 
 
 
@@ -55,13 +55,7 @@ inbox.onnewfile = () => {
 * @param {Object} data recived from the companion
 */
 function updateDisplay(data) {
-  updateBloodSugarDisplay(data);
-  updateStats(data);
-  updateGraph(data);
-}
-
-function updateBloodSugarDisplay(data) {
-  let singleOrMultipleDispaly = document.getElementById('singleBG');
+  
   if(data.settings.numOfDataSources == 2) {
     singleOrMultipleDispaly = document.getElementById('dualBG');
     document.getElementById("dualBG").style.display = "inline";
@@ -72,18 +66,22 @@ function updateBloodSugarDisplay(data) {
     document.getElementById("dualBG").style.display = "none";
   }
 
+  updateBloodSugarDisplay(data);
+  updateAlerts(data);
+  updateStats(data);
+  updateGraph(data);
+}
+
+function updateBloodSugarDisplay(data) {
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
   BloodSugarDisplayContainer.forEach((ele, index) => {
     const bloodSugar = data.bloodSugars[index];
-    
     const delta = BloodSugarDisplayContainer[index].getElementById('delta'); 
     const sgv = BloodSugarDisplayContainer[index].getElementById('sgv'); 
     const errorLine = BloodSugarDisplayContainer[index].getElementById('errorLine'); 
     const timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById('timeOfLastSgv'); 
     const arrows = BloodSugarDisplayContainer[index].getElementById('arrows');
-
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
-    console.log(JSON.stringify(fistBgNonPredictiveBG))
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
    
     let deltaText = fistBgNonPredictiveBG.bgdelta;
     // add Plus
@@ -92,28 +90,55 @@ function updateBloodSugarDisplay(data) {
     }
     delta.text = deltaText  + ' ' + data.settings.glucoseUnits; 
     sgv.text = fistBgNonPredictiveBG.sgv;
-    // errorLine.text = fistBgNonPredictiveBG.errorLine;
     timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(fistBgNonPredictiveBG.datetime)[0];
     arrows.href = '../resources/img/arrows/'+fistBgNonPredictiveBG.direction+'.png';
+
+    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(fistBgNonPredictiveBG.datetime)[1];
+    errors.check(timeSenseLastSGV, BloodSugarDisplayContainer[index]);
+  });
+}
+
+function updateAlerts(data) {
+  const alertContainer = singleOrMultipleDispaly.getElementsByClassName('alertContainer');
+  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
+  
+  BloodSugarDisplayContainer.forEach((ele, index) => {
+    const bloodSugar = data.bloodSugars[index];
+    const sgv = BloodSugarDisplayContainer[index].getElementById('sgv'); 
+    const errorLine = BloodSugarDisplayContainer[index].getElementById('errorLine'); 
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+
+    let userName = null;
+		if(index == 0) {
+      userName = 	data.settings.dataSourceName;
+    } else {
+      userName = 	data.settings.dataSourceNameTwo;
+    }
+
+    if(typeof alerts[index] === 'undefined') {
+      console.log('New Alert Created');
+      let newAlert = new Alerts(false, 120, 15);
+      alerts.push(newAlert);
+    }
+
+    alerts[index].check(
+      data,
+      bloodSugar.user.bgs,
+      errorLine,
+      sgv,
+      fistBgNonPredictiveBG,
+      data.settings,
+      userName,
+      alertContainer[index]
+    );
   });
 }
 
 function updateStats(data) {
-  let singleOrMultipleDispaly = document.getElementById('singleBG');
-  if(data.settings.numOfDataSources == 2) {
-    singleOrMultipleDispaly = document.getElementById('dualBG');
-    document.getElementById("dualBG").style.display = "inline";
-    document.getElementById("singleBG").style.display = "none";
-  } else {
-    singleOrMultipleDispaly = document.getElementById('singleBG');
-    document.getElementById("singleBG").style.display = "inline"; 
-    document.getElementById("dualBG").style.display = "none";
-  }
-
   const statsContainer = singleOrMultipleDispaly.getElementsByClassName('stats');
   statsContainer.forEach((ele, index) => {
     const bloodSugar = data.bloodSugars[index];
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
 
     const layoutOne = statsContainer[index].getElementById('layoutOne');
     const layoutTwo = statsContainer[index].getElementById('layoutTwo'); 
@@ -133,28 +158,10 @@ function updateStats(data) {
 
 
 function updateGraph(data) {
-  let singleOrMultipleDispaly = document.getElementById('singleBG');
-  if(data.settings.numOfDataSources == 2) {
-    singleOrMultipleDispaly = document.getElementById('dualBG');
-    document.getElementById("dualBG").style.display = "inline";
-    document.getElementById("singleBG").style.display = "none";
-  } else {
-    singleOrMultipleDispaly = document.getElementById('singleBG');
-    document.getElementById("singleBG").style.display = "inline"; 
-    document.getElementById("dualBG").style.display = "none";
-  }
-
   const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
   graphContainer.forEach((ele, index) => {
     const bloodSugar = data.bloodSugars[index];
-    // const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.data.bgs);
-
-    // const layoutOne = graphContainer[index].getElementById('layoutOne');
-    // const layoutTwo = graphContainer[index].getElementById('layoutTwo'); 
-    // const layoutThree = graphContainer[index].getElementById('layoutThree'); 
-    // const layoutFour = graphContainer[index].getElementById('layoutFour'); 
-
-    graph.update(bloodSugar.data.bgs,
+    graph.update(bloodSugar.user.bgs,
       data.settings.highThreshold,
       data.settings.lowThreshold,
       data.settings,
