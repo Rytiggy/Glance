@@ -46,9 +46,11 @@ font-size: 23;
 	height: 100%;
 	fill: gray;
 	text-length: 64;
-  }
-  
+}
 
+.text-gray {
+	fill: gray;
+}
 .row {
 	width: 100%;
 	height: 50%;
@@ -190,8 +192,8 @@ font-size: 23;
 
 .dualTime {
 	text-anchor: middle;
-	x: 40%;
-	y: 3%;
+	x: 50%;
+	y: 10%;
 }
 
 #errorLine {

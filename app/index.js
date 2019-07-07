@@ -69,7 +69,8 @@ function updateDisplay(data) {
       document.getElementById("singleBG").style.display = "inline"; 
       document.getElementById("dualBG").style.display = "none";
     }
-  
+    time = singleOrMultipleDispaly.getElementById("time");
+
     time.text = dateTime.getTime(data.settings.timeFormat);
    
     checkDataState(data);

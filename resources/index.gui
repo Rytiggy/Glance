@@ -51,9 +51,8 @@
 				<use href="#graph" class="graph center width-40"/>
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 				<text 
-					text-anchor="start"
 					id="time"
-					class="subtext1 center dualTime"
+					class="subtext1 center dualTime text-gray"
 					pointer-events="visible"
 				/>
 			</svg>
