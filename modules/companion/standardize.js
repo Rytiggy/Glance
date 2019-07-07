@@ -309,17 +309,17 @@ export default class standardize {
 				if (bg.bgdelta != null) {
 					// any values put here will be able to be entered in the layout
 					bg.sgv = bg.sgv;
-          if(bg.iob) { 
-            bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
-          } else {
-             bg.iob = 0;
-          }
-          if(bg.cob) {
-             bg.cob =  Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
-          } else {
-             bg.cob = 0;
-          }
-          bg.datetime = nonPredictiveBg.datetime;
+					if(bg.iob) { 
+						bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
+					} else {
+						bg.iob = 0;
+					}
+					if(bg.cob) {
+						bg.cob =  Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
+					} else {
+						bg.cob = 0;
+					}
+					bg.datetime = nonPredictiveBg.datetime;
 					bg.direction = nonPredictiveBg.direction;
 					bg.rawbg = ((rawbg && rawbg !== '0.0') ? (rawbg + ' raw') : '');
 					bg.tempbasal = tempBasal;

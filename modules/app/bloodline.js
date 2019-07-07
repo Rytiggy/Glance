@@ -24,7 +24,7 @@ import document from "document";
 export default class bloodline { 
   update(bloodsugars, high, low, settings, graphContainer) {
     // const graphContainer = document.getElementById(classes.graphContainer);
-
+    graphContainer.style.display = "inline"; 
     const highNumber = graphContainer.getElementById('high');
     const lowNumber = graphContainer.getElementById('low');
     const highLine = graphContainer.getElementsByClassName('highLine');

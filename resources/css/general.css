@@ -1,4 +1,5 @@
 .glance {
+	y: 5%;
 	width: 100%;
 	height: 100%;
 }
@@ -18,7 +19,7 @@
 }
 
 .subtext1 {
-	font-size: 23;
+font-size: 23;
   font-family:  Colfax-Medium;
   font-weight: regular;
   width: 100%;
@@ -36,6 +37,17 @@
   fill: white;
   text-length: 64;
 }
+
+.leadText {
+	font-size: 19;
+	font-family: Seville-Condensed;
+	font-weight: regular;
+	width: 100%;
+	height: 100%;
+	fill: gray;
+	text-length: 64;
+  }
+  
 
 .row {
 	width: 100%;
@@ -73,10 +85,76 @@
 	width: 30%;
 }
 
+.width-40{
+	width: 35%;
+}
+
 .width-50 {
 	width: 50%;
 }
 
+.spacing-top-10 {
+	y: 3%
+}
+
+.bgColor {
+	gradient-type: "linear";
+    gradient-x1: "0"; gradient-y1:"20";
+    gradient-x2: "0"; gradient-y2:"100%-20";
+	gradient-color1: "#390263";
+	gradient-color2: "black";
+}
+
+.bgColorReverse {
+	gradient-color1: "black";
+	gradient-color2: "#390263";
+}
+
+
+/* Header CSS */
+#batteryLevel {
+	width: 30; 
+	height: 15; 
+	fill: white;
+	x: 3%;
+	y: 5%; 
+}
+   
+.batteryImage {
+	width: 32;
+	height: 20;
+	x: 3%;
+	y: 3%;
+}
+#batteryPercent {
+   /*   x: 13%-2;
+	 y: 7%+2;  */
+	  x: 15%;
+	  y: 17%;
+   /*   font-size: 11;
+	 fill: #7f7f7f;
+	 font-family: Colfax-Medium; */
+}
+   
+ #date {
+	 x: 3%;
+	 y: 33%;
+}
+
+#weather {
+	x: 36%;
+	y: 17%;
+}
+
+#degreeIcon {
+	width: 8;
+	height: 8;
+	fill: #B8C3C4;
+	 x: 45%;
+	 y: 7%;
+}
+
+/* Header CSS End*/
 
 /* BloodSugars Display CSS */
 #delta {
@@ -104,6 +182,26 @@
 	height: 45;
 	fill: white;
  }
+ 
+ .time {
+	x: 3%;
+	y: 97%;
+}
+
+.dualTime {
+	text-anchor: middle;
+	x: 40%;
+	y: 3%;
+}
+
+#errorLine {
+	x1: 68%;
+	y1: 38%;
+	x2: 96%;
+	y2: 38%;
+	fill: white;
+}
+
  /* BloodSugars Display CSS End */
 
  /* Stats CSS */
@@ -115,31 +213,38 @@
  #layoutOne {
 	text-anchor: "start";
 	x: 3%;
-	y: 35%;
+	y: 15%;
  }
+
  #layoutTwo {
 	text-anchor: "start";
 	x: 3%;
-	y: 53%;
+	y: 32%;
  }
 
  #layoutThree {
 	text-anchor: "start";
 	x: 3%;
-	y: 73%;
+	y: 49%;
  }
 
  #layoutFour {
 	text-anchor: "start";
 	x: 3%;
-	y: 93%;
+	y: 66%;
+ }
+ 
+ #layoutFive {
+	text-anchor: "start";
+	x: 3%;
+	y: 83%;
  }
  /* Stats CSS End */
 
  /* Graph CSS */
  #graph {
 	width: 100%;
-	y: 33%;
+	y: 10%;
  }
  
 #high {
@@ -160,34 +265,67 @@
 
 #alertUser {
 	text-anchor: "middle";
-  x: 50%;
+  	x: 50%;
 	y: 20%
 	
 }
 #alertTitle {
-	text-anchor: "end";
-  x: 60%;
+	text-anchor: "middle";
+  	x: 50%;
 	y: 37%
 	
 }
 
 #alertLead {
 	x: 50%;
-	y: 45%	
+	y: 45%;
+	text-anchor: "middle";
 }
 
 #dismiss {
-	x: 3%;
-  y: 59%;
-  width: 100;
-  height: 115;
+	x: 5%;
+  	y: 55%;
+  	width: 100;
+  	height: 115;
 }
-
+/* #dismiss {
+	x: 3%;
+  	y: 59%;
+  	width: 100;
+  	height: 115;
+} */
 #alertArrows {
-	x: 60%;
+	x: 65%;
 	y: 25%;
 	width: 45;
 	height: 45;
 	fill: white;
 	text-anchor: "start";
  }
+
+ /* Loading Screen CSS */
+ #spinner {
+	x: 50%-25;
+	y: 50%-25;
+	width: 50;
+	height: 50;
+	fill: fb-white;
+}
+#loadingScreen {
+	fill: black;
+}
+
+#loadingStatus {
+	text-anchor: "middle";
+  	x: 50%;
+	y: 70%;
+}
+
+#loadingStatusLead {
+	text-anchor: "middle";
+	width: "100%";
+  	x: 0%;
+	y: 78%;
+	text-length: "80";
+}
+ /* Loading Screen CSS End*/

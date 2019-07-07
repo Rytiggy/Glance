@@ -1,0 +1,9 @@
+<symbol id="header">
+	<svg>
+        <rect id="batteryLevel" />
+        <image class="batteryImage" href="img/battery.png" fill="white" />
+        <text text-anchor="start" class="subtext1" id="batteryPercent"></text>
+        <text text-anchor="start" class="subtext1" id="weather"></text>
+        <image href="img/degree.png" id="degreeIcon" display="none" />
+	</svg>
+</symbol>

@@ -4,5 +4,6 @@
 		<text class="subtext1" id="layoutTwo" />
 		<text class="subtext1" id="layoutThree" />
 		<text class="subtext1" id="layoutFour" />
+		<text class="subtext1" id="layoutFive" />
 	</svg>
 </symbol>

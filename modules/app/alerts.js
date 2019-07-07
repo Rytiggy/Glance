@@ -119,7 +119,6 @@ export default class alerts {
 						alertTitle.style.display = "inline";
 						alertTitle.text = loopstatus;
 						alertLead.text = 'Loop Status';
-						return true;
 					}
 				}
 			}

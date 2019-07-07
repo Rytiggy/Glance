@@ -19,11 +19,12 @@ import fs from "fs";
 import { vibration } from "haptics";
 import DateTime from "../modules/app/dateTime.js";
 import BatteryLevels from "../modules/app/batteryLevels.js";
-import Graph from "../modules/app/bloodline.js"
-import UserActivity from "../modules/app/userActivity.js"
-import Alerts from "../modules/app/alerts.js"
-import Errors from "../modules/app/errors.js"
-import Transfer from "../modules/app/transfer.js"
+import Graph from "../modules/app/bloodline.js";
+import UserActivity from "../modules/app/userActivity.js";
+import Alerts from "../modules/app/alerts.js";
+import Errors from "../modules/app/errors.js";
+import Transfer from "../modules/app/transfer.js";
+import * as messaging from "messaging";
 // import { preferences, save, load } from "../modules/app/sharedPreferences";
 import { memory } from "system";
 
@@ -36,9 +37,12 @@ const transfer = new Transfer();
 var alerts = [];
 var data = null;
 var singleOrMultipleDispaly = document.getElementById('singleBG');
+var time = singleOrMultipleDispaly.getElementById("time");
+var batteryLevel = document.getElementById('batteryLevel');
+var batteryPercent = document.getElementById('batteryPercent');
 
-
-
+loadingScreen();
+setInterval(updateDisplay(data), 10000);
 inbox.onnewfile = () => {
   let fileName;
   do {
@@ -55,21 +59,32 @@ inbox.onnewfile = () => {
 * @param {Object} data recived from the companion
 */
 function updateDisplay(data) {
+  if(data) {
+    if(data.settings.numOfDataSources == 2) {
+      singleOrMultipleDispaly = document.getElementById('dualBG');
+      document.getElementById("dualBG").style.display = "inline";
+      document.getElementById("singleBG").style.display = "none";
+    } else {
+      singleOrMultipleDispaly = document.getElementById('singleBG');
+      document.getElementById("singleBG").style.display = "inline"; 
+      document.getElementById("dualBG").style.display = "none";
+    }
   
-  if(data.settings.numOfDataSources == 2) {
-    singleOrMultipleDispaly = document.getElementById('dualBG');
-    document.getElementById("dualBG").style.display = "inline";
-    document.getElementById("singleBG").style.display = "none";
+    time.text = dateTime.getTime(data.settings.timeFormat);
+   
+    checkDataState(data);
+    updateAlerts(data);
+    updateBloodSugarDisplay(data);
+    updateStats(data);
+    updateGraph(data);
+    updateBgColor(data);
+    updateHeader(data);  
   } else {
-    singleOrMultipleDispaly = document.getElementById('singleBG');
-    document.getElementById("singleBG").style.display = "inline"; 
-    document.getElementById("dualBG").style.display = "none";
+    console.warn('NO DATA');
+    batteryLevel.width = batteryLevels.get().level;
+    batteryPercent.text = '' + batteryLevels.get().percent + '%';
+    updateTimeDisplay()
   }
-
-  updateBloodSugarDisplay(data);
-  updateAlerts(data);
-  updateStats(data);
-  updateGraph(data);
 }
 
 function updateBloodSugarDisplay(data) {
@@ -89,12 +104,12 @@ function updateBloodSugarDisplay(data) {
       deltaText = '+' + deltaText;
     }
     delta.text = deltaText  + ' ' + data.settings.glucoseUnits; 
-    sgv.text = fistBgNonPredictiveBG.sgv;
+    sgv.text = fistBgNonPredictiveBG.currentbg;
     timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(fistBgNonPredictiveBG.datetime)[0];
     arrows.href = '../resources/img/arrows/'+fistBgNonPredictiveBG.direction+'.png';
 
     let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(fistBgNonPredictiveBG.datetime)[1];
-    errors.check(timeSenseLastSGV, BloodSugarDisplayContainer[index]);
+    errors.check(timeSenseLastSGV, sgv, errorLine);
   });
 }
 
@@ -116,7 +131,6 @@ function updateAlerts(data) {
     }
 
     if(typeof alerts[index] === 'undefined') {
-      console.log('New Alert Created');
       let newAlert = new Alerts(false, 120, 15);
       alerts.push(newAlert);
     }
@@ -139,23 +153,47 @@ function updateStats(data) {
   statsContainer.forEach((ele, index) => {
     const bloodSugar = data.bloodSugars[index];
     const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
-
     const layoutOne = statsContainer[index].getElementById('layoutOne');
     const layoutTwo = statsContainer[index].getElementById('layoutTwo'); 
     const layoutThree = statsContainer[index].getElementById('layoutThree'); 
     const layoutFour = statsContainer[index].getElementById('layoutFour'); 
+    const layoutFive = statsContainer[index].getElementById('layoutFive'); 
 
 
+    
+    let userName = null;
+		if(index == 0) {
+      userName = 	data.settings.dataSourceName;
+    } else {
+      userName = 	data.settings.dataSourceNameTwo;
+    }
+    layoutOne.text = userName;
 
-    layoutOne.text = fistBgNonPredictiveBG[data.settings.layoutOne];
-    layoutTwo.text = fistBgNonPredictiveBG[data.settings.layoutTwo];
-    layoutThree.text = fistBgNonPredictiveBG[data.settings.layoutThree];
-    // layoutThree.text = userActivity.get().steps;
-    layoutFour.text = fistBgNonPredictiveBG[data.settings.layoutFour]; 
-    // layoutFour.text = userActivity.get().heartRate;
+    if(fistBgNonPredictiveBG[data.settings.layoutTwo]){
+      layoutTwo.text =  fistBgNonPredictiveBG[data.settings.layoutOne];
+    } else {
+      layoutTwo.text = '';
+    }
+
+    if(fistBgNonPredictiveBG[data.settings.layoutTwo]){
+      layoutThree.text =  fistBgNonPredictiveBG[data.settings.layoutTwo];
+    } else {
+      layoutThree.text = '';
+    }
+
+    if(fistBgNonPredictiveBG[data.settings.layoutThree]){
+      layoutFour.text =  fistBgNonPredictiveBG[data.settings.layoutThree];
+    } else {
+      layoutFour.text = commas(userActivity.get().steps);
+    }
+
+    if(fistBgNonPredictiveBG[data.settings.layoutFour]){
+      layoutFive.text =  fistBgNonPredictiveBG[data.settings.layoutFour];
+    } else {
+      layoutFive.text = userActivity.get().heartRate;
+    } 
   });
 }
-
 
 function updateGraph(data) {
   const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
@@ -167,6 +205,94 @@ function updateGraph(data) {
       data.settings,
       graphContainer[index]
      );
+  });
+}
+
+function updateBgColor(data) {
+  const bgColor = singleOrMultipleDispaly.getElementsByClassName('bgColor');
+  bgColor.forEach((ele, index) => {
+    if(isOdd(index)) {
+      bgColor[index].gradient.colors.c1 = data.settings.bgColorTwo;
+      bgColor[index].gradient.colors.c2 = data.settings.bgColor;
+    } else {
+      bgColor[index].gradient.colors.c1 = data.settings.bgColor;
+      bgColor[index].gradient.colors.c2 = data.settings.bgColorTwo;
+    }
+  });
+}
+
+function updateHeader(data) {
+  const date = document.getElementById('date');
+
+  batteryLevel.width = batteryLevels.get().level;
+  batteryLevel.style.fill = batteryLevels.get().color;
+  batteryPercent.text = batteryLevels.get().percent + '%';
+  date.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
+}
+
+function loadingScreen() {
+  let spinner = document.getElementById("spinner");
+  const status = document.getElementById('loadingStatus');
+  const statusLead = document.getElementById('loadingStatusLead');
+  // Start the spinner
+  spinner.state = "enabled";
+  status.text = 'Syncing with Phone';
+
+
+  let checkConnection = function() {
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      status.text = 'Phone connected!';
+      clearInterval(checkConnectionInterval);
+    }
+    if (messaging.peerSocket.readyState === messaging.peerSocket.CLOSED) {
+      status.text = 'Phone unreachable';
+      statusLead.text = 'Try restarting the watch';
+    }
+  }
+  var checkConnectionInterval = setInterval(checkConnection, 5000);
+
+  messaging.peerSocket.onerror = function(err) {
+    console.log("Connection error: " + err.code + " - " + err.message);
+    status.text = ("Connection error: " + err.code + " - " + err.message);
+  }
+}
+
+// Validate data is not in error state
+function checkDataState(data) {
+  var loadingScreenContainer = document.getElementById("loadingScreen");
+  const status = document.getElementById('loadingStatus');
+  const statusLead = document.getElementById('loadingStatusLead');
+  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
+  
+  var errorCodes = [];
+  var errorCodesDesc = [];
+
+  BloodSugarDisplayContainer.forEach((ele, index) => {
+    const bloodSugar = data.bloodSugars[index];
+    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+      console.log(fistBgNonPredictiveBG.currentbg )
+      let userId = index + 1;
+      if(fistBgNonPredictiveBG.currentbg === "E503") {
+        errorCodes.push("E503");
+        errorCodesDesc.push(`User${userId}: Check data source`);
+      } else if(fistBgNonPredictiveBG.currentbg === "E500") {
+        errorCodes.push("E500");
+        errorCodesDesc.push(`User${userId}: Data source configuration error`);
+      } else if(fistBgNonPredictiveBG.currentbg === "E404") {
+        errorCodes.push("E404");
+        errorCodesDesc.push(`User${userId}: No Data source found`);
+      } 
+      
+      if(errorCodes.length > 0) {
+        status.text = errorCodes.toString();
+        statusLead.text = errorCodesDesc.toString();
+        loadingScreenContainer.style.display = "inline";
+      } else {
+        loadingScreenContainer.style.display = "none";
+      }
+      
+
+
   });
 }
 
@@ -192,7 +318,7 @@ function setTextColor(color){
     document.getElementById(ele).style.fill = color
   })
 }
-let dataToSend = {
+var dataToSend = {
   heart: 0,
   steps: userActivity.get().steps,
 };
@@ -204,192 +330,10 @@ setInterval(  function() {
      transfer.send(dataToSend);
 }, 180000);
 
-function updateBgsDisplay(currentBgFromBloodSugars, classes) {
-  let sgv = document.getElementById(classes.sgv);
-  let largeGraphsSgv = document.getElementById("largeGraphsSgv");
-  let rawbg = document.getElementById(classes.rawbg);
-  let tempBasal = document.getElementById(classes.tempBasal);
-  let predictedBg = document.getElementById(classes.predictedBg);
-  let timeOfLastSgv = document.getElementById(classes.timeOfLastSgv);
-  let largeGraphTimeOfLastSgv = document.getElementById("largeGraphTimeOfLastSgv");
-  let delta = document.getElementById(classes.delta);
-  let largeGraphDelta = document.getElementById('largeGraphDelta');
-  let largeGraphLoopStatus = document.getElementById("largeGraphLoopStatus");
-  let arrows = document.getElementById(classes.arrows);
-  let largeGraphArrows = document.getElementById("largeGraphArrows");
-
-  let iob = document.getElementById(classes.iob);
-  let cob = document.getElementById(classes.cob);
-  let syringe = document.getElementById(classes.syringe);
-  let hamburger = document.getElementById(classes.hamburger);
-  let largeGraphIob = document.getElementById("largeGraphIob");
-  let largeGraphCob = document.getElementById("largeGraphCob");
-  let largeGraphSyringe = document.getElementById("largeGraphSyringe");
-  let largeGraphHamburger = document.getElementById("largeGraphHamburger");
-  let dataSourceName = document.getElementById(classes.dataSourceName);
-
-  // Layout options
-  if( currentBgFromBloodSugars[data.settings.layoutOne] && data.settings.layoutOne != 'iob' ){
-    iob.text =  currentBgFromBloodSugars[data.settings.layoutOne];
-    syringe.style.display = 'none';
-    // iob.x  = 10;
-  } else {
-      iob.text = commas(userActivity.get().steps);
-      syringe.style.display = 'inline';
-      // iob.x  = 35;
-    if(currentBgFromBloodSugars.iob && currentBgFromBloodSugars.iob != 0) {
-      iob.text = currentBgFromBloodSugars.iob + '';
-      largeGraphIob.text = currentBgFromBloodSugars.iob + '';
-      syringe.style.display = "inline";
-      largeGraphSyringe.style.display = "inline";
-    } else {
-      iob.text = '';
-      largeGraphIob.text = '';
-      syringe.style.display = "none";
-      largeGraphSyringe.style.display = "none";
-    }
-
-  }    
-  
-  if( currentBgFromBloodSugars[data.settings.layoutTwo] && data.settings.layoutTwo != 'cob' ){
-    cob.text =  currentBgFromBloodSugars[data.settings.layoutTwo];
-    hamburger.style.display = 'none';
-    // cob.x  = 10;
-  } else {
-    cob.text = userActivity.get().heartRate;
-    hamburger.style.display = 'inline';
-    // cob.x  = 35;
-    if(currentBgFromBloodSugars.cob && currentBgFromBloodSugars.cob != 0) {
-      cob.text = currentBgFromBloodSugars.cob + '';  
-      largeGraphCob.text = currentBgFromBloodSugars.cob + '';  
-      hamburger.style.display = "inline";
-      largeGraphHamburger.style.display = "inline";
-    } else {
-      cob.text = '';
-      largeGraphCob.text = '';
-      hamburger.style.display = "none";
-      largeGraphHamburger.style.display = "none";
-    }
-  }
-  
-  if( currentBgFromBloodSugars[data.settings.layoutThree] && data.settings.layoutThree != 'steps' ){
-    steps.text =  currentBgFromBloodSugars[data.settings.layoutThree];
-    stepIcon.style.display = 'none';
-    steps.x  = 10;
-  } else {
-    steps.text = commas(userActivity.get().steps);
-    stepIcon.style.display = 'inline';
-    steps.x  = 35;
-  }    
-  
-  if( currentBgFromBloodSugars[data.settings.layoutFour] && data.settings.layoutFour != 'heart' ){
-    heart.text =  currentBgFromBloodSugars[data.settings.layoutFour];
-    heartIcon.style.display = 'none';
-    heart.x  = 10;
-  } else {
-    heart.text = userActivity.get().heartRate;
-    heartIcon.style.display = 'inline';
-    heart.x  = 35;
-  }
-
-  //
-  sgv.text = currentBgFromBloodSugars.currentbg;   
-  largeGraphsSgv.text = currentBgFromBloodSugars.currentbg; 
-  if (currentBgFromBloodSugars.rawbg) {
-    rawbg.text = currentBgFromBloodSugars.rawbg + ' ';
-  } else {
-    rawbg.text = '';
-  }
-  
-  if (currentBgFromBloodSugars.tempbasal) {
-    tempBasal.text =  currentBgFromBloodSugars.tempbasal;
-  } else {
-    tempBasal.text =  '';
-  }
-  
-   if (currentBgFromBloodSugars.predictedbg) {
-    predictedBg.text =  currentBgFromBloodSugars.predictedbg;
-  } else {
-    predictedBg.text =  '';
-  }
-  
-  timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
-  largeGraphTimeOfLastSgv.text = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[0];
-    
-  
-  let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(currentBgFromBloodSugars.datetime)[1];
-  // if DISABLE_ALERTS is true check if user is in range 
-  if(DISABLE_ALERTS && data.settings.resetAlertDismissal) {
-    if( parseInt(timeSenseLastSGV, 10) < data.settings.staleDataAlertAfter && currentBgFromBloodSugars.direction != 'DoubleDown' && currentBgFromBloodSugars.direction != 'DoubleUp' && currentBgFromBloodSugars.loopstatus != 'Warning') { // Dont reset alerts for LOS, DoubleUp, doubleDown, Warning
-      if (currentBgFromBloodSugars.sgv > parseInt(data.settings.lowThreshold) && currentBgFromBloodSugars.sgv < parseInt(data.settings.highThreshold)) { // if the BG is between the threshold 
-        console.error('here', DISABLE_ALERTS,  parseInt(timeSenseLastSGV, 10))
-        disableAlertsFalse()
-      }
-    }
-  }
-    
-  let deltaText = currentBgFromBloodSugars.bgdelta 
-  // add Plus
-  if (deltaText > 0) {
-    deltaText = '+' + deltaText;
-  }
-
-  delta.text = deltaText  +' '+ data.settings.glucoseUnits; 
-  largeGraphDelta.text = deltaText  +' '+ data.settings.glucoseUnits;
-  largeGraphLoopStatus.text = currentBgFromBloodSugars.loopstatus;
-  
-  arrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png'
-  largeGraphArrows.href = '../resources/img/arrows/'+currentBgFromBloodSugars.direction+'.png';
-  
-  graph.update(data[classes.bloodSugars].bgs,
-               data.settings.highThreshold,
-               data.settings.lowThreshold,
-               data.settings,
-               classes
-              );
-  dataSourceName.text = data.settings[classes.dataSourceName];
-
-
-  let didAlert = alerts.check(currentBgFromBloodSugars, data.settings, DISABLE_ALERTS, timeSenseLastSGV, classes);
-  console.error(didAlert)
-  if(didAlert) {
-    let alertGraphClasses = {
-      bloodSugars:'bloodSugars',
-      sgv:'sgv',
-      rawbg: 'rawbg',
-      tempBasal: 'tempBasal',
-      predictedBg:'predictedBg',
-      timeOfLastSgv: 'timeOfLastSgv',
-      delta: 'delta',
-      arrows: 'arrows',
-      errorLine: 'errorLine',
-      iob: 'iob',
-      cob: 'cob', 
-      syringe: 'syringe',
-      hamburger: 'hamburger',
-      high: 'high',
-      low: 'low',
-      highLine: 'highLine',
-      meanLine: 'meanLine',
-      lowLine: 'lowLine',
-      graphPoints: 'graphPoints',
-      dataSourceName: 'dataSourceName',
-      graphContainer: 'alertGraph'
-    }  
-
-
-    graph.update(data[classes.bloodSugars].bgs,
-      data.settings.highThreshold,
-      data.settings.lowThreshold,
-      data.settings,
-      alertGraphClasses
-     );
-  }
-  errors.check(timeSenseLastSGV, classes);
-}
-
 function updateTimeDisplay(classes) {
-  timeElement.text = dateTime.getTime();
-  largeGraphTime.text = dateTime.getTime();
+  time.text = dateTime.getTime();
 }
 
+function isOdd(n) {
+  return Math.abs(n % 2) == 1;
+}

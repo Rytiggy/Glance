@@ -2,18 +2,10 @@
     <svg>
         <!-- Black background -->
         <rect class="full-size" fill="fb-black" />
-        <!-- Title and text -->
-        <!-- <use href="#mixed-text-center-mid" class="dialog-mixed-text" id="alertHeader">
-            <set href="#top-padding" attributeName="display" to="none" />
-            <set href="#header/text" attributeName="fill" to="fb-magenta" />
-            <set href="#copy/text" attributeName="text-buffer" to="Check blood sugar!" />
-            <set href="#header/text" attributeName="text-length" to="128" />
-            <set href="#bottom-padding" attributeName="display" to="none" />
-        </use> -->
-        <text id="alertUser" class="subtext1">Ryan</text>
-        <text id="alertTitle" class="h2">560</text>
+        <text id="alertUser" class="subtext1"></text>
+        <text id="alertTitle" class="h2"></text>
         <image href="img/arrows/FortyFiveDown.png" id="alertArrows"/>
-        <text text-anchor="middle" id="alertLead" class="subtext1">Check blood sugar!</text>
+        <text id="alertLead" class="subtext1">Check blood sugar!</text>
         
         <use pointer-events="visible" id="dismiss" class="dialog-half-button-left" href="#square-button-negative">
             <set href="#text" attributeName="text-buffer" to="Dismiss" />
