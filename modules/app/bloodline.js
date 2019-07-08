@@ -31,13 +31,8 @@ export default class bloodline {
     const meanLine = graphContainer.getElementsByClassName('meanLine');
     const lowLine = graphContainer.getElementsByClassName('lowLine');
     const graphPoints = graphContainer.getElementsByClassName('graphPoints');
-
-
     let isMmol = settings.glucoseUnits === 'mmol';
-    
-    console.log('app - bloodline - update()')
     let reverseBloodsugars = bloodsugars.reverse();
-   
     let predictedValues = reverseBloodsugars.filter((bg) => {
       if (bg.p) {
         return bg;      
@@ -138,7 +133,6 @@ export default class bloodline {
         } else {
           graphPoints[index].style.opacity = 1;
           let pointY = (height - (height * (Math.round(((bg.sgv - ymin) / (ymax - ymin)) * 100) / 100)));
-          //  - TODO: compare time of current sgv to time of last sgv and make sure its equal 5m if not add spacing
           graphPoints[index].cy = pointY;
           graphPoints[index].style.fill = "#708090"; // gray
           //  - check sgv point is in range if not change color 
@@ -159,8 +153,6 @@ export default class bloodline {
       } catch(e) {
         console.error(e)
       }
-
-
     });  
     
     // 47 loops 

@@ -32,5 +32,8 @@
     "build": "fitbit-build",
     "build-and-install": "printf 'build-and-install' | npx fitbit",
     "install": "printf 'install' | npx fitbit"
+  },
+  "dependencies": {
+    "fitbit-weather": "^0.2.2"
   }
 }

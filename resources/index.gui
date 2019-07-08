@@ -75,7 +75,7 @@
 		</svg>
 	</svg>
 	<svg id="loadingScreen">
-	    <rect class="full-size" fill="fb-black" />
+	    <rect class="full-size loadingScreenBackground" />
 		<use id="spinner" href="#spinner" />
 		<text 
 			id="loadingStatus"
@@ -86,5 +86,8 @@
 			class="leadText center"
 		/>
 	</svg>
+	<!-- <svg id="largeGraphDisplay">
+	    <rect class="full-size" fill="fb-black" />
+	</svg> -->
 </svg>
 

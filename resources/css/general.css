@@ -144,16 +144,25 @@ font-size: 23;
 }
 
 #weather {
-	x: 36%;
+	x: 48%;
 	y: 17%;
+	text-anchor: "end";
 }
 
 #degreeIcon {
 	width: 8;
 	height: 8;
 	fill: #B8C3C4;
-	 x: 45%;
-	 y: 7%;
+	 x: 49%;
+	 y: 6%;
+}
+
+#weatherIcon {
+	width: 24;
+	height: 24;
+	fill: #B8C3C4;
+	 x: 53%;
+	 y: 4%;
 }
 
 /* Header CSS End*/
@@ -191,9 +200,9 @@ font-size: 23;
 }
 
 .dualTime {
-	text-anchor: middle;
-	x: 50%;
-	y: 10%;
+	text-anchor: start;
+	x: 3%;
+	y: 0%;
 }
 
 #errorLine {
@@ -314,6 +323,10 @@ font-size: 23;
 	fill: fb-white;
 }
 #loadingScreen {
+	fill: black;
+}
+
+.loadingScreenBackground {
 	fill: black;
 }
 

@@ -26,6 +26,7 @@ import Dexcom from "../modules/companion/dexcom.js";
 
 import * as messaging from "messaging";
 import { me } from "companion";
+import * as weather from 'fitbit-weather/companion'
 
 const settings = new Settings();
 const transfer = new Transfer();
@@ -38,13 +39,12 @@ const dexcom = new Dexcom();
 const logs = new Logs();
 const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
+weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
 
 async function sendData() {
-  logs.add('companion - sendData: Version: 2.1.100')
   // Get settings 
   const store = await settings.get(dataReceivedFromWatch);
   
-
   // Get SGV data
    let bloodsugars = null;
    let extraData = null;
@@ -55,16 +55,7 @@ async function sendData() {
       subDomain = 'shareous1';
     }
     let sessionId = await dexcom.getSessionId(store.dexcomUsername, store.dexcomPassword, subDomain);
-    if(store.dexcomUsername && store.dexcomPassword) {
-       bloodsugars = await dexcom.getData(sessionId, subDomain); 
-    } else {
-      bloodsugars = {
-        error : {
-          status : "500"
-        }
-      }
-    }
-    
+    bloodsugars = await dexcom.getData(sessionId, subDomain); 
   } else {
     bloodsugars = await fetch.get(store.url);
     if(store.extraDataUrl) {
@@ -82,27 +73,22 @@ async function sendData() {
       subDomainTwo = 'shareous1';
     }
     let sessionIdTwo = await dexcom.getSessionId(store.dexcomUsernameTwo, store.dexcomPasswordTwo, subDomainTwo);
-    if(store.dexcomUsernameTwo && store.dexcomPasswordTwo) {
-       bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo); 
-    } else {
-      bloodsugarsTwo = {
-        error : {
-          status : "500"
-        }
-      }
-    }
-    
+    bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo); 
   } else {
     bloodsugarsTwo = await fetch.get(store.urlTwo);
     if(store.extraDataUrlTwo) {
        extraDataTwo = await fetch.get(store.extraDataUrlTwo); 
     }  
   }
-  
+  logs.add('bloodsugars: ' + JSON.stringify(bloodsugars))
+  logs.add('extraData: ' + JSON.stringify(extraData))
+  logs.add('bloodsugarsTwo: ' + JSON.stringify(bloodsugarsTwo))
+  logs.add('extraDataTwo: ' + JSON.stringify(extraDataTwo))
+
   // Get weather data   
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
+
   Promise.all([bloodsugars, extraData, bloodsugarsTwo, extraDataTwo]).then(function(values) {
-    
 		let keysOne = {
 			dexcomUsername: 'dexcomUsername',
 			dexcomPassword: 'dexcomPassword',
@@ -122,11 +108,10 @@ async function sendData() {
           user: standardize.bloodsugars(values[2], values[3], store, keysTwo),
         },
       ],
-      settings: standardize.settings(store)
-      // weather: values[2].query.results.channel.item.condition,
+      settings: standardize.settings(store),
     };
-    logs.add('Line 59: companion - sendData - DataToSend size: ' + sizeof.size(dataToSend) + ' bytes')
-    logs.add('Line 60: companion - sendData - DataToSend: ' + JSON.stringify(dataToSend))
+    logs.add('DataToSend size: ' + sizeof.size(dataToSend) + ' bytes')
+    logs.add('DataToSend: ' + JSON.stringify(dataToSend))
     transfer.send(dataToSend);
   });
 }
@@ -135,9 +120,8 @@ async function sendData() {
 // Listen for messages from the device
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data.command === 'forceCompanionTransfer') {
-    logs.add('Line 58: companion - Watch to Companion Transfer request')
+    logs.add('Watch to Companion Transfer request');
     // pass in data that was recieved from the watch 
-    console.log(JSON.stringify(evt.data.data))
     dataReceivedFromWatch = evt.data.data;
     sendData()
   }
@@ -145,12 +129,11 @@ messaging.peerSocket.onmessage = function(evt) {
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = function(err) {
-  // Handle any errors
-  console.log("Connection error: " + err.code + " - " + err.message);
+  logs.add("Connection error: " + err.code + " - " + err.message);
 };
 
 settingsStorage.onchange = function(evt) {
-  logs.add('Line 70: companion - Settings changed send to watch');
+  logs.add('Settings changed send data to watch');
   sendData()
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token

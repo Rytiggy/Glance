@@ -25,6 +25,8 @@ import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
 import Transfer from "../modules/app/transfer.js";
 import * as messaging from "messaging";
+import * as weather from 'fitbit-weather/app'
+
 // import { preferences, save, load } from "../modules/app/sharedPreferences";
 import { memory } from "system";
 
@@ -42,7 +44,7 @@ var batteryLevel = document.getElementById('batteryLevel');
 var batteryPercent = document.getElementById('batteryPercent');
 
 loadingScreen();
-setInterval(updateDisplay(data), 10000);
+setInterval(function() { updateDisplay(data) }, 10000);
 inbox.onnewfile = () => {
   let fileName;
   do {
@@ -59,6 +61,7 @@ inbox.onnewfile = () => {
 * @param {Object} data recived from the companion
 */
 function updateDisplay(data) {
+  console.log('Update Display called')
   if(data) {
     if(data.settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById('dualBG');
@@ -88,6 +91,10 @@ function updateDisplay(data) {
   }
 }
 
+/**
+* Update bloodsugar display
+* @param {Object} data recived from the companion
+*/
 function updateBloodSugarDisplay(data) {
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
   BloodSugarDisplayContainer.forEach((ele, index) => {
@@ -114,6 +121,10 @@ function updateBloodSugarDisplay(data) {
   });
 }
 
+/**
+* Update alert display
+* @param {Object} data recived from the companion
+*/
 function updateAlerts(data) {
   const alertContainer = singleOrMultipleDispaly.getElementsByClassName('alertContainer');
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName('bloodSugarDisplay');
@@ -149,6 +160,10 @@ function updateAlerts(data) {
   });
 }
 
+/**
+* Update stats display
+* @param {Object} data recived from the companion
+*/
 function updateStats(data) {
   const statsContainer = singleOrMultipleDispaly.getElementsByClassName('stats');
   statsContainer.forEach((ele, index) => {
@@ -196,6 +211,10 @@ function updateStats(data) {
   });
 }
 
+/**
+* Update graph display
+* @param {Object} data recived from the companion
+*/
 function updateGraph(data) {
   const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
   graphContainer.forEach((ele, index) => {
@@ -209,6 +228,10 @@ function updateGraph(data) {
   });
 }
 
+/**
+* Update bg color
+* @param {Object} data recived from the companion
+*/
 function updateBgColor(data) {
   const bgColor = singleOrMultipleDispaly.getElementsByClassName('bgColor');
   bgColor.forEach((ele, index) => {
@@ -222,8 +245,22 @@ function updateBgColor(data) {
   });
 }
 
+/**
+* Update header display
+* @param {Object} data recived from the companion
+*/
 function updateHeader(data) {
   const date = document.getElementById('date');
+  const weatherText = document.getElementById('weather');
+  const weatherIcon = document.getElementById('weatherIcon');
+
+  weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
+    .then(weather => {
+      console.log(JSON.stringify(weather))
+      weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
+      weatherIcon.href = '../resources/img/weather/'+weather.conditionCode+'.png';
+    })
+    .catch(error => console.log(JSON.stringify(error)))
 
   batteryLevel.width = batteryLevels.get().level;
   batteryLevel.style.fill = batteryLevels.get().color;
@@ -231,6 +268,10 @@ function updateHeader(data) {
   date.text = dateTime.getDate(data.settings.dateFormat, data.settings.enableDOW);
 }
 
+/**
+* Update loading screen display
+* @param {Object} data recived from the companion
+*/
 function loadingScreen() {
   let spinner = document.getElementById("spinner");
   const status = document.getElementById('loadingStatus');
@@ -244,6 +285,12 @@ function loadingScreen() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = 'Phone connected!';
       clearInterval(checkConnectionInterval);
+      setTimeout(function() {
+        console.log(!data)
+        if(!data) {
+          statusLead.text = 'Problem receiving data, try restarting watchface and double check settings.';
+        }
+      }, 10000);
     }
     if (messaging.peerSocket.readyState === messaging.peerSocket.CLOSED) {
       status.text = 'Phone unreachable';
@@ -258,7 +305,10 @@ function loadingScreen() {
   }
 }
 
-// Validate data is not in error state
+/**
+*  Validate data is not in error state
+* @param {Object} data recived from the companion
+*/
 function checkDataState(data) {
   var loadingScreenContainer = document.getElementById("loadingScreen");
   const status = document.getElementById('loadingStatus');
@@ -275,13 +325,16 @@ function checkDataState(data) {
       let userId = index + 1;
       if(fistBgNonPredictiveBG.currentbg === "E503") {
         errorCodes.push("E503");
-        errorCodesDesc.push(`User${userId}: Check data source`);
+        errorCodesDesc.push(`User${userId}: Data source configuration error. Check settings.`);
       } else if(fistBgNonPredictiveBG.currentbg === "E500") {
         errorCodes.push("E500");
-        errorCodesDesc.push(`User${userId}: Data source configuration error`);
+        errorCodesDesc.push(`User${userId}: Data source configuration error. Check settings.`);
       } else if(fistBgNonPredictiveBG.currentbg === "E404") {
         errorCodes.push("E404");
-        errorCodesDesc.push(`User${userId}: No Data source found`);
+        errorCodesDesc.push(`User${userId}: No Data source found. Check settings.`);
+      } else if(fistBgNonPredictiveBG.currentbg === "E400") {
+        errorCodes.push("E400");
+        errorCodesDesc.push(`User${userId}: Bad request - Check data source login info.`);
       } 
       
       if(errorCodes.length > 0) {
@@ -291,10 +344,14 @@ function checkDataState(data) {
       } else {
         loadingScreenContainer.style.display = "none";
       }
-      
-
-
   });
+}
+/**
+*  Validate data is not in error state
+* @param {Object} data recived from the companion
+*/
+function largeGraphDisplay(data) {
+
 }
 
 function commas(value) {
