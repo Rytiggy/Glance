@@ -15,7 +15,7 @@
 			<svg class="row bottom">
 				<use href="#stats" class="stats"/>
 				<svg class="right width-50">
-					<use href="#graph" class="graph" display="none"/>
+					<use pointer-events="visible" href="#graph" class="graph" display="none"/>
 				</svg>
 			</svg>
 		</svg>	
@@ -38,7 +38,7 @@
 					height="100%"
 				/>
 				<use href="#stats" class="stats"/>
-				<use href="#graph" class="graph center width-40"/>
+				<use pointer-events="visible" href="#graph" class="graph center width-40"/>
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 			</svg>
 			<svg class="row bottom">
@@ -48,11 +48,11 @@
 					height="100%"
 				/>	
 				<use href="#stats" class="stats"/>
-				<use href="#graph" class="graph center width-40"/>
+				<use pointer-events="visible" href="#graph" class="graph center width-40"/>
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 				<text 
 					id="time"
-					class="subtext1 center dualTime text-gray"
+					class="center dualTime text-gray"
 					pointer-events="visible"
 				/>
 			</svg>
@@ -86,8 +86,8 @@
 			class="leadText center"
 		/>
 	</svg>
-	<!-- <svg id="largeGraphDisplay">
+	<svg id="largeGraphDisplay" display="none">
 	    <rect class="full-size" fill="fb-black" />
-	</svg> -->
+	</svg>
 </svg>
 

@@ -82,7 +82,8 @@ function updateDisplay(data) {
     updateStats(data);
     updateGraph(data);
     updateBgColor(data);
-    updateHeader(data);  
+    updateHeader(data);
+    largeGraphDisplay(data);  
   } else {
     console.warn('NO DATA');
     batteryLevel.width = batteryLevels.get().level;
@@ -174,7 +175,10 @@ function updateStats(data) {
     const layoutThree = statsContainer[index].getElementById('layoutThree'); 
     const layoutFour = statsContainer[index].getElementById('layoutFour'); 
     const layoutFive = statsContainer[index].getElementById('layoutFive'); 
-
+    const syringe = statsContainer[index].getElementById('syringe'); 
+    const hamburger = statsContainer[index].getElementById('hamburger'); 
+    const step = statsContainer[index].getElementById('step'); 
+    const heart = statsContainer[index].getElementById('heart'); 
 
     
     let userName = null;
@@ -185,28 +189,45 @@ function updateStats(data) {
     }
     layoutOne.text = userName;
 
-    if(fistBgNonPredictiveBG[data.settings.layoutTwo]){
+    if(fistBgNonPredictiveBG[data.settings.layoutOne] && data.settings.layoutOne != 'iob'){
       layoutTwo.text =  fistBgNonPredictiveBG[data.settings.layoutOne];
+      layoutTwo.x = 8;
+      syringe.style.display = "none";
     } else {
-      layoutTwo.text = '';
+      layoutTwo.text =  fistBgNonPredictiveBG.iob;
+      layoutTwo.x = 35;
+      syringe.style.display = "inline";
     }
 
-    if(fistBgNonPredictiveBG[data.settings.layoutTwo]){
+    if(fistBgNonPredictiveBG[data.settings.layoutTwo] && data.settings.layoutTwo != 'cob'){
       layoutThree.text =  fistBgNonPredictiveBG[data.settings.layoutTwo];
+      layoutThree.x = 8;
+      hamburger.style.display = "none";
     } else {
-      layoutThree.text = '';
+      layoutThree.text =  fistBgNonPredictiveBG.cob;
+      layoutThree.x = 35;
+      hamburger.style.display = "inline";
+
     }
 
-    if(fistBgNonPredictiveBG[data.settings.layoutThree]){
+    if(fistBgNonPredictiveBG[data.settings.layoutThree] && data.settings.layoutThree != 'steps'){
       layoutFour.text =  fistBgNonPredictiveBG[data.settings.layoutThree];
+      layoutFour.x = 8;
+      step.style.display = "none";
     } else {
       layoutFour.text = commas(userActivity.get().steps);
+      layoutFour.x = 35;
+      step.style.display = "inline";
     }
 
-    if(fistBgNonPredictiveBG[data.settings.layoutFour]){
+    if(fistBgNonPredictiveBG[data.settings.layoutFour] && data.settings.layoutFour != 'heart'){
       layoutFive.text =  fistBgNonPredictiveBG[data.settings.layoutFour];
+      layoutFive.x = 8;
+      heart.style.display = "none";
     } else {
       layoutFive.text = userActivity.get().heartRate;
+      layoutFive.x = 35;
+      heart.style.display = "inline";
     } 
   });
 }
@@ -257,7 +278,11 @@ function updateHeader(data) {
   weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
     .then(weather => {
       console.log(JSON.stringify(weather))
-      weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
+      if(data.settings.tempType == "f") {
+        weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
+      } else {
+        weatherText.text =  Math.round( parseFloat(weather.temperatureC) );
+      }
       weatherIcon.href = '../resources/img/weather/'+weather.conditionCode+'.png';
     })
     .catch(error => console.log(JSON.stringify(error)))
@@ -351,6 +376,26 @@ function checkDataState(data) {
 * @param {Object} data recived from the companion
 */
 function largeGraphDisplay(data) {
+  // const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
+  // const largeGraphDisplay = document.getElementById('largeGraphDisplay');
+
+  // graphContainer.forEach((ele, index) => {
+  //   console.log(index)
+  //   // const bloodSugar = data.bloodSugars[index];
+  //   // graph.update(bloodSugar.user.bgs,
+  //   //   data.settings.highThreshold,
+  //   //   data.settings.lowThreshold,
+  //   //   data.settings,
+  //   //   graphContainer[index]
+  //   //  );
+  //   ele.onclick = function(evt) {
+  //     largeGraphDisplay.style.display = 'inline';
+  //     const bloodSugar = data.bloodSugars[index];
+  //     console.log(JSON.stringify(bloodSugar))
+
+  //   }
+  // });
+
 
 }
 

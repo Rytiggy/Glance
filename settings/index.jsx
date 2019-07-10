@@ -76,10 +76,13 @@ function mySettings(props) {
         <Select label={`Time Format`} settingsKey="timeFormat" options={[ {name:"12hr", value:false}, {name:"24hr", value:true} ]} />
         <Select label={`Date Format`} settingsKey="dateFormat" options={[ {name:"MM/DD/YYYY", value:"MM/DD/YYYY"}, {name:"DD/MM/YYYY", value:"DD/MM/YYYY"}, {name:"YYYY/MM/DD", value:"YYYY/MM/DD"}, {name:"DD.MM.YYYY", value:"DD.MM.YYYY"} ]} />
        <Toggle settingsKey="enableDOW" label="Day of week at end of date"/>
-      </Section>  
+      </Section> 
       
       <Section title={<Text bold align="center">Layout</Text>}>
-                                             
+        <Text align="center" bold>
+          Weather
+        </Text>
+        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />                               
                                           
              <Text bold align="center">Graph</Text>
             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout' ) || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
@@ -96,7 +99,7 @@ function mySettings(props) {
         
         
           {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'spike') ?
-          <Section>
+         <Section>
               <Text bold align="center">Customize</Text>
               <Text>The customize section is used for customizing the user interface of Glance, you can replace the default values of Glance with other values present.</Text>
               <Text>Note: If the value selected is not present on your data source it will show the default option.</Text>
@@ -192,12 +195,6 @@ function renderDataSource(props, id, title, keys) {
     </Section>
   )
 }
-// <Text align="center" bold>
-//     Weather
-// </Text>
-// <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />
-
-
 
             
 //             <Text bold align="center" align="center">Treatment</Text>                                                     

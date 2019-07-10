@@ -1,9 +1,13 @@
 <symbol id="stats">
 	<svg>
-		<text class="subtext1" id="layoutOne" />
-		<text class="subtext1" id="layoutTwo" />
-		<text class="subtext1" id="layoutThree" />
-		<text class="subtext1" id="layoutFour" />
-		<text class="subtext1" id="layoutFive" />
+		<text class="leadText" id="layoutOne" />
+		<text class="leadText" id="layoutTwo" />
+		<image class="stat-image" href="img/step.png" fill="white" id="step" />
+		<text class="leadText" id="layoutThree" />
+		<image class="stat-image" href="img/heart.png" fill="white" id="heart" />
+		<text class="leadText" id="layoutFour" />
+		<image class="stat-image" href="img/hamburger.png" fill="white" id="hamburger" />
+		<text class="leadText" id="layoutFive" />
+		<image class="stat-image" href="img/syringe.png" fill="white" id="syringe" /> 
 	</svg>
 </symbol>

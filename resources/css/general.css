@@ -19,7 +19,7 @@
 }
 
 .subtext1 {
-font-size: 23;
+  font-size: 23;
   font-family:  Colfax-Medium;
   font-weight: regular;
   width: 100%;
@@ -39,12 +39,12 @@ font-size: 23;
 }
 
 .leadText {
-	font-size: 19;
-	font-family: Seville-Condensed;
+	font-size: 20;
+	font-family:  Colfax-Medium;
 	font-weight: regular;
 	width: 100%;
 	height: 100%;
-	fill: gray;
+	fill: white;
 	text-length: 64;
 }
 
@@ -203,6 +203,13 @@ font-size: 23;
 	text-anchor: start;
 	x: 3%;
 	y: 0%;
+	font-family: SevilleSharp-Regular;
+	font-size: 27;
+	font-weight: regular;
+	width: 100%;
+	height: 100%;
+	fill: white;
+	text-length: 64
 }
 
 #errorLine {
@@ -229,34 +236,58 @@ font-size: 23;
 
  #layoutTwo {
 	text-anchor: "start";
-	x: 3%;
+	/* x: 3%; */
+	x: 10%;
 	y: 32%;
  }
 
  #layoutThree {
 	text-anchor: "start";
-	x: 3%;
+	x: 10%;
 	y: 49%;
  }
 
  #layoutFour {
 	text-anchor: "start";
-	x: 3%;
+	x: 10%;
 	y: 66%;
  }
  
  #layoutFive {
 	text-anchor: "start";
-	x: 3%;
+	x: 10%;
 	y: 83%;
  }
+
+#syringe {
+	x: 3%;
+	y: 24%;  
+}
+
+#hamburger {
+	x: 3%;
+	y: 38%; 
+}
+
+#step {
+	x: 3%;
+	y: 56%;
+	/* 15 */
+}
+
+#heart {
+	x: 3%;
+	y: 73%;
+}
+
  /* Stats CSS End */
 
  /* Graph CSS */
  #graph {
 	width: 100%;
 	y: 10%;
- }
+	pointer-events: "visible";
+}
  
 #high {
   x: 97%;
@@ -330,7 +361,7 @@ font-size: 23;
 	fill: black;
 }
 
-#loadingStatus {
+#loadingStatus  {
 	text-anchor: "middle";
   	x: 50%;
 	y: 70%;
@@ -340,7 +371,7 @@ font-size: 23;
 	text-anchor: "middle";
 	width: "100%";
   	x: 0%;
-	y: 78%;
+	y: 74%;
 	text-length: "80";
 }
  /* Loading Screen CSS End*/

@@ -453,14 +453,14 @@ export default class settings {
    if (settingsStorage.getItem('dataSourceName')) {
     dataSourceName = JSON.parse(settingsStorage.getItem('dataSourceName')).name;
    } else if (!dataSourceName) {
-    dataSourceName = 'user one';
+    dataSourceName = 'user #1';
     settingsStorage.setItem("dataSourceName", JSON.stringify({"name":dataSourceName}));
    }  
    let dataSourceNameTwo = null;
    if (settingsStorage.getItem('dataSourceNameTwo')) {
     dataSourceNameTwo = JSON.parse(settingsStorage.getItem('dataSourceNameTwo')).name;
    } else if (!dataSourceNameTwo) {
-    dataSourceNameTwo = 'user two';
+    dataSourceNameTwo = 'user #2';
     settingsStorage.setItem("dataSourceNameTwo", JSON.stringify({"name":dataSourceNameTwo}));
    }  
 
