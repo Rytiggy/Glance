@@ -27,22 +27,27 @@ import Transfer from "../modules/app/transfer.js";
 import * as messaging from "messaging";
 import * as weather from 'fitbit-weather/app'
 
-// import { preferences, save, load } from "../modules/app/sharedPreferences";
+import UserSettings from "../modules/app/userSettings.js";
 import { memory } from "system";
-
 const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
 const graph = new Graph();
 const userActivity = new UserActivity();
 const errors = new Errors();
 const transfer = new Transfer();
+const userSettings = new UserSettings();
+
 var alerts = [];
-var data = null;
+var data = {
+  settings: userSettings.load(),
+}
 var singleOrMultipleDispaly = document.getElementById('singleBG');
 var time = singleOrMultipleDispaly.getElementById("time");
 var batteryLevel = document.getElementById('batteryLevel');
 var batteryPercent = document.getElementById('batteryPercent');
 
+updateDisplay(data);
+console.log(JSON.stringify(data));
 loadingScreen();
 setInterval(function() { updateDisplay(data) }, 10000);
 inbox.onnewfile = () => {
@@ -63,6 +68,9 @@ inbox.onnewfile = () => {
 function updateDisplay(data) {
   console.log('Update Display called')
   if(data) {
+    
+    console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+    userSettings.save(data.settings);
     if(data.settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById('dualBG');
       document.getElementById("dualBG").style.display = "inline";
@@ -75,15 +83,18 @@ function updateDisplay(data) {
     time = singleOrMultipleDispaly.getElementById("time");
 
     time.text = dateTime.getTime(data.settings.timeFormat);
-   
-    checkDataState(data);
-    updateAlerts(data);
-    updateBloodSugarDisplay(data);
-    updateStats(data);
-    updateGraph(data);
+    if(data.bloodSugars) {
+      checkDataState(data);
+      updateAlerts(data);
+      updateBloodSugarDisplay(data);
+      updateStats(data);
+      updateGraph(data);
+      largeGraphDisplay(data); 
+    }
     updateBgColor(data);
+    setTextColor(data.settings.textColor);
     updateHeader(data);
-    largeGraphDisplay(data);  
+
   } else {
     console.warn('NO DATA');
     batteryLevel.width = batteryLevels.get().level;
@@ -207,7 +218,6 @@ function updateStats(data) {
       layoutThree.text =  fistBgNonPredictiveBG.cob;
       layoutThree.x = 35;
       hamburger.style.display = "inline";
-
     }
 
     if(fistBgNonPredictiveBG[data.settings.layoutThree] && data.settings.layoutThree != 'steps'){
@@ -310,6 +320,7 @@ function loadingScreen() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = 'Phone connected!';
       clearInterval(checkConnectionInterval);
+      statusLead.text = '';
       setTimeout(function() {
         console.log(!data)
         if(!data) {
@@ -319,7 +330,7 @@ function loadingScreen() {
     }
     if (messaging.peerSocket.readyState === messaging.peerSocket.CLOSED) {
       status.text = 'Phone unreachable';
-      statusLead.text = 'Try restarting the watch';
+      statusLead.text = 'Please wait or try restarting the watch';
     }
   }
   var checkConnectionInterval = setInterval(checkConnection, 5000);
@@ -416,10 +427,11 @@ function getfistBgNonPredictiveBG(bgs){
 }
 
 function setTextColor(color){
-  let domElemets = ['iob', 'cob', 'heart', 'steps', 'batteryPercent', 'date', 'delta', 'timeOfLastSgv', 'time', 'high', 'low', 'largeGraphHigh', 'largeGraphLow', 'largeGraphDelta', 'largeGraphTimeOfLastSgv', 'largeGraphIob', 'largeGraphCob', 'predictedBg', 'largeGraphTime', 'largeGraphLoopStatus', 'tempBasal'];
-  domElemets.forEach(ele => {
-    document.getElementById(ele).style.fill = color
-  })
+    let settingsTextColor = singleOrMultipleDispaly.getElementsByClassName('settingsTextColor');
+    settingsTextColor.forEach((ele, index) => {
+      console.log(color)
+      ele.style.fill = color;
+    });
 }
 var dataToSend = {
   heart: 0,
