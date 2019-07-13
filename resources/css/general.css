@@ -101,6 +101,7 @@
 
 .bgColor {
 	gradient-type: "linear";
+	x:0;
     gradient-x1: "0"; gradient-y1:"20";
     gradient-x2: "0"; gradient-y2:"100%-20";
 	gradient-color1: "#390263";
@@ -112,6 +113,9 @@
 	gradient-color2: "#390263";
 }
 
+.settingsTextColor {
+	fill: white;
+}
 
 /* Header CSS */
 #batteryLevel {
@@ -261,23 +265,27 @@
 
 #syringe {
 	x: 3%;
-	y: 24%;  
+	y: 24%;
+	display: none;
 }
 
 #hamburger {
 	x: 3%;
 	y: 38%; 
+	display: none;
 }
 
 #step {
 	x: 3%;
 	y: 56%;
 	/* 15 */
+	display: none;
 }
 
 #heart {
 	x: 3%;
 	y: 73%;
+	display: none;
 }
 
  /* Stats CSS End */
@@ -346,32 +354,45 @@
  }
 
  /* Loading Screen CSS */
- #spinner {
-	x: 50%-25;
-	y: 50%-25;
-	width: 50;
-	height: 50;
-	fill: fb-white;
-}
 #loadingScreen {
-	fill: black;
+	width: 100%;
+	height: 100%; 
+}
+.container { 
+	width: 100%;
+	height: 60%;
+	x: 0%;
+	y: 20%;
 }
 
 .loadingScreenBackground {
-	fill: black;
+	width: 100%;
+	height: 100%;
+	x: 0;
+	y: 0;
+	fill: #454545; 
+	opacity: 0.86;
+}
+
+#spinner {
+	x: 50%-25;
+	y: 10%;
+	width: 50;
+	height: 50;
+	fill: fb-white;
 }
 
 #loadingStatus  {
 	text-anchor: "middle";
   	x: 50%;
-	y: 70%;
+	y: 50%;
 }
 
 #loadingStatusLead {
 	text-anchor: "middle";
 	width: "100%";
   	x: 0%;
-	y: 74%;
+	y: 55%;
 	text-length: "80";
 }
  /* Loading Screen CSS End*/
