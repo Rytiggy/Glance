@@ -2,14 +2,13 @@
 	<svg>
         <line class="highLine" x1="0" y1="40%+1" x2="95%" y2="40%+1" fill="#FFA500" stroke-width="1" />
         <line class="meanLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#616161" stroke-width="1" />
-        <line class="lowLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#de4430" stroke-width="1" />
-        
+        <line class="lowLine" x1="0" y1="100%+4" x2="95%" y2="100%+4" fill="#de4430" stroke-width="1" />   
         <use id="goToLargeGraph" class="dialog-half-button-right" href="#square-button-negative" opacity="0">
             <set href="#text" attributeName="text-buffer" to="" />
             <set href="#text" attributeName="text-anchor" to="middle" />
         </use>
-        <text id="high" class="subtext2" text-anchor="end" />
-        <text id="low" class="subtext2" text-anchor="end" />
+        <text id="high" class="subtext2 settingsTextColor" text-anchor="end" />
+        <text id="low" class="subtext2 settingsTextColor" text-anchor="end" />
         <circle class="graphPoints" cx="4%" cy="50%" r="3" />
         <circle class="graphPoints" cx="8%" cy="50%" r="3" />
         <circle class="graphPoints" cx="12%" cy="50%" r="3" />

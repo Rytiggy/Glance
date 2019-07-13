@@ -1,5 +1,5 @@
 <svg id="glance">
-	<svg id="singleBG" display="none">
+	<svg id="singleBG">
 		<gradientRect
 			class="bgColor"
 			width="100%"
@@ -8,8 +8,8 @@
 		<svg class="spacing-top-10">
 			<svg class="row top">
 				<use href="#header" class="header"/>
-				<text text-anchor="start" class="subtext1" id="date" />
-				<text text-anchor="start" class="h1 time" id="time" pointer-events="visible"></text>
+				<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
+				<text text-anchor="start" class="h1 time settingsTextColor" id="time" pointer-events="visible"></text>
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 			</svg>
 			<svg class="row bottom">
@@ -34,8 +34,8 @@
 				<gradientRect
 					class="bgColor"
 					y="-6%"
-					width="106%"
-					height="100%"
+					width="100%"
+					height="106%"
 				/>
 				<use href="#stats" class="stats"/>
 				<use pointer-events="visible" href="#graph" class="graph center width-40"/>
@@ -52,7 +52,7 @@
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 				<text 
 					id="time"
-					class="center dualTime text-gray"
+					class="center dualTime text-gray settingsTextColor"
 					pointer-events="visible"
 				/>
 			</svg>
@@ -75,16 +75,18 @@
 		</svg>
 	</svg>
 	<svg id="loadingScreen">
-	    <rect class="full-size loadingScreenBackground" />
-		<use id="spinner" href="#spinner" />
-		<text 
-			id="loadingStatus"
-			class="subtext1 center"
-		/>
-		<textarea
-			id="loadingStatusLead"
-			class="leadText center"
-		/>
+		<svg class="container">
+			<rect class="loadingScreenBackground" />
+			<use id="spinner" href="#spinner" />
+			<text 
+				id="loadingStatus"
+				class="subtext1 center"
+			/>
+			<textarea
+				id="loadingStatusLead"
+				class="leadText center"
+			/>
+		</svg>
 	</svg>
 	<svg id="largeGraphDisplay" display="none">
 	    <rect class="full-size" fill="fb-black" />
