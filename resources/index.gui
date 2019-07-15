@@ -1,4 +1,5 @@
 <svg id="glance">
+	
 	<svg id="singleBG">
 		<gradientRect
 			class="bgColor"
@@ -28,6 +29,8 @@
 			</svg>
 		</svg>
 	</svg>
+
+
 	<svg id="dualBG" display="none">
 		<svg class="spacing-top-10">
 			<svg class="row top">
@@ -74,7 +77,9 @@
 			</svg>
 		</svg>
 	</svg>
-	<svg id="loadingScreen">
+
+
+	<!-- <svg id="loadingScreen">
 		<svg class="container">
 			<rect class="loadingScreenBackground" />
 			<use id="spinner" href="#spinner" />
@@ -87,9 +92,23 @@
 				class="leadText center"
 			/>
 		</svg>
-	</svg>
+	</svg> -->
+
+
 	<svg id="largeGraphDisplay" display="none">
 	    <rect class="full-size" fill="fb-black" />
+		<svg class="spacing-top-10">
+			<svg class="row top">
+				<use href="#header" class="header"/>
+				<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
+				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
+				<use href="#stats" class="stats"/>
+			</svg>
+			<svg class="row bottom">
+				<use pointer-events="visible" href="#graph" class="graph" id="largeGraph" display="none"/>
+			</svg>
+		</svg>
 	</svg>
+
 </svg>
 

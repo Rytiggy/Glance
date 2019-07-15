@@ -1,9 +1,20 @@
 <symbol id="bloodSugarDisplay">
-	<svg>
+	<svg id="bloodSugarContainer" display="none">
 		<text class="subtext1 settingsTextColor" text-anchor="end" id="delta" />
 		<text class="h2" id="sgv" pointer-events="all" />
 		<line class="subtext1" stroke-width="4" id="errorLine" display="none" />
 		<text class="subtext1 settingsTextColor" text-anchor="end" id="timeOfLastSgv" />
 		<image id="arrows" />
+	</svg>
+	<svg id="errorStateContainer">
+		<!-- <use id="spinner" href="#spinner" /> -->
+		<text 
+			id="errorStatus"
+			class="subtext1"
+		/>
+		<textarea
+			id="errorStatusLead"
+			class="leadText"
+		/>
 	</svg>
 </symbol>

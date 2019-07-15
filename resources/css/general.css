@@ -224,6 +224,24 @@
 	fill: white;
 }
 
+
+.errorStateContainer {
+	
+}
+
+#errorStatus {
+	text-anchor: end;
+	x: 97%;
+	y: 17%
+}
+
+#errorStatusLead {
+	text-anchor: end;
+	x: 52%;
+	y: 25%;
+	text-length: "80";
+	width: 45%;
+}
  /* BloodSugars Display CSS End */
 
  /* Stats CSS */
