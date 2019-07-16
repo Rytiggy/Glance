@@ -186,10 +186,9 @@ function renderDataSource(props, id, title, keys) {
         </Section>
       : null) : null)}
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
-      <Section title={<Text bold align="center">Dexcom</Text>}>
-        <Text bold align="center">Dexcom</Text>                                        
-        <TextInput title="Username" label="Username" settingsKey={keys[3]} />
-        <TextInput title="Password" label="Password" settingsKey={keys[4]} />
+      <Section title={<Text bold align="center">Dexcom</Text>}>                                       
+        <TextInput title="Username" label="Dexcom Username" settingsKey={keys[3]} />
+        <TextInput title="Password" label="Dexcom Password" settingsKey={keys[4]} />
         <Toggle settingsKey={keys[5]} label="International (Not in USA)"/>            
       </Section> : null) : null)} 
     </Section>

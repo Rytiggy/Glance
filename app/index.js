@@ -207,7 +207,7 @@ function updateStats(data) {
       syringe.style.display = "none";
     } else {
       layoutTwo.text =  fistBgNonPredictiveBG.iob;
-      layoutTwo.x = 35;
+      layoutTwo.x = 30;
       syringe.style.display = "inline";
     }
 
@@ -217,7 +217,7 @@ function updateStats(data) {
       hamburger.style.display = "none";
     } else {
       layoutThree.text =  fistBgNonPredictiveBG.cob;
-      layoutThree.x = 35;
+      layoutThree.x = 30;
       hamburger.style.display = "inline";
     }
 
@@ -227,7 +227,7 @@ function updateStats(data) {
       step.style.display = "none";
     } else {
       layoutFour.text = commas(userActivity.get().steps);
-      layoutFour.x = 35;
+      layoutFour.x = 30;
       step.style.display = "inline";
     }
 
@@ -237,7 +237,7 @@ function updateStats(data) {
       heart.style.display = "none";
     } else {
       layoutFive.text = userActivity.get().heartRate;
-      layoutFive.x = 35;
+      layoutFive.x = 30;
       heart.style.display = "inline";
     } 
   });
@@ -359,8 +359,8 @@ function checkDataState(data) {
 
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
-    var errorCodes = [];
-    var errorCodesDesc = [];
+    var errorCodes = '';
+    var errorCodesDesc = '';
     const bloodSugar = data.bloodSugars[index];
     const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
     const bloodSugarContainer = BloodSugarDisplayContainer[index].getElementById('bloodSugarContainer');
@@ -368,22 +368,22 @@ function checkDataState(data) {
     const errorStatus =  BloodSugarDisplayContainer[index].getElementById('errorStatus');
     const errorStatusLead =  BloodSugarDisplayContainer[index].getElementById('errorStatusLead');
     if(fistBgNonPredictiveBG.currentbg === "E503") {
-      errorCodes.push("E503");
-      errorCodesDesc.push(`Data source configuration error. Check settings.`);
+      errorCodes = ("E503");
+      errorCodesDesc = (`Data source configuration error. Check settings.`);
     } else if(fistBgNonPredictiveBG.currentbg === "E500") {
-      errorCodes.push("E500");
-      errorCodesDesc.push(`Data source configuration error. Check settings.`);
+      errorCodes = ("E500");
+      errorCodesDesc = (`Data source configuration error. Check settings.`);
     } else if(fistBgNonPredictiveBG.currentbg === "E404") {
-      errorCodes.push("E404");
-      errorCodesDesc.push(`No Data source found. Check settings.`);
+      errorCodes = ("E404");
+      errorCodesDesc = (`No Data source found. Check settings.`);
     } else if(fistBgNonPredictiveBG.currentbg === "E400") {
-      errorCodes.push("E400");
-      errorCodesDesc.push(` Bad request - Check data source login info.`);
+      errorCodes = ("E400");
+      errorCodesDesc = (` Bad request - Check data source login info.`);
     } 
     
     if(errorCodes.length > 0) {
-      errorStatus.text = errorCodes[index].toString();
-      errorStatusLead.text = errorCodesDesc[index].toString();
+      errorStatus.text = errorCodes;
+      errorStatusLead.text = errorCodesDesc;
       errorStateContainer.style.display = "inline";
       bloodSugarContainer.style.display = "none";
     } else {

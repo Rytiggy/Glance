@@ -75,7 +75,10 @@ export default class settings {
      // local spike addr for my comp
      // url = 'http://192.168.86.91:1979/pebble' + queryParms;     
    } else if(dataSource === 'custom') {
-     url = JSON.parse(settingsStorage.getItem('customEndpoint')).name + queryParms;
+    let customEndpoint = JSON.parse(settingsStorage.getItem('customEndpoint'));
+    if(customEndpoint) {
+      url = customEndpoint.name + queryParms;
+    }
    // 47 42
    } else if(dataSource === 'dexcom') {
      url = 'dexcom';
@@ -126,7 +129,10 @@ export default class settings {
      // local spike addr for my comp
      // url = 'http://192.168.86.91:1979/pebble' + queryParms;     
    } else if(dataSourceTwo === 'custom') {
-    urlTwo = JSON.parse(settingsStorage.getItem('customEndpointTwo')).name + queryParms;
+    let customEndpointTwo = JSON.parse(settingsStorage.getItem('customEndpointTwo'));
+     if(customEndpointTwo) {
+      urlTwo = customEndpointTwo.name + queryParms;
+     }
    // 47 42
    } else if(dataSourceTwo === 'dexcom') {
     urlTwo = 'dexcom';

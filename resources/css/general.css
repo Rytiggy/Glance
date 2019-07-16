@@ -40,7 +40,7 @@
 
 .leadText {
 	font-size: 20;
-	font-family:  Colfax-Medium;
+	font-family:  SevilleSharp-Regular;
 	font-weight: regular;
 	width: 100%;
 	height: 100%;
@@ -102,8 +102,8 @@
 .bgColor {
 	gradient-type: "linear";
 	x:0;
-    gradient-x1: "0"; gradient-y1:"20";
-    gradient-x2: "0"; gradient-y2:"100%-20";
+    gradient-x1: "0"; gradient-y1:"0";
+    gradient-x2: "0"; gradient-y2:"100%";
 	gradient-color1: "#390263";
 	gradient-color2: "black";
 }
@@ -136,7 +136,7 @@
    /*   x: 13%-2;
 	 y: 7%+2;  */
 	  x: 15%;
-	  y: 17%;
+	  y: 15%;
    /*   font-size: 11;
 	 fill: #7f7f7f;
 	 font-family: Colfax-Medium; */
@@ -149,7 +149,7 @@
 
 #weather {
 	x: 48%;
-	y: 17%;
+	y: 15%;
 	text-anchor: "end";
 }
 
@@ -158,7 +158,7 @@
 	height: 8;
 	fill: #B8C3C4;
 	 x: 49%;
-	 y: 6%;
+	 y: 5%;
 }
 
 #weatherIcon {
@@ -166,7 +166,7 @@
 	height: 24;
 	fill: #B8C3C4;
 	 x: 53%;
-	 y: 4%;
+	 y: 2%;
 }
 
 /* Header CSS End*/
@@ -207,7 +207,7 @@
 	text-anchor: start;
 	x: 3%;
 	y: 0%;
-	font-family: SevilleSharp-Regular;
+	font-family: Colfax-Medium;
 	font-size: 27;
 	font-weight: regular;
 	width: 100%;
@@ -232,15 +232,15 @@
 #errorStatus {
 	text-anchor: end;
 	x: 97%;
-	y: 17%
+	y: 15%
 }
 
 #errorStatusLead {
 	text-anchor: end;
-	x: 52%;
-	y: 25%;
+	x: 63%;
+	y: 21%;
 	text-length: "80";
-	width: 45%;
+	width: 35%;
 }
  /* BloodSugars Display CSS End */
 
@@ -283,7 +283,7 @@
 
 #syringe {
 	x: 3%;
-	y: 24%;
+	y: 22%;
 	display: none;
 }
 
