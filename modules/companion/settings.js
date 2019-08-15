@@ -52,7 +52,7 @@ export default class settings {
          settingsStorage.setItem("nightscoutSiteHost", JSON.stringify({"selected":[0],"values":[{"name":'Heroku',"value":'herokuapp.com'}]}));
        } 
 
-       let nightscoutSiteToken = null;
+       let nightscoutSiteToken = '';
        if(settingsStorage.getItem('nightscoutAccessToken') && JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name) {
         nightscoutSiteToken = '?' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
         // Need to replace the query params '?' with an '&' -> Encoding problems
