@@ -25,7 +25,7 @@ import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
 import Transfer from "../modules/app/transfer.js";
 import * as messaging from "messaging";
-import * as weather from 'fitbit-weather/app'
+// import * as weather from 'fitbit-weather/app'
 
 // import UserSettings from "../modules/app/userSettings.js";
 import { memory } from "system";
@@ -288,19 +288,19 @@ function updateHeader(data) {
   const degreeIcon = document.getElementById('degreeIcon');
   degreeIcon.style.display = "none";
   degreeIcon.style.display = "none";
-  weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
-    .then(weather => {
-      console.log(JSON.stringify(weather))
-      weatherIcon.style.display = "inline";
-      degreeIcon.style.display = "inline";
-      if(data.settings.tempType == "f") {
-        weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
-      } else {
-        weatherText.text =  Math.round( parseFloat(weather.temperatureC) );
-      }
-      weatherIcon.href = '../resources/img/weather/'+weather.conditionCode+'.png';
-    })
-    .catch(error => console.log(JSON.stringify(error)))
+  // weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old 
+  //   .then(weather => {
+  //     console.log(JSON.stringify(weather))
+  //     weatherIcon.style.display = "inline";
+  //     degreeIcon.style.display = "inline";
+  //     if(data.settings.tempType == "f") {
+  //       weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
+  //     } else {
+  //       weatherText.text =  Math.round( parseFloat(weather.temperatureC) );
+  //     }
+  //     weatherIcon.href = '../resources/img/weather/'+weather.conditionCode+'.png';
+  //   })
+  //   .catch(error => console.log(JSON.stringify(error)))
 
   batteryLevel.width = batteryLevels.get().level;
   batteryLevel.style.fill = batteryLevels.get().color;

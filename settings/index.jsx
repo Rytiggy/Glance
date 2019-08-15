@@ -4,7 +4,7 @@ function mySettings(props) {
    <Page>
 
       <Text>
-        <TextImageRow label="Glance" sublabel="https://github.com/Rytiggy/Glance" icon="https://image.ibb.co/gbWF2H/twerp_bowtie_64.png" /> 
+        <TextImageRow label="Glance" sublabel="https://glancewatchface.com" icon="https://i.ibb.co/XzbJbBv/icon.png" /> 
         <Text>
           &nbsp;
         </Text>
@@ -18,7 +18,7 @@ function mySettings(props) {
           &nbsp;
         </Text>
         <Text>         
-          <Link source="https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance#2-settings">Click here to learn how to set up Glance!</Link>
+          <Link source="https://glancewatchface.com/#setup">Click here to learn how to set up Glance!</Link>
         </Text>
       </Text>
 
@@ -113,7 +113,7 @@ function mySettings(props) {
         <Text>
             If you need help getting started with Glance follow the links below!
         </Text>
-        <Link source="https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance#2-settings">How to set up Glance</Link>
+        <Link source="https://glancewatchface.com/#setup">How to set up Glance</Link>
         <Text>
           Note: Tapping on the time should try to force the watch to sync. You'll feel the watch vibrate.
         </Text>

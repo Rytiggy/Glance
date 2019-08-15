@@ -26,7 +26,7 @@ import Dexcom from "../modules/companion/dexcom.js";
 
 import * as messaging from "messaging";
 import { me } from "companion";
-import * as weather from 'fitbit-weather/companion'
+// import * as weather from 'fitbit-weather/companion'
 
 const settings = new Settings();
 const transfer = new Transfer();
@@ -39,7 +39,7 @@ const dexcom = new Dexcom();
 const logs = new Logs();
 const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
-weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
+// weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
 
 async function sendData() {
   // Get settings 
