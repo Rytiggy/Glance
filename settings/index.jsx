@@ -40,6 +40,12 @@ function mySettings(props) {
          <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text> : null) : null)}
         {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Select label="Nightscout Host Site" settingsKey="nightscoutSiteHost" options={[{name:"Heroku", value:"herokuapp.com"},{name:"Azure", value:"azurewebsites.net"}]} /> : null) : null)}
         
+        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
+         <Text text="center">https://SiteName.NightscoutHostSite.com?<Text bold>token=accessToken</Text> (optional)</Text> : null) : null)}
+        
+        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
+        <TextInput title="Nightscout Access Token" label="Access Token" settingsKey="nightscoutAccessToken" /> : null) : null)}
+
         {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'dexcom') ? 
         <Section title={<Text bold align="center">Dexcom</Text>}>
           <Text bold align="center">Dexcom</Text>                                        
