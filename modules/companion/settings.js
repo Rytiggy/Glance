@@ -51,9 +51,17 @@ export default class settings {
          nightscoutSiteHost = 'herokuapp.com';
          settingsStorage.setItem("nightscoutSiteHost", JSON.stringify({"selected":[0],"values":[{"name":'Heroku',"value":'herokuapp.com'}]}));
        } 
-       
-      url = 'https://'+nightscoutSiteName.toLowerCase()+'.'+nightscoutSiteHost+'/pebble' + queryParms;
-      extraDataUrl = 'https://'+nightscoutSiteName.toLowerCase()+'.'+nightscoutSiteHost+'/api/v2/properties';  
+
+       let nightscoutSiteToken = null;
+       if(settingsStorage.getItem('nightscoutAccessToken') && JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name) {
+        nightscoutSiteToken = '?' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
+        // Need to replace the query params '?' with an '&' -> Encoding problems
+        // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
+        queryParms = queryParms.replace('?', '&');
+       }
+      
+      url = 'https://'+nightscoutSiteName.toLowerCase()+'.'+nightscoutSiteHost+'/pebble' + nightscoutSiteToken + queryParms;
+      extraDataUrl = 'https://'+nightscoutSiteName.toLowerCase()+'.'+nightscoutSiteHost+'/api/v2/properties' + nightscoutSiteToken;  
    } else if(dataSource === 'xdrip') { // xDrip+
      if(dataReceivedFromWatch && dataReceivedFromWatch != null) {
        queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
