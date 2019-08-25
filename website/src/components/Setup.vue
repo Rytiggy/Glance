@@ -10,7 +10,8 @@
             href="https://github.com/Rytiggy/Glance/wiki/User-Agreement/"
             target="_blank"
             class="text-grey-10"
-          >user agreement</a>.
+            >user agreement</a
+          >.
         </div>
       </div>
       <q-stepper
@@ -24,8 +25,17 @@
         animated
         :vertical="$q.screen.lt.md"
       >
-        <q-step class="text-center" :name="1" title="Start" icon="save_alt" :done="step > 1">
-          <div class="text-subtext1 q-pb-sm">This guide will walk you through getting your CGM data to display on Glance.</div>
+        <q-step
+          class="text-center"
+          :name="1"
+          title="Start"
+          icon="save_alt"
+          :done="step > 1"
+        >
+          <div class="text-subtext1 q-pb-sm">
+            This guide will walk you through getting your CGM data to display on
+            Glance.
+          </div>
           <q-btn
             @click="$refs.stepper.next()"
             color="secondary"
@@ -34,7 +44,13 @@
             unelevated
           />
         </q-step>
-        <q-step :name="2" title="Install Glance" caption="Step 1" icon="save_alt" :done="step > 1">
+        <q-step
+          :name="2"
+          title="Install Glance"
+          caption="Step 1"
+          icon="save_alt"
+          :done="step > 1"
+        >
           <div class="text-h5 text-grey-10 text-center">Install Glance</div>
           <div class="text-h6 text-grey-10">Step 1:</div>
           <div class="row q-pb-md">
@@ -49,12 +65,18 @@
                   class="text-grey-10"
                   target="_blank"
                 >
-                  <q-avatar icon="save_alt" color="primary" text-color="white" />Download and install Glance
+                  <q-avatar
+                    icon="save_alt"
+                    color="primary"
+                    text-color="white"
+                  />Download and install Glance
                 </a>
               </q-chip>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6">
-              <q-img src="https://media.giphy.com/media/ul0NKnzGlOb8LL8bYe/giphy.gif" />
+              <q-img
+                src="https://media.giphy.com/media/ul0NKnzGlOb8LL8bYe/giphy.gif"
+              />
             </div>
           </div>
           <div class="full-width">
@@ -86,7 +108,9 @@
         >
           <div class="text-h5 text-grey-10 text-center">Select Data Source</div>
           <div class="text-h6 text-grey-10">Step 2:</div>
-          <div class="text-subtext1">Select what data source you are going to be using:</div>
+          <div class="text-subtext1">
+            Select what data source you are going to be using:
+          </div>
           <div class="row">
             <div
               v-for="(dataSoure, id) in dataSoures"
@@ -102,9 +126,20 @@
               >
                 <q-card-section>
                   <div class="text-h6 text-grey-10">{{ dataSoure.title }}</div>
-                  <div class="text-subtitle1">{{ dataSoure.shortDescription}}</div>
-                  <spn v-for="(tag, t) in dataSoure.tags" :key="t" class="text-subtitle1 text-bold q-pr-sm">
-                    <q-badge class="text-weight-medium" :class="tag.textColor" :color="tag.color">{{ tag.title }}</q-badge>
+                  <div class="text-subtitle1">
+                    {{ dataSoure.shortDescription }}
+                  </div>
+                  <spn
+                    v-for="(tag, t) in dataSoure.tags"
+                    :key="t"
+                    class="text-subtitle1 text-bold q-pr-sm"
+                  >
+                    <q-badge
+                      class="text-weight-medium"
+                      :class="tag.textColor"
+                      :color="tag.color"
+                      >{{ tag.title }}</q-badge
+                    >
                   </spn>
                 </q-card-section>
               </q-card>
@@ -129,20 +164,28 @@
           icon="settings"
         >
           <div v-if="selectedDataSouce != null">
-            <div
-              class="text-h5 text-grey-10 text-center"
-            >Configure {{ selectedDataSouce.title }} Settings</div>
+            <div class="text-h5 text-grey-10 text-center">
+              Configure {{ selectedDataSouce.title }} Settings
+            </div>
             <div class="text-h6 text-grey-10">Step 3:</div>
-            <div
-              class="text-subtext1"
-            >Follow the steps below to setup your Glance settings for {{ selectedDataSouce.title }}:</div>
+            <div class="text-subtext1">
+              Follow the steps below to setup your Glance settings for
+              {{ selectedDataSouce.title }}:
+            </div>
             <div class="text-subtitle1 text-bold">Requirements</div>
-            <div v-for="(requirement, r) in selectedDataSouce.requirements" :key="r">
+            <div
+              v-for="(requirement, r) in selectedDataSouce.requirements"
+              :key="r"
+            >
               <span class="bullet" v-html="requirement.title" />
             </div>
             <div class="text-subtitle1 text-bold">Steps</div>
 
-            <div class="q-pb-md" v-for="(step, s) in selectedDataSouce.steps" :key="s">
+            <div
+              class="q-pb-md"
+              v-for="(step, s) in selectedDataSouce.steps"
+              :key="s"
+            >
               <div class="row" v-if="step.img != null">
                 <div class="col-xs-12 col-sm-6 col-md-6">
                   <span class="bullet" v-html="step.title" />
@@ -181,23 +224,36 @@
         <q-step :name="5" title="Review" icon="remove_red_eye">
           <div class="text-h5 text-grey-10 text-center">Finish</div>
           <div class="text-h6 text-grey-10">Review:</div>
-          <div
-            class="text-subtext1"
-          >
-          You should now be receiving BG data on your watchface!
+          <div class="text-subtext1">
+            You should now be receiving BG data on your watchface!
           </div>
           <div class="q-pt-md text-h6 text-grey-10">Customize Glance:</div>
           <div class="bullet">
-            Glance has a very dynamic set of settings allowing it to be used in a variety of
-            different use cases. Customize Glance how you like it, change the background color,
-            unit type (mgdl or mmol), various alerts you want to recieve, and so much more!
+            Glance has a very dynamic set of settings allowing it to be used in
+            a variety of different use cases. Customize Glance how you like it,
+            change the background color, unit type (mgdl or mmol), various
+            alerts you want to recieve, and so much more!
           </div>
           <div class="bullet">
-            <q-btn flat no-caps type="a" to="/customize" class="text-primary text-weight-regular">Check out the Customization section</q-btn>
+            <q-btn
+              flat
+              no-caps
+              type="a"
+              to="/customize"
+              class="text-primary text-weight-regular"
+              >Check out the Customization section</q-btn
+            >
           </div>
           <div class="q-pt-md text-h6 text-grey-10">Need help:</div>
           <div class="bullet">
-            <q-btn flat no-caps type="a" to="/troubleshooting" class="text-primary text-weight-regular">Check out the troubleshooting section</q-btn>
+            <q-btn
+              flat
+              no-caps
+              type="a"
+              to="/troubleshooting"
+              class="text-primary text-weight-regular"
+              >Check out the troubleshooting section</q-btn
+            >
           </div>
           <div class="q-pt-md text-h6 text-grey-10">Comunity Support:</div>
           <div class="bullet">
@@ -370,7 +426,7 @@ export default {
           tags: [
             {
               title: "iPhone Only",
-              color: 'primary',
+              color: "primary",
               textColor: "text-white"
             }
           ],
@@ -414,7 +470,7 @@ export default {
           tags: [
             {
               title: "Android Only",
-              color: 'primary',
+              color: "primary",
               textColor: "text-white"
             }
           ],
@@ -459,7 +515,7 @@ export default {
           tags: [
             {
               title: "Currently only working on Android",
-              color: 'primary',
+              color: "primary",
               textColor: "text-white"
             }
           ],

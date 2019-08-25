@@ -74,7 +74,7 @@
     </q-drawer>-->
 
     <q-header bordered class="bg-white">
-        <navbar/>
+      <navbar />
     </q-header>
     <q-page-container>
       <router-view />
@@ -92,21 +92,18 @@ export default {
   name: "MyLayout",
   components: {
     navbar,
-    glanceFooter,
+    glanceFooter
   },
   data() {
     return {
       leftDrawerOpen: false,
-      slide: 1,
-     
+      slide: 1
     };
   },
   methods: {
-    openURL,
+    openURL
   }
 };
-
 </script>
 
-<style>
-</style>
+<style></style>
