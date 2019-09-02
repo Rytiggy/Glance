@@ -29,22 +29,17 @@ function mySettings(props) {
 
         {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'custom') ?
         <TextInput label="Api endpoint" settingsKey="customEndpoint" /> : null) : null)}
-       
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-         <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> : null) : null)}
-        
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-        <TextInput title="Nightscout" label="Site Name" settingsKey="nightscoutSiteName" /> : null) : null)}
-         
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-         <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text> : null) : null)}
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Select label="Nightscout Host Site" settingsKey="nightscoutSiteHost" options={[{name:"Heroku", value:"herokuapp.com"},{name:"Azure", value:"azurewebsites.net"}]} /> : null) : null)}
-        
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-         <Text text="center">https://SiteName.NightscoutHostSite.com?<Text bold>token=accessToken</Text> (optional)</Text> : null) : null)}
-        
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-        <TextInput title="Nightscout Access Token" label="Access Token" settingsKey="nightscoutAccessToken" /> : null) : null)}
+
+
+        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? 
+        <Section>
+          <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> 
+          <TextInput title="Nightscout" label="Site Name" settingsKey="nightscoutSiteName" />
+          <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text>
+          <Select label="Nightscout Host Site" settingsKey="nightscoutSiteHost" options={[{name:"Heroku", value:"herokuapp.com"},{name:"Azure", value:"azurewebsites.net"}]} />
+          <TextInput title="Nightscout API Secret" label="API Secret (optional)" settingsKey="nightscoutAccessToken" /> 
+        </Section> : null) : null)} 
+
 
         {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'dexcom') ? 
         <Section title={<Text bold align="center">Dexcom</Text>}>
@@ -53,6 +48,7 @@ function mySettings(props) {
           <TextInput title="Password" label="Password" settingsKey="dexcomPassword" />
           <Toggle settingsKey="USAVSInternational" label="International (Not in USA)"/>            
          </Section> : null) : null)} 
+
       </Section>      
       
       <Section title={<Text bold align="center">Glucose Settings</Text>}>
