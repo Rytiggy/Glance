@@ -64,3 +64,18 @@
   fill: white;
   text-length: 64;
 }
+
+#batteryLevel {
+  width: 30;
+  height: 15;
+  fill: white;
+  x: 3%;
+  y: 3%;
+}
+
+.batteryImage {
+  width: 32;
+  height: 20;
+  x: 3%;
+  y: 1%;
+}
