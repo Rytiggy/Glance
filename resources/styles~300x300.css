@@ -1,0 +1,16 @@
+.time {
+  x: 3%;
+  y: 85%;
+}
+
+#date {
+  x: 3%;
+  y: 30%;
+}
+
+#graph {
+  width: 125%;
+  y: 15%;
+  x: -28%;
+  pointer-events: "visible";
+}

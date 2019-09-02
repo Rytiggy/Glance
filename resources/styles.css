@@ -1,54 +1,66 @@
-
-#delta {  
-    x: 98%;
-    y: 15%;
+#delta {
+  x: 98%;
+  y: 15%;
 }
 
 #sgv {
-    x: 88%;
-    y: 52%;
+  x: 88%;
+  y: 52%;
 }
 
 #errorLine {
-	x1: 60%;
-	y1: 36%;
-	x2: 88%;
-	y2: 36%;
-	fill: white;
+  x1: 60%;
+  y1: 36%;
+  x2: 88%;
+  y2: 36%;
+  fill: white;
 }
 
 #timeOfLastSgv {
-    x: 98%;
-    y: 69%;
+  x: 98%;
+  y: 69%;
 }
 
 #arrows {
-    x: 87%;
-    y: 18%;
-    width: 45;
-    height: 45;
-    fill: white;
+  x: 87%;
+  y: 18%;
+  width: 45;
+  height: 45;
+  fill: white;
 }
 
 #graph {
-	width: 110%;
-    y: 0%;
-    x: -10%;
-	pointer-events: "visible";
+  width: 110%;
+  y: 0%;
+  x: -10%;
+  pointer-events: "visible";
 }
 
 .dualGraph {
-	x: 27%;
-  	y: 5%;
+  x: 27%;
+  y: 5%;
 }
 
 #dismiss {
-	x: 2%;
-  	y: 50%;
-  	width: 150;
-  	height: 115;
+  x: 2%;
+  y: 50%;
+  width: 150;
+  height: 115;
 }
 
 .DualbloodSugarDisplay {
-    y: 10%;
+  y: 10%;
+}
+
+.dualTime {
+  text-anchor: start;
+  x: 3%;
+  y: 2%;
+  font-family: Colfax-Medium;
+  font-size: 29;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
 }
