@@ -24,12 +24,14 @@ export default class standardize {
 	// sgv:
 	// datetime:
 	// bgdelta:
-	bloodsugars(data, extraData, settings) {
-		logs.add('companion - standardize - bloodsugars()')
+	bloodsugars(data, extraData, settings, keys) {
+		logs.add('Line 29: companion - standardize - bloodsugars()')
+		logs.add('Line 30: companion - standardize - bloodsugars() - PARAMERTERS')
 		logs.add(`data: ${JSON.stringify(data)}}`);
 		logs.add(`extraData ${JSON.stringify(extraData)}`);
-		settings.dexcomUsername = '';
-		settings.dexcomPassword = '';
+
+		settings[keys.dexcomUsername] = '';
+		settings[keys.dexcomPassword] = '';
 		logs.add(`settings ${JSON.stringify(settings)}`);
 
 		let bgs = data;
@@ -41,7 +43,7 @@ export default class standardize {
 		let sage = ''
 		logs.add(`BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
 		if (bgs && !data.error && data && bgs !== 'undefined') {
-			if (settings.dataSource === 'nightscout') {
+			if (settings[keys.dataSource] === 'nightscout') {
 				bgs = data.bgs;
 				// SPIKE WORK AROUND 
 				// this check is here for old versions of spike where the /pebble endpoint was returning mmol svg data 
@@ -61,7 +63,7 @@ export default class standardize {
 				upbat = standardizedExtraData.upbat;
         sage = standardizedExtraData.sage;
 				// add any extra data
-			} else if (settings.dataSource === 'xdrip') { // xdrip using the sgv endpoint still
+			} else if (settings[keys.dataSource] === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
 				if (Array.isArray(bgs)) {
 					bgs[0].datetime = bgs[0].date;
@@ -69,11 +71,11 @@ export default class standardize {
 				} else {
 					bgs = null;
 				}
-			} else if (settings.dataSource === 'spike') {
+			} else if (settings[keys.dataSource] === 'spike') {
 				bgs = data.bgs;
-			} else if (settings.dataSource === 'custom') {
+			} else if (settings[keys.dataSource] === 'custom') {
 				bgs = data.bgs;
-			} else if (settings.dataSource === 'dexcom') {
+			} else if (settings[keys.dataSource] === 'dexcom') {
 				let bgsTemplate = {
 					bgs: [{
 							sgv: '120',
@@ -269,7 +271,6 @@ export default class standardize {
 					hasFoundFirstDelta = true;
 				}
 			})
-      console.log(nonPredictiveBg)
 			// Look at the data that we are getting and if the SGV is below 25 we know the unit type is mmol
 			if (nonPredictiveBg.sgv < 25) {
 				bgs.forEach((bg) => {
@@ -308,17 +309,17 @@ export default class standardize {
 				if (bg.bgdelta != null) {
 					// any values put here will be able to be entered in the layout
 					bg.sgv = bg.sgv;
-          if(bg.iob) { 
-            bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
-          } else {
-             bg.iob = 0;
-          }
-          if(bg.cob) {
-             bg.cob =  Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
-          } else {
-             bg.cob = 0;
-          }
-          bg.datetime = nonPredictiveBg.datetime;
+					if(bg.iob) { 
+						bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
+					} else {
+						bg.iob = 0;
+					}
+					if(bg.cob) {
+						bg.cob =  Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
+					} else {
+						bg.cob = 0;
+					}
+					bg.datetime = nonPredictiveBg.datetime;
 					bg.direction = nonPredictiveBg.direction;
 					bg.rawbg = ((rawbg && rawbg !== '0.0') ? (rawbg + ' raw') : '');
 					bg.tempbasal = tempBasal;
@@ -352,8 +353,6 @@ export default class standardize {
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
-		console.error("currentTime---------------------------")
-		console.error(currentTime)
 		return {
 			bgs: [{
 					sgv: '120',

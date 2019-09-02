@@ -21,6 +21,17 @@ export default class settings {
  get(dataReceivedFromWatch) {
    let queryParms = '?count=47';
    logs.add('companion - settings - get()');
+  
+   let numOfDataSources = null;
+  if (settingsStorage.getItem('numOfDataSources')) {
+    // console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
+    numOfDataSources = JSON.parse(settingsStorage.getItem('numOfDataSources')).values[0].value;
+  } else if (!numOfDataSources) {
+    settingsStorage.setItem("numOfDataSources", JSON.stringify({"selected":[0], "values":[{"name":"One Data Source","value":1}]}));
+    numOfDataSources = 1;
+  }   
+    
+  
    let dataSource = null;
    if (settingsStorage.getItem('dataSource')) {
      dataSource = JSON.parse(settingsStorage.getItem('dataSource')).values[0].value;
@@ -54,7 +65,7 @@ export default class settings {
 
        let nightscoutSiteToken = '';
        if(settingsStorage.getItem('nightscoutAccessToken') && JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name) {
-        nightscoutSiteToken = '?' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
+        nightscoutSiteToken = '?token=' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
         // Need to replace the query params '?' with an '&' -> Encoding problems
         // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
         queryParms = queryParms.replace('?', '&');
@@ -72,14 +83,82 @@ export default class settings {
      // local spike addr for my comp
      // url = 'http://192.168.86.91:1979/pebble' + queryParms;     
    } else if(dataSource === 'custom') {
-     url = JSON.parse(settingsStorage.getItem('customEndpoint')).name + queryParms;
+    let customEndpoint = JSON.parse(settingsStorage.getItem('customEndpoint'));
+    if(customEndpoint) {
+      url = customEndpoint.name + queryParms;
+    }
    // 47 42
-   }else if(dataSource === 'dexcom') {
+   } else if(dataSource === 'dexcom') {
      url = 'dexcom';
    } else if(dataSource === 'tomato') { // tomato
-    url = 'http://127.0.0.1:11111' + queryParms;
+     url = 'http://127.0.0.1:11111' + queryParms;
    }
+   
+   let dataSourceTwo = null;
+   if (settingsStorage.getItem('dataSourceTwo')) {
+    dataSourceTwo = JSON.parse(settingsStorage.getItem('dataSourceTwo')).values[0].value;
+   } else if (!dataSourceTwo) {
+     settingsStorage.setItem("dataSourceTwo", JSON.stringify({"selected":[0],"values":[{"name":"Dexcom","value":"dexcom"}]}));
+     dataSourceTwo = 'dexcom';
+   }   
     
+   let urlTwo = 'http://127.0.0.1:17580/sgv.json' + queryParms;
+   let extraDataUrlTwo = null;
+   if(dataSourceTwo === 'nightscout') { // Nightscout
+       let nightscoutSiteNameTwo = null;
+       if (settingsStorage.getItem('nightscoutSiteNameTwo') &&   JSON.parse(settingsStorage.getItem('nightscoutSiteNameTwo')).name) {
+        nightscoutSiteNameTwo = JSON.parse(settingsStorage.getItem('nightscoutSiteNameTwo')).name;
+         if(isURL(nightscoutSiteNameTwo)) {
+          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split('.')[0];
+          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split('//')[1];
+          console.log((nightscoutSiteNameTwo))
+         }
+       } else if (!nightscoutSiteNameTwo) {
+        nightscoutSiteNameTwo = 'placeholder';
+        settingsStorage.setItem("nightscoutSiteNameTwo", JSON.stringify({"name":''}));
+       }  
+       let nightscoutSiteHostTwo = null;
+       if (settingsStorage.getItem('nightscoutSiteHostTwo')) {
+        nightscoutSiteHostTwo = JSON.parse(settingsStorage.getItem('nightscoutSiteHostTwo')).values[0].value;
+       } else if (!nightscoutSiteHostTwo) {
+        nightscoutSiteHostTwo = 'herokuapp.com';
+         settingsStorage.setItem("nightscoutSiteHostTwo", JSON.stringify({"selected":[0],"values":[{"name":'Heroku',"value":'herokuapp.com'}]}));
+       } 
+       
+
+      let nightscoutSiteTokenTwo = '';
+      if(settingsStorage.getItem('nightscoutAccessTokenTwo') && JSON.parse(settingsStorage.getItem('nightscoutAccessTokenTwo')).name) {
+        nightscoutSiteTokenTwo = '?token=' + JSON.parse(settingsStorage.getItem('nightscoutAccessTokenTwo')).name;
+        // Need to replace the query params '?' with an '&' -> Encoding problems
+        // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
+        queryParms = queryParms.replace('?', '&');
+      }
+      urlTwo = 'https://'+nightscoutSiteNameTwo.toLowerCase()+'.'+nightscoutSiteHostTwo+'/pebble' + nightscoutSiteTokenTwo + queryParms;
+      extraDataUrlTwo = 'https://'+nightscoutSiteNameTwo.toLowerCase()+'.'+nightscoutSiteHostTwo+'/api/v2/properties' + nightscoutSiteTokenTwo;  
+
+   } else if(dataSourceTwo === 'xdrip') { // xDrip+
+     if(dataReceivedFromWatch && dataReceivedFromWatch != null) {
+       queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
+     }
+     urlTwo = 'http://127.0.0.1:17580/sgv.json' + queryParms;
+   } else if(dataSourceTwo === 'spike') { // spike 
+     urlTwo = 'http://127.0.0.1:1979/pebble' + queryParms; 
+     // local spike addr for my comp
+     // url = 'http://192.168.86.91:1979/pebble' + queryParms;     
+   } else if(dataSourceTwo === 'custom') {
+    let customEndpointTwo = JSON.parse(settingsStorage.getItem('customEndpointTwo'));
+     if(customEndpointTwo) {
+      urlTwo = customEndpointTwo.name + queryParms;
+     }
+   // 47 42
+   } else if(dataSourceTwo === 'dexcom') {
+    urlTwo = 'dexcom';
+   } else if(dataSource === 'tomato') { // tomato
+    urlTwo = 'http://127.0.0.1:11111' + queryParms;
+   }
+
+
+
    let glucoseUnits = null;
    if (settingsStorage.getItem('glucoseUnits')) {
      glucoseUnits = JSON.parse(settingsStorage.getItem('glucoseUnits')).values[0].value;
@@ -157,9 +236,8 @@ export default class settings {
    } 
    
    
-   console.log(settingsStorage.getItem('lowAlerts'))    
    let lowAlerts = null;
-   if (settingsStorage.getItem('lowAlerts')) {
+   if (settingsStorage.getItem('lowAlerts')) {1
      lowAlerts = JSON.parse(settingsStorage.getItem('lowAlerts'));
    } else if (!lowAlerts) {
      lowAlerts = true;
@@ -321,7 +399,7 @@ export default class settings {
    
    let dexcomUsername = null;
    if (settingsStorage.getItem('dexcomUsername')) {
-     console.log(settingsStorage.getItem('dexcomUsername'))
+    //  console.log(settingsStorage.getItem('dexcomUsername'))
      dexcomUsername = JSON.parse(settingsStorage.getItem('dexcomUsername')).name;
    } else if (!dexcomUsername) {
      dexcomUsername = null;
@@ -330,18 +408,43 @@ export default class settings {
   
    let dexcomPassword = null;
    if (settingsStorage.getItem('dexcomPassword')) {
-     console.log(settingsStorage.getItem('dexcomPassword'))
+    //  console.log(settingsStorage.getItem('dexcomPassword'))
      dexcomPassword = JSON.parse(settingsStorage.getItem('dexcomPassword')).name;
    } else if (!dexcomPassword) {
      dexcomPassword = null;
      settingsStorage.setItem("dexcomPassword", JSON.stringify({"name":dexcomPassword}));
    }
-   
+
    let USAVSInternational = null;
    if (settingsStorage.getItem('USAVSInternational')) {
      USAVSInternational = JSON.parse(settingsStorage.getItem('USAVSInternational'));
    } else if (!USAVSInternational) {
      USAVSInternational = false;
+   } 
+
+   let dexcomUsernameTwo = null;
+   if (settingsStorage.getItem('dexcomUsernameTwo')) {
+    //  console.log(settingsStorage.getItem('dexcomUsernameTwo'))
+     dexcomUsernameTwo = JSON.parse(settingsStorage.getItem('dexcomUsernameTwo')).name;
+   } else if (!dexcomUsernameTwo) {
+    dexcomUsernameTwo = null;
+     settingsStorage.setItem("dexcomUsernameTwo", JSON.stringify({"name":dexcomUsernameTwo}));
+   }
+  
+   let dexcomPasswordTwo = null;
+   if (settingsStorage.getItem('dexcomPasswordTwo')) {
+    //  console.log(settingsStorage.getItem('dexcomPasswordTwo'))
+     dexcomPasswordTwo = JSON.parse(settingsStorage.getItem('dexcomPasswordTwo')).name;
+   } else if (!dexcomPasswordTwo) {
+    dexcomPasswordTwo = null;
+     settingsStorage.setItem("dexcomPasswordTwo", JSON.stringify({"name":dexcomPasswordTwo}));
+   }
+   
+   let USAVSInternationalTwo = null;
+   if (settingsStorage.getItem('USAVSInternationalTwo')) {
+    USAVSInternationalTwo = JSON.parse(settingsStorage.getItem('USAVSInternationalTwo'));
+   } else if (!USAVSInternationalTwo) {
+    USAVSInternationalTwo = false;
    } 
    
    let resetAlertDismissal = null;
@@ -368,11 +471,30 @@ export default class settings {
      settingsStorage.setItem("staleDataAlertAfter", JSON.stringify({"name":staleDataAlertAfter}));
    }
 
+
+   let dataSourceName = null;
+   if (settingsStorage.getItem('dataSourceName')) {
+    dataSourceName = JSON.parse(settingsStorage.getItem('dataSourceName')).name;
+   } else if (!dataSourceName) {
+    dataSourceName = 'user #1';
+    settingsStorage.setItem("dataSourceName", JSON.stringify({"name":dataSourceName}));
+   }  
+   let dataSourceNameTwo = null;
+   if (settingsStorage.getItem('dataSourceNameTwo')) {
+    dataSourceNameTwo = JSON.parse(settingsStorage.getItem('dataSourceNameTwo')).name;
+   } else if (!dataSourceNameTwo) {
+    dataSourceNameTwo = 'user #2';
+    settingsStorage.setItem("dataSourceNameTwo", JSON.stringify({"name":dataSourceNameTwo}));
+   }  
+
    
    let settings = {
      url,
      extraDataUrl,
      dataSource,
+     urlTwo,
+     extraDataUrlTwo,
+     dataSourceTwo,
      highThreshold,
      lowThreshold,
      glucoseUnits,
@@ -401,9 +523,15 @@ export default class settings {
      dexcomUsername,
      dexcomPassword,
      USAVSInternational,
+     dexcomUsernameTwo,
+     dexcomPasswordTwo,
+     USAVSInternationalTwo,
      resetAlertDismissal,
      staleData,
-     staleDataAlertAfter
+     staleDataAlertAfter,
+     numOfDataSources,
+     dataSourceName,
+     dataSourceNameTwo
    }
    return settings;
   };
@@ -435,7 +563,7 @@ function isURL(s) {
 
 function validateHexCode(code, text) {
   var isOk  = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
-  console.log(isOk)
+  // console.log(isOk)
   if(isOk) {
     logs.add('companion - validateHexCode - Hex code valid');
     return code;

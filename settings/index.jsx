@@ -1,12 +1,10 @@
-import { settings } from "settings";
-import { XMLHttpRequest } from "xmlhttprequest";
-
 function mySettings(props) {
-  return (
+
+  let template = (
    <Page>
 
       <Text>
-        <TextImageRow label="Glance" sublabel="https://github.com/Rytiggy/Glance" icon="https://image.ibb.co/gbWF2H/twerp_bowtie_64.png" /> 
+        <TextImageRow label="Glance" sublabel="https://glancewatchface.com" icon="https://i.ibb.co/XzbJbBv/icon.png" /> 
         <Text>
           &nbsp;
         </Text>
@@ -20,35 +18,33 @@ function mySettings(props) {
           &nbsp;
         </Text>
         <Text>         
-          <Link source="https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance#2-settings">Click here to learn how to set up Glance!</Link>
+          <Link source="https://glancewatchface.com/#setup">Click here to learn how to set up Glance!</Link>
         </Text>
       </Text>
 
       <Section title={<Text bold align="center">Data Source Settings</Text>}>
-        <Select label={`Data Source`} settingsKey="dataSource" options={[ {name:"Dexcom", value:"dexcom"}, {name:"Nightscout", value:"nightscout"}, {name:"xDrip+", value:"xdrip"}, {name:"Spike", value:"spike"}, {name:"Tomato", value:"tomato"}, {name:"Custom", value:"custom"}, ]} />
-
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'custom') ?
-        <TextInput label="Api endpoint" settingsKey="customEndpoint" /> : null) : null)}
-
-
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? 
-        <Section>
-          <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> 
-          <TextInput title="Nightscout" label="Site Name" settingsKey="nightscoutSiteName" />
-          <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text>
-          <Select label="Nightscout Host Site" settingsKey="nightscoutSiteHost" options={[{name:"Heroku", value:"herokuapp.com"},{name:"Azure", value:"azurewebsites.net"}]} />
-          <TextInput title="Nightscout API Secret" label="API Secret (optional)" settingsKey="nightscoutAccessToken" /> 
-        </Section> : null) : null)} 
-
-
-        {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'dexcom') ? 
-        <Section title={<Text bold align="center">Dexcom</Text>}>
-          <Text bold align="center">Dexcom</Text>                                        
-          <TextInput title="Username" label="Username" settingsKey="dexcomUsername" />
-          <TextInput title="Password" label="Password" settingsKey="dexcomPassword" />
-          <Toggle settingsKey="USAVSInternational" label="International (Not in USA)"/>            
-         </Section> : null) : null)} 
-
+        <Select
+          label={`Number Of Data sources`}
+          settingsKey="numOfDataSources"
+          options={[
+            {name:"One Data Source", value: 1},
+            {name:"Two Data Sources", value: 2},
+          ]}
+        />
+        {renderDataSource(
+          props,
+          'dataSource',
+          'Data Source One',
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName", "nightscoutSiteTokenTwo", "nightscoutAccessToken"],
+        )}
+        {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 2) ?
+          renderDataSource(
+            props,
+            'dataSourceTwo',
+            'Data Source Two',
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo", "nightscoutAccessTokenTwo"],
+          )
+        : null) : null)}
       </Section>      
       
       <Section title={<Text bold align="center">Glucose Settings</Text>}>
@@ -80,13 +76,17 @@ function mySettings(props) {
         <Select label={`Time Format`} settingsKey="timeFormat" options={[ {name:"12hr", value:false}, {name:"24hr", value:true} ]} />
         <Select label={`Date Format`} settingsKey="dateFormat" options={[ {name:"MM/DD/YYYY", value:"MM/DD/YYYY"}, {name:"DD/MM/YYYY", value:"DD/MM/YYYY"}, {name:"YYYY/MM/DD", value:"YYYY/MM/DD"}, {name:"DD.MM.YYYY", value:"DD.MM.YYYY"} ]} />
        <Toggle settingsKey="enableDOW" label="Day of week at end of date"/>
-      </Section>  
+      </Section> 
       
       <Section title={<Text bold align="center">Layout</Text>}>
-                                             
+      
+        {/* <Text align="center" bold>
+          Weather
+        </Text>
+        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />                                */}
                                           
              <Text bold align="center">Graph</Text>
-            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
+            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout' ) || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
             <Toggle settingsKey="largeGraph" label="Large graph popup screen"/>
             <Text>Tap the lower right hand side of the watch faces screen to view the larger graph popup screen.</Text>
               
@@ -99,8 +99,8 @@ function mySettings(props) {
                    like turn on save color to save it! Need help finding a hex color code? <Link source="https://www.color-hex.com/">check out this site.</Link></Text><Toggle settingsKey="saveColor" label="Save Color"/><TextInput label="Hex Color One" settingsKey="hexColor" /> <TextInput label="Hex Color Two" settingsKey="hexColorTwo" /> <TextInput label="Text Color" settingsKey="textColor" /></Section>: null) : null)} 
         
         
-          {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') ?
-          <Section>
+          {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSource).values[0].value == 'spike') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'spike') ?
+         <Section>
               <Text bold align="center">Customize</Text>
               <Text>The customize section is used for customizing the user interface of Glance, you can replace the default values of Glance with other values present.</Text>
               <Text>Note: If the value selected is not present on your data source it will show the default option.</Text>
@@ -114,7 +114,7 @@ function mySettings(props) {
         <Text>
             If you need help getting started with Glance follow the links below!
         </Text>
-        <Link source="https://github.com/Rytiggy/Glance/wiki/How-to-set-up-Glance#2-settings">How to set up Glance</Link>
+        <Link source="https://glancewatchface.com/#setup">How to set up Glance</Link>
         <Text>
           Note: Tapping on the time should try to force the watch to sync. You'll feel the watch vibrate.
         </Text>
@@ -130,23 +130,69 @@ function mySettings(props) {
  
   </Page>
   );
+
+
+  return template;
 }
 
 registerSettingsPage(mySettings);
 
-// <Text align="center" bold>
-//     Weather
-// </Text>
-// <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />
-
-
-
-            
-//             <Text bold align="center" align="center">Treatment</Text>                                                     
-//             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'xdrip') ?
-//             <Text>xDrip does not support treatments through API calls. maybe in the future it will!</Text> : null) : null)}             
-//             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value != 'xdrip') ?
-//             <Toggle settingsKey="treatments" label="Enable Treatments"/> : null) : null)}
-//             <Text>Tap the lower right hand side of the watch faces screen to enter treatment info.</Text>
-//            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-//        <TextInput label="Nightscout api secret" settingsKey="nightscoutApiSecret" /> : null) : null)}         
+function renderDataSource(props, id, title, keys) {
+  return (
+    <Section>
+      <TextImageRow
+        label={<Text bold>{title}</Text>}
+        sublabel=""
+        icon="https://i.ibb.co/R42vWmg/Blood-drop-plain-svg.png"
+      />
+      <TextInput label="Data Source Name" settingsKey={keys[6]} /> 
+      <Select
+        label={`Data Source`}
+        settingsKey={id}
+        options={
+          [
+            {name:"Dexcom", value:"dexcom"},
+            {name:"Nightscout", value:"nightscout"},
+            {name:"xDrip+", value:"xdrip"},
+            {name:"Spike", value:"spike"},
+            {name:"Tomato", value:"tomato"},
+            {name:"custom", value:"custom"},
+          ]
+        }
+      />
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'custom') ?
+      <TextInput label="Api endpoint" settingsKey={keys[0]} /> : null) : null)}
+    
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'nightscout') ?
+        <Section>
+          <Text text="center">https://<Text bold>SiteName</Text>.NightscoutHostSite.com</Text> 
+          <TextInput title="Nightscout" label="Site Name" settingsKey={keys[1]} />
+          <Text text="center">https://SiteName.<Text bold>NightscoutHostSite</Text>.com</Text>
+          <Select
+            label="Nightscout Host Site"
+            settingsKey={keys[2]}
+            options={
+              [
+                {
+                  name:"Heroku",
+                  value:"herokuapp.com"
+                },
+                {
+                  name:"Azure",
+                  value:"azurewebsites.net"
+                }
+              ]
+            } 
+          />
+          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[7]} /> 
+        </Section>
+      : null) : null)}
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
+      <Section title={<Text bold align="center">Dexcom</Text>}>                                       
+        <TextInput title="Username" label="Dexcom Username" settingsKey={keys[3]} />
+        <TextInput title="Password" label="Dexcom Password" settingsKey={keys[4]} />
+        <Toggle settingsKey={keys[5]} label="International (Not in USA)"/>            
+      </Section> : null) : null)} 
+    </Section>
+  )
+} 

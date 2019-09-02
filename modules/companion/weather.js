@@ -20,9 +20,8 @@ export default class weather {
     console.log('companion - weather - get()')
     const position = await getCurrentPosition();
     const { latitude, longitude } = position.coords;
-    let query = 'select item.condition from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text="('+ latitude + "," +longitude+')") and u="'+tempType+'"';
-    let endPointURL = "https://query.yahooapis.com/v1/public/yql?q=" +escape(query)  + "&format=json";    
-    return endPointURL;  
+    return `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${latitude}&lon=${longitude}&appid=070d27a069823ebe69e5246f91d6f301`;
+    // return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=070d27a069823ebe69e5246f91d6f301`;  
   };
 };
 

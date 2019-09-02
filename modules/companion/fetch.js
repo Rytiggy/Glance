@@ -32,9 +32,9 @@ export default class messaging {
         if(!error.status) {
           error.status = '404'
         }
-        logs.add(`Line 35 ERROR companion - fetch - get() ${JSON.stringify(error)}`)
+        logs.add(` ERROR companion - fetch - get() ${JSON.stringify(error)}`)
         let errorMsg = {
-          text: 'Line 38: Error with companion - fetch - get()',
+          text: 'Error with companion - fetch - get()',
           error: error,
           url: trimmedURL,
         }
@@ -58,8 +58,6 @@ function handleResponse (response) {
 function handleJSONResponse (response) {
   return response.json()
     .then(json => {
-      // console.error(JSON.stringify(json))
-
       if (response.ok) {
          logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`)
         return json

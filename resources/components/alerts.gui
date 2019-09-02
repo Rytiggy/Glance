@@ -1,0 +1,15 @@
+<symbol id="alerts">
+    <svg>
+        <!-- Black background -->
+        <rect class="full-size" fill="fb-black" />
+        <text id="alertUser" class="subtext1"></text>
+        <text id="alertTitle" class="h2"></text>
+        <image href="img/arrows/FortyFiveDown.png" id="alertArrows"/>
+        <text id="alertLead" class="subtext1">Check blood sugar!</text>
+        
+        <use pointer-events="visible" id="dismiss" class="dialog-half-button-left" href="#square-button-negative">
+            <set href="#text" attributeName="text-buffer" to="Dismiss" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+    </svg>
+</symbol>

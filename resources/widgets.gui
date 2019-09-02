@@ -1,5 +1,6 @@
 <svg>
   <defs>
+    <link rel="stylesheet" href="css/general.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="/mnt/sysassets/widgets/dynamic_textarea.css" />
     <!-- Additional Imports -->
@@ -8,16 +9,19 @@
     <link rel="import" href="/mnt/sysassets/widgets/square_button_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/mixed_text_widget.gui" />   
     <link rel='import' href='/mnt/sysassets/widgets/baseview_widget.gui'/>
-    
- <!-- Additional Imports -->
     <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/panoramaview_widget.gui" />
-    <link rel="import" href="/mnt/sysassets/widgets/pagination_dots.gui" />
-        
+    <link rel="import" href="/mnt/sysassets/widgets/pagination_dots.gui" /> 
     <link rel="import" href="/mnt/sysassets/widgets/combo_button_widget.gui" />
-    
     <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/tumblerview_widget.gui" />
-    
+    <link rel="import" href="/mnt/sysassets/widgets/spinner_widget.gui" />
+
+    <!-- Custom Components -->
+    <link rel="import" href="components/header.gui" />
+    <link rel="import" href="components/bloodSugar.gui" />
+    <link rel="import" href="components/stats.gui" />
+    <link rel="import" href="components/graph.gui" />
+    <link rel="import" href="components/alerts.gui" />
   </defs>
 </svg>
