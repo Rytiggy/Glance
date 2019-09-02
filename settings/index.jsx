@@ -35,14 +35,14 @@ function mySettings(props) {
           props,
           'dataSource',
           'Data Source One',
-          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName"],
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName", "nightscoutSiteTokenTwo", "nightscoutAccessToken"],
         )}
         {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 2) ?
           renderDataSource(
             props,
             'dataSourceTwo',
             'Data Source Two',
-            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo"],
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo", "nightscoutAccessTokenTwo"],
           )
         : null) : null)}
       </Section>      
@@ -183,6 +183,7 @@ function renderDataSource(props, id, title, keys) {
               ]
             } 
           />
+          <TextInput title="Nightscout API Secret" label="API Secret (optional)" settingsKey={keys[7]} /> 
         </Section>
       : null) : null)}
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
