@@ -65,7 +65,7 @@ export default class settings {
 
        let nightscoutSiteToken = '';
        if(settingsStorage.getItem('nightscoutAccessToken') && JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name) {
-        nightscoutSiteToken = '?' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
+        nightscoutSiteToken = '?token=' + JSON.parse(settingsStorage.getItem('nightscoutAccessToken')).name;
         // Need to replace the query params '?' with an '&' -> Encoding problems
         // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
         queryParms = queryParms.replace('?', '&');
@@ -128,7 +128,7 @@ export default class settings {
 
       let nightscoutSiteTokenTwo = '';
       if(settingsStorage.getItem('nightscoutAccessTokenTwo') && JSON.parse(settingsStorage.getItem('nightscoutAccessTokenTwo')).name) {
-        nightscoutSiteTokenTwo = '?' + JSON.parse(settingsStorage.getItem('nightscoutAccessTokenTwo')).name;
+        nightscoutSiteTokenTwo = '?token=' + JSON.parse(settingsStorage.getItem('nightscoutAccessTokenTwo')).name;
         // Need to replace the query params '?' with an '&' -> Encoding problems
         // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
         queryParms = queryParms.replace('?', '&');
