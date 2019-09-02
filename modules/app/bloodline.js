@@ -194,7 +194,7 @@ export default class bloodline {
     //     }
     //   }
     // }
-    // reverseBloodsugars.reverse();
+    reverseBloodsugars.reverse();
   }
 }
 
