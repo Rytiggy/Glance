@@ -37,9 +37,18 @@
 	pointer-events: "visible";
 }
 
+.dualGraph {
+	x: 27%;
+  	y: 5%;
+}
+
 #dismiss {
 	x: 2%;
   	y: 50%;
   	width: 150;
   	height: 115;
+}
+
+.DualbloodSugarDisplay {
+    y: 10%;
 }

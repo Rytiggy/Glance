@@ -27,9 +27,9 @@ export default class bloodline {
     graphContainer.style.display = "inline"; 
     const highNumber = graphContainer.getElementById('high');
     const lowNumber = graphContainer.getElementById('low');
-    const highLine = graphContainer.getElementsByClassName('highLine');
-    const meanLine = graphContainer.getElementsByClassName('meanLine');
-    const lowLine = graphContainer.getElementsByClassName('lowLine');
+    const highLine = graphContainer.getElementById('highLine');
+    const meanLine = graphContainer.getElementById('meanLine');
+    const lowLine = graphContainer.getElementById('lowLine');
     const graphPoints = graphContainer.getElementsByClassName('graphPoints');
     let isMmol = settings.glucoseUnits === 'mmol';
     let reverseBloodsugars = bloodsugars.reverse();
@@ -90,12 +90,12 @@ export default class bloodline {
     
     let highY = (height - (height * (Math.round(((high - ymin) / (ymax - ymin)) * 100) / 100)));
     let lowY = (height - (height * (Math.round(((low - ymin) / (ymax - ymin)) * 100) / 100)));
-    highLine[0].y1 = highY;
-    highLine[0].y2 = highY;
-    meanLine[0].y1 = (highY + lowY)/2;
-    meanLine[0].y2 = (highY + lowY)/2;
-    lowLine[0].y1 = lowY;
-    lowLine[0].y2 = lowY;
+    highLine.y1 = highY;
+    highLine.y2 = highY;
+    meanLine.y1 = (highY + lowY)/2;
+    meanLine.y2 = (highY + lowY)/2;
+    lowLine.y1 = lowY;
+    lowLine.y2 = lowY;
     
     // highLine[1].y1 = highY;
     // highLine[1].y2 = highY;
@@ -155,33 +155,33 @@ export default class bloodline {
       }
     });  
     
-    // 47 loops 
-    for (let index = 0; index < reverseBloodsugars.length; index++) {
-      if(reverseBloodsugars[index].sgv === 'LOS') {
-        // largeGraphGraphPoints[index].style.opacity = 0;
-      } else {
-        // largeGraphGraphPoints[index].style.opacity = 1;
-        let pointY = (height - (height * (Math.round(((reverseBloodsugars[index].sgv - ymin) / (ymax - ymin)) * 100) / 100)));
-        //  - TODO: compare time of current sgv to time of last sgv and make sure its equal 5m if not add spacing
-        // largeGraphGraphPoints[index].cy = pointY;
-        // largeGraphGraphPoints[index].style.fill = "#708090"; // gray
-        //  - check sgv point is in range if not change color 
-        if(reverseBloodsugars[index].p) {
-          // largeGraphGraphPoints[index].style.fill = "#f76ac5"; // pink   
-        } else if (parseInt(reverseBloodsugars[index].sgv, 10) <= low){
-          //- INFO: largeGraphGraphPoints has to be at the 22 index becase it is ALL the points on both graphs combined
-          // largeGraphGraphPoints[index].style.fill = "#de4430"; //red
-        } else if ( parseInt(reverseBloodsugars[index].sgv, 10) >= high) {
-          // largeGraphGraphPoints[index].style.fill = "orange"; // orange 
-          if ( parseInt(reverseBloodsugars[index].sgv, 10) >=  (parseInt(high) + 35)) {
-            //  largeGraphGraphPoints[index].style.fill = "#de4430"; // red 
-          }
-        } else {
-          // largeGraphGraphPoints[index].style.fill = "#75bd78"; // green 
-        }
-      }
-    }     
-    reverseBloodsugars.reverse();
+    // // 47 loops 
+    // for (let index = 0; index < reverseBloodsugars.length; index++) {
+    //   if(reverseBloodsugars[index].sgv === 'LOS') {
+    //     // largeGraphGraphPoints[index].style.opacity = 0;
+    //   } else {
+    //     // largeGraphGraphPoints[index].style.opacity = 1;
+    //     let pointY = (height - (height * (Math.round(((reverseBloodsugars[index].sgv - ymin) / (ymax - ymin)) * 100) / 100)));
+    //     //  - TODO: compare time of current sgv to time of last sgv and make sure its equal 5m if not add spacing
+    //     // largeGraphGraphPoints[index].cy = pointY;
+    //     // largeGraphGraphPoints[index].style.fill = "#708090"; // gray
+    //     //  - check sgv point is in range if not change color 
+    //     if(reverseBloodsugars[index].p) {
+    //       // largeGraphGraphPoints[index].style.fill = "#f76ac5"; // pink   
+    //     } else if (parseInt(reverseBloodsugars[index].sgv, 10) <= low){
+    //       //- INFO: largeGraphGraphPoints has to be at the 22 index becase it is ALL the points on both graphs combined
+    //       // largeGraphGraphPoints[index].style.fill = "#de4430"; //red
+    //     } else if ( parseInt(reverseBloodsugars[index].sgv, 10) >= high) {
+    //       // largeGraphGraphPoints[index].style.fill = "orange"; // orange 
+    //       if ( parseInt(reverseBloodsugars[index].sgv, 10) >=  (parseInt(high) + 35)) {
+    //         //  largeGraphGraphPoints[index].style.fill = "#de4430"; // red 
+    //       }
+    //     } else {
+    //       // largeGraphGraphPoints[index].style.fill = "#75bd78"; // green 
+    //     }
+    //   }
+    // }     
+    // reverseBloodsugars.reverse();
   }
 };
 

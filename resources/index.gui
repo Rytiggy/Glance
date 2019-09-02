@@ -41,8 +41,8 @@
 					height="106%"
 				/>
 				<use href="#stats" class="stats"/>
-				<use pointer-events="visible" href="#graph" class="graph center width-40"/>
-				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
+				<use pointer-events="visible" href="#graph" class="dualGraph graph center width-40"/>
+				<use href="#bloodSugarDisplay" class="DualbloodSugarDisplay bloodSugarDisplay"/>
 			</svg>
 			<svg class="row bottom">
 				<gradientRect
@@ -51,8 +51,8 @@
 					height="100%"
 				/>	
 				<use href="#stats" class="stats"/>
-				<use pointer-events="visible" href="#graph" class="graph center width-40"/>
-				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
+				<use pointer-events="visible" href="#graph" class="dualGraph graph center width-40"/>
+				<use href="#bloodSugarDisplay" class="DualbloodSugarDisplay bloodSugarDisplay"/>
 				<text 
 					id="time"
 					class="center dualTime text-gray settingsTextColor"
