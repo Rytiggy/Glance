@@ -79,10 +79,11 @@ function mySettings(props) {
       </Section> 
       
       <Section title={<Text bold align="center">Layout</Text>}>
-        <Text align="center" bold>
+      
+        {/* <Text align="center" bold>
           Weather
         </Text>
-        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />                               
+        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />                                */}
                                           
              <Text bold align="center">Graph</Text>
             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout' ) || (JSON.parse(props.settings.dataSourceTwo).values[0].value == 'nightscout') ? <Toggle settingsKey="enableSmallGraphPrediction" label="Main Graph Predictions"/> : null) : null)}  
@@ -140,7 +141,7 @@ function renderDataSource(props, id, title, keys) {
   return (
     <Section>
       <TextImageRow
-        label={title}
+        label={<Text bold>{title}</Text>}
         sublabel=""
         icon="https://i.ibb.co/R42vWmg/Blood-drop-plain-svg.png"
       />
@@ -183,7 +184,7 @@ function renderDataSource(props, id, title, keys) {
               ]
             } 
           />
-          <TextInput title="Nightscout API Secret" label="API Secret (optional)" settingsKey={keys[7]} /> 
+          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[7]} /> 
         </Section>
       : null) : null)}
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
@@ -194,14 +195,4 @@ function renderDataSource(props, id, title, keys) {
       </Section> : null) : null)} 
     </Section>
   )
-}
-
-            
-//             <Text bold align="center" align="center">Treatment</Text>                                                     
-//             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'xdrip') ?
-//             <Text>xDrip does not support treatments through API calls. maybe in the future it will!</Text> : null) : null)}             
-//             {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value != 'xdrip') ?
-//             <Toggle settingsKey="treatments" label="Enable Treatments"/> : null) : null)}
-//             <Text>Tap the lower right hand side of the watch faces screen to enter treatment info.</Text>
-//            {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ?
-//        <TextInput label="Nightscout api secret" settingsKey="nightscoutApiSecret" /> : null) : null)}         
+} 
