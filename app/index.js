@@ -155,6 +155,7 @@ function updateAlerts(data) {
   );
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
+    console.warn(index);
     const bloodSugar = data.bloodSugars[index];
     const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
     const errorLine = BloodSugarDisplayContainer[index].getElementById(

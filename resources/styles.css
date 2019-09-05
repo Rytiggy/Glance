@@ -43,9 +43,9 @@
 
 #dismiss {
   x: 2%;
-  y: 50%;
+  y: 65%;
   width: 150;
-  height: 115;
+  height: 85;
 }
 
 .DualbloodSugarDisplay {
@@ -78,4 +78,31 @@
   height: 20;
   x: 3%;
   y: 1%;
+}
+
+#alertTitle {
+  text-anchor: "end";
+  x: 88%;
+  y: 34%;
+}
+
+#alertLead {
+  text-anchor: end;
+  x: 63%;
+  y: 38%;
+  text-length: "80";
+  width: 35%;
+}
+
+#alertArrows {
+  x: 87%;
+  y: 18%;
+  width: 45;
+  height: 45;
+}
+
+#alertUser {
+  x: 97%;
+  y: 13%;
+  text-anchor: "end";
 }
