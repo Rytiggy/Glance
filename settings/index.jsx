@@ -58,9 +58,9 @@ function mySettings(props) {
          <Section title={<Text bold align="center">Extra Glucose Settings</Text>}>
             <Text bold align="center">Alerts</Text>
             <Toggle settingsKey="highAlerts" label="High Alerts"/> 
-            <TextInput label="Dismiss high alerts for n minutes" settingsKey="dismissHighFor" /> 
+            {/* <TextInput label="Dismiss high alerts for n minutes" settingsKey="dismissHighFor" />  */}
             <Toggle settingsKey="lowAlerts" label="Low Alerts"/>
-            <TextInput label="Dismiss low alerts for n minutes" settingsKey="dismissLowFor" />
+            {/* <TextInput label="Dismiss low alerts for n minutes" settingsKey="dismissLowFor" /> */}
             <Toggle settingsKey="rapidRise" label="Rapid Rise Alerts"/>
             <Toggle settingsKey="rapidFall" label="Rapid Fall Alerts"/>
              {((props.settings.dataSource) ? ((JSON.parse(props.settings.dataSource).values[0].value == 'nightscout') ? <Toggle settingsKey="loopstatus" label="Loop Status Alerts"/> : null) : null)}                                     
