@@ -1,15 +1,82 @@
-<symbol id="alerts">
+<symbol id="alerts"> <!-- Black background -->
     <svg>
-        <!-- Black background -->
-        <rect class="full-size" fill="fb-black" />
+        <gradientRect
+            class="bgAlertColor"
+            id="bgAlertColor"
+            width="100%"
+            height="100%"
+        />
+        <!-- <rect class="full-size" fill="fb-black" /> -->
+        <!-- <text id="" class="subtext1">Check blood sugar!</text> -->
         <text id="alertUser" class="subtext1"></text>
         <text id="alertTitle" class="h2"></text>
-        <image href="img/arrows/FortyFiveDown.png" id="alertArrows"/>
-        <text id="alertLead" class="subtext1">Check blood sugar!</text>
-        
-        <use pointer-events="visible" id="dismiss" class="dialog-half-button-left" href="#square-button-negative">
+        <textarea
+			id="alertLead"
+			class="leadText"
+		/>
+        <image href="img/arrows/Flat.png" id="alertArrows"/>
+        <use pointer-events="visible" id="dismiss" href="#square-button-negative">
             <set href="#text" attributeName="text-buffer" to="Dismiss" />
             <set href="#text" attributeName="text-anchor" to="middle" />
         </use>
+        <svg class="tumblerContainer">
+            <use id="tumbler" href="#tumblerview">
+                <use id="item0" href="#tumbler-item" class="item">
+                    <text id="content">240 mins</text>
+                </use>
+                <use id="item1" href="#tumbler-item" class="item">
+                    <text id="content">180 mins</text>
+                </use>
+                <use id="item2" href="#tumbler-item" class="item">
+                    <text id="content">150 mins</text>
+                </use>
+                <use id="item3" href="#tumbler-item" class="item">
+                    <text id="content">120 mins</text>
+                </use>
+                <!-- <use id="item4" href="#tumbler-item" class="item">
+                    <text id="content">90 mins</text>
+                </use>
+                <use id="item5" href="#tumbler-item" class="item">
+                    <text id="content">60 mins</text>
+                </use>
+                <use id="item6" href="#tumbler-item" class="item">
+                    <text id="content">55 mins</text>
+                </use>
+                <use id="item7" href="#tumbler-item" class="item">
+                    <text id="content">50 mins</text>
+                </use>
+                <use id="item8" href="#tumbler-item" class="item">
+                    <text id="content">45 mins</text>
+                </use>
+                <use id="item9" href="#tumbler-item" class="item">
+                    <text id="content">40 mins</text>
+                </use>
+                <use id="item10" href="#tumbler-item" class="item">
+                    <text id="content">35 mins</text>
+                </use>
+                <use id="item11" href="#tumbler-item" class="item">
+                    <text id="content">30 mins</text>
+                </use>
+                <use id="item12" href="#tumbler-item" class="item">
+                    <text id="content">25 mins</text>
+                </use>
+                <use id="item13" href="#tumbler-item" class="item">
+                    <text id="content">25 mins</text>
+                </use>
+                <use id="item14" href="#tumbler-item" class="item">
+                    <text id="content">20 mins</text>
+                </use>
+                <use id="item15" href="#tumbler-item" class="item">
+                    <text id="content">15 mins</text>
+                </use>
+                <use id="item16" href="#tumbler-item" class="item">
+                    <text id="content">10 mins</text>
+                </use>
+                <use id="item17" href="#tumbler-item" class="item">
+                    <text id="content">05 mins</text>
+                </use> -->
+            </use>
+        </svg>
+
     </svg>
 </symbol>
