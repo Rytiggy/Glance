@@ -33,7 +33,7 @@
                 <use id="item3" href="#tumbler-item" class="item">
                     <text id="content">120 mins</text>
                 </use>
-                <use id="item4" href="#tumbler-item" class="item">
+                <!-- <use id="item4" href="#tumbler-item" class="item">
                     <text id="content">90 mins</text>
                 </use>
                 <use id="item5" href="#tumbler-item" class="item">
@@ -74,7 +74,7 @@
                 </use>
                 <use id="item17" href="#tumbler-item" class="item">
                     <text id="content">05 mins</text>
-                </use>
+                </use> -->
             </use>
         </svg>
 
