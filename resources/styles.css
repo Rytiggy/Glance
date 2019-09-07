@@ -83,26 +83,26 @@
 #alertTitle {
   text-anchor: "end";
   x: 88%;
-  y: 34%;
+  y: 30%;
 }
 
 #alertLead {
   text-anchor: end;
   x: 63%;
-  y: 38%;
+  y: 32%;
   text-length: "80";
   width: 35%;
 }
 
 #alertArrows {
   x: 87%;
-  y: 18%;
+  y: 14%;
   width: 45;
   height: 45;
 }
 
 #alertUser {
-  x: 97%;
-  y: 13%;
+  x: 98%;
+  y: 10%;
   text-anchor: "end";
 }
