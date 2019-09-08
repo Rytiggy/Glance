@@ -83,6 +83,7 @@ function updateDisplay(data) {
     time = singleOrMultipleDispaly.getElementById("time");
 
     time.text = dateTime.getTime(data.settings.timeFormat);
+
     checkDataState(data);
 
     updateBgColor(data);
@@ -495,17 +496,6 @@ function setTextColor(color) {
     ele.style.fill = color;
   });
 }
-var dataToSend = {
-  heart: 0,
-  steps: userActivity.get().steps
-};
-// Request data every 5 mins from companion
-setTimeout(function() {
-  transfer.send(dataToSend);
-}, 1500);
-setInterval(function() {
-  transfer.send(dataToSend);
-}, 180000);
 
 function updateTimeDisplay(classes) {
   time.text = dateTime.getTime();
@@ -514,3 +504,23 @@ function updateTimeDisplay(classes) {
 function isOdd(n) {
   return Math.abs(n % 2) == 1;
 }
+
+var dataToSend = {
+  heart: 0,
+  steps: userActivity.get().steps
+};
+
+// Request data every 5 mins from companion
+setTimeout(function() {
+  transfer.send(dataToSend);
+}, 1500);
+setInterval(function() {
+  transfer.send(dataToSend);
+}, 180000);
+
+time.onclick = evt => {
+  console.log("FORCE Activated!");
+  // transfer.send(dataToSend);
+  vibration.start("bump");
+  // arrows.href = "../resources/img/arrows/loading.png";
+};

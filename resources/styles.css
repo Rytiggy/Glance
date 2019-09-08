@@ -52,6 +52,11 @@
   y: 10%;
 }
 
+#time {
+  x: 3%;
+  y: 97%;
+}
+
 .dualTime {
   text-anchor: start;
   x: 3%;

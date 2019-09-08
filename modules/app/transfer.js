@@ -11,25 +11,23 @@
  * ------------------------------------------------
  */
 
-
-
 // Import the messaging module
 import * as messaging from "messaging";
 
-export default class transfer { 
+export default class transfer {
   // Send data
   send(data) {
-    console.log('app - transfer - send')
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    console.log("app - transfer - send");
+    if (messaging.peerSocket.readyState == 0) {
+      // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       // Send a command to the companion
       messaging.peerSocket.send({
-        command: 'forceCompanionTransfer',
-        data: data,
-    });
+        command: "forceCompanionTransfer",
+        data: data
+      });
     }
   }
-};
-
+}
 
 // Events
 
@@ -51,4 +49,3 @@ export default class transfer {
 //   // Handle any errors
 //   console.log("Connection error: " + err.code + " - " + err.message);
 // }
-

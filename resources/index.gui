@@ -10,7 +10,7 @@
 			<svg class="row top">
 				<use href="#header" class="header"/>
 				<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
-				<text text-anchor="start" class="h1 time settingsTextColor" id="time" pointer-events="visible"></text>
+				<text  class="h1 time settingsTextColor" id="time" pointer-events="visible"></text>
 				<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
 			</svg>
 			<svg class="row bottom">
