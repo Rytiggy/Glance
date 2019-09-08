@@ -22,59 +22,17 @@
         <svg class="tumblerContainer">
             <use id="tumbler" href="#tumblerview">
                 <use id="item0" href="#tumbler-item" class="item">
-                    <text id="content">240 mins</text>
-                </use>
-                <use id="item1" href="#tumbler-item" class="item">
-                    <text id="content">180 mins</text>
-                </use>
-                <use id="item2" href="#tumbler-item" class="item">
-                    <text id="content">150 mins</text>
-                </use>
-                <use id="item3" href="#tumbler-item" class="item">
-                    <text id="content">120 mins</text>
-                </use>
-                <!-- <use id="item4" href="#tumbler-item" class="item">
-                    <text id="content">90 mins</text>
-                </use>
-                <use id="item5" href="#tumbler-item" class="item">
-                    <text id="content">60 mins</text>
-                </use>
-                <use id="item6" href="#tumbler-item" class="item">
-                    <text id="content">55 mins</text>
-                </use>
-                <use id="item7" href="#tumbler-item" class="item">
-                    <text id="content">50 mins</text>
-                </use>
-                <use id="item8" href="#tumbler-item" class="item">
-                    <text id="content">45 mins</text>
-                </use>
-                <use id="item9" href="#tumbler-item" class="item">
-                    <text id="content">40 mins</text>
-                </use>
-                <use id="item10" href="#tumbler-item" class="item">
-                    <text id="content">35 mins</text>
-                </use>
-                <use id="item11" href="#tumbler-item" class="item">
-                    <text id="content">30 mins</text>
-                </use>
-                <use id="item12" href="#tumbler-item" class="item">
-                    <text id="content">25 mins</text>
-                </use>
-                <use id="item13" href="#tumbler-item" class="item">
-                    <text id="content">25 mins</text>
-                </use>
-                <use id="item14" href="#tumbler-item" class="item">
-                    <text id="content">20 mins</text>
-                </use>
-                <use id="item15" href="#tumbler-item" class="item">
                     <text id="content">15 mins</text>
                 </use>
-                <use id="item16" href="#tumbler-item" class="item">
-                    <text id="content">10 mins</text>
+                <use id="item1" href="#tumbler-item" class="item">
+                    <text id="content">30 mins</text>
                 </use>
-                <use id="item17" href="#tumbler-item" class="item">
-                    <text id="content">05 mins</text>
-                </use> -->
+                <use id="item2" href="#tumbler-item" class="item">
+                    <text id="content">60 mins</text>
+                </use>
+                <use id="item3" href="#tumbler-item" class="item">
+                    <text id="content">5 mins</text>
+                </use>
             </use>
         </svg>
 
