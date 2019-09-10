@@ -184,7 +184,7 @@ function renderDataSource(props, id, title, keys) {
               ]
             } 
           />
-          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[7]} /> 
+          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[8]} /> 
         </Section>
       : null) : null)}
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
