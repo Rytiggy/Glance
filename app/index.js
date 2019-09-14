@@ -22,6 +22,8 @@ import UserActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
 import Transfer from "../modules/app/transfer.js";
+import UserAgreement from "../modules/app/userAgreement.js";
+
 import * as messaging from "messaging";
 // import * as weather from 'fitbit-weather/app'
 
@@ -33,6 +35,8 @@ const graph = new Graph();
 const userActivity = new UserActivity();
 const errors = new Errors();
 const transfer = new Transfer();
+const userAgreement = new UserAgreement();
+
 // const userSettings = new UserSettings();
 
 var alerts = [];
@@ -51,6 +55,8 @@ setInterval(function() {
   console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
   updateDisplay(data);
 }, 10000);
+
+// On file tranfer
 inbox.onnewfile = () => {
   let fileName;
   do {
@@ -62,6 +68,13 @@ inbox.onnewfile = () => {
   updateDisplay(data);
 };
 
+// // Listen for messages from the companion
+// messaging.peerSocket.onmessage = function(evt) {
+//   if (evt.data) {
+//     console.log("The temperature is: " + JSON.stringify(evt));
+//   }
+// };
+
 /**
  * Update watchface display
  * @param {Object} data recived from the companion
@@ -69,31 +82,40 @@ inbox.onnewfile = () => {
 function updateDisplay(data) {
   console.log("Update Display called");
   if (data) {
-    console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
-    // userSettings.save(data.settings);
-    if (data.settings.numOfDataSources == 2) {
-      singleOrMultipleDispaly = document.getElementById("dualBG");
-      document.getElementById("dualBG").style.display = "inline";
-      document.getElementById("singleBG").style.display = "none";
+    // Check if user has agreed to user agreement
+
+    if (userAgreement.check(data)) {
+      document.getElementById("userAgreement").style.display = "none";
+
+      console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+      // userSettings.save(data.settings);
+      if (data.settings.numOfDataSources == 2) {
+        singleOrMultipleDispaly = document.getElementById("dualBG");
+        document.getElementById("dualBG").style.display = "inline";
+        document.getElementById("singleBG").style.display = "none";
+      } else {
+        singleOrMultipleDispaly = document.getElementById("singleBG");
+        document.getElementById("singleBG").style.display = "inline";
+        document.getElementById("dualBG").style.display = "none";
+      }
+
+      time = singleOrMultipleDispaly.getElementById("time");
+      time.text = dateTime.getTime(data.settings.timeFormat);
+
+      checkDataState(data);
+      updateBgColor(data); // settings only
+      setTextColor(data.settings.textColor); //settings only
+      updateHeader(data); // settings only
+      updateAlerts(data);
+      updateBloodSugarDisplay(data);
+      updateStats(data);
+      updateGraph(data);
+      largeGraphDisplay(data);
     } else {
-      singleOrMultipleDispaly = document.getElementById("singleBG");
-      document.getElementById("singleBG").style.display = "inline";
-      document.getElementById("dualBG").style.display = "none";
+      console.warn("we here");
+      // user has not agreed to user agreement
+      document.getElementById("userAgreement").style.display = "inline";
     }
-    time = singleOrMultipleDispaly.getElementById("time");
-
-    time.text = dateTime.getTime(data.settings.timeFormat);
-
-    checkDataState(data);
-
-    updateBgColor(data);
-    setTextColor(data.settings.textColor);
-    updateHeader(data);
-    updateAlerts(data);
-    updateBloodSugarDisplay(data);
-    updateStats(data);
-    updateGraph(data);
-    largeGraphDisplay(data);
   } else {
     console.warn("NO DATA");
     batteryLevel.width = batteryLevels.get().level;
@@ -358,7 +380,6 @@ function updateHeader(data) {
  * @param {Object} data recived from the companion
  */
 function loadingScreen() {
-  var loadingScreenContainer = document.getElementById("errorStateContainer");
   // let spinner = document.getElementById("spinner");
   const status = document.getElementById("errorStatus");
   const statusLead = document.getElementById("errorStatusLead");
@@ -367,7 +388,8 @@ function loadingScreen() {
   status.text = "Syncing";
 
   let checkConnection = function() {
-    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    if (messaging.peerSocket.readyState == 0) {
+      // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = "Connected";
       clearInterval(checkConnectionInterval);
       statusLead.text = "Loading Data from phone";
@@ -506,10 +528,12 @@ function isOdd(n) {
 }
 
 var dataToSend = {
-  heart: 0,
-  steps: userActivity.get().steps
+  command: "forceCompanionTransfer",
+  data: {
+    heart: 0,
+    steps: userActivity.get().steps
+  }
 };
-
 // Request data every 5 mins from companion
 setTimeout(function() {
   transfer.send(dataToSend);

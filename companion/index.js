@@ -38,6 +38,17 @@ const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
 // weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
 
+// send settings over web sockets while we are getting data from the data source
+// function sendSettings() {
+//   logs.add("Sending Settings: over messaging");
+//   const store = settings.get(dataReceivedFromWatch);
+
+//   if (messaging.peerSocket.readyState == 0) {
+//     // Send a command to the app
+//     messaging.peerSocket.send(standardize.settings(store));
+//   }
+// }
+// sendSettings();
 async function sendData() {
   // Get settings
   const store = await settings.get(dataReceivedFromWatch);
@@ -135,6 +146,10 @@ messaging.peerSocket.onmessage = function(evt) {
     logs.add("Watch to Companion Transfer request");
     // pass in data that was recieved from the watch
     dataReceivedFromWatch = evt.data.data;
+    sendData();
+  } else if (evt.data.command === "agreedToUserAgreement") {
+    console.warn(evt.data);
+    settings.setToggle("userAgreement", true);
     sendData();
   }
 };

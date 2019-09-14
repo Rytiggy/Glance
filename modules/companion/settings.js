@@ -349,6 +349,7 @@ export default class settings {
       disableAlert = JSON.parse(settingsStorage.getItem("disableAlert"));
     } else if (!disableAlert) {
       disableAlert = false;
+      settingsStorage.setItem("disableAlert", false);
     }
 
     let highAlerts = null;
@@ -361,7 +362,6 @@ export default class settings {
 
     let lowAlerts = null;
     if (settingsStorage.getItem("lowAlerts")) {
-      1;
       lowAlerts = JSON.parse(settingsStorage.getItem("lowAlerts"));
     } else if (!lowAlerts) {
       lowAlerts = true;
@@ -746,6 +746,14 @@ export default class settings {
       );
     }
 
+    let userAgreement = null;
+    if (settingsStorage.getItem("userAgreement")) {
+      userAgreement = JSON.parse(settingsStorage.getItem("userAgreement"));
+    } else if (!userAgreement) {
+      userAgreement = false;
+      settingsStorage.setItem("userAgreement", false);
+    }
+
     let settings = {
       url,
       extraDataUrl,
@@ -789,7 +797,8 @@ export default class settings {
       staleDataAlertAfter,
       numOfDataSources,
       dataSourceName,
-      dataSourceNameTwo
+      dataSourceNameTwo,
+      userAgreement
     };
     return settings;
   }
