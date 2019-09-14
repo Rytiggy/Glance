@@ -137,6 +137,8 @@ export default class settings {
         url = customEndpoint.name + queryParms;
       }
       // 47 42
+    } else if(dataSource === 'yagi') { //FAB 
+      url = 'yagi';
     } else if (dataSource === "dexcom") {
       url = "dexcom";
     } else if (dataSource === "tomato") {
@@ -246,6 +248,8 @@ export default class settings {
       // 47 42
     } else if (dataSourceTwo === "dexcom") {
       urlTwo = "dexcom";
+    } else if (dataSourceTwo === "yagi") { //FAB
+      urlTwo = "yagi";
     } else if (dataSource === "tomato") {
       // tomato
       urlTwo = "http://127.0.0.1:11111" + queryParms;
@@ -690,6 +694,31 @@ export default class settings {
     } else if (!USAVSInternationalTwo) {
       USAVSInternationalTwo = false;
     }
+    
+    //FAB
+    let dropboxToken = null;
+    let yagiPatientName = null;
+    if (settingsStorage.getItem('dropboxToken')) {
+      //console.log(settingsStorage.getItem('dropboxToken'))
+      dropboxToken = JSON.parse(settingsStorage.getItem('dropboxToken')).name;
+      yagiPatientName = JSON.parse(settingsStorage.getItem('yagiPatientName')).name;
+    } else if (!dropboxToken) {
+      dropboxToken = null;
+      yagiPatientName = null;
+      settingsStorage.setItem("dropboxToken", JSON.stringify({"name":dropboxToken}));
+      settingsStorage.setItem("yagiPatientName", JSON.stringify({"name":yagiPatientName}));
+    }
+    let dropboxTokenTwo = null;
+    let yagiPatientNameTwo = null;
+    if (settingsStorage.getItem('dropboxTokenTwo')) {
+      dropboxTokenTwo = JSON.parse(settingsStorage.getItem('dropboxTokenTwo')).name;
+      yagiPatientNameTwo = JSON.parse(settingsStorage.getItem('yagiPatientNameTwo')).name;
+    } else if (!dropboxTokenTwo) {
+      dropboxTokenTwo = null;
+      yagiPatientNameTwo = null;
+      settingsStorage.setItem("dropboxTokenTwo", JSON.stringify({"name":dropboxTokenTwo}));
+      settingsStorage.setItem("yagiPatientNameTwo", JSON.stringify({"name":yagiPatientNameTwo}));
+    }
 
     let resetAlertDismissal = null;
     if (settingsStorage.getItem("resetAlertDismissal")) {
@@ -784,6 +813,11 @@ export default class settings {
       dexcomUsernameTwo,
       dexcomPasswordTwo,
       USAVSInternationalTwo,
+      //FAB
+      dropboxToken,
+      yagiPatientName,      
+      dropboxTokenTwo,
+      yagiPatientNameTwo,      
       resetAlertDismissal,
       staleData,
       staleDataAlertAfter,

@@ -35,14 +35,20 @@ function mySettings(props) {
           props,
           'dataSource',
           'Data Source One',
-          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName", "nightscoutSiteTokenTwo", "nightscoutAccessToken"],
+          ["customEndpoint", "nightscoutSiteName","nightscoutSiteHost","dexcomUsername", "dexcomPassword","USAVSInternational", "dataSourceName", "nightscoutSiteTokenTwo", "nightscoutAccessToken"
+           //FAB 
+           ,"dropboxToken","yagiPatientName"                     
+          ],
         )}
         {((props.settings.numOfDataSources) ? ((JSON.parse(props.settings.numOfDataSources).values[0].value == 2) ?
           renderDataSource(
             props,
             'dataSourceTwo',
             'Data Source Two',
-            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo", "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo", "nightscoutAccessTokenTwo"],
+            ["customEndpointTwo", "nightscoutSiteNameTwo","nightscoutSiteHostTwo","dexcomUsernameTwo",    "dexcomPasswordTwo","USAVSInternationalTwo", "dataSourceNameTwo", "nightscoutAccessTokenTwo"
+            //FAB
+            ,null,"dropboxTokenTwo","yagiPatientNameTwo"
+            ],
           )
         : null) : null)}
       </Section>      
@@ -145,7 +151,7 @@ function renderDataSource(props, id, title, keys) {
         sublabel=""
         icon="https://i.ibb.co/R42vWmg/Blood-drop-plain-svg.png"
       />
-      <TextInput label="Data Source Name" settingsKey={keys[6]} /> 
+      <TextInput label="Data Source Name" settingsKey={keys[7]} /> 
       <Select
         label={`Data Source`}
         settingsKey={id}
@@ -156,12 +162,20 @@ function renderDataSource(props, id, title, keys) {
             {name:"xDrip+", value:"xdrip"},
             {name:"Spike", value:"spike"},
             {name:"Tomato", value:"tomato"},
+            {name:"DeeBee.it Yagi", value:"yagi"},
             {name:"custom", value:"custom"},
           ]
         }
       />
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'custom') ?
       <TextInput label="Api endpoint" settingsKey={keys[0]} /> : null) : null)}
+      
+      {/* FAB */}
+      {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'yagi') ? 
+      <Section>                                      
+        <TextInput title="YagiCode" label="Yagi Code" settingsKey={keys[9]} />        
+        {/* <TextInput title="YagiPatientName" label="Patient Name (only for multiple users - optional)" settingsKey={keys[10]} />      */}      
+       <Text>Tip: get your Yagi Code by accessing <Link source="http://www.deebee.it/yagi">http://www.deebee.it/yagi</Link></Text>             </Section> : null) : null)}    
     
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'nightscout') ?
         <Section>
@@ -184,7 +198,7 @@ function renderDataSource(props, id, title, keys) {
               ]
             } 
           />
-          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[7]} /> 
+          <TextInput title="Nightscout Access Token" label="Access Token (optional)" settingsKey={keys[8]} /> 
         </Section>
       : null) : null)}
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'dexcom') ? 
