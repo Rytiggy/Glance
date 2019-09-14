@@ -182,7 +182,7 @@ function renderDataSource(props, id, title, keys) {
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'yagi') ? 
       <Section>                                      
         <TextInput title="YagiCode" label="Yagi Code" settingsKey={keys[9]} />        
-        {/* <TextInput title="YagiPatientName" label="Patient Name (only for multiple users - optional)" settingsKey={keys[10]} />      */}      
+        <TextInput title="YagiPatientName" label="Patient Name (only for multiple users - optional)" settingsKey={keys[10]} />           
        <Text>Tip: get your Yagi Code by accessing <Link source="http://www.deebee.it/yagi">http://www.deebee.it/yagi</Link></Text>             </Section> : null) : null)}    
     
       {((props.settings[id]) ? ((JSON.parse(props.settings[id]).values[0].value == 'nightscout') ?
