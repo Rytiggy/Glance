@@ -257,9 +257,21 @@ export default class standardize {
 				} else {
 					bgs = null;
 				}
+			} else if (settings[keys.dataSource] === 'yagi') { //FAB
+				bgs = data.bgs;
+				if (Array.isArray(bgs)) {
+					//bgs[0].datetime = bgs[0].date;
+					//bgs[0].bgdelta = bgs[0].sgv - bgs[1].sgv; //element.delta;
+          console.log(bgs[0].datetime );
+          console.log(bgs[0].bgdelta);
+				} else {
+          console.err("NULL ARRAY!!!");
+					bgs = null;
+				}
 			}
 
-			
+			console.log(settings.dataSource);
+      console.log(bgs);
 			// Look for current non Predictive bg and not the last 5 predictions
 			// this works because only the current bg has a delta so we can filter for it
 			let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];

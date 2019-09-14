@@ -26,11 +26,17 @@ import * as messaging from "messaging";
 import { me } from "companion";
 // import * as weather from 'fitbit-weather/companion'
 
+//FAB
+import Dropbox from "../modules/companion/dropbox.js";
+
 const settings = new Settings();
 const transfer = new Transfer();
 const fetch = new Fetch();
 const standardize = new Standardize();
 const dexcom = new Dexcom();
+
+//FAB
+const dropbox = new Dropbox();
 
 // const weatherURL = new Weather();
 const logs = new Logs();
@@ -57,6 +63,17 @@ async function sendData() {
       subDomain
     );
     bloodsugars = await dexcom.getData(sessionId, subDomain);
+  } else if (store.url === 'yagi') { //FAB 
+    if(store.dropboxToken) {
+       bloodsugars = await dropbox.getData(store.dropboxToken, store.yagiPatientName); 
+    } else {
+      bloodsugars = {
+        error : {
+          status : "500"
+        }
+      }
+    }
+    
   } else {
     bloodsugars = await fetch.get(store.url);
     if (store.extraDataUrl) {
@@ -80,7 +97,17 @@ async function sendData() {
         subDomainTwo
       );
       bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo);
+    } else if (store.urlTwo === 'yagi') { //FAB 
+    if(store.dropboxTokenTwo) {
+       bloodsugarsTwo = await dropbox.getData(store.dropboxTokenTwo, store.yagiPatientNameTwo); 
     } else {
+      bloodsugarsTwo = {
+        error : {
+          status : "500"
+        }
+      }
+    }    
+  } else {
       bloodsugarsTwo = await fetch.get(store.urlTwo);
       if (store.extraDataUrlTwo) {
         extraDataTwo = await fetch.get(store.extraDataUrlTwo);
@@ -101,12 +128,18 @@ async function sendData() {
       let keysOne = {
         dexcomUsername: "dexcomUsername",
         dexcomPassword: "dexcomPassword",
-        dataSource: "dataSource"
+        dataSource: "dataSource",
+        //FAB
+        dropboxToken : "dropboxToken",
+        yagiPatientName : "yagiPatientName"
       };
       let keysTwo = {
         dexcomUsername: "dexcomUsernameTwo",
         dexcomPassword: "dexcomPasswordTwo",
-        dataSource: "dataSourceTwo"
+        dataSource: "dataSourceTwo",
+        //FAB
+        dropboxToken : "dropboxTokenTwo",
+        yagiPatientName : "yagiPatientNameTwo"
       };
       let dataToSend = {
         bloodSugars: [
