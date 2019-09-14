@@ -1,5 +1,4 @@
 function mySettings(props) {
-
   let template = (
    <Page>
 
@@ -17,10 +16,19 @@ function mySettings(props) {
          <Text>
           &nbsp;
         </Text>
-        <Text>         
+        <Text align="center">         
           <Link source="https://glancewatchface.com/#setup">Click here to learn how to set up Glance!</Link>
         </Text>
       </Text>
+
+      <Section 
+        title={<Text bold align="center">User Agreement</Text>}>
+          <Text>
+          Glance must not be used to make medical decisions, by using glance you agree to the
+          <Link source="https://github.com/Rytiggy/Glance/wiki/User-Agreement"> user agreement</Link>.
+          </Text>
+          <Toggle settingsKey="userAgreement" label="Agree to user agreement"/>
+      </Section>
 
       <Section title={<Text bold align="center">Data Source Settings</Text>}>
         <Select

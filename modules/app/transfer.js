@@ -21,10 +21,7 @@ export default class transfer {
     if (messaging.peerSocket.readyState == 0) {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       // Send a command to the companion
-      messaging.peerSocket.send({
-        command: "forceCompanionTransfer",
-        data: data
-      });
+      messaging.peerSocket.send(data);
     }
   }
 }

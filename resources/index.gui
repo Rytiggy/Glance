@@ -109,6 +109,22 @@
 			</svg>
 		</svg>
 	</svg>
+	<!-- User Agreement -->
+	<svg id="userAgreement" display="none">
+		<!-- Black background -->
+		<rect class="full-size" fill="fb-black" />
+		<!-- Title and text -->
+		<use href="#mixed-text-center-mid" class="dialog-mixed-text" fill="fb-white">
+			<set href="#top-padding" attributeName="display" to="none" />
+			<set href="#header/text" attributeName="text-buffer" to="User Agreement" />
+			<set href="#header/text" attributeName="fill" to="fb-mint"/>
+			<set href="#copy/text" attributeName="text-buffer" to="Glance must not be used to make medical decisions." />
+			<set href="#bottom-padding" attributeName="display" to="none" />
+		</use>
+		<use id="agreeToUserAgreement" href="#square-button-positive" y="70%">
+			<set href="#text" attributeName="text-buffer" to="I Agree" />
+		</use>
+	</svg>
 
 </svg>
 
