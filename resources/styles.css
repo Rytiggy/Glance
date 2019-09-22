@@ -51,8 +51,12 @@
 .DualbloodSugarDisplay {
   y: 10%;
 }
+.time {
+  x: 3%;
+  y: 97%;
+}
 
-.dualTime {
+/* .dualTime {
   text-anchor: start;
   x: 3%;
   y: 2%;
@@ -63,7 +67,7 @@
   height: 100%;
   fill: white;
   text-length: 64;
-}
+} */
 
 #batteryLevel {
   width: 30;

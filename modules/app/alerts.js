@@ -53,11 +53,22 @@ export default class alerts {
       alertGraphContainer
     );
 
+    console.log(
+      this.DISABLE_HIGH_ALERTS +
+        " " +
+        this.DISABLE_LOW_ALERTS +
+        " " +
+        this.DISABLE_LOOPSTATUS_WARNING_ALERTS +
+        " " +
+        this.DISABLE_DOUBLEDOWN_ALERTS +
+        " " +
+        this.DISABLE_STALEDATA_ALERTS
+    );
     alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
 
-    sgv.style.fill = "#75bd78";
-    errorLine.style.fill = "#75bd78";
+    let sgvColor = "#75bd78";
+    let errorLineColor = "#75bd78";
     alertLead.text = "Check Blood Sugar!";
     alertUser.text = userName;
     bgAlertColor.gradient.colors.c1 = "#99988e";
@@ -67,12 +78,8 @@ export default class alerts {
     /**
      * Checks if the users BG is less then their low threshold
      */
-    if (
-      !self.DISABLE_LOW_ALERTS &&
-      bg.sgv <= parseInt(settings.lowThreshold) &&
-      !staleData
-    ) {
-      if (!settings.disableAlert) {
+    if (bg.sgv <= parseInt(settings.lowThreshold) && !staleData) {
+      if (!self.DISABLE_LOW_ALERTS && !settings.disableAlert) {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
           console.log("low BG");
@@ -82,21 +89,17 @@ export default class alerts {
           alertTitle.text = currentBG;
         }
       }
-      sgv.style.fill = "#de4430";
-      alertTitle.style.fill = "#de4430";
-      errorLine.style.fill = "#de4430";
+      sgvColor = "#de4430";
+      sgvColor = "#de4430";
+      errorLineColor = "#de4430";
       bgAlertColor.gradient.colors.c1 = "#cc5050";
       alertTitle.style.fontSize = 60;
       alertTitle.x = document.getElementById("glance").width - 38;
-    } else if (
-      !self.DISABLE_HIGH_ALERTS &&
-      bg.sgv >= parseInt(settings.highThreshold) &&
-      !staleData
-    ) {
+    } else if (bg.sgv >= parseInt(settings.highThreshold) && !staleData) {
       /**
        * Checks if the users BG is greater then their high threshold
        */
-      if (!settings.disableAlert) {
+      if (!self.DISABLE_HIGH_ALERTS && !settings.disableAlert) {
         if (settings.highAlerts) {
           console.log("high BG" + currentBG + alertContainer.style.display);
           vibration.start("ring");
@@ -107,32 +110,28 @@ export default class alerts {
         }
       }
       sgv.style.fill = "orange";
-      alertTitle.style.fill = "orange";
-      errorLine.style.fill = "orange";
+      sgvColor = "orange";
+      errorLineColor = "orange";
       bgAlertColor.gradient.colors.c1 = "#cc9450";
 
       if (bg.sgv >= parseInt(settings.highThreshold) + 35) {
         sgv.style.fill = "#de4430";
-        alertTitle.style.fill = "#de4430";
-        errorLine.style.fill = "#de4430";
+        sgvColor = "#de4430";
+        errorLineColor = "#de4430";
         bgAlertColor.gradient.colors.c1 = "#cc5050";
       }
       alertTitle.style.fontSize = 60;
       alertTitle.x = document.getElementById("glance").width - 38;
-    } else if (
-      !self.DISABLE_LOOPSTATUS_WARNING_ALERTS &&
-      loopstatus === "Warning" &&
-      !staleData
-    ) {
+    } else if (loopstatus === "Warning" && !staleData) {
       /**
        * check if the loopstatus is in warrning state
        */
-      if (!settings.disableAlert) {
+      if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && !settings.disableAlert) {
         if (settings.loopstatus) {
           console.log("loopstatus");
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
-          alertTitle.style.fill = "#de4430";
+          sgvColor = "#de4430";
           vibration.start("ring");
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -142,20 +141,16 @@ export default class alerts {
           alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
-    } else if (
-      !self.DISABLE_DOUBLEDOWN_ALERTS &&
-      bg.direction === "DoubleDown" &&
-      !staleData
-    ) {
+    } else if (bg.direction === "DoubleDown" && !staleData) {
       /**
        * Check for rapid change in bg
        */
-      if (!settings.disableAlert) {
+      if (!self.DISABLE_DOUBLEDOWN_ALERTS && !settings.disableAlert) {
         if (settings.rapidFall) {
           alertArrows.style.display = "none";
           console.log("Double Down");
           setAlertDurationValues([15, 30, 60, 5]);
-          alertTitle.style.fill = "#de4430";
+          sgvColor = "#de4430";
           vibration.start("ring");
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -164,17 +159,13 @@ export default class alerts {
           alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
-    } else if (
-      !self.DISABLE_DOUBLEUP_ALERTS &&
-      bg.direction === "DoubleUp" &&
-      !staleData
-    ) {
-      if (!settings.disableAlert) {
+    } else if (bg.direction === "DoubleUp" && !staleData) {
+      if (!self.DISABLE_DOUBLEUP_ALERTS && !settings.disableAlert) {
         if (settings.rapidRise) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
           console.log("Double Up");
-          alertTitle.style.fill = "#de4430";
+          sgvColor = "#de4430";
           vibration.start("ring");
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -183,15 +174,16 @@ export default class alerts {
           alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
-    } else if (!self.DISABLE_STALEDATA_ALERTS && staleData) {
+    } else if (staleData) {
+      console.warn(staleData);
       /**
        * Check if stale data
        */
-      if (!settings.disableAlert) {
+      if (!self.DISABLE_STALEDATA_ALERTS && !settings.disableAlert) {
         if (settings.staleData) {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
-          alertTitle.style.fill = "#de4430";
+          sgvColor = "#de4430";
           vibration.start("ring");
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -201,6 +193,10 @@ export default class alerts {
         }
       }
     }
+
+    alertTitle.style.fill = sgvColor;
+    errorLine.style.fill = errorLineColor;
+    sgv.style.fill = sgvColor;
 
     dismiss.onclick = function(evt) {
       console.log("DISMISS");
@@ -214,27 +210,47 @@ export default class alerts {
       let selectedValue = selectedItem.getElementById("content").text;
       let minutes = parseInt(selectedValue, 10);
 
-      if (bg.sgv >= parseInt(settings.highThreshold)) {
+      if (
+        bg.sgv >= parseInt(settings.highThreshold) &&
+        !self.DISABLE_HIGH_ALERTS &&
+        !staleData
+      ) {
         self.DISABLE_HIGH_ALERTS = true;
         console.log("HIGH " + minutes);
         setTimeout(setHighAlertsFalse, minutes * 1000 * 60);
-      } else if (bg.sgv <= parseInt(settings.lowThreshold)) {
+      } else if (
+        bg.sgv <= parseInt(settings.lowThreshold) &&
+        !self.DISABLE_LOW_ALERTS &&
+        !staleData
+      ) {
         self.DISABLE_LOW_ALERTS = true;
         console.log("LOW " + minutes);
         setTimeout(setLowAlertsFalse, minutes * 1000 * 60);
-      } else if (loopstatus === "Warning") {
+      } else if (
+        loopstatus === "Warning" &&
+        !self.DISABLE_LOOPSTATUS_WARNING_ALERTS &&
+        !staleData
+      ) {
         self.DISABLE_LOOPSTATUS_WARNING_ALERTS = true;
         console.log("Loop Status " + minutes);
         setTimeout(setLoopStatusAlertsFalse, minutes * 1000 * 60);
-      } else if (bg.direction === "DoubleDown") {
+      } else if (
+        bg.direction === "DoubleDown" &&
+        !self.DISABLE_DOUBLEDOWN_ALERTS &&
+        !staleData
+      ) {
         self.DISABLE_DOUBLEDOWN_ALERTS = true;
         console.log("Double Down " + minutes);
         setTimeout(setDoubleDownAlertsFalse, minutes * 1000 * 60);
-      } else if (bg.direction === "DoubleUp") {
+      } else if (
+        bg.direction === "DoubleUp" &&
+        !self.DISABLE_DOUBLEUP_ALERTS &&
+        !staleData
+      ) {
         self.DISABLE_DOUBLEUP_ALERTS = true;
         console.log("Double Up " + minutes);
         setTimeout(setDoubleUpAlertsFalse, minutes * 1000 * 60);
-      } else {
+      } else if (staleData && !self.DISABLE_STALEDATA_ALERTS) {
         self.DISABLE_STALEDATA_ALERTS = true;
         console.log("Stale Data" + minutes);
         setTimeout(setStaleDataAlertsFalse, minutes * 1000 * 60);
