@@ -457,11 +457,7 @@ export default {
           title: "Tomato",
           shortDescription: "Use the Tomato app to send CGM data to Glance",
           tags: [
-            {
-              title: "Currently only working on Android",
-              color: 'primary',
-              textColor: "text-white"
-            }
+
           ],
           requirements: [
             {

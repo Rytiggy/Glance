@@ -57,9 +57,7 @@
               <div class="text-h5 text-weight-medium">Customizations</div>
               <div
                 class="text-subtitle1 text-weight-normal"
-              >
-              Customize Glance how you like it, change the background color, unit type (mgdl or mmol), various alerts you want to recieve, and so much more!
-              </div>
+              >Customize Glance how you like it, change the background color, unit type (mgdl or mmol), various alerts you want to recieve, and so much more!</div>
             </q-card-section>
           </q-card>
         </div>
@@ -70,10 +68,13 @@
                 <i class="fas fa-cloud"></i>
               </div>
               <div class="text-h5 text-weight-medium">Data Source Options</div>
-              <div
-                class="text-subtitle1 text-weight-normal"
-              >
-                Select from a variety of data sources, including <b>Dexcom</b>, <b>Nightscout</b>, <b>Spike</b>, <b>xDrip</b> and <b>Tomato</b>
+              <div class="text-subtitle1 text-weight-normal">
+                Select from a variety of data sources, including
+                <b>Dexcom</b>,
+                <b>Nightscout</b>,
+                <b>Spike</b>,
+                <b>xDrip</b> and
+                <b>Tomato</b>
               </div>
             </q-card-section>
           </q-card>
@@ -85,10 +86,12 @@
                 <i class="fas fa-puzzle-piece"></i>
               </div>
               <div class="text-h5 text-weight-medium">Compatibility</div>
-              <div
-                class="text-subtitle1 text-weight-normal"
-              >
-              Glance is compatible with Fitbit smartwatchs that includes the Fitbit <b>Versa</b>, <b>Versa lite</b>, and <b>Ionic</b>. 
+              <div class="text-subtitle1 text-weight-normal">
+                Glance is compatible with Fitbit smartwatchs that includes the Fitbit
+                <b>Versa 2</b>,
+                <b>Versa</b>,
+                <b>Versa lite</b>, and
+                <b>Ionic</b>.
               </div>
             </q-card-section>
           </q-card>
