@@ -86,6 +86,7 @@
                 <i class="fas fa-puzzle-piece"></i>
               </div>
               <div class="text-h5 text-weight-medium">Compatibility</div>
+              <span></span>
               <div class="text-subtitle1 text-weight-normal">
                 Glance is compatible with Fitbit smartwatchs that includes the Fitbit
                 <b>Versa 2</b>,
