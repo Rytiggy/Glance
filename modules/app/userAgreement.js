@@ -31,7 +31,7 @@ export default class userAgreement {
         }
       };
       transfer.send(dataToSend);
-      hasAgreed = true;
+      // hasAgreed = true;
     };
 
     return data.settings.userAgreement;
