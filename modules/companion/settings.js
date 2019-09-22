@@ -137,8 +137,9 @@ export default class settings {
         url = customEndpoint.name + queryParms;
       }
       // 47 42
-    } else if(dataSource === 'yagi') { //FAB 
-      url = 'yagi';
+    } else if (dataSource === "yagi") {
+      //FAB
+      url = "yagi";
     } else if (dataSource === "dexcom") {
       url = "dexcom";
     } else if (dataSource === "tomato") {
@@ -248,7 +249,8 @@ export default class settings {
       // 47 42
     } else if (dataSourceTwo === "dexcom") {
       urlTwo = "dexcom";
-    } else if (dataSourceTwo === "yagi") { //FAB
+    } else if (dataSourceTwo === "yagi") {
+      //FAB
       urlTwo = "yagi";
     } else if (dataSource === "tomato") {
       // tomato
@@ -694,30 +696,46 @@ export default class settings {
     } else if (!USAVSInternationalTwo) {
       USAVSInternationalTwo = false;
     }
-    
+
     //FAB
     let dropboxToken = null;
     let yagiPatientName = null;
-    if (settingsStorage.getItem('dropboxToken')) {
+    if (settingsStorage.getItem("dropboxToken")) {
       //console.log(settingsStorage.getItem('dropboxToken'))
-      dropboxToken = JSON.parse(settingsStorage.getItem('dropboxToken')).name;
-      yagiPatientName = JSON.parse(settingsStorage.getItem('yagiPatientName')).name;
+      dropboxToken = JSON.parse(settingsStorage.getItem("dropboxToken")).name;
+      yagiPatientName = JSON.parse(settingsStorage.getItem("yagiPatientName"))
+        .name;
     } else if (!dropboxToken) {
       dropboxToken = null;
       yagiPatientName = null;
-      settingsStorage.setItem("dropboxToken", JSON.stringify({"name":dropboxToken}));
-      settingsStorage.setItem("yagiPatientName", JSON.stringify({"name":yagiPatientName}));
+      settingsStorage.setItem(
+        "dropboxToken",
+        JSON.stringify({ name: dropboxToken })
+      );
+      settingsStorage.setItem(
+        "yagiPatientName",
+        JSON.stringify({ name: yagiPatientName })
+      );
     }
     let dropboxTokenTwo = null;
     let yagiPatientNameTwo = null;
-    if (settingsStorage.getItem('dropboxTokenTwo')) {
-      dropboxTokenTwo = JSON.parse(settingsStorage.getItem('dropboxTokenTwo')).name;
-      yagiPatientNameTwo = JSON.parse(settingsStorage.getItem('yagiPatientNameTwo')).name;
+    if (settingsStorage.getItem("dropboxTokenTwo")) {
+      dropboxTokenTwo = JSON.parse(settingsStorage.getItem("dropboxTokenTwo"))
+        .name;
+      yagiPatientNameTwo = JSON.parse(
+        settingsStorage.getItem("yagiPatientNameTwo")
+      ).name;
     } else if (!dropboxTokenTwo) {
       dropboxTokenTwo = null;
       yagiPatientNameTwo = null;
-      settingsStorage.setItem("dropboxTokenTwo", JSON.stringify({"name":dropboxTokenTwo}));
-      settingsStorage.setItem("yagiPatientNameTwo", JSON.stringify({"name":yagiPatientNameTwo}));
+      settingsStorage.setItem(
+        "dropboxTokenTwo",
+        JSON.stringify({ name: dropboxTokenTwo })
+      );
+      settingsStorage.setItem(
+        "yagiPatientNameTwo",
+        JSON.stringify({ name: yagiPatientNameTwo })
+      );
     }
 
     let resetAlertDismissal = null;
@@ -755,6 +773,7 @@ export default class settings {
     if (settingsStorage.getItem("dataSourceName")) {
       dataSourceName = JSON.parse(settingsStorage.getItem("dataSourceName"))
         .name;
+      console.error(dataSourceName);
     } else if (!dataSourceName) {
       dataSourceName = "user #1";
       settingsStorage.setItem(
@@ -823,9 +842,9 @@ export default class settings {
       USAVSInternationalTwo,
       //FAB
       dropboxToken,
-      yagiPatientName,      
+      yagiPatientName,
       dropboxTokenTwo,
-      yagiPatientNameTwo,      
+      yagiPatientNameTwo,
       resetAlertDismissal,
       staleData,
       staleDataAlertAfter,
