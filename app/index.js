@@ -139,7 +139,7 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
       "timeOfLastSgv"
     );
     const arrows = BloodSugarDisplayContainer[index].getElementById("arrows");
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
     let deltaText = fistBgNonPredictiveBG.bgdelta;
     // add Plus
@@ -180,7 +180,7 @@ function updateAlerts(bloodSugars, settings) {
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
       "errorLine"
     );
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
     let userName = null;
     if (index == 0) {
@@ -195,7 +195,7 @@ function updateAlerts(bloodSugars, settings) {
     }
 
     alerts[index].check(
-      bloodSugar.user.bgs,
+      bloodSugar.user,
       errorLine,
       sgv,
       fistBgNonPredictiveBG,
@@ -217,7 +217,7 @@ function updateStats(bloodSugars, settings) {
   );
   statsContainer.forEach((ele, index) => {
     const bloodSugar = bloodSugars[index];
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
     const layoutOne = statsContainer[index].getElementById("layoutOne");
     const layoutTwo = statsContainer[index].getElementById("layoutTwo");
     const layoutThree = statsContainer[index].getElementById("layoutThree");
@@ -312,7 +312,7 @@ function updateGraph(bloodSugars, settings) {
   graphContainer.forEach((ele, index) => {
     const bloodSugar = bloodSugars[index];
     graph.update(
-      bloodSugar.user.bgs,
+      bloodSugar.user,
       settings.highThreshold,
       settings.lowThreshold,
       settings,
@@ -408,7 +408,8 @@ function checkDataState(bloodSugars) {
     var errorCodes = "";
     var errorCodesDesc = "";
     const bloodSugar = bloodSugars[index];
-    const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
+
+    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
     const bloodSugarContainer = BloodSugarDisplayContainer[
       index
     ].getElementById("bloodSugarContainer");

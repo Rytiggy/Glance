@@ -77,6 +77,18 @@ export default class standardize {
 				bgs = data.bgs;
 			} else if (settings[keys.dataSource] === 'dexcom') {
 				let bgsTemplate = {
+					currentBg: {
+						sgv: '120',
+						bgdelta: 0,
+						iob: 0,
+						cob: 0,
+						datetime: null,
+						direction: 'flat',
+						currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
+						rawbg: '',
+						tempbasal: '',
+						loopstatus: '',
+					},
 					bgs: [{
 							sgv: '120',
 							bgdelta: 0,
@@ -247,7 +259,7 @@ export default class standardize {
 						bgsTemplate.bgs[index].bgdelta = delta;
 					}
 				})
-        logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
+        		logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
 				bgs = bgsTemplate.bgs;
 			} else if (settings.dataSource === 'tomato') { // tomato
 				bgs = data.bgs;
@@ -346,18 +358,28 @@ export default class standardize {
 			logs.add('Line 151:  companion - standardize cleanedBgs' + JSON.stringify(cleanedBgs))
 
 			let returnBloodsugars = {
-				bgs: cleanedBgs,
+				currentBg: getfistBgNonPredictiveBG(cleanedBgs),
+				bgs: cleanedBgs.map(bg => bg.sgv),
+				predicted: cleanedBgs.filter(bg => bg.p).map(bg => bg.sgv),
 			}
-			
 			console.warn(sizeof.size(returnBloodsugars) + ' bytes')
-
-
 			return returnBloodsugars;
-			//}
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
 		return {
+			currentBg:{
+				sgv: '120',
+				bgdelta: 0,
+				iob: 0,
+				cob: 0,
+				datetime: currentTime.getTime(),
+				direction: 'warning',
+				currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
+				rawbg: '',
+				tempbasal: '',
+				loopstatus: '',
+			},
 			bgs: [{
 					sgv: '120',
 					bgdelta: 0,
@@ -784,16 +806,17 @@ function slopeDirection(trend) {
 		default:
 			return "";
 	}
-	/**
-	 * Get Fist BG that is not a predictive BG
-	 * @param {Array} bgs
-	 * @returns {Array}
-	 */
-	function getfistBgNonPredictiveBG(bgs) {
-		return bgs.filter(bg => {
-		if (bg.bgdelta || bg.bgdelta === 0) {
-			return true;
-		}
-		})[0];
+}
+
+/**
+ * Get Fist BG that is not a predictive BG
+ * @param {Array} bgs
+ * @returns {Array}
+ */
+function getfistBgNonPredictiveBG(bgs) {
+	return bgs.filter(bg => {
+	if (bg.bgdelta || bg.bgdelta === 0) {
+		return true;
 	}
+	})[0];
 }

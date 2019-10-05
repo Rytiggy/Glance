@@ -31,7 +31,7 @@ export default class alerts {
     this.DISABLE_STALEDATA_ALERTS = DISABLE_ALERTS;
   }
 
-  check(bgs, errorLine, sgv, bg, settings, userName, alertContainer) {
+  check(user, errorLine, sgv, bg, settings, userName, alertContainer) {
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
     const alertTitle = alertContainer.getElementById("alertTitle");
@@ -46,7 +46,7 @@ export default class alerts {
       parseInt(timeSinceLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
     const self = this;
     graph.update(
-      bgs,
+      user,
       settings.highThreshold,
       settings.lowThreshold,
       settings,
