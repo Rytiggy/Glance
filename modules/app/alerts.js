@@ -31,7 +31,7 @@ export default class alerts {
     this.DISABLE_STALEDATA_ALERTS = DISABLE_ALERTS;
   }
 
-  check(data, bgs, errorLine, sgv, bg, settings, userName, alertContainer) {
+  check(bgs, errorLine, sgv, bg, settings, userName, alertContainer) {
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
     const alertTitle = alertContainer.getElementById("alertTitle");
@@ -47,9 +47,9 @@ export default class alerts {
     const self = this;
     graph.update(
       bgs,
-      data.settings.highThreshold,
-      data.settings.lowThreshold,
-      data.settings,
+      settings.highThreshold,
+      settings.lowThreshold,
+      settings,
       alertGraphContainer
     );
 

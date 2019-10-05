@@ -102,17 +102,17 @@ function updateDisplay(data) {
       time = singleOrMultipleDispaly.getElementById("time");
       time.text = dateTime.getTime(data.settings.timeFormat);
 
-      checkDataState(data);
-      updateBgColor(data); // settings only
+      updateBgColor(data.settings.bgColor, data.settings.bgColorTwo); // settings only
       setTextColor(data.settings.textColor); //settings only
-      updateHeader(data); // settings only
-      updateAlerts(data);
-      updateBloodSugarDisplay(data);
-      updateStats(data);
-      updateGraph(data);
-      largeGraphDisplay(data);
+      updateHeader(data.settings.dateFormat, data.settings.enableDOW); // settings only
+      checkDataState(data.bloodSugars);
+
+      updateAlerts(data.bloodSugars, data.settings);
+      updateBloodSugarDisplay(data.bloodSugars, data.settings);
+      updateStats(data.bloodSugars, data.settings);
+      updateGraph(data.bloodSugars, data.settings);
+      // largeGraphDisplay(data);
     } else {
-      console.warn("we here");
       // user has not agreed to user agreement
       document.getElementById("userAgreement").style.display = "inline";
     }
@@ -128,12 +128,12 @@ function updateDisplay(data) {
  * Update bloodsugar display
  * @param {Object} data recived from the companion
  */
-function updateBloodSugarDisplay(data) {
+function updateBloodSugarDisplay(bloodSugars, settings) {
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
   BloodSugarDisplayContainer.forEach((ele, index) => {
-    const bloodSugar = data.bloodSugars[index];
+    const bloodSugar = bloodSugars[index];
     const delta = BloodSugarDisplayContainer[index].getElementById("delta");
     const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
@@ -150,7 +150,7 @@ function updateBloodSugarDisplay(data) {
     if (deltaText > 0) {
       deltaText = "+" + deltaText;
     }
-    delta.text = deltaText + " " + data.settings.glucoseUnits;
+    delta.text = deltaText + " " + settings.glucoseUnits;
     sgv.text = fistBgNonPredictiveBG.currentbg;
     timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(
       fistBgNonPredictiveBG.datetime
@@ -167,9 +167,10 @@ function updateBloodSugarDisplay(data) {
 
 /**
  * Update alert display
- * @param {Object} data recived from the companion
+ * @param {Object} bloodSugars recived from the companion
+ * @param {Object} settings recived from the companion
  */
-function updateAlerts(data) {
+function updateAlerts(bloodSugars, settings) {
   const alertContainer = singleOrMultipleDispaly.getElementsByClassName(
     "alertContainer"
   );
@@ -179,7 +180,7 @@ function updateAlerts(data) {
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
     console.warn(index);
-    const bloodSugar = data.bloodSugars[index];
+    const bloodSugar = bloodSugars[index];
     const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
       "errorLine"
@@ -188,9 +189,9 @@ function updateAlerts(data) {
 
     let userName = null;
     if (index == 0) {
-      userName = data.settings.dataSourceName;
+      userName = settings.dataSourceName;
     } else {
-      userName = data.settings.dataSourceNameTwo;
+      userName = settings.dataSourceNameTwo;
     }
 
     if (typeof alerts[index] === "undefined") {
@@ -199,12 +200,11 @@ function updateAlerts(data) {
     }
 
     alerts[index].check(
-      data,
       bloodSugar.user.bgs,
       errorLine,
       sgv,
       fistBgNonPredictiveBG,
-      data.settings,
+      settings,
       userName,
       alertContainer[index]
     );
@@ -213,14 +213,15 @@ function updateAlerts(data) {
 
 /**
  * Update stats display
- * @param {Object} data recived from the companion
+ * @param {Object} bloodSugars recived from the companion
+ * @param {Object} settings recived from the companion
  */
-function updateStats(data) {
+function updateStats(bloodSugars, settings) {
   const statsContainer = singleOrMultipleDispaly.getElementsByClassName(
     "stats"
   );
   statsContainer.forEach((ele, index) => {
-    const bloodSugar = data.bloodSugars[index];
+    const bloodSugar = bloodSugars[index];
     const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
     const layoutOne = statsContainer[index].getElementById("layoutOne");
     const layoutTwo = statsContainer[index].getElementById("layoutTwo");
@@ -234,17 +235,17 @@ function updateStats(data) {
 
     let userName = null;
     if (index == 0) {
-      userName = data.settings.dataSourceName;
+      userName = settings.dataSourceName;
     } else {
-      userName = data.settings.dataSourceNameTwo;
+      userName = settings.dataSourceNameTwo;
     }
     layoutOne.text = userName;
 
     if (
-      fistBgNonPredictiveBG[data.settings.layoutOne] &&
-      data.settings.layoutOne != "iob"
+      fistBgNonPredictiveBG[settings.layoutOne] &&
+      settings.layoutOne != "iob"
     ) {
-      layoutTwo.text = fistBgNonPredictiveBG[data.settings.layoutOne];
+      layoutTwo.text = fistBgNonPredictiveBG[settings.layoutOne];
       layoutTwo.x = 8;
       syringe.style.display = "none";
     } else {
@@ -259,10 +260,10 @@ function updateStats(data) {
     }
 
     if (
-      fistBgNonPredictiveBG[data.settings.layoutTwo] &&
-      data.settings.layoutTwo != "cob"
+      fistBgNonPredictiveBG[settings.layoutTwo] &&
+      settings.layoutTwo != "cob"
     ) {
-      layoutThree.text = fistBgNonPredictiveBG[data.settings.layoutTwo];
+      layoutThree.text = fistBgNonPredictiveBG[settings.layoutTwo];
       layoutThree.x = 8;
       hamburger.style.display = "none";
     } else {
@@ -277,10 +278,10 @@ function updateStats(data) {
     }
 
     if (
-      fistBgNonPredictiveBG[data.settings.layoutThree] &&
-      data.settings.layoutThree != "steps"
+      fistBgNonPredictiveBG[settings.layoutThree] &&
+      settings.layoutThree != "steps"
     ) {
-      layoutFour.text = fistBgNonPredictiveBG[data.settings.layoutThree];
+      layoutFour.text = fistBgNonPredictiveBG[settings.layoutThree];
       layoutFour.x = 8;
       step.style.display = "none";
     } else {
@@ -290,10 +291,10 @@ function updateStats(data) {
     }
 
     if (
-      fistBgNonPredictiveBG[data.settings.layoutFour] &&
-      data.settings.layoutFour != "heart"
+      fistBgNonPredictiveBG[settings.layoutFour] &&
+      settings.layoutFour != "heart"
     ) {
-      layoutFive.text = fistBgNonPredictiveBG[data.settings.layoutFour];
+      layoutFive.text = fistBgNonPredictiveBG[settings.layoutFour];
       layoutFive.x = 8;
       heart.style.display = "none";
     } else {
@@ -306,19 +307,20 @@ function updateStats(data) {
 
 /**
  * Update graph display
- * @param {Object} data recived from the companion
+ * @param {Object} bloodSugars recived from the companion
+ * @param {Object} settings recived from the companion
  */
-function updateGraph(data) {
+function updateGraph(bloodSugars, settings) {
   const graphContainer = singleOrMultipleDispaly.getElementsByClassName(
     "graph"
   );
   graphContainer.forEach((ele, index) => {
-    const bloodSugar = data.bloodSugars[index];
+    const bloodSugar = bloodSugars[index];
     graph.update(
       bloodSugar.user.bgs,
-      data.settings.highThreshold,
-      data.settings.lowThreshold,
-      data.settings,
+      settings.highThreshold,
+      settings.lowThreshold,
+      settings,
       graphContainer[index]
     );
   });
@@ -326,53 +328,37 @@ function updateGraph(data) {
 
 /**
  * Update bg color
- * @param {Object} data recived from the companion
+ * @param {string} bgColorOne hex color recived from the companion
+ * @param {string} bgColorTwo hex color two recived from the companion
  */
-function updateBgColor(data) {
+function updateBgColor(bgColorOne, bgColorTwo) {
   const bgColor = singleOrMultipleDispaly.getElementsByClassName("bgColor");
   bgColor.forEach((ele, index) => {
     if (isOdd(index)) {
-      bgColor[index].gradient.colors.c1 = data.settings.bgColorTwo;
-      bgColor[index].gradient.colors.c2 = data.settings.bgColor;
+      bgColor[index].gradient.colors.c1 = bgColorTwo;
+      bgColor[index].gradient.colors.c2 = bgColorOne;
     } else {
-      bgColor[index].gradient.colors.c1 = data.settings.bgColor;
-      bgColor[index].gradient.colors.c2 = data.settings.bgColorTwo;
+      bgColor[index].gradient.colors.c1 = bgColorOne;
+      bgColor[index].gradient.colors.c2 = bgColorTwo;
     }
   });
 }
 
 /**
  * Update header display
- * @param {Object} data recived from the companion
+ * @param {string} dateFormat recived from the companion
+ * @param {string} enableDOW recived from the companion
  */
-function updateHeader(data) {
+function updateHeader(dateFormat, enableDOW) {
   const date = document.getElementById("date");
   const weatherText = document.getElementById("weather");
   const weatherIcon = document.getElementById("weatherIcon");
   const degreeIcon = document.getElementById("degreeIcon");
   degreeIcon.style.display = "none";
-  degreeIcon.style.display = "none";
-  // weather.fetch(30 * 60 * 1000) // return the cached value if it is less than 30 minutes old
-  //   .then(weather => {
-  //     console.log(JSON.stringify(weather))
-  //     weatherIcon.style.display = "inline";
-  //     degreeIcon.style.display = "inline";
-  //     if(data.settings.tempType == "f") {
-  //       weatherText.text =  Math.round( parseFloat(weather.temperatureF) );
-  //     } else {
-  //       weatherText.text =  Math.round( parseFloat(weather.temperatureC) );
-  //     }
-  //     weatherIcon.href = '../resources/img/weather/'+weather.conditionCode+'.png';
-  //   })
-  //   .catch(error => console.log(JSON.stringify(error)))
-
   batteryLevel.width = batteryLevels.get().level;
   batteryLevel.style.fill = batteryLevels.get().color;
   batteryPercent.text = batteryLevels.get().percent + "%";
-  date.text = dateTime.getDate(
-    data.settings.dateFormat,
-    data.settings.enableDOW
-  );
+  date.text = dateTime.getDate(dateFormat, enableDOW);
 }
 
 /**
@@ -418,9 +404,9 @@ function loadingScreen() {
 
 /**
  *  Validate data is not in error state
- * @param {Object} data recived from the companion
+ * @param {Object} bloodSugars recived from the companion
  */
-function checkDataState(data) {
+function checkDataState(bloodSugars) {
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
@@ -428,7 +414,7 @@ function checkDataState(data) {
   BloodSugarDisplayContainer.forEach((ele, index) => {
     var errorCodes = "";
     var errorCodesDesc = "";
-    const bloodSugar = data.bloodSugars[index];
+    const bloodSugar = bloodSugars[index];
     const fistBgNonPredictiveBG = getfistBgNonPredictiveBG(bloodSugar.user.bgs);
     const bloodSugarContainer = BloodSugarDisplayContainer[
       index

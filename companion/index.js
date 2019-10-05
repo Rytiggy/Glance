@@ -74,17 +74,20 @@ async function sendData() {
       subDomain
     );
     bloodsugars = await dexcom.getData(sessionId, subDomain);
-  } else if (store.url === 'yagi') { //FAB 
-    if(store.dropboxToken) {
-       bloodsugars = await dropbox.getData(store.dropboxToken, store.yagiPatientName); 
+  } else if (store.url === "yagi") {
+    //FAB
+    if (store.dropboxToken) {
+      bloodsugars = await dropbox.getData(
+        store.dropboxToken,
+        store.yagiPatientName
+      );
     } else {
       bloodsugars = {
-        error : {
-          status : "500"
+        error: {
+          status: "500"
         }
-      }
+      };
     }
-    
   } else {
     bloodsugars = await fetch.get(store.url);
     if (store.extraDataUrl) {
@@ -108,17 +111,21 @@ async function sendData() {
         subDomainTwo
       );
       bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo);
-    } else if (store.urlTwo === 'yagi') { //FAB 
-    if(store.dropboxTokenTwo) {
-       bloodsugarsTwo = await dropbox.getData(store.dropboxTokenTwo, store.yagiPatientNameTwo); 
-    } else {
-      bloodsugarsTwo = {
-        error : {
-          status : "500"
-        }
+    } else if (store.urlTwo === "yagi") {
+      //FAB
+      if (store.dropboxTokenTwo) {
+        bloodsugarsTwo = await dropbox.getData(
+          store.dropboxTokenTwo,
+          store.yagiPatientNameTwo
+        );
+      } else {
+        bloodsugarsTwo = {
+          error: {
+            status: "500"
+          }
+        };
       }
-    }    
-  } else {
+    } else {
       bloodsugarsTwo = await fetch.get(store.urlTwo);
       if (store.extraDataUrlTwo) {
         extraDataTwo = await fetch.get(store.extraDataUrlTwo);
@@ -141,16 +148,16 @@ async function sendData() {
         dexcomPassword: "dexcomPassword",
         dataSource: "dataSource",
         //FAB
-        dropboxToken : "dropboxToken",
-        yagiPatientName : "yagiPatientName"
+        dropboxToken: "dropboxToken",
+        yagiPatientName: "yagiPatientName"
       };
       let keysTwo = {
         dexcomUsername: "dexcomUsernameTwo",
         dexcomPassword: "dexcomPasswordTwo",
         dataSource: "dataSourceTwo",
         //FAB
-        dropboxToken : "dropboxTokenTwo",
-        yagiPatientName : "yagiPatientNameTwo"
+        dropboxToken: "dropboxTokenTwo",
+        yagiPatientName: "yagiPatientNameTwo"
       };
       let dataToSend = {
         bloodSugars: [
@@ -168,6 +175,7 @@ async function sendData() {
       };
       logs.add("DataToSend size: " + sizeof.size(dataToSend) + " bytes");
       logs.add("DataToSend: " + JSON.stringify(dataToSend));
+      console.log(JSON.stringify(dataToSend));
       transfer.send(dataToSend);
     }
   );
