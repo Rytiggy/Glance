@@ -14,7 +14,6 @@
 export default class errors {
   check(timeSenseLastSGV, sgv, errorLine) {
     // if the bloodsugar is stale
-    // console.log(parseInt(timeSenseLastSGV, 10))
     if (parseInt(timeSenseLastSGV, 10) >= 15) {
       errorLine.style.display = "inline";
       // largeGraphErrorLine.style.display = "inline";

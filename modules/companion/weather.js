@@ -11,23 +11,19 @@
  * ------------------------------------------------
  */
 
-
-
 import { geolocation } from "geolocation";
 
 export default class weather {
   async get(tempType) {
-    console.log('companion - weather - get()')
     const position = await getCurrentPosition();
     const { latitude, longitude } = position.coords;
     return `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${latitude}&lon=${longitude}&appid=070d27a069823ebe69e5246f91d6f301`;
-    // return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=070d27a069823ebe69e5246f91d6f301`;  
-  };
-};
-
+    // return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=070d27a069823ebe69e5246f91d6f301`;
+  }
+}
 
 function getCurrentPosition(options = {}) {
   return new Promise((resolve, reject) => {
     geolocation.getCurrentPosition(resolve, reject, options);
   });
-};
+}

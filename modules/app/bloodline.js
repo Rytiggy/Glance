@@ -163,9 +163,7 @@ export default class bloodline {
             graphPoints[index].style.fill = "#75bd78"; // green
           }
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     });
 
     // // 47 loops

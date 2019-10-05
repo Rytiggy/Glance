@@ -18,11 +18,9 @@ let transfer = new Transfer();
 export default class userAgreement {
   // Send data
   check(data) {
-    console.warn(data.settings.userAgreement);
     const agreeToPrompt = document.getElementById("agreeToUserAgreement");
 
     agreeToPrompt.onclick = function(evt) {
-      console.log("User agrees to agreement");
       document.getElementById("userAgreement").style.display = "none";
       let dataToSend = {
         command: "agreedToUserAgreement",

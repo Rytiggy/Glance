@@ -175,7 +175,6 @@ async function sendData() {
       };
       logs.add("DataToSend size: " + sizeof.size(dataToSend) + " bytes");
       logs.add("DataToSend: " + JSON.stringify(dataToSend));
-      console.log(JSON.stringify(dataToSend));
       transfer.send(dataToSend);
     }
   );
@@ -189,7 +188,6 @@ messaging.peerSocket.onmessage = function(evt) {
     dataReceivedFromWatch = evt.data.data;
     sendData();
   } else if (evt.data.command === "agreedToUserAgreement") {
-    console.warn(evt.data);
     settings.setToggle("userAgreement", true);
     sendData();
   }
@@ -215,7 +213,6 @@ me.wakeInterval = 5 * MINUTE;
 
 if (me.launchReasons.wokenUp) {
   // The companion started due to a periodic timer
-  console.error("Started due to wake interval!");
   sendData();
 } else {
   // Close the companion and wait to be awoken

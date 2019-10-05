@@ -262,16 +262,11 @@ export default class standardize {
 				if (Array.isArray(bgs)) {
 					//bgs[0].datetime = bgs[0].date;
 					//bgs[0].bgdelta = bgs[0].sgv - bgs[1].sgv; //element.delta;
-          console.log(bgs[0].datetime );
-          console.log(bgs[0].bgdelta);
 				} else {
-          console.err("NULL ARRAY!!!");
 					bgs = null;
 				}
 			}
 
-			console.log(settings.dataSource);
-      console.log(bgs);
 			// Look for current non Predictive bg and not the last 5 predictions
 			// this works because only the current bg has a delta so we can filter for it
 			let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];
@@ -353,11 +348,8 @@ export default class standardize {
 			let returnBloodsugars = {
 				bgs: cleanedBgs,
 			}
-
-			// console.warn(sizeof.size(returnBloodsugars) + ' bytes')
-			// logs.add(JSON.stringify(cleanedBgs))
-			// console.warn(sizeof.size(cleanedBgs) + ' bytes')
-			// console.warn(sizeof.size(JSON.stringify(cleanedBgs)) + ' bytes')
+			
+			console.warn(sizeof.size(returnBloodsugars) + ' bytes')
 
 
 			return returnBloodsugars;
@@ -579,7 +571,6 @@ function countInArray(array, what) {
 			count++;
 		}
 	}
-	console.error(count, what)
 	return count;
 }
 
@@ -657,7 +648,6 @@ function standardizeExtraData(bgs, extraData, settings) {
 			}
 		}
 		// check for basal if there add to data
-		// console.log(extraData.basal)
 		if (extraData.basal && extraData.basal.display) {
 			tempBasal = '' + extraData.basal.display;
 		} else {
@@ -688,7 +678,7 @@ function standardizeExtraData(bgs, extraData, settings) {
 		predictedBg,
 		loopStatus,
 		upbat,
-    sage,
+    	sage,
 	};
 }
 
@@ -793,5 +783,17 @@ function slopeDirection(trend) {
 			return "DoubleDown";
 		default:
 			return "";
+	}
+	/**
+	 * Get Fist BG that is not a predictive BG
+	 * @param {Array} bgs
+	 * @returns {Array}
+	 */
+	function getfistBgNonPredictiveBG(bgs) {
+		return bgs.filter(bg => {
+		if (bg.bgdelta || bg.bgdelta === 0) {
+			return true;
+		}
+		})[0];
 	}
 }

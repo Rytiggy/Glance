@@ -35,7 +35,6 @@ export default {
     return {};
   },
   mounted: function () {
-    console.log(window.location.hash.replace('#',''))
     if(window.location.hash) {
       let el = document.getElementById(window.location.hash.replace('#',''));
       const target = getScrollTarget(el);

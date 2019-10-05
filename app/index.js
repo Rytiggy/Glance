@@ -49,10 +49,9 @@ var time = singleOrMultipleDispaly.getElementById("time");
 var batteryLevel = document.getElementById("batteryLevel");
 var batteryPercent = document.getElementById("batteryPercent");
 
-console.log(JSON.stringify(data));
 loadingScreen();
 setInterval(function() {
-  console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+  console.warn("Interval JS memory: " + memory.js.used + "/" + memory.js.total);
   updateDisplay(data);
 }, 10000);
 
@@ -71,7 +70,6 @@ inbox.onnewfile = () => {
 // // Listen for messages from the companion
 // messaging.peerSocket.onmessage = function(evt) {
 //   if (evt.data) {
-//     console.log("The temperature is: " + JSON.stringify(evt));
 //   }
 // };
 
@@ -80,7 +78,6 @@ inbox.onnewfile = () => {
  * @param {Object} data recived from the companion
  */
 function updateDisplay(data) {
-  console.log("Update Display called");
   if (data) {
     // Check if user has agreed to user agreement
 
@@ -117,7 +114,6 @@ function updateDisplay(data) {
       document.getElementById("userAgreement").style.display = "inline";
     }
   } else {
-    console.warn("NO DATA");
     batteryLevel.width = batteryLevels.get().level;
     batteryPercent.text = "" + batteryLevels.get().percent + "%";
     updateTimeDisplay();
@@ -179,7 +175,6 @@ function updateAlerts(bloodSugars, settings) {
   );
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
-    console.warn(index);
     const bloodSugar = bloodSugars[index];
     const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
@@ -380,7 +375,6 @@ function loadingScreen() {
       clearInterval(checkConnectionInterval);
       statusLead.text = "Loading Data from phone";
       setTimeout(function() {
-        console.log(!data);
         if (!data) {
           statusLead.text =
             "Problem receiving data, try restarting watchface and double check settings.";
@@ -397,7 +391,6 @@ function loadingScreen() {
   var checkConnectionInterval = setInterval(checkConnection, 5000);
 
   messaging.peerSocket.onerror = function(err) {
-    console.log("Connection error: " + err.code + " - " + err.message);
     status.text = "Connection error: " + err.code + " - " + err.message;
   };
 }
@@ -462,11 +455,9 @@ function largeGraphDisplay(data) {
   // const largeGraphDisplay = document.getElementById('largeGraphDisplay');
   // const largeGraph = document.getElementById('largeGraph');
   // graphContainer.forEach((ele, index) => {
-  //   console.log(index)
   //   graphContainer[index].onclick = function(evt) {
   //     largeGraphDisplay.style.display = 'inline';
   //     const bloodSugar = data.bloodSugars[index];
-  //     console.log(JSON.stringify(bloodSugar.user.bgs.length))
   //     graph.update(bloodSugar.user.bgs,
   //       data.settings.highThreshold,
   //       data.settings.lowThreshold,
@@ -529,7 +520,6 @@ setInterval(function() {
 }, 180000);
 
 time.onclick = evt => {
-  console.log("FORCE Activated!");
   // transfer.send(dataToSend);
   vibration.start("bump");
   // arrows.href = "../resources/img/arrows/loading.png";
