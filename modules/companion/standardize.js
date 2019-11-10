@@ -42,6 +42,8 @@ export default class standardize {
 		let upbat = '';
 		let sage = ''
 		logs.add(`BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
+		// console.log(`BGS: ${JSON.stringify(bgs)}`);
+
 		if (bgs && !data.error && data && bgs !== 'undefined') {
 			if (settings[keys.dataSource] === 'nightscout') {
 				bgs = data.bgs;
@@ -61,7 +63,7 @@ export default class standardize {
 				predictedBg = standardizedExtraData.predictedBg;
 				loopStatus = standardizedExtraData.loopStatus;
 				upbat = standardizedExtraData.upbat;
-        sage = standardizedExtraData.sage;
+				sage = standardizedExtraData.sage;
 				// add any extra data
 			} else if (settings[keys.dataSource] === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
@@ -77,157 +79,20 @@ export default class standardize {
 				bgs = data.bgs;
 			} else if (settings[keys.dataSource] === 'dexcom') {
 				let bgsTemplate = {
-					bgs: [{
-							sgv: '120',
-							bgdelta: 0,
-							iob: 0,
-							cob: 0,
-							datetime: null,
-							direction: 'flat',
-							currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-							rawbg: '',
-							tempbasal: '',
-							loopstatus: '',
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						}
-					]
+					currentBg: {
+						sgv: '120',
+						bgdelta: 0,
+						iob: 0,
+						cob: 0,
+						datetime: null,
+						direction: 'flat',
+						currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
+						rawbg: '',
+						tempbasal: '',
+						loopstatus: '',
+					},
+					bgs: ["120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120"],
+					predicted: []
 				}
 				// bgs.length = 47;
 				// bgsTemplate
@@ -247,7 +112,7 @@ export default class standardize {
 						bgsTemplate.bgs[index].bgdelta = delta;
 					}
 				})
-        logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
+        		logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
 				bgs = bgsTemplate.bgs;
 			} else if (settings.dataSource === 'tomato') { // tomato
 				bgs = data.bgs;
@@ -262,16 +127,11 @@ export default class standardize {
 				if (Array.isArray(bgs)) {
 					//bgs[0].datetime = bgs[0].date;
 					//bgs[0].bgdelta = bgs[0].sgv - bgs[1].sgv; //element.delta;
-          console.log(bgs[0].datetime );
-          console.log(bgs[0].bgdelta);
 				} else {
-          console.err("NULL ARRAY!!!");
 					bgs = null;
 				}
 			}
 
-			console.log(settings.dataSource);
-      console.log(bgs);
 			// Look for current non Predictive bg and not the last 5 predictions
 			// this works because only the current bg has a delta so we can filter for it
 			let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];
@@ -351,172 +211,30 @@ export default class standardize {
 			logs.add('Line 151:  companion - standardize cleanedBgs' + JSON.stringify(cleanedBgs))
 
 			let returnBloodsugars = {
-				bgs: cleanedBgs,
+				currentBg: getfistBgNonPredictiveBG(cleanedBgs),
+				bgs: cleanedBgs.map(bg => bg.sgv),
+				predicted: cleanedBgs.filter(bg => bg.p).map(bg => bg.sgv),
 			}
-
-			// console.warn(sizeof.size(returnBloodsugars) + ' bytes')
-			// logs.add(JSON.stringify(cleanedBgs))
-			// console.warn(sizeof.size(cleanedBgs) + ' bytes')
-			// console.warn(sizeof.size(JSON.stringify(cleanedBgs)) + ' bytes')
-
-
+			console.warn(sizeof.size(returnBloodsugars) + ' bytes')
 			return returnBloodsugars;
-			//}
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
 		return {
-			bgs: [{
-					sgv: '120',
-					bgdelta: 0,
-					iob: 0,
-					cob: 0,
-					datetime: currentTime.getTime(),
-					direction: 'warning',
-					currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-					rawbg: '',
-					tempbasal: '',
-					loopstatus: '',
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				}
-			]
+			currentBg:{
+				sgv: '120',
+				bgdelta: 0,
+				iob: 0,
+				cob: 0,
+				datetime: currentTime.getTime(),
+				direction: 'warning',
+				currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
+				rawbg: '',
+				tempbasal: '',
+				loopstatus: '',
+			},
+			bgs: ["120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120"],
+			predicted: []
 		}
 	}
 	settings(settings) {
@@ -579,7 +297,6 @@ function countInArray(array, what) {
 			count++;
 		}
 	}
-	console.error(count, what)
 	return count;
 }
 
@@ -657,7 +374,6 @@ function standardizeExtraData(bgs, extraData, settings) {
 			}
 		}
 		// check for basal if there add to data
-		// console.log(extraData.basal)
 		if (extraData.basal && extraData.basal.display) {
 			tempBasal = '' + extraData.basal.display;
 		} else {
@@ -688,7 +404,7 @@ function standardizeExtraData(bgs, extraData, settings) {
 		predictedBg,
 		loopStatus,
 		upbat,
-    sage,
+    	sage,
 	};
 }
 
@@ -794,4 +510,17 @@ function slopeDirection(trend) {
 		default:
 			return "";
 	}
+}
+
+/**
+ * Get Fist BG that is not a predictive BG
+ * @param {Array} bgs
+ * @returns {Array}
+ */
+function getfistBgNonPredictiveBG(bgs) {
+	return bgs.filter(bg => {
+	if (bg.bgdelta || bg.bgdelta === 0) {
+		return true;
+	}
+	})[0];
 }

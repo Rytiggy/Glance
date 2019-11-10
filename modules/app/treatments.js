@@ -11,19 +11,129 @@
  * ------------------------------------------------
  */
 
-
-
 import document from "document";
-let enterTreatment = document.getElementById("enterTreatment");
+import { vibration } from "haptics";
 
-export default class treatments { 
-  check() {
-    console.log('app - treatments - check()')   
-  
+let treatmentsScreen = document.getElementById("treatmentsScreen");
+let reviewTreatment = document.getElementById("reviewTreatment");
+let cancelReviewTreatment = document.getElementById("cancelReviewTreatment");
+
+let submitTreatment = document.getElementById("submitTreatment");
+let cancelSubmitTreatment = document.getElementById("cancelSubmitTreatment");
+
+let treatmentIobBtnSubtract = document.getElementById(
+  "treatmentIobBtnSubtract"
+);
+let treatmentIobBtnPlus = document.getElementById("treatmentIobBtnPlus");
+let treatmentIob = document.getElementById("treatmentIob");
+
+let treatmentCobBtnSubtract = document.getElementById(
+  "treatmentCobBtnSubtract"
+);
+let treatmentCobBtnPlus = document.getElementById("treatmentCobBtnPlus");
+let treatmentCob = document.getElementById("treatmentCob");
+let treatmentReview = document.getElementById("treatmentReview");
+let treatmentReviewText = document.getElementById("treatmentReviewText");
+let btnUser1 = document.getElementById("btn-user1");
+let btnUser2 = document.getElementById("btn-user2");
+
+let container = document.getElementById("container");
+export default class treatments {
+  constructor(transfer, settings) {
+    if (settings.numOfDataSources == 2) {
+      if (settings.dataSource == "nightscout") {
+        btnUser1.value = 1;
+        btnUser1.style.display = "inline";
+      } else {
+        btnUser1.style.display = "none";
+      }
+      if (settings.dataSourceTwo == "nightscout") {
+        btnUser2.value = 1;
+        btnUser2.style.display = "inline";
+      } else {
+        btnUser2.style.display = "none";
+      }
+    } else {
+      btnUser1.style.display = "none";
+      btnUser2.style.display = "none";
+    }
+
+    reviewTreatment.onclick = evt => {
+      console.log("review Treatment");
+      vibration.start("bump");
+
+      treatmentReviewText.text = `Log ${treatmentIob.text} IOB and ${treatmentCob.text} COB.`;
+      treatmentReview.style.display = "inline";
+    };
+
+    submitTreatment.onclick = evt => {
+      console.log("submit Treatment");
+      vibration.start("bump");
+      let user = 1;
+      if (btnUser1.value == 1) {
+        user = 1;
+      } else {
+        user = 2;
+      }
+      transfer.send({
+        command: "postTreatment",
+        data: {
+          carbs: parseFloat(treatmentCob.text),
+          insulin: parseFloat(treatmentIob.text),
+          user: user
+        }
+      });
+      container.value = 1;
+      treatmentReview.style.display = "none";
+      treatmentsScreen.style.display = "none";
+      treatmentIob.text = 0;
+      treatmentCob.text = 0;
+    };
+
+    cancelReviewTreatment.onclick = evt => {
+      console.log("cancel review Treatment");
+      vibration.start("bump");
+      container.value = 1;
+      treatmentReview.style.display = "none";
+      treatmentsScreen.style.display = "none";
+      treatmentIob.text = 0;
+      treatmentCob.text = 0;
+    };
+
+    cancelSubmitTreatment.onclick = evt => {
+      console.log("cancel submit Treatment");
+      vibration.start("bump");
+      container.value = 1;
+      treatmentReview.style.display = "none";
+      treatmentsScreen.style.display = "none";
+      treatmentIob.text = 0;
+      treatmentCob.text = 0;
+    };
+
+    treatmentIobBtnSubtract.onclick = evt => {
+      vibration.start("bump");
+      let value = parseFloat(treatmentIob.text) - 0.25;
+      if (value < 0) {
+        value = 0;
+      }
+      treatmentIob.text = value;
+    };
+    treatmentIobBtnPlus.onclick = evt => {
+      vibration.start("bump");
+      treatmentIob.text = parseFloat(treatmentIob.text) + 1;
+    };
+
+    treatmentCobBtnSubtract.onclick = evt => {
+      vibration.start("bump");
+      let value = parseInt(treatmentCob.text) - 1;
+      if (value < 0) {
+        value = 0;
+      }
+      treatmentCob.text = value;
+    };
+    treatmentCobBtnPlus.onclick = evt => {
+      vibration.start("bump");
+      treatmentCob.text = parseInt(treatmentCob.text) + 5;
+    };
   }
-  
-};
-
-
-
-
+}

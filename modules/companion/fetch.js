@@ -11,77 +11,93 @@
  * ------------------------------------------------
  */
 
-
-
 import Logs from "./logs.js";
 const logs = new Logs();
-
 
 export default class messaging {
   //Fetch data from an API endpoint and return a promise
   async get(url) {
-    const trimmedURL = url.replace(/ /g,"");
-    logs.add('Line 16: companion - fetch - get() ' + trimmedURL)
+    const trimmedURL = url.replace(/ /g, "");
+    logs.add("Line 16: companion - fetch - get() " + trimmedURL);
     return await fetch(trimmedURL)
       .then(handleResponse)
-      .then((data) => {
-        logs.add(`Line 28: companion - fetch - get() Data Okay return`)
+      .then(data => {
+        logs.add(`Line 28: companion - fetch - get() Data Okay return`);
         return data;
-      }).catch((error) => {
+      })
+      .catch(error => {
         // not found
-        if(!error.status) {
-          error.status = '404'
+        if (!error.status) {
+          error.status = "404";
         }
-        logs.add(` ERROR companion - fetch - get() ${JSON.stringify(error)}`)
+        logs.add(` ERROR companion - fetch - get() ${JSON.stringify(error)}`);
         let errorMsg = {
-          text: 'Error with companion - fetch - get()',
+          text: "Error with companion - fetch - get()",
           error: error,
-          url: trimmedURL,
-        }
+          url: trimmedURL
+        };
         return errorMsg;
       });
-  };
-};
+  }
 
-function handleResponse (response) {
-  let contentType = response.headers.get('content-type')
-  if (contentType.includes('application/json')) {
-    return handleJSONResponse(response)
-  } else if (contentType.includes('text/html')) {
-    return handleTextResponse(response)
+  async post(url = "", data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      // referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+  }
+}
+
+function handleResponse(response) {
+  let contentType = response.headers.get("content-type");
+  if (contentType.includes("application/json")) {
+    return handleJSONResponse(response);
+  } else if (contentType.includes("text/html")) {
+    return handleTextResponse(response);
   } else {
     // Other response types as necessary. I haven't found a need for them yet though.
-    throw new Error(`Sorry, content-type ${contentType} not supported`)
+    throw new Error(`Sorry, content-type ${contentType} not supported`);
   }
 }
 
-function handleJSONResponse (response) {
-  return response.json()
-    .then(json => {
-      if (response.ok) {
-         logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`)
-        return json
-      } else {
-        return Promise.reject(Object.assign({}, json, {
+function handleJSONResponse(response) {
+  return response.json().then(json => {
+    if (response.ok) {
+      logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`);
+      return json;
+    } else {
+      return Promise.reject(
+        Object.assign({}, json, {
           status: response.status,
           statusText: response.statusText
-        }))
-      }
-    })
+        })
+      );
+    }
+  });
 }
 // This doesnt work
-function handleTextResponse (response) {
-  return response.text()
-    .then(text => {
-      if (response.ok) {
-        logs.add(`Line 98 companion - fetch - handleTextResponse() response.ok`)
-        return JSON.parse(text)
-      } else {
-        return Promise.reject({
-          status: response.status,
-          statusText: response.statusText,
-          err: text
-        })
-      }
-    })
-  }
+function handleTextResponse(response) {
+  return response.text().then(text => {
+    if (response.ok) {
+      logs.add(`Line 98 companion - fetch - handleTextResponse() response.ok`);
+      return JSON.parse(text);
+    } else {
+      return Promise.reject({
+        status: response.status,
+        statusText: response.statusText,
+        err: text
+      });
+    }
+  });
+}

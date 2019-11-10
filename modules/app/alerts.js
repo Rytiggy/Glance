@@ -31,7 +31,7 @@ export default class alerts {
     this.DISABLE_STALEDATA_ALERTS = DISABLE_ALERTS;
   }
 
-  check(data, bgs, errorLine, sgv, bg, settings, userName, alertContainer) {
+  check(user, errorLine, sgv, bg, settings, userName, alertContainer) {
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
     const alertTitle = alertContainer.getElementById("alertTitle");
@@ -46,24 +46,13 @@ export default class alerts {
       parseInt(timeSinceLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
     const self = this;
     graph.update(
-      bgs,
-      data.settings.highThreshold,
-      data.settings.lowThreshold,
-      data.settings,
+      user,
+      settings.highThreshold,
+      settings.lowThreshold,
+      settings,
       alertGraphContainer
     );
 
-    console.log(
-      this.DISABLE_HIGH_ALERTS +
-        " " +
-        this.DISABLE_LOW_ALERTS +
-        " " +
-        this.DISABLE_LOOPSTATUS_WARNING_ALERTS +
-        " " +
-        this.DISABLE_DOUBLEDOWN_ALERTS +
-        " " +
-        this.DISABLE_STALEDATA_ALERTS
-    );
     alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
 
@@ -82,7 +71,6 @@ export default class alerts {
       if (!self.DISABLE_LOW_ALERTS && !settings.disableAlert) {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
-          console.log("low BG");
           vibration.start("ring");
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -101,7 +89,6 @@ export default class alerts {
        */
       if (!self.DISABLE_HIGH_ALERTS && !settings.disableAlert) {
         if (settings.highAlerts) {
-          console.log("high BG" + currentBG + alertContainer.style.display);
           vibration.start("ring");
           setAlertDurationValues([60, 120, 240, 30]);
           alertContainer.style.display = "inline";
@@ -128,7 +115,6 @@ export default class alerts {
        */
       if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && !settings.disableAlert) {
         if (settings.loopstatus) {
-          console.log("loopstatus");
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
@@ -148,7 +134,6 @@ export default class alerts {
       if (!self.DISABLE_DOUBLEDOWN_ALERTS && !settings.disableAlert) {
         if (settings.rapidFall) {
           alertArrows.style.display = "none";
-          console.log("Double Down");
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
           vibration.start("ring");
@@ -164,7 +149,6 @@ export default class alerts {
         if (settings.rapidRise) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
-          console.log("Double Up");
           sgvColor = "#de4430";
           vibration.start("ring");
           alertContainer.style.display = "inline";
@@ -175,7 +159,6 @@ export default class alerts {
         }
       }
     } else if (staleData) {
-      console.warn(staleData);
       /**
        * Check if stale data
        */
@@ -199,7 +182,6 @@ export default class alerts {
     sgv.style.fill = sgvColor;
 
     dismiss.onclick = function(evt) {
-      console.log("DISMISS");
       alertContainer.style.display = "none";
       alertTitle.style.display = "none";
       vibration.stop();
@@ -216,7 +198,6 @@ export default class alerts {
         !staleData
       ) {
         self.DISABLE_HIGH_ALERTS = true;
-        console.log("HIGH " + minutes);
         setTimeout(setHighAlertsFalse, minutes * 1000 * 60);
       } else if (
         bg.sgv <= parseInt(settings.lowThreshold) &&
@@ -224,7 +205,6 @@ export default class alerts {
         !staleData
       ) {
         self.DISABLE_LOW_ALERTS = true;
-        console.log("LOW " + minutes);
         setTimeout(setLowAlertsFalse, minutes * 1000 * 60);
       } else if (
         loopstatus === "Warning" &&
@@ -232,7 +212,6 @@ export default class alerts {
         !staleData
       ) {
         self.DISABLE_LOOPSTATUS_WARNING_ALERTS = true;
-        console.log("Loop Status " + minutes);
         setTimeout(setLoopStatusAlertsFalse, minutes * 1000 * 60);
       } else if (
         bg.direction === "DoubleDown" &&
@@ -240,7 +219,6 @@ export default class alerts {
         !staleData
       ) {
         self.DISABLE_DOUBLEDOWN_ALERTS = true;
-        console.log("Double Down " + minutes);
         setTimeout(setDoubleDownAlertsFalse, minutes * 1000 * 60);
       } else if (
         bg.direction === "DoubleUp" &&
@@ -248,11 +226,9 @@ export default class alerts {
         !staleData
       ) {
         self.DISABLE_DOUBLEUP_ALERTS = true;
-        console.log("Double Up " + minutes);
         setTimeout(setDoubleUpAlertsFalse, minutes * 1000 * 60);
       } else if (staleData && !self.DISABLE_STALEDATA_ALERTS) {
         self.DISABLE_STALEDATA_ALERTS = true;
-        console.log("Stale Data" + minutes);
         setTimeout(setStaleDataAlertsFalse, minutes * 1000 * 60);
       }
     };
@@ -286,7 +262,6 @@ export default class alerts {
   }
 
   stop() {
-    console.log("app - Alerts - stop()");
     vibration.stop();
   }
 }

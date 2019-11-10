@@ -22,7 +22,6 @@ export default class settings {
 
     let numOfDataSources = null;
     if (settingsStorage.getItem("numOfDataSources")) {
-      // console.log(JSON.parse(settingsStorage.getItem('numOfDataSources')))
       numOfDataSources = JSON.parse(settingsStorage.getItem("numOfDataSources"))
         .values[0].value;
     } else if (!numOfDataSources) {
@@ -53,6 +52,7 @@ export default class settings {
 
     let url = "http://127.0.0.1:17580/sgv.json" + queryParms;
     let extraDataUrl = null;
+    let treatmentUrl = null;
     if (dataSource === "nightscout") {
       // Nightscout
       let nightscoutSiteName = null;
@@ -66,7 +66,6 @@ export default class settings {
         if (isURL(nightscoutSiteName)) {
           nightscoutSiteName = nightscoutSiteName.split(".")[0];
           nightscoutSiteName = nightscoutSiteName.split("//")[1];
-          console.log(nightscoutSiteName);
         }
       } else if (!nightscoutSiteName) {
         nightscoutSiteName = "placeholder";
@@ -112,6 +111,7 @@ export default class settings {
         "/pebble" +
         nightscoutSiteToken +
         queryParms;
+      // extra data
       extraDataUrl =
         "https://" +
         nightscoutSiteName.toLowerCase() +
@@ -119,6 +119,16 @@ export default class settings {
         nightscoutSiteHost +
         "/api/v2/properties" +
         nightscoutSiteToken;
+      // treatment
+      if (nightscoutSiteToken) {
+        treatmentUrl =
+          "https://" +
+          nightscoutSiteName.toLowerCase() +
+          "." +
+          nightscoutSiteHost +
+          "/api/v1/treatments" +
+          nightscoutSiteToken;
+      }
     } else if (dataSource === "xdrip") {
       // xDrip+
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
@@ -164,6 +174,7 @@ export default class settings {
 
     let urlTwo = "http://127.0.0.1:17580/sgv.json" + queryParms;
     let extraDataUrlTwo = null;
+    let treatmentUrlTwo = null;
     if (dataSourceTwo === "nightscout") {
       // Nightscout
       let nightscoutSiteNameTwo = null;
@@ -177,7 +188,6 @@ export default class settings {
         if (isURL(nightscoutSiteNameTwo)) {
           nightscoutSiteNameTwo = nightscoutSiteNameTwo.split(".")[0];
           nightscoutSiteNameTwo = nightscoutSiteNameTwo.split("//")[1];
-          console.log(nightscoutSiteNameTwo);
         }
       } else if (!nightscoutSiteNameTwo) {
         nightscoutSiteNameTwo = "placeholder";
@@ -222,6 +232,7 @@ export default class settings {
         "/pebble" +
         nightscoutSiteTokenTwo +
         queryParms;
+      //extra data
       extraDataUrlTwo =
         "https://" +
         nightscoutSiteNameTwo.toLowerCase() +
@@ -229,6 +240,16 @@ export default class settings {
         nightscoutSiteHostTwo +
         "/api/v2/properties" +
         nightscoutSiteTokenTwo;
+      //treatment two
+      if (nightscoutSiteTokenTwo) {
+        treatmentUrlTwo =
+          "https://" +
+          nightscoutSiteNameTwo.toLowerCase() +
+          "." +
+          nightscoutSiteHostTwo +
+          "/api/v1/treatments" +
+          nightscoutSiteTokenTwo;
+      }
     } else if (dataSourceTwo === "xdrip") {
       // xDrip+
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
@@ -627,7 +648,6 @@ export default class settings {
 
     let dexcomUsername = null;
     if (settingsStorage.getItem("dexcomUsername")) {
-      //  console.log(settingsStorage.getItem('dexcomUsername'))
       dexcomUsername = JSON.parse(settingsStorage.getItem("dexcomUsername"))
         .name;
     } else if (!dexcomUsername) {
@@ -640,7 +660,6 @@ export default class settings {
 
     let dexcomPassword = null;
     if (settingsStorage.getItem("dexcomPassword")) {
-      //  console.log(settingsStorage.getItem('dexcomPassword'))
       dexcomPassword = JSON.parse(settingsStorage.getItem("dexcomPassword"))
         .name;
     } else if (!dexcomPassword) {
@@ -662,7 +681,6 @@ export default class settings {
 
     let dexcomUsernameTwo = null;
     if (settingsStorage.getItem("dexcomUsernameTwo")) {
-      //  console.log(settingsStorage.getItem('dexcomUsernameTwo'))
       dexcomUsernameTwo = JSON.parse(
         settingsStorage.getItem("dexcomUsernameTwo")
       ).name;
@@ -676,7 +694,6 @@ export default class settings {
 
     let dexcomPasswordTwo = null;
     if (settingsStorage.getItem("dexcomPasswordTwo")) {
-      //  console.log(settingsStorage.getItem('dexcomPasswordTwo'))
       dexcomPasswordTwo = JSON.parse(
         settingsStorage.getItem("dexcomPasswordTwo")
       ).name;
@@ -701,7 +718,6 @@ export default class settings {
     let dropboxToken = null;
     let yagiPatientName = null;
     if (settingsStorage.getItem("dropboxToken")) {
-      //console.log(settingsStorage.getItem('dropboxToken'))
       dropboxToken = JSON.parse(settingsStorage.getItem("dropboxToken")).name;
       yagiPatientName = JSON.parse(settingsStorage.getItem("yagiPatientName"))
         .name;
@@ -773,7 +789,6 @@ export default class settings {
     if (settingsStorage.getItem("dataSourceName")) {
       dataSourceName = JSON.parse(settingsStorage.getItem("dataSourceName"))
         .name;
-      console.error(dataSourceName);
     } else if (!dataSourceName) {
       dataSourceName = "user #1";
       settingsStorage.setItem(
@@ -851,7 +866,9 @@ export default class settings {
       numOfDataSources,
       dataSourceName,
       dataSourceNameTwo,
-      userAgreement
+      userAgreement,
+      treatmentUrl,
+      treatmentUrlTwo
     };
     return settings;
   }
@@ -880,7 +897,6 @@ function isURL(s) {
 
 function validateHexCode(code, text) {
   var isOk = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
-  // console.log(isOk)
   if (isOk) {
     logs.add("companion - validateHexCode - Hex code valid");
     return code;
