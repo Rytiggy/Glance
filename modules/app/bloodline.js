@@ -94,35 +94,35 @@ export default class bloodline {
     lowNumber.text = tempLow;
 
     graphPoints.forEach((point, index) => {
-      try {
-        let bg = bloodsugars[index];
-        if (bloodsugars[index] === undefined || bloodsugars[index] === "LOS") {
-          graphPoints[index].style.opacity = 0;
-        } else {
-          graphPoints[index].style.opacity = 1;
-          let pointY =
-            height -
-            height * (Math.round(((bg - ymin) / (ymax - ymin)) * 100) / 100);
-          graphPoints[index].cy = pointY;
-          graphPoints[index].style.fill = "#708090"; // gray
-          //  - check sgv point is in range if not change color
-          if (predictedBloodsugars[index] == bg) {
-            graphPoints[index].style.fill = "#f76ac5"; // pink
-            // graphPoints[index].r = 3;
-          } else if (parseInt(bg, 10) <= low) {
-            graphPoints[index].style.fill = "#de4430"; //red
-          } else if (parseInt(bg, 10) >= high) {
-            graphPoints[index].style.fill = "orange"; // orange
-            if (parseInt(bg, 10) >= parseInt(high) + 35) {
-              graphPoints[index].style.fill = "#de4430"; // red
-            }
-          } else {
-            graphPoints[index].style.fill = "#75bd78"; // green
+      // try {
+      let bg = bloodsugars[index];
+      if (bloodsugars[index] === undefined || bloodsugars[index] === "LOS") {
+        graphPoints[index].style.opacity = 0;
+      } else {
+        graphPoints[index].style.opacity = 1;
+        let pointY =
+          height -
+          height * (Math.round(((bg - ymin) / (ymax - ymin)) * 100) / 100);
+        graphPoints[index].cy = pointY;
+        graphPoints[index].style.fill = "#708090"; // gray
+        //  - check sgv point is in range if not change color
+        if (predictedBloodsugars[index] == bg) {
+          graphPoints[index].style.fill = "#f76ac5"; // pink
+          // graphPoints[index].r = 3;
+        } else if (parseInt(bg, 10) <= low) {
+          graphPoints[index].style.fill = "#de4430"; //red
+        } else if (parseInt(bg, 10) >= high) {
+          graphPoints[index].style.fill = "orange"; // orange
+          if (parseInt(bg, 10) >= parseInt(high) + 35) {
+            graphPoints[index].style.fill = "#de4430"; // red
           }
+        } else {
+          graphPoints[index].style.fill = "#75bd78"; // green
         }
-      } catch (e) {
-        console.log(e);
       }
+      // } catch (e) {
+      //   console.log(e);
+      // }
     });
   }
 }

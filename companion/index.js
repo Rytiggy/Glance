@@ -30,6 +30,8 @@ import { me } from "companion";
 import Dropbox from "../modules/companion/dropbox.js";
 
 const settings = new Settings();
+var store = settings.get();
+
 const transfer = new Transfer();
 const fetch = new Fetch();
 const standardize = new Standardize();
@@ -57,7 +59,7 @@ let dataReceivedFromWatch = null;
 // sendSettings();
 async function sendData() {
   // Get settings
-  const store = await settings.get(dataReceivedFromWatch);
+  store = await settings.get(dataReceivedFromWatch);
 
   // Get SGV data
   let bloodsugars = null;
@@ -181,14 +183,35 @@ async function sendData() {
 }
 
 // Listen for messages from the device
-messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data.command === "forceCompanionTransfer") {
-    logs.add("Watch to Companion Transfer request");
+messaging.peerSocket.onmessage = async function(evt) {
+  if (evt.data.command === "refreshData") {
+    logs.add("Watch for Companion Transfer request");
+    console.log("refresh data");
     // pass in data that was recieved from the watch
     dataReceivedFromWatch = evt.data.data;
     sendData();
   } else if (evt.data.command === "agreedToUserAgreement") {
     settings.setToggle("userAgreement", true);
+    sendData();
+  } else if (evt.data.command === "postTreatment") {
+    console.log("postTreatment", evt.data);
+    // which user should we send the treatment to
+    let treatmentUrl = store.treatmentUrl;
+    if (evt.data.data.user == 1) {
+      treatmentUrl = store.treatmentUrl;
+    } else {
+      treatmentUrl = store.treatmentUrlTwo;
+    }
+    let data = await fetch.post(treatmentUrl, {
+      enteredBy: "Glance",
+      carbs: evt.data.data.carbs,
+      insulin: evt.data.data.insulin
+    });
+    console.log(data);
+
+    // pass in data that was recieved from the watch
+    // dataReceivedFromWatch = evt.data.data;
+    //
     sendData();
   }
 };

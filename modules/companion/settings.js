@@ -52,6 +52,7 @@ export default class settings {
 
     let url = "http://127.0.0.1:17580/sgv.json" + queryParms;
     let extraDataUrl = null;
+    let treatmentUrl = null;
     if (dataSource === "nightscout") {
       // Nightscout
       let nightscoutSiteName = null;
@@ -110,6 +111,7 @@ export default class settings {
         "/pebble" +
         nightscoutSiteToken +
         queryParms;
+      // extra data
       extraDataUrl =
         "https://" +
         nightscoutSiteName.toLowerCase() +
@@ -117,6 +119,16 @@ export default class settings {
         nightscoutSiteHost +
         "/api/v2/properties" +
         nightscoutSiteToken;
+      // treatment
+      if (nightscoutSiteToken) {
+        treatmentUrl =
+          "https://" +
+          nightscoutSiteName.toLowerCase() +
+          "." +
+          nightscoutSiteHost +
+          "/api/v1/treatments" +
+          nightscoutSiteToken;
+      }
     } else if (dataSource === "xdrip") {
       // xDrip+
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
@@ -162,6 +174,7 @@ export default class settings {
 
     let urlTwo = "http://127.0.0.1:17580/sgv.json" + queryParms;
     let extraDataUrlTwo = null;
+    let treatmentUrlTwo = null;
     if (dataSourceTwo === "nightscout") {
       // Nightscout
       let nightscoutSiteNameTwo = null;
@@ -219,6 +232,7 @@ export default class settings {
         "/pebble" +
         nightscoutSiteTokenTwo +
         queryParms;
+      //extra data
       extraDataUrlTwo =
         "https://" +
         nightscoutSiteNameTwo.toLowerCase() +
@@ -226,6 +240,16 @@ export default class settings {
         nightscoutSiteHostTwo +
         "/api/v2/properties" +
         nightscoutSiteTokenTwo;
+      //treatment two
+      if (nightscoutSiteTokenTwo) {
+        treatmentUrlTwo =
+          "https://" +
+          nightscoutSiteNameTwo.toLowerCase() +
+          "." +
+          nightscoutSiteHostTwo +
+          "/api/v1/treatments" +
+          nightscoutSiteTokenTwo;
+      }
     } else if (dataSourceTwo === "xdrip") {
       // xDrip+
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
@@ -842,7 +866,9 @@ export default class settings {
       numOfDataSources,
       dataSourceName,
       dataSourceNameTwo,
-      userAgreement
+      userAgreement,
+      treatmentUrl,
+      treatmentUrlTwo
     };
     return settings;
   }

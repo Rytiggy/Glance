@@ -1,0 +1,89 @@
+<symbol id="treatments">
+	<svg>
+	    <rect width="100%" height="100%" fill="black" />
+   
+        <use id="treatmentIobBtnSubtract" class="treatmentBtn" href="#square-button-icon" y="20" fill="coral">
+            <set href="#text"  attributeName="text-buffer" to=".25 -" />
+            <set href="#image" attributeName="href" to="img/syringe.png" />
+        </use>
+        <text id="treatmentIob" y="20%" class="treatmentText" fill="white" font-family="System-Regular">0</text>
+        <use id="treatmentIobBtnPlus" class="treatmentBtn" href="#square-button-icon" y="20" x="$-38" fill="coral">
+            <set href="#text"  attributeName="text-buffer" to="1 +" />
+            <set href="#image" attributeName="href" to="img/syringe.png" />
+        </use>
+        <svg y="$">       
+            <use id="treatmentCobBtnSubtract" class="treatmentBtn" href="#square-button-icon" fill="coral">
+                <set href="#text"  attributeName="text-buffer" to="1 -" />
+                <set href="#image" attributeName="href" to="img/hamburger.png" />
+            </use>
+            <text id="treatmentCob" y="15%" class="treatmentText" fill="white" font-family="System-Regular">0</text>
+            <use id="treatmentCobBtnPlus" x="$-38" class="treatmentBtn" href="#square-button-icon" fill="coral">
+                <set href="#text"  attributeName="text-buffer" to="5 +" />
+                <set href="#image" attributeName="href" to="img/hamburger.png" />
+            </use>
+        </svg>
+
+        <!-- Left button -->
+        <use id="cancelReviewTreatment" class="dialog-half-button-left" href="#square-button-neutral">
+            <set href="#text" attributeName="text-buffer" to="Cancel" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+        <!-- Right button -->
+         <use id="reviewTreatment" class="dialog-half-button-right" href="#square-button-positive">
+            <set href="#text" attributeName="text-buffer" to="Review" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+
+	</svg>
+    <svg id="treatmentReview" display="none">
+	    <rect y="0" width="100%" height="100%" fill="black" />
+        <svg y="30" height="30%">
+            <text
+                x="50%"
+                y="$+10"
+                font-family="System-Regular"
+                fill="coral"
+                font-size="35"
+                font-weight="bold"
+                text-anchor="middle"
+            >
+                Treatment Review
+            </text>
+            <text
+                text-length="100"
+                x="50%"
+                y="$"
+                font-family="System-Regular"
+                fill="white"
+                font-size="25"
+                text-anchor="middle"
+                id="treatmentReviewText"
+            >
+            </text>
+        </svg>
+        <svg y="$+10">
+            <use id="btn-user1" href="#square-button-toggle" value="1" fill="fb-light-gray">
+                <set href="#text" attributeName="text-buffer" to="User 1" />
+            </use>
+            <use id="btn-user2" href="#square-button-toggle" x="50%" fill="fb-light-gray">
+                <set href="#text" attributeName="text-buffer" to="User 2" />
+            </use>
+        </svg>
+
+        <!-- <use y="$" id="treatmentReviewText" href="#mixed-text-center-mid"  fill="coral">
+            <set href="#header/text" attributeName="text-buffer" to="Treatment Review"/>
+            <set href="#copy/text" attributeName="text-buffer"
+                to="This is the center and middle-aligned body text."/>
+        </use> -->
+
+
+        <use id="cancelSubmitTreatment" class="dialog-half-button-left" href="#square-button-neutral">
+            <set href="#text" attributeName="text-buffer" to="Cancel" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+        <use id="submitTreatment" class="dialog-half-button-right" href="#square-button-positive">
+            <set href="#text" attributeName="text-buffer" to="Submit" />
+            <set href="#text" attributeName="text-anchor" to="middle" />
+        </use>
+    </svg>
+</symbol>

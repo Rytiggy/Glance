@@ -10,19 +10,22 @@
  *
  * ------------------------------------------------
  */
+import Transfer from "../modules/app/transfer.js";
+const transfer = new Transfer();
 
 import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
-import { vibration } from "haptics";
 import DateTime from "../modules/app/dateTime.js";
 import BatteryLevels from "../modules/app/batteryLevels.js";
 import Graph from "../modules/app/bloodline.js";
 import UserActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
-import Transfer from "../modules/app/transfer.js";
 import UserAgreement from "../modules/app/userAgreement.js";
+import Actions from "../modules/app/actions.js";
+const actions = new Actions();
+import Treatments from "../modules/app/treatments.js";
 
 import * as messaging from "messaging";
 // import * as weather from 'fitbit-weather/app'
@@ -34,16 +37,11 @@ const batteryLevels = new BatteryLevels();
 const graph = new Graph();
 const userActivity = new UserActivity();
 const errors = new Errors();
-const transfer = new Transfer();
 const userAgreement = new UserAgreement();
-
-// const userSettings = new UserSettings();
 
 var alerts = [];
 var data = null;
-// = {
-//   settings: userSettings.load(),
-// }
+
 var singleOrMultipleDispaly = document.getElementById("singleBG");
 var time = singleOrMultipleDispaly.getElementById("time");
 var batteryLevel = document.getElementById("batteryLevel");
@@ -95,6 +93,8 @@ function updateDisplay(data) {
         document.getElementById("singleBG").style.display = "inline";
         document.getElementById("dualBG").style.display = "none";
       }
+      actions.init(transfer, singleOrMultipleDispaly, data.settings);
+      const treatments = new Treatments(transfer, data.settings);
 
       time = singleOrMultipleDispaly.getElementById("time");
       time.text = dateTime.getTime(data.settings.timeFormat);
@@ -506,7 +506,7 @@ function isOdd(n) {
 }
 
 var dataToSend = {
-  command: "forceCompanionTransfer",
+  command: "refreshData",
   data: {
     heart: 0,
     steps: userActivity.get().steps
@@ -519,9 +519,3 @@ setTimeout(function() {
 setInterval(function() {
   transfer.send(dataToSend);
 }, 180000);
-
-time.onclick = evt => {
-  // transfer.send(dataToSend);
-  vibration.start("bump");
-  // arrows.href = "../resources/img/arrows/loading.png";
-};

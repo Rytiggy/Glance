@@ -90,7 +90,7 @@
 }
 
 .width-40 {
-  width: 35%;
+  width: 40%;
 }
 
 .width-50 {
@@ -446,3 +446,17 @@
   text-length: "80";
 }
 /* Loading Screen CSS End*/
+
+/* Treatment */
+.treatmentBtn {
+  width: "33%";
+}
+
+.treatmentText {
+  width: "33%";
+  x: "$+38";
+  font-size: 30;
+  text-length: "80";
+}
+
+/* Treatment End */

@@ -42,6 +42,8 @@ export default class standardize {
 		let upbat = '';
 		let sage = ''
 		logs.add(`BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
+		// console.log(`BGS: ${JSON.stringify(bgs)}`);
+
 		if (bgs && !data.error && data && bgs !== 'undefined') {
 			if (settings[keys.dataSource] === 'nightscout') {
 				bgs = data.bgs;
@@ -61,7 +63,7 @@ export default class standardize {
 				predictedBg = standardizedExtraData.predictedBg;
 				loopStatus = standardizedExtraData.loopStatus;
 				upbat = standardizedExtraData.upbat;
-        sage = standardizedExtraData.sage;
+				sage = standardizedExtraData.sage;
 				// add any extra data
 			} else if (settings[keys.dataSource] === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
@@ -89,157 +91,8 @@ export default class standardize {
 						tempbasal: '',
 						loopstatus: '',
 					},
-					bgs: [{
-							sgv: '120',
-							bgdelta: 0,
-							iob: 0,
-							cob: 0,
-							datetime: null,
-							direction: 'flat',
-							currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-							rawbg: '',
-							tempbasal: '',
-							loopstatus: '',
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						}
-					]
+					bgs: ["120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120"],
+					predicted: []
 				}
 				// bgs.length = 47;
 				// bgsTemplate
@@ -380,157 +233,8 @@ export default class standardize {
 				tempbasal: '',
 				loopstatus: '',
 			},
-			bgs: [{
-					sgv: '120',
-					bgdelta: 0,
-					iob: 0,
-					cob: 0,
-					datetime: currentTime.getTime(),
-					direction: 'warning',
-					currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-					rawbg: '',
-					tempbasal: '',
-					loopstatus: '',
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				}
-			]
+			bgs: ["120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120", "120"],
+			predicted: []
 		}
 	}
 	settings(settings) {
