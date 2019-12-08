@@ -528,7 +528,7 @@ export default {
           steps: [
             {
               title:
-                "In the Tomato app enable your local HTTP server by navigating to Settings -> Inter-App settings -> xDrip Web Service -> ON",
+                "In the Tomato app enable your local HTTP server by navigating to Settings -> Data Sync",
               img: "../statics/tomato1.jpg"
             },
             {
