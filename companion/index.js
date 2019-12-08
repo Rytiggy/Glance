@@ -169,6 +169,7 @@ async function sendData() {
           }
         ]
       };
+
       transfer.send(dataToSend);
     }
   );
