@@ -94,7 +94,6 @@ export default class bloodline {
     lowNumber.text = tempLow;
 
     graphPoints.forEach((point, index) => {
-      // try {
       let bg = bloodsugars[index];
       if (bloodsugars[index] === undefined || bloodsugars[index] === "LOS") {
         graphPoints[index].style.opacity = 0;
@@ -120,9 +119,6 @@ export default class bloodline {
           graphPoints[index].style.fill = "#75bd78"; // green
         }
       }
-      // } catch (e) {
-      //   console.log(e);
-      // }
     });
   }
 }
