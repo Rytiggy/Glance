@@ -23,35 +23,35 @@
       </q-chip>
     </div>
   </div> -->
-    <div>
-      <div class="glance-header q-py-xl">
+  <div>
+    <div class="glance-header q-py-xl">
       <div class="q-pa-xl">
         <div class="q-pb-md text-white text-center full-width">
-          <div
-            class="description-lead text-body1"
-          >
+          <div class="description-lead text-body1">
             <div class="full-width text-center">
               <q-avatar size="200px">
-                <img src="../statics/logo.png">
+                <img src="../statics/logo.png" />
               </q-avatar>
             </div>
 
             <div class="text-h3 text-weight-medium text-white">Glance</div>
-            <div
-              class="text-h6 text-weight-normal text-white"
-            >A project to help manage diabetes</div>
+            <div class="text-h6 text-weight-normal text-white">
+              A project to help manage diabetes
+            </div>
             <q-chip clickable square>
               <a
                 href="https://glance.page.link/download"
                 class="text-grey-10"
                 target="_blank"
               >
-                <q-avatar icon="save_alt" color="primary" text-color="white" />Download Glance
+                <q-avatar
+                  icon="save_alt"
+                  color="primary"
+                  text-color="white"
+                />Download Glance
               </a>
             </q-chip>
-            <div
-              class="text-caption text-white"
-            >Version: 2.1.112</div>
+            <div class="text-caption text-white">Version: 2.1.112</div>
           </div>
         </div>
       </div>
@@ -60,10 +60,7 @@
 </template>
 
 <script>
-
-
-export default {
-};
+export default {};
 </script>
 
 <style>

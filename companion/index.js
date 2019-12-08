@@ -130,11 +130,6 @@ async function sendData() {
     }
   }
 
-  logs.add("bloodsugars: " + JSON.stringify(bloodsugars));
-  logs.add("extraData: " + JSON.stringify(extraData));
-  logs.add("bloodsugarsTwo: " + JSON.stringify(bloodsugarsTwo));
-  logs.add("extraDataTwo: " + JSON.stringify(extraDataTwo));
-
   // Get weather data
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
 

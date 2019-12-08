@@ -1,8 +1,8 @@
 <template>
-    <q-toolbar class="text-grey-9">
+  <q-toolbar class="text-grey-9">
     <q-btn stretch to="/" flat fit>
       <q-avatar>
-        <img src="../statics/favicon.png">
+        <img src="../statics/favicon.png" />
       </q-avatar>
       <span class="gt-xs text-h5 glance-logo">Glance</span>
     </q-btn>
@@ -10,7 +10,7 @@
     <q-btn
       stretch
       flat
-      fit 
+      fit
       type="a"
       class="no-underline text-h6 q-px-sm text-grey-7 q-px-md gt-xs"
       target="_blank"
@@ -19,28 +19,28 @@
       <i class="fab fa-github"></i>
     </q-btn>
     <q-separator vertical class="gt-xs" />
-      <q-btn
-        stretch
-        flat
-        fit 
-        type="a"
-        class="no-underline text-h6 q-px-sm text-grey-7 q-px-md gt-xs"
-        target="_blank"
-        href="https://www.facebook.com/groups/Glance/"
-      >
-        <i class="fab fa-facebook"></i>
-      </q-btn>
-      <q-separator vertical class="gt-xs" />
-      <q-btn
-        stretch
-        flat
-        fit 
-        type="a"
-        class="no-underline text-h6 q-px-sm text-grey-7 q-px-md gt-xs"
-        target="_blank"
-        href="https://discord.gg/RUa7U6F/"
-      >
-        <i class="fab fa-discord"></i>
+    <q-btn
+      stretch
+      flat
+      fit
+      type="a"
+      class="no-underline text-h6 q-px-sm text-grey-7 q-px-md gt-xs"
+      target="_blank"
+      href="https://www.facebook.com/groups/Glance/"
+    >
+      <i class="fab fa-facebook"></i>
+    </q-btn>
+    <q-separator vertical class="gt-xs" />
+    <q-btn
+      stretch
+      flat
+      fit
+      type="a"
+      class="no-underline text-h6 q-px-sm text-grey-7 q-px-md gt-xs"
+      target="_blank"
+      href="https://discord.gg/RUa7U6F/"
+    >
+      <i class="fab fa-discord"></i>
     </q-btn>
     <q-separator class="gt-xs" vertical />
 
@@ -48,7 +48,7 @@
 
     <q-separator class="lt-sm" vertical />
     <q-btn-dropdown
-      icon="more_vert" 
+      icon="more_vert"
       no-caps
       stretch
       flat
@@ -60,7 +60,7 @@
           <q-btn
             stretch
             flat
-            fit 
+            fit
             type="a"
             class="no-underline text-h6 q-px-sm text-grey-7 q-px-md"
             target="_blank"
@@ -73,7 +73,7 @@
           <q-btn
             stretch
             flat
-            fit 
+            fit
             type="a"
             class="no-underline text-h6 q-px-sm text-grey-7 q-px-md"
             target="_blank"
@@ -86,7 +86,7 @@
           <q-btn
             stretch
             flat
-            fit 
+            fit
             type="a"
             class="no-underline text-h6 q-px-sm text-grey-7 q-px-md"
             target="_blank"
@@ -122,11 +122,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

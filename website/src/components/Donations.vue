@@ -4,21 +4,25 @@
       <div class="text-white text-h3 text-center">Donations</div>
       <div class="q-pb-md text-white text-center full-width">
         <div class="description-lead text-body1">
-          I developed Glance to help people with diabetes! 50% of all donations will go directly to the
+          I developed Glance to help people with diabetes! 50% of all donations
+          will go directly to the
           <a
             class="text-primary"
             target="_blank"
             href="https://www.faustmanlab.org/"
-          >Faustman lab</a>.
-          The remaining 50% will be dedicated to future research and development of Glance.
+            >Faustman lab</a
+          >. The remaining 50% will be dedicated to future research and
+          development of Glance.
         </div>
         <div class="q-pt-md">
           <q-card flat bordered class="donation-card text-grey-10">
             <q-card-section>
-              <img src="../statics/paypal-logo.png">
+              <img src="../statics/paypal-logo.png" />
             </q-card-section>
 
-            <q-card-section>Donations can be made through PayPal</q-card-section>
+            <q-card-section
+              >Donations can be made through PayPal</q-card-section
+            >
             <q-card-section class="q-px-none">
               <q-btn-group push>
                 <q-btn
@@ -30,7 +34,7 @@
                 >
                   $1
                 </q-btn>
-                  <q-btn
+                <q-btn
                   type="a"
                   target="_blank"
                   href="https://paypal.me/ryanmasonjar/5"
