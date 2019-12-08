@@ -17,7 +17,7 @@ let transfer = new Transfer();
 
 export default class userAgreement {
   // Send data
-  check(data) {
+  check(settings) {
     const agreeToPrompt = document.getElementById("agreeToUserAgreement");
 
     agreeToPrompt.onclick = function(evt) {
@@ -32,6 +32,6 @@ export default class userAgreement {
       // hasAgreed = true;
     };
 
-    return data.settings.userAgreement;
+    return settings.userAgreement;
   }
 }

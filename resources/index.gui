@@ -1,28 +1,6 @@
 <svg id="glance">
-  <use id="container" href="#panoramaview">
-    <use id="actions" href="#panoramaview-item">
-      <rect width="100%" height="100%" fill="black" />
-	   <defs>
-			<symbol id="view-header" href="#scrollview-header">
-				<rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
-				<text id="text" x="5" y="50%+10" fill="white" font-size="30" font-weight="bold" />
-			</symbol>
-		</defs>
-		<use href="#view-header" height="40" fill="black">
-			<set href="#text" attributeName="text-buffer" to="Actions" />
-		</use>
-		<use href="#square-button-neutral" y="$" id="refreshDataBtn">
-			<set href="#text" attributeName="text-buffer" to="Refresh Data"/>
-		</use>
-		<use href="#square-button-neutral" y="$" id="logTreatmentBtn" display="none">
-			<set href="#text" attributeName="text-buffer" to="Log Treatment" />
-		</use>
-		<use href="#square-button-neutral" y="$" id="goHomeBtn">
-			<set href="#text" attributeName="text-buffer" to="Go Home" />
-		</use>
-		<use href="#treatments" id="treatmentsScreen"  display="none"/>
-    </use>
-    <use id="home" href="#panoramaview-item">
+  <!-- <use id="container"> -->
+     <svg id="home">
 		<svg id="singleBG">
 			<gradientRect
 				class="bgColor"
@@ -100,7 +78,9 @@
 			</svg>
 		</svg>
 
-
+		<use href="#square-button-neutral" id="goToActions">
+			<set href="#text" attributeName="text-buffer" to="" />
+		</use>
 		<!-- <svg id="loadingScreen">
 			<svg class="container">
 				<rect class="loadingScreenBackground" />
@@ -148,14 +128,29 @@
 			</use>
 		</svg>
 
-    </use>
-
-    <use id="pagination-dots" href="#pagination-widget" y="8">
-      <use href="#pagination-dot" />
-      <use href="#pagination-highlight-dot" />
-    </use>
-  </use>
-
-
+    </svg>
+    <svg id="actions" display="none">
+      <rect width="100%" height="100%" fill="black" />
+	   <defs>
+			<symbol id="view-header">
+				<rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
+				<text id="text" x="5" y="50%+10" fill="white" font-size="30" font-weight="bold" />
+			</symbol>
+		</defs>
+		<use href="#view-header" height="40" fill="black">
+			<set href="#text" attributeName="text-buffer" to="Actions" />
+		</use>
+		<use href="#square-button-neutral" y="$" id="refreshDataBtn">
+			<set href="#text" attributeName="text-buffer" to="Refresh Data"/>
+		</use>
+		<use href="#square-button-neutral" y="$" id="logTreatmentBtn" display="none">
+			<set href="#text" attributeName="text-buffer" to="Log Treatment" />
+		</use>
+		<use href="#square-button-neutral" y="$" id="goHomeBtn">
+			<set href="#text" attributeName="text-buffer" to="Go Home" />
+		</use>
+		<use href="#treatments" id="treatmentsScreen"  display="none"/>
+    </svg>
+  <!-- </use> -->
 </svg>
 

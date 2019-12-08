@@ -1,9 +1,10 @@
 import document from "document";
 import { vibration } from "haptics";
-let container = document.getElementById("container");
-let logTreatmentBtn = document.getElementById("logTreatmentBtn");
 
-container.value = 1;
+// let container = document.getElementById("container");
+let logTreatmentBtn = document.getElementById("logTreatmentBtn");
+let actionsContainer = document.getElementById("actions");
+let homeContainer = document.getElementById("home");
 
 export default class actions {
   /**
@@ -31,7 +32,8 @@ export default class actions {
       };
       transfer.send(dataToSend);
       vibration.start("bump");
-      container.value = 1;
+      actionsContainer.style.display = "none";
+      homeContainer.style.display = "inline";
 
       const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
         "bloodSugarDisplay"
@@ -41,6 +43,17 @@ export default class actions {
           "../resources/img/arrows/loading.png";
       });
     };
+
+    /**
+     * Go to Action
+     */
+    let goToActions = document.getElementById("goToActions");
+    goToActions.onclick = evt => {
+      vibration.start("bump");
+      actionsContainer.style.display = "inline";
+      homeContainer.style.display = "none";
+    };
+
     /**
      * Go Home on click
      */
@@ -48,7 +61,8 @@ export default class actions {
     goHome.onclick = evt => {
       console.log("goHome");
       vibration.start("bump");
-      container.value = 1;
+      actionsContainer.style.display = "none";
+      homeContainer.style.display = "inline";
     };
 
     /**

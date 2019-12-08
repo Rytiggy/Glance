@@ -4,19 +4,21 @@
     "appType": "clockface",
     "appDisplayName": "Glance 2.1.112",
     "iconFile": "resources/icon.png",
-    "wipeColor": "#673ab7",
+    "wipeColor": "#2196f3",
     "requestedPermissions": [
       "access_user_profile",
       "access_location",
       "access_internet",
       "run_background",
       "access_activity",
-      "access_heart_rate"
+      "access_heart_rate",
+      "access_exercise"
     ],
     "buildTargets": [
       "higgs",
       "meson",
-      "gemini"
+      "gemini",
+      "mira"
     ],
     "i18n": {
       "en": {
@@ -25,8 +27,8 @@
     }
   },
   "devDependencies": {
-    "@fitbit/sdk": "^3.1.2",
-    "@fitbit/sdk-cli": "^1.6.3"
+    "@fitbit/sdk": "^4.0.1",
+    "@fitbit/sdk-cli": "^1.7.0"
   },
   "scripts": {
     "build": "fitbit-build",

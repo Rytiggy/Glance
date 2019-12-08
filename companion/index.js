@@ -45,22 +45,17 @@ const logs = new Logs();
 const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
 // weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
-
-// send settings over web sockets while we are getting data from the data source
-// function sendSettings() {
-//   logs.add("Sending Settings: over messaging");
-//   const store = settings.get(dataReceivedFromWatch);
-
-//   if (messaging.peerSocket.readyState == 0) {
-//     // Send a command to the app
-//     messaging.peerSocket.send(standardize.settings(store));
-//   }
-// }
-// sendSettings();
 async function sendData() {
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
 
+  // send settings
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send({
+      key: "settings",
+      data: standardize.settings(store)
+    });
+  }
   // Get SGV data
   let bloodsugars = null;
   let extraData = null;
@@ -172,11 +167,8 @@ async function sendData() {
                 ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
                 : null
           }
-        ],
-        settings: standardize.settings(store)
+        ]
       };
-      logs.add("DataToSend size: " + sizeof.size(dataToSend) + " bytes");
-      logs.add("DataToSend: " + JSON.stringify(dataToSend));
       transfer.send(dataToSend);
     }
   );
@@ -185,7 +177,6 @@ async function sendData() {
 // Listen for messages from the device
 messaging.peerSocket.onmessage = async function(evt) {
   if (evt.data.command === "refreshData") {
-    logs.add("Watch for Companion Transfer request");
     console.log("refresh data");
     // pass in data that was recieved from the watch
     dataReceivedFromWatch = evt.data.data;
@@ -207,11 +198,6 @@ messaging.peerSocket.onmessage = async function(evt) {
       carbs: evt.data.data.carbs,
       insulin: evt.data.data.insulin
     });
-    console.log(data);
-
-    // pass in data that was recieved from the watch
-    // dataReceivedFromWatch = evt.data.data;
-    //
     sendData();
   }
 };

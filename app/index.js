@@ -40,7 +40,7 @@ const errors = new Errors();
 const userAgreement = new UserAgreement();
 
 var alerts = [];
-var data = null;
+var data = { bloodSugars: null, settings: null };
 
 var singleOrMultipleDispaly = document.getElementById("singleBG");
 var time = singleOrMultipleDispaly.getElementById("time");
@@ -49,7 +49,6 @@ var batteryPercent = document.getElementById("batteryPercent");
 
 loadingScreen();
 setInterval(function() {
-  console.warn("Interval JS memory: " + memory.js.used + "/" + memory.js.total);
   updateDisplay(data);
 }, 10000);
 
@@ -59,60 +58,36 @@ inbox.onnewfile = () => {
   do {
     fileName = inbox.nextFile();
     if (fileName) {
-      data = fs.readFileSync(fileName, "cbor");
+      data.bloodSugars = fs.readFileSync(fileName, "cbor").bloodSugars;
     }
   } while (fileName);
   updateDisplay(data);
+  console.warn("Interval JS memory: " + memory.js.used + "/" + memory.js.total);
 };
 
-// // Listen for messages from the companion
-// messaging.peerSocket.onmessage = function(evt) {
-//   if (evt.data) {
-//   }
-// };
+// Listen for messages from the companion
+messaging.peerSocket.onmessage = function(evt) {
+  if (evt.data) {
+    if (evt.data.key == "settings") {
+      // update the settings to the data object
+      data.settings = evt.data.data;
+      updateSettingSpecificDisplay(data.settings);
+    }
+  }
+};
 
 /**
- * Update watchface display
- * @param {Object} data recived from the companion
+ * Update watchface display This deals with the BGS data
+ * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
-  if (data) {
-    // Check if user has agreed to user agreement
-
-    if (userAgreement.check(data)) {
-      document.getElementById("userAgreement").style.display = "none";
-
-      console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
-      // userSettings.save(data.settings);
-      if (data.settings.numOfDataSources == 2) {
-        singleOrMultipleDispaly = document.getElementById("dualBG");
-        document.getElementById("dualBG").style.display = "inline";
-        document.getElementById("singleBG").style.display = "none";
-      } else {
-        singleOrMultipleDispaly = document.getElementById("singleBG");
-        document.getElementById("singleBG").style.display = "inline";
-        document.getElementById("dualBG").style.display = "none";
-      }
-      actions.init(transfer, singleOrMultipleDispaly, data.settings);
-      const treatments = new Treatments(transfer, data.settings);
-
-      time = singleOrMultipleDispaly.getElementById("time");
-      time.text = dateTime.getTime(data.settings.timeFormat);
-
-      updateBgColor(data.settings.bgColor, data.settings.bgColorTwo); // settings only
-      setTextColor(data.settings.textColor); //settings only
-      updateHeader(data.settings.dateFormat, data.settings.enableDOW); // settings only
-      checkDataState(data.bloodSugars);
-
-      updateAlerts(data.bloodSugars, data.settings);
-      updateBloodSugarDisplay(data.bloodSugars, data.settings);
-      updateStats(data.bloodSugars, data.settings);
-      updateGraph(data.bloodSugars, data.settings);
-      // largeGraphDisplay(data);
-    } else {
-      // user has not agreed to user agreement
-      document.getElementById("userAgreement").style.display = "inline";
-    }
+  if (data.bloodSugars) {
+    checkDataState(data.bloodSugars);
+    updateAlerts(data.bloodSugars, data.settings);
+    updateBloodSugarDisplay(data.bloodSugars, data.settings);
+    updateStats(data.bloodSugars, data.settings);
+    updateGraph(data.bloodSugars, data.settings);
+    // largeGraphDisplay(data);
   } else {
     batteryLevel.width = batteryLevels.get().level;
     batteryPercent.text = "" + batteryLevels.get().percent + "%";
@@ -470,6 +445,41 @@ function largeGraphDisplay(data) {
   // largeGraph.onclick = function(evt) {
   //   largeGraphDisplay.style.display = 'none';
   // }
+}
+
+/**
+ * Update settings specific UI elements
+ * @param {Object} settings the users settings
+ */
+function updateSettingSpecificDisplay(settings) {
+  // Check if user has agreed to user agreement
+  if (userAgreement.check(settings)) {
+    document.getElementById("userAgreement").style.display = "none";
+
+    console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+
+    if (settings.numOfDataSources == 2) {
+      singleOrMultipleDispaly = document.getElementById("dualBG");
+      document.getElementById("dualBG").style.display = "inline";
+      document.getElementById("singleBG").style.display = "none";
+    } else {
+      singleOrMultipleDispaly = document.getElementById("singleBG");
+      document.getElementById("singleBG").style.display = "inline";
+      document.getElementById("dualBG").style.display = "none";
+    }
+    actions.init(transfer, singleOrMultipleDispaly, settings);
+    const treatments = new Treatments(transfer, settings);
+
+    time = singleOrMultipleDispaly.getElementById("time");
+    time.text = dateTime.getTime(settings.timeFormat);
+
+    updateBgColor(settings.bgColor, settings.bgColorTwo); // settings only
+    setTextColor(settings.textColor); //settings only
+    updateHeader(settings.dateFormat, settings.enableDOW); // settings only
+  } else {
+    // user has not agreed to user agreement
+    document.getElementById("userAgreement").style.display = "inline";
+  }
 }
 
 function commas(value) {
