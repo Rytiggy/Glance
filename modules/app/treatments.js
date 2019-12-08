@@ -36,8 +36,9 @@ let treatmentReview = document.getElementById("treatmentReview");
 let treatmentReviewText = document.getElementById("treatmentReviewText");
 let btnUser1 = document.getElementById("btn-user1");
 let btnUser2 = document.getElementById("btn-user2");
+let actionsContainer = document.getElementById("actions");
+let homeContainer = document.getElementById("home");
 
-let container = document.getElementById("container");
 export default class treatments {
   constructor(transfer, settings) {
     if (settings.numOfDataSources == 2) {
@@ -83,9 +84,11 @@ export default class treatments {
           user: user
         }
       });
-      container.value = 1;
+      actionsContainer.style.display = "none";
       treatmentReview.style.display = "none";
       treatmentsScreen.style.display = "none";
+      homeContainer.style.display = "inline";
+
       treatmentIob.text = 0;
       treatmentCob.text = 0;
     };
@@ -93,7 +96,8 @@ export default class treatments {
     cancelReviewTreatment.onclick = evt => {
       console.log("cancel review Treatment");
       vibration.start("bump");
-      container.value = 1;
+      actionsContainer.style.display = "none";
+      homeContainer.style.display = "inline";
       treatmentReview.style.display = "none";
       treatmentsScreen.style.display = "none";
       treatmentIob.text = 0;
@@ -103,7 +107,8 @@ export default class treatments {
     cancelSubmitTreatment.onclick = evt => {
       console.log("cancel submit Treatment");
       vibration.start("bump");
-      container.value = 1;
+      actionsContainer.style.display = "none";
+      homeContainer.style.display = "inline";
       treatmentReview.style.display = "none";
       treatmentsScreen.style.display = "none";
       treatmentIob.text = 0;

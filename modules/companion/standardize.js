@@ -382,7 +382,6 @@ export default class standardize {
         bgs: cleanedBgs.map(bg => bg.sgv),
         predicted: cleanedBgs.filter(bg => bg.p).map(bg => bg.sgv)
       };
-      console.warn(sizeof.size(returnBloodsugars) + " bytes");
       return returnBloodsugars;
     }
     logs.add("Line 63: here reurning error");
@@ -452,14 +451,40 @@ export default class standardize {
       predicted: []
     };
   }
+  /**
+   * Remove any extra settings that the watch does not need and Convert any values to desired units type
+   * @param {Object} settings
+   */
   settings(settings) {
-    logs.add("Line 212: companion - standardize - settings()");
+    let tempSettings = {};
+    let blackList = [
+      "USAVSInternational",
+      "USAVSInternationalTwo",
+      "dexcomPassword",
+      "dexcomPasswordTwo",
+      "dexcomUsername",
+      "dexcomUsernameTwo",
+      "dropboxToken",
+      "dropboxTokenTwo",
+      "extraDataUrl",
+      "extraDataUrlTwo",
+      "url",
+      "urlTwo",
+      "yagiPatientName",
+      "yagiPatientNameTwo"
+    ];
+    Object.keys(settings).forEach(key => {
+      if (settings[key] && !blackList.includes(key)) {
+        tempSettings[key] = settings[key];
+      }
+    });
     // Convert any values to desired units type
-    if (settings.glucoseUnits === "mmol") {
-      settings.highThreshold = mgdl(settings.highThreshold);
-      settings.lowThreshold = mgdl(settings.lowThreshold);
+    if (tempSettings.glucoseUnits === "mmol") {
+      tempSettings.highThreshold = mgdl(tempSettings.highThreshold);
+      tempSettings.lowThreshold = mgdl(tempSettings.lowThreshold);
     }
-    return settings;
+
+    return tempSettings;
   }
 }
 

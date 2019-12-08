@@ -460,3 +460,12 @@
 }
 
 /* Treatment End */
+
+/* Actions */
+
+#goToActions {
+  y: 0;
+  height: 50%;
+  opacity: 0;
+}
+/* Actions End */

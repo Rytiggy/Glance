@@ -421,7 +421,7 @@ function renderDataSource(props, id, title, keys) {
         sublabel=""
         icon="https://i.ibb.co/R42vWmg/Blood-drop-plain-svg.png"
       />
-      <TextInput label="Data Source Name`" settingsKey={keys.dataSourceName} />
+      <TextInput label="Data Source Name" settingsKey={keys.dataSourceName} />
       <Select
         label={`Data Source`}
         settingsKey={id}
