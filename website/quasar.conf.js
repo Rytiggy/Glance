@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
-module.exports = function (ctx) {
+module.exports = function(ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -12,7 +12,7 @@ module.exports = function (ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v3',
-      'fontawesome-v5',
+      "fontawesome-v5",
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -65,10 +65,11 @@ module.exports = function (ctx) {
         "QImg",
         "QBadge",
         "QSpace",
-        "QBtnDropdown"
+        "QBtnDropdown",
+        "QDialog"
       ],
 
-      directives: ["Ripple"],
+      directives: ["Ripple", "ClosePopup"],
 
       // Quasar plugins
       plugins: ["Notify"]
@@ -180,4 +181,4 @@ module.exports = function (ctx) {
       }
     }
   };
-}
+};
