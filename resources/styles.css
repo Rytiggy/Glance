@@ -110,3 +110,7 @@
   y: 10%;
   text-anchor: "end";
 }
+
+.treatment-user-btns {
+  y: "$+10";
+}

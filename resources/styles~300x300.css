@@ -19,3 +19,7 @@
   x: 35%;
   y: 9%;
 }
+
+.treatment-user-btns {
+  y: "$+10";
+}

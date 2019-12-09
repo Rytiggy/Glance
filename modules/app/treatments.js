@@ -42,13 +42,13 @@ let homeContainer = document.getElementById("home");
 export default class treatments {
   constructor(transfer, settings) {
     if (settings.numOfDataSources == 2) {
-      if (settings.dataSource == "nightscout") {
+      if (settings.dataSource == "nightscout" && settings.treatmentUrl) {
         btnUser1.value = 1;
         btnUser1.style.display = "inline";
       } else {
         btnUser1.style.display = "none";
       }
-      if (settings.dataSourceTwo == "nightscout") {
+      if (settings.dataSourceTwo == "nightscout" && settings.treatmentUrlTwo) {
         btnUser2.value = 1;
         btnUser2.style.display = "inline";
       } else {
