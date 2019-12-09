@@ -175,6 +175,8 @@ export default class alerts {
           alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
+    } else {
+      alertContainer.style.display = "none";
     }
 
     alertTitle.style.fill = sgvColor;
