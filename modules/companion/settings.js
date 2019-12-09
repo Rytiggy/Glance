@@ -14,12 +14,10 @@
 import { settingsStorage } from "settings";
 import Logs from "./logs.js";
 const logs = new Logs();
-let queryParms = "count=47";
+let svgCount = "count=47";
 
 export default class settings {
   get(dataReceivedFromWatch) {
-    logs.add("companion - settings - get()");
-
     let numOfDataSources = null;
     if (settingsStorage.getItem("numOfDataSources")) {
       numOfDataSources = JSON.parse(settingsStorage.getItem("numOfDataSources"))
@@ -49,8 +47,8 @@ export default class settings {
       );
       dataSource = "dexcom";
     }
-    let url = buildURL("http://127.0.0.1:17580", "svg.json", [queryParms]);
-    //let url = "http://127.0.0.1:17580/sgv.json" + queryParms;
+
+    let url = buildxDripUrl(dataReceivedFromWatch);
     let extraDataUrl = null;
     let treatmentUrl = null;
     if (dataSource === "nightscout") {
@@ -65,13 +63,13 @@ export default class settings {
     } else if (dataSource === "xdrip") {
       url = buildxDripUrl(dataReceivedFromWatch);
     } else if (dataSource === "spike") {
-      url = buildURL("http://127.0.0.1:1979", "pebble", [queryParms]);
+      url = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
     } else if (dataSource === "custom") {
       let customEndpoint = JSON.parse(
         settingsStorage.getItem("customEndpoint")
       );
       if (customEndpoint) {
-        url = customEndpoint.name + queryParms;
+        url = customEndpoint.name + svgCount;
       }
       // 47 42
     } else if (dataSource === "yagi") {
@@ -81,7 +79,7 @@ export default class settings {
       url = "dexcom";
     } else if (dataSource === "tomato") {
       // tomato
-      url = buildURL("http://127.0.0.1:11111", "", [queryParms]);
+      url = buildURL("http://127.0.0.1:11111", "", [svgCount]);
     }
 
     let dataSourceTwo = null;
@@ -99,7 +97,7 @@ export default class settings {
       dataSourceTwo = "dexcom";
     }
 
-    let urlTwo = "http://127.0.0.1:17580/sgv.json" + queryParms;
+    let urlTwo = buildxDripUrl(dataReceivedFromWatch);
     let extraDataUrlTwo = null;
     let treatmentUrlTwo = null;
     if (dataSourceTwo === "nightscout") {
@@ -114,13 +112,13 @@ export default class settings {
     } else if (dataSourceTwo === "xdrip") {
       urlTwo = buildxDripUrl(dataReceivedFromWatch);
     } else if (dataSourceTwo === "spike") {
-      urlTwo = buildURL("http://127.0.0.1:1979", "pebble", [queryParms]);
+      urlTwo = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
     } else if (dataSourceTwo === "custom") {
       let customEndpointTwo = JSON.parse(
         settingsStorage.getItem("customEndpointTwo")
       );
       if (customEndpointTwo) {
-        urlTwo = customEndpointTwo.name + queryParms;
+        urlTwo = customEndpointTwo.name + svgCount;
       }
       // 47 42
     } else if (dataSourceTwo === "dexcom") {
@@ -129,7 +127,7 @@ export default class settings {
       //FAB
       urlTwo = "yagi";
     } else if (dataSource === "tomato") {
-      urlTwo = buildURL("http://127.0.0.1:11111", "", [queryParms]);
+      urlTwo = buildURL("http://127.0.0.1:11111", "", [svgCount]);
     }
 
     let glucoseUnits = null;
@@ -822,20 +820,20 @@ function buildNightscoutUrls(
   url = buildURL(
     `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
     "pebble",
-    [queryParms, nightscoutSiteToken]
+    [svgCount, nightscoutSiteToken]
   );
   //extra data
   extraDataUrl = buildURL(
     `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
     "api/v2/properties",
-    [queryParms, nightscoutSiteToken]
+    [svgCount, nightscoutSiteToken]
   );
   // treatment
   if (nightscoutSiteToken) {
     treatmentUrl = buildURL(
       `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
       "api/v1/treatments",
-      [queryParms, nightscoutSiteToken]
+      [svgCount, nightscoutSiteToken]
     );
   }
 
@@ -851,11 +849,11 @@ function buildxDripUrl(dataReceivedFromWatch) {
     let steps = `steps=${dataReceivedFromWatch.steps}`;
     let heart = `heart=${dataReceivedFromWatch.heart}`;
     return buildURL("http://127.0.0.1:17580", "svg.json", [
-      queryParms,
+      svgCount,
       steps,
       heart
     ]);
   } else {
-    return buildURL("http://127.0.0.1:17580", "svg.json", [queryParms]);
+    return buildURL("http://127.0.0.1:17580", "svg.json", [svgCount]);
   }
 }

@@ -466,7 +466,7 @@ export default class standardize {
       "yagiPatientNameTwo"
     ];
     Object.keys(settings).forEach(key => {
-      if (settings[key] && !blackList.includes(key)) {
+      if (!blackList.includes(key)) {
         tempSettings[key] = settings[key];
       }
     });
@@ -475,7 +475,6 @@ export default class standardize {
       tempSettings.highThreshold = mgdl(tempSettings.highThreshold);
       tempSettings.lowThreshold = mgdl(tempSettings.lowThreshold);
     }
-
     return tempSettings;
   }
 }
