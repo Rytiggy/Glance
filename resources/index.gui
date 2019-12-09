@@ -21,6 +21,9 @@
 					</svg>
 				</svg>
 			</svg>	
+			<use href="#square-button-neutral" id="goToActions">
+				<set href="#text" attributeName="text-buffer" to="" />
+			</use>
 			<svg class="alertContainer" display="none">
 				<use href="#alerts" class="alerts"/>
 				<svg class="row bottom">
@@ -60,6 +63,9 @@
 					/>
 				</svg>
 			</svg>
+			<use href="#square-button-neutral" id="goToActions">
+				<set href="#text" attributeName="text-buffer" to="" />
+			</use>
 			<svg class="alertContainer" display="none">
 				<use href="#alerts" class="alerts"/>
 				<svg class="row bottom">
@@ -78,9 +84,6 @@
 			</svg>
 		</svg>
 
-		<use href="#square-button-neutral" id="goToActions">
-			<set href="#text" attributeName="text-buffer" to="" />
-		</use>
 		<!-- <svg id="loadingScreen">
 			<svg class="container">
 				<rect class="loadingScreenBackground" />
