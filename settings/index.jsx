@@ -386,6 +386,7 @@ function mySettings(props) {
             }
           >
             <TextInput label="logs" settingsKey="logs" />
+            <TextInput disabled label="Unique Identifier" settingsKey="uuid" />
             <Button
               list
               label="Resync"

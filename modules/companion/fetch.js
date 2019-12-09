@@ -18,11 +18,9 @@ export default class messaging {
   //Fetch data from an API endpoint and return a promise
   async get(url) {
     const trimmedURL = url.replace(/ /g, "");
-    logs.add("Line 16: companion - fetch - get() " + trimmedURL);
     return await fetch(trimmedURL)
       .then(handleResponse)
       .then(data => {
-        logs.add(`Line 28: companion - fetch - get() Data Okay return`);
         return data;
       })
       .catch(error => {
@@ -30,7 +28,6 @@ export default class messaging {
         if (!error.status) {
           error.status = "404";
         }
-        logs.add(` ERROR companion - fetch - get() ${JSON.stringify(error)}`);
         let errorMsg = {
           text: "Error with companion - fetch - get()",
           error: error,
@@ -44,6 +41,25 @@ export default class messaging {
     // Default options are marked with *
     const response = await fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      // referrer: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    console.log(response);
+    return await response.json(); // parses JSON response into native JavaScript objects
+  }
+
+  async put(url = "", data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit

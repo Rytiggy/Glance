@@ -21,7 +21,7 @@ import Standardize from "../modules/companion/standardize.js";
 import Logs from "../modules/companion/logs.js";
 import Sizeof from "../modules/companion/sizeof.js";
 import Dexcom from "../modules/companion/dexcom.js";
-
+import Firebase from "../modules/companion/firebase.js";
 import * as messaging from "messaging";
 import { me } from "companion";
 // import * as weather from 'fitbit-weather/companion'
@@ -31,6 +31,9 @@ import Dropbox from "../modules/companion/dropbox.js";
 
 const settings = new Settings();
 var store = settings.get();
+
+const firebase = new Firebase();
+firebase.update(store);
 
 const transfer = new Transfer();
 const fetch = new Fetch();
@@ -164,7 +167,6 @@ async function sendData() {
           }
         ]
       };
-
       transfer.send(dataToSend);
     }
   );

@@ -6,3 +6,5 @@ node_modules
 build
 /build
 
+# ignore the config 
+config.js
