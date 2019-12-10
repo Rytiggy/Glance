@@ -34,6 +34,7 @@ export default class firebase {
         data["dataSource"] = settings.dataSource;
         data["phoneType"] = companion.host.os.name;
         data["device"] = device.modelName;
+        data["version"] = config.version;
         // data["buildId"] = me.buildId;
       } else {
         // old record so we need to get the data first
@@ -43,11 +44,14 @@ export default class firebase {
           data = {};
           data["createdAt"] = Math.floor(Date.now() / 1000);
         }
+        data["uuid"] = uuid;
         data["updatedAt"] = Math.floor(Date.now() / 1000);
         data["userAgreement"] = settings.userAgreement;
         data["dataSource"] = settings.dataSource;
         data["phoneType"] = companion.host.os.name;
         data["device"] = device.modelName;
+        data["version"] = config.version;
+
         // data.buildId = me.buildId;
       }
       // update the record
