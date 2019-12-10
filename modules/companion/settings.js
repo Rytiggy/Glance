@@ -789,6 +789,15 @@ function buildxDripUrl(dataReceivedFromWatch) {
   }
 }
 
+/**
+ * Generate a url based on the dataSource selected
+ * @param {Object} dataReceivedFromWatch data received from the watch
+ * @param {String} dataSourceSettingsKey a setting key
+ * @param {String} nightscoutSiteNameSettingsKey a setting key
+ * @param {String} nightscoutSiteHostSettingsKey a setting key
+ * @param {String} nightscoutAccessTokenSettingsKey a setting key
+ * @param {String} customEndpointSettingsKey a setting key
+ */
 function getDataSourceUrls(
   dataReceivedFromWatch,
   dataSourceSettingsKey = "dataSource",
