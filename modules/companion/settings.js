@@ -662,6 +662,7 @@ export default class settings {
       treatmentUrl,
       treatmentUrlTwo
     };
+    console.log(settings);
     return settings;
   }
   setToggle(key, value) {
@@ -850,7 +851,7 @@ function getDataSourceUrls(
       settingsStorage.getItem(customEndpointSettingsKey)
     );
     if (customEndpoint) {
-      url = customEndpoint.name + svgCount;
+      url = customEndpoint.name;
     }
     // 47 42
   } else if (dataSource === "yagi") {

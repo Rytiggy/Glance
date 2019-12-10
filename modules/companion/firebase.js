@@ -24,7 +24,6 @@ export default class firebase {
         settingsStorage.setItem("uuid", JSON.stringify({ name: uuid }));
       }
       let url = `https://fitbitglance.firebaseio.com/${config.build}/${uuid}.json?auth=${config.firebase_token}`;
-      console.log(url);
       let data = {};
       if (didCreateNewUuid) {
         // new record

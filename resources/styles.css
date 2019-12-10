@@ -114,3 +114,11 @@
 .treatment-user-btns {
   y: "$";
 }
+
+#errorStatusLead {
+  text-anchor: end;
+  x: 58%;
+  y: 21%;
+  text-length: "80";
+  width: 42%;
+}
