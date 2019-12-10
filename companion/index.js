@@ -24,6 +24,18 @@ import Dexcom from "../modules/companion/dexcom.js";
 import Firebase from "../modules/companion/firebase.js";
 import * as messaging from "messaging";
 import { me } from "companion";
+// Helper
+const MILLISECONDS_PER_MINUTE = 1000 * 60;
+// Wake the Companion after 5 minutes
+me.wakeInterval = 5 * MILLISECONDS_PER_MINUTE;
+if (me.launchReasons.wokenUp) {
+  // The companion started due to a periodic timer
+  console.log("Started due to wake interval!");
+} else {
+  console.log("put companion to sleep");
+  // Close the companion and wait to be awoken
+  me.yield();
+}
 // import * as weather from 'fitbit-weather/companion'
 
 //FAB

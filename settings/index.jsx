@@ -385,7 +385,7 @@ function mySettings(props) {
             <Button
               list
               label="Reset settings to defaults"
-              onClick={() => props.settingsStorage.clear()}
+              onClick={() => clearSettings(props)}
             />
           </Section>
         ) : null
@@ -515,4 +515,10 @@ function renderDataSource(props, id, title, keys) {
       ) : null}
     </Section>
   );
+}
+
+function clearSettings(props) {
+  let uuid = props.settings.uuid;
+  props.settingsStorage.clear();
+  props.settingsStorage.setItem("uuid", uuid);
 }
