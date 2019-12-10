@@ -12,7 +12,8 @@
  */
 import Transfer from "../modules/app/transfer.js";
 const transfer = new Transfer();
-
+import clock from "clock";
+clock.granularity = "minutes";
 import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
@@ -48,9 +49,9 @@ var batteryLevel = document.getElementById("batteryLevel");
 var batteryPercent = document.getElementById("batteryPercent");
 
 loadingScreen();
-setInterval(function() {
-  updateDisplay(data);
-}, 10000);
+// setInterval(function() {
+//   updateDisplay(data);
+// }, 10000);
 
 // On file tranfer
 inbox.onnewfile = () => {
@@ -76,6 +77,23 @@ messaging.peerSocket.onmessage = function(evt) {
   }
 };
 
+var dataToSend = {
+  command: "refreshData",
+  data: {
+    heart: 0,
+    steps: userActivity.get().steps
+  }
+};
+
+transfer.send(dataToSend);
+clock.ontick = evt => {
+  if (data.settings) {
+    updateSettingSpecificDisplay(data.settings);
+    updateDisplay(data);
+    // request new data
+    transfer.send(dataToSend);
+  }
+};
 /**
  * Update watchface display This deals with the BGS data
  * @param {Object} data received from the companion
@@ -467,6 +485,7 @@ function updateSettingSpecificDisplay(settings) {
       document.getElementById("singleBG").style.display = "inline";
       document.getElementById("dualBG").style.display = "none";
     }
+
     actions.init(transfer, singleOrMultipleDispaly, settings);
     const treatments = new Treatments(transfer, settings);
 
@@ -515,17 +534,17 @@ function isOdd(n) {
   return Math.abs(n % 2) == 1;
 }
 
-var dataToSend = {
-  command: "refreshData",
-  data: {
-    heart: 0,
-    steps: userActivity.get().steps
-  }
-};
+// var dataToSend = {
+//   command: "refreshData",
+//   data: {
+//     heart: 0,
+//     steps: userActivity.get().steps
+//   }
+// };
 // Request data every 5 mins from companion
-setTimeout(function() {
-  transfer.send(dataToSend);
-}, 1500);
-setInterval(function() {
-  transfer.send(dataToSend);
-}, 180000);
+// setTimeout(function() {
+//   transfer.send(dataToSend);
+// }, 1500);
+// setInterval(function() {
+//   transfer.send(dataToSend);
+// }, 180000);

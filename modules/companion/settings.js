@@ -662,7 +662,6 @@ export default class settings {
       treatmentUrl,
       treatmentUrlTwo
     };
-    console.log(settings);
     return settings;
   }
   setToggle(key, value) {
