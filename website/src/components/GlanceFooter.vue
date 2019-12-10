@@ -2,9 +2,10 @@
   <div class="glance-footer q-py-xl q-px-md">
     <div class="text-white text-center full-width">
       <div class="description-lead text-body1 text-white">
-        This program is free software distributed under the terms of the GNU General Public License
-        as published by the Free Software Foundation, either version 3 of the License, or any later
-        version. See http://www.gnu.org/licenses/gpl.txt for more details
+        This program is free software distributed under the terms of the GNU
+        General Public License as published by the Free Software Foundation,
+        either version 3 of the License, or any later version. See
+        http://www.gnu.org/licenses/gpl.txt for more details
         <div class="q-py-sm">
           <a
             class="text-h4 q-px-sm text-white"
@@ -28,16 +29,18 @@
             <i class="fab fa-discord"></i>
           </a>
         </div>
-        Made by <a href="http://ryanmasonjar.com" target="_blank" class="text-grey-10">Ryan Mason</a> | 2019
+        Made by
+        <a href="http://ryanmasonjar.com" target="_blank" class="text-grey-10"
+          >Ryan Mason</a
+        >
+        | 2019
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>

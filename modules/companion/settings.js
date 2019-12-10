@@ -14,12 +14,10 @@
 import { settingsStorage } from "settings";
 import Logs from "./logs.js";
 const logs = new Logs();
+let svgCount = "count=47";
 
 export default class settings {
   get(dataReceivedFromWatch) {
-    let queryParms = "?count=47";
-    logs.add("companion - settings - get()");
-
     let numOfDataSources = null;
     if (settingsStorage.getItem("numOfDataSources")) {
       numOfDataSources = JSON.parse(settingsStorage.getItem("numOfDataSources"))
@@ -34,249 +32,42 @@ export default class settings {
       );
       numOfDataSources = 1;
     }
+    // usersOneUrls
+    let userOneUrls = getDataSourceUrls(
+      dataReceivedFromWatch,
+      "dataSource",
+      "nightscoutSiteName",
+      "nightscoutSiteHost",
+      "nightscoutAccessToken",
+      "customEndpoint"
+    );
+    let dataSource = userOneUrls.dataSource;
+    let url = userOneUrls.url;
+    let extraDataUrl = userOneUrls.extraDataUrl;
+    let treatmentUrl = userOneUrls.treatmentUrl;
+    // usersOneUrls End
 
-    let dataSource = null;
-    if (settingsStorage.getItem("dataSource")) {
-      dataSource = JSON.parse(settingsStorage.getItem("dataSource")).values[0]
-        .value;
-    } else if (!dataSource) {
-      settingsStorage.setItem(
-        "dataSource",
-        JSON.stringify({
-          selected: [0],
-          values: [{ name: "Dexcom", value: "dexcom" }]
-        })
-      );
-      dataSource = "dexcom";
-    }
-
-    let url = "http://127.0.0.1:17580/sgv.json" + queryParms;
-    let extraDataUrl = null;
-    let treatmentUrl = null;
-    if (dataSource === "nightscout") {
-      // Nightscout
-      let nightscoutSiteName = null;
-      if (
-        settingsStorage.getItem("nightscoutSiteName") &&
-        JSON.parse(settingsStorage.getItem("nightscoutSiteName")).name
-      ) {
-        nightscoutSiteName = JSON.parse(
-          settingsStorage.getItem("nightscoutSiteName")
-        ).name;
-        if (isURL(nightscoutSiteName)) {
-          nightscoutSiteName = nightscoutSiteName.split(".")[0];
-          nightscoutSiteName = nightscoutSiteName.split("//")[1];
-        }
-      } else if (!nightscoutSiteName) {
-        nightscoutSiteName = "placeholder";
-        settingsStorage.setItem(
-          "nightscoutSiteName",
-          JSON.stringify({ name: "" })
-        );
-      }
-      let nightscoutSiteHost = null;
-      if (settingsStorage.getItem("nightscoutSiteHost")) {
-        nightscoutSiteHost = JSON.parse(
-          settingsStorage.getItem("nightscoutSiteHost")
-        ).values[0].value;
-      } else if (!nightscoutSiteHost) {
-        nightscoutSiteHost = "herokuapp.com";
-        settingsStorage.setItem(
-          "nightscoutSiteHost",
-          JSON.stringify({
-            selected: [0],
-            values: [{ name: "Heroku", value: "herokuapp.com" }]
-          })
-        );
-      }
-
-      let nightscoutSiteToken = "";
-      if (
-        settingsStorage.getItem("nightscoutAccessToken") &&
-        JSON.parse(settingsStorage.getItem("nightscoutAccessToken")).name
-      ) {
-        nightscoutSiteToken =
-          "?token=" +
-          JSON.parse(settingsStorage.getItem("nightscoutAccessToken")).name;
-        // Need to replace the query params '?' with an '&' -> Encoding problems
-        // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
-        queryParms = queryParms.replace("?", "&");
-      }
-
-      url =
-        "https://" +
-        nightscoutSiteName.toLowerCase() +
-        "." +
-        nightscoutSiteHost +
-        "/pebble" +
-        nightscoutSiteToken +
-        queryParms;
-      // extra data
-      extraDataUrl =
-        "https://" +
-        nightscoutSiteName.toLowerCase() +
-        "." +
-        nightscoutSiteHost +
-        "/api/v2/properties" +
-        nightscoutSiteToken;
-      // treatment
-      if (nightscoutSiteToken) {
-        treatmentUrl =
-          "https://" +
-          nightscoutSiteName.toLowerCase() +
-          "." +
-          nightscoutSiteHost +
-          "/api/v1/treatments" +
-          nightscoutSiteToken;
-      }
-    } else if (dataSource === "xdrip") {
-      // xDrip+
-      if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
-        queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
-      }
-      url = "http://127.0.0.1:17580/sgv.json" + queryParms;
-    } else if (dataSource === "spike") {
-      // spike
-      url = "http://127.0.0.1:1979/pebble" + queryParms; // local spike addr for my comp
-      // url = 'http://192.168.86.91:1979/pebble' + queryParms;
-    } else if (dataSource === "custom") {
-      let customEndpoint = JSON.parse(
-        settingsStorage.getItem("customEndpoint")
-      );
-      if (customEndpoint) {
-        url = customEndpoint.name + queryParms;
-      }
-      // 47 42
-    } else if (dataSource === "yagi") {
-      //FAB
-      url = "yagi";
-    } else if (dataSource === "dexcom") {
-      url = "dexcom";
-    } else if (dataSource === "tomato") {
-      // tomato
-      url = "http://127.0.0.1:11111" + queryParms;
-    }
-
+    // usersTwoUrls
+    // define these outside the if
     let dataSourceTwo = null;
-    if (settingsStorage.getItem("dataSourceTwo")) {
-      dataSourceTwo = JSON.parse(settingsStorage.getItem("dataSourceTwo"))
-        .values[0].value;
-    } else if (!dataSourceTwo) {
-      settingsStorage.setItem(
-        "dataSourceTwo",
-        JSON.stringify({
-          selected: [0],
-          values: [{ name: "Dexcom", value: "dexcom" }]
-        })
-      );
-      dataSourceTwo = "dexcom";
-    }
-
-    let urlTwo = "http://127.0.0.1:17580/sgv.json" + queryParms;
+    let urlTwo = null;
     let extraDataUrlTwo = null;
     let treatmentUrlTwo = null;
-    if (dataSourceTwo === "nightscout") {
-      // Nightscout
-      let nightscoutSiteNameTwo = null;
-      if (
-        settingsStorage.getItem("nightscoutSiteNameTwo") &&
-        JSON.parse(settingsStorage.getItem("nightscoutSiteNameTwo")).name
-      ) {
-        nightscoutSiteNameTwo = JSON.parse(
-          settingsStorage.getItem("nightscoutSiteNameTwo")
-        ).name;
-        if (isURL(nightscoutSiteNameTwo)) {
-          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split(".")[0];
-          nightscoutSiteNameTwo = nightscoutSiteNameTwo.split("//")[1];
-        }
-      } else if (!nightscoutSiteNameTwo) {
-        nightscoutSiteNameTwo = "placeholder";
-        settingsStorage.setItem(
-          "nightscoutSiteNameTwo",
-          JSON.stringify({ name: "" })
-        );
-      }
-      let nightscoutSiteHostTwo = null;
-      if (settingsStorage.getItem("nightscoutSiteHostTwo")) {
-        nightscoutSiteHostTwo = JSON.parse(
-          settingsStorage.getItem("nightscoutSiteHostTwo")
-        ).values[0].value;
-      } else if (!nightscoutSiteHostTwo) {
-        nightscoutSiteHostTwo = "herokuapp.com";
-        settingsStorage.setItem(
-          "nightscoutSiteHostTwo",
-          JSON.stringify({
-            selected: [0],
-            values: [{ name: "Heroku", value: "herokuapp.com" }]
-          })
-        );
-      }
-
-      let nightscoutSiteTokenTwo = "";
-      if (
-        settingsStorage.getItem("nightscoutAccessTokenTwo") &&
-        JSON.parse(settingsStorage.getItem("nightscoutAccessTokenTwo")).name
-      ) {
-        nightscoutSiteTokenTwo =
-          "?token=" +
-          JSON.parse(settingsStorage.getItem("nightscoutAccessTokenTwo")).name;
-        // Need to replace the query params '?' with an '&' -> Encoding problems
-        // TODO: Should we use some kind of URL Builder? Custom API Endpoints might have the same Problem...
-        queryParms = queryParms.replace("?", "&");
-      }
-      urlTwo =
-        "https://" +
-        nightscoutSiteNameTwo.toLowerCase() +
-        "." +
-        nightscoutSiteHostTwo +
-        "/pebble" +
-        nightscoutSiteTokenTwo +
-        queryParms;
-      //extra data
-      extraDataUrlTwo =
-        "https://" +
-        nightscoutSiteNameTwo.toLowerCase() +
-        "." +
-        nightscoutSiteHostTwo +
-        "/api/v2/properties" +
-        nightscoutSiteTokenTwo;
-      //treatment two
-      if (nightscoutSiteTokenTwo) {
-        treatmentUrlTwo =
-          "https://" +
-          nightscoutSiteNameTwo.toLowerCase() +
-          "." +
-          nightscoutSiteHostTwo +
-          "/api/v1/treatments" +
-          nightscoutSiteTokenTwo;
-      }
-    } else if (dataSourceTwo === "xdrip") {
-      // xDrip+
-      if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
-        queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
-      }
-      urlTwo = "http://127.0.0.1:17580/sgv.json" + queryParms;
-    } else if (dataSourceTwo === "spike") {
-      // spike
-      urlTwo = "http://127.0.0.1:1979/pebble" + queryParms; // local spike addr for my comp
-      // url = 'http://192.168.86.91:1979/pebble' + queryParms;
-    } else if (dataSourceTwo === "custom") {
-      let customEndpointTwo = JSON.parse(
-        settingsStorage.getItem("customEndpointTwo")
+    if (numOfDataSources == 2) {
+      let userTwoUrls = getDataSourceUrls(
+        dataReceivedFromWatch,
+        "dataSourceTwo",
+        "nightscoutSiteNameTwo",
+        "nightscoutSiteHostTwo",
+        "nightscoutAccessTokenTwo",
+        "customEndpointTwo"
       );
-      if (customEndpointTwo) {
-        urlTwo = customEndpointTwo.name + queryParms;
-      }
-      // 47 42
-    } else if (dataSourceTwo === "dexcom") {
-      urlTwo = "dexcom";
-    } else if (dataSourceTwo === "yagi") {
-      //FAB
-      urlTwo = "yagi";
-    } else if (dataSource === "tomato") {
-      // tomato
-      urlTwo = "http://127.0.0.1:11111" + queryParms;
+      dataSourceTwo = userTwoUrls.dataSource;
+      urlTwo = userTwoUrls.url;
+      extraDataUrlTwo = userTwoUrls.extraDataUrl;
+      treatmentUrlTwo = userTwoUrls.treatmentUrl;
     }
+    // usersTwoUrls End
 
     let glucoseUnits = null;
     if (settingsStorage.getItem("glucoseUnits")) {
@@ -796,6 +587,7 @@ export default class settings {
         JSON.stringify({ name: dataSourceName })
       );
     }
+
     let dataSourceNameTwo = null;
     if (settingsStorage.getItem("dataSourceNameTwo")) {
       dataSourceNameTwo = JSON.parse(
@@ -870,10 +662,10 @@ export default class settings {
       treatmentUrl,
       treatmentUrlTwo
     };
+    console.log(settings);
     return settings;
   }
   setToggle(key, value) {
-    logs.add("Line ~183 setToggle()");
     settingsStorage.setItem(key, value);
   }
 }
@@ -898,14 +690,183 @@ function isURL(s) {
 function validateHexCode(code, text) {
   var isOk = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
   if (isOk) {
-    logs.add("companion - validateHexCode - Hex code valid");
     return code;
   }
-  logs.add(
-    `companion - validateHexCode - Error with hex code set to black (#000000) user entered ${code}`
-  );
   if (text) {
     return "#ffffff";
   }
   return "#000000";
+}
+
+function buildURL(base = "", path = "", params = []) {
+  let queryString = params.join("&");
+  return `${base}/${path}?${queryString}`;
+}
+
+/**
+ * Build the nightscout urls
+ * @param {string} siteName the Fitbit setting key to get the user input defaults to 'nightscoutSiteName'
+ * @param {string} host the Fitbit setting key to get the user input defaults to 'nightscoutSiteHost'
+ * @param {string} token the Fitbit setting key to get the user input defaults to 'nightscoutAccessToken'
+ */
+function buildNightscoutUrls(
+  siteName = "nightscoutSiteName",
+  host = "nightscoutSiteHost",
+  token = "nightscoutAccessToken"
+) {
+  let url = null;
+  let extraDataUrl = null;
+  let treatmentUrl = null;
+  // Nightscout
+  let nightscoutSiteName = null;
+  if (
+    settingsStorage.getItem(siteName) &&
+    JSON.parse(settingsStorage.getItem(siteName)).name
+  ) {
+    nightscoutSiteName = JSON.parse(settingsStorage.getItem(siteName)).name;
+    if (isURL(nightscoutSiteName)) {
+      nightscoutSiteName = nightscoutSiteName.split(".")[0];
+      nightscoutSiteName = nightscoutSiteName.split("//")[1];
+    }
+  } else if (!nightscoutSiteName) {
+    nightscoutSiteName = "placeholder";
+    settingsStorage.setItem(siteName, JSON.stringify({ name: "" }));
+  }
+  let nightscoutSiteHost = null;
+  if (settingsStorage.getItem(host)) {
+    nightscoutSiteHost = JSON.parse(settingsStorage.getItem(host)).values[0]
+      .value;
+  } else if (!nightscoutSiteHost) {
+    nightscoutSiteHost = "herokuapp.com";
+    settingsStorage.setItem(
+      host,
+      JSON.stringify({
+        selected: [0],
+        values: [{ name: "Heroku", value: "herokuapp.com" }]
+      })
+    );
+  }
+
+  let nightscoutSiteToken = "";
+  if (
+    settingsStorage.getItem(token) &&
+    JSON.parse(settingsStorage.getItem(token)).name
+  ) {
+    nightscoutSiteToken =
+      "token=" + JSON.parse(settingsStorage.getItem(token)).name;
+  }
+
+  // base data url
+  url = buildURL(
+    `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
+    "pebble",
+    [svgCount, nightscoutSiteToken]
+  );
+  //extra data
+  extraDataUrl = buildURL(
+    `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
+    "api/v2/properties",
+    [svgCount, nightscoutSiteToken]
+  );
+  // treatment
+  if (nightscoutSiteToken) {
+    treatmentUrl = buildURL(
+      `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
+      "api/v1/treatments",
+      [svgCount, nightscoutSiteToken]
+    );
+  }
+
+  return {
+    url,
+    extraDataUrl,
+    treatmentUrl
+  };
+}
+
+function buildxDripUrl(dataReceivedFromWatch) {
+  if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
+    let steps = `steps=${dataReceivedFromWatch.steps}`;
+    let heart = `heart=${dataReceivedFromWatch.heart}`;
+    return buildURL("http://127.0.0.1:17580", "svg.json", [
+      svgCount,
+      steps,
+      heart
+    ]);
+  } else {
+    return buildURL("http://127.0.0.1:17580", "svg.json", [svgCount]);
+  }
+}
+
+/**
+ * Generate a url based on the dataSource selected
+ * @param {Object} dataReceivedFromWatch data received from the watch
+ * @param {String} dataSourceSettingsKey a setting key
+ * @param {String} nightscoutSiteNameSettingsKey a setting key
+ * @param {String} nightscoutSiteHostSettingsKey a setting key
+ * @param {String} nightscoutAccessTokenSettingsKey a setting key
+ * @param {String} customEndpointSettingsKey a setting key
+ */
+function getDataSourceUrls(
+  dataReceivedFromWatch,
+  dataSourceSettingsKey = "dataSource",
+  nightscoutSiteNameSettingsKey = "nightscoutSiteName",
+  nightscoutSiteHostSettingsKey = "nightscoutSiteHost",
+  nightscoutAccessTokenSettingsKey = "nightscoutAccessToken",
+  customEndpointSettingsKey = "customEndpoint"
+) {
+  let dataSource = null;
+  let url = "dexcom";
+  let extraDataUrl = null;
+  let treatmentUrl = null;
+  if (settingsStorage.getItem(dataSourceSettingsKey)) {
+    dataSource = JSON.parse(settingsStorage.getItem(dataSourceSettingsKey))
+      .values[0].value;
+  } else if (!dataSource) {
+    settingsStorage.setItem(
+      dataSourceSettingsKey,
+      JSON.stringify({
+        selected: [0],
+        values: [{ name: "Dexcom", value: "dexcom" }]
+      })
+    );
+    dataSource = "dexcom";
+  }
+
+  if (dataSource === "nightscout") {
+    let nightscoutUrls = buildNightscoutUrls(
+      nightscoutSiteNameSettingsKey,
+      nightscoutSiteHostSettingsKey,
+      nightscoutAccessTokenSettingsKey
+    );
+    url = nightscoutUrls.url;
+    extraDataUrl = nightscoutUrls.extraDataUrl;
+    treatmentUrl = nightscoutUrls.treatmentUrl;
+  } else if (dataSource === "xdrip") {
+    url = buildxDripUrl(dataReceivedFromWatch);
+  } else if (dataSource === "spike") {
+    url = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
+  } else if (dataSource === "custom") {
+    let customEndpoint = JSON.parse(
+      settingsStorage.getItem(customEndpointSettingsKey)
+    );
+    if (customEndpoint) {
+      url = customEndpoint.name;
+    }
+    // 47 42
+  } else if (dataSource === "yagi") {
+    //FAB
+    url = "yagi";
+  } else if (dataSource === "dexcom") {
+    url = "dexcom";
+  } else if (dataSource === "tomato") {
+    // tomato
+    url = buildURL("http://127.0.0.1:11111", "", [svgCount]);
+  }
+  return {
+    dataSource,
+    url,
+    extraDataUrl,
+    treatmentUrl
+  };
 }

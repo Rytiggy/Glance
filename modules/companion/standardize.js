@@ -24,15 +24,8 @@ export default class standardize {
   // datetime:
   // bgdelta:
   bloodsugars(data, extraData, settings, keys) {
-    logs.add("Line 29: companion - standardize - bloodsugars()");
-    logs.add("Line 30: companion - standardize - bloodsugars() - PARAMERTERS");
-    logs.add(`data: ${JSON.stringify(data)}}`);
-    logs.add(`extraData ${JSON.stringify(extraData)}`);
-
     settings[keys.dexcomUsername] = "";
     settings[keys.dexcomPassword] = "";
-    logs.add(`settings ${JSON.stringify(settings)}`);
-
     let bgs = data;
     let rawbg = "";
     let tempBasal = "";
@@ -40,11 +33,6 @@ export default class standardize {
     let loopStatus = "";
     let upbat = "";
     let sage = "";
-    logs.add(
-      `BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !==
-        "undefined"}`
-    );
-    // console.log(`BGS: ${JSON.stringify(bgs)}`);
 
     if (bgs && !data.error && data && bgs !== "undefined") {
       if (settings[keys.dataSource] === "nightscout") {
@@ -372,16 +360,20 @@ export default class standardize {
         return bg;
       });
 
-      logs.add(
-        "Line 151:  companion - standardize cleanedBgs" +
-          JSON.stringify(cleanedBgs)
-      );
-
       let returnBloodsugars = {
         currentBg: getfistBgNonPredictiveBG(cleanedBgs),
         bgs: cleanedBgs.map(bg => bg.sgv),
         predicted: cleanedBgs.filter(bg => bg.p).map(bg => bg.sgv)
       };
+
+      // if small graph predictions is disabled remove them from the blood sugars array
+      if (!settings.enableSmallGraphPrediction) {
+        returnBloodsugars.bgs = returnBloodsugars.bgs.splice(
+          returnBloodsugars.predicted.length,
+          returnBloodsugars.bgs.length
+        );
+        returnBloodsugars.predicted = [];
+      }
       return returnBloodsugars;
     }
     logs.add("Line 63: here reurning error");
@@ -474,7 +466,7 @@ export default class standardize {
       "yagiPatientNameTwo"
     ];
     Object.keys(settings).forEach(key => {
-      if (settings[key] && !blackList.includes(key)) {
+      if (!blackList.includes(key)) {
         tempSettings[key] = settings[key];
       }
     });
@@ -483,7 +475,6 @@ export default class standardize {
       tempSettings.highThreshold = mgdl(tempSettings.highThreshold);
       tempSettings.lowThreshold = mgdl(tempSettings.lowThreshold);
     }
-
     return tempSettings;
   }
 }
@@ -552,7 +543,6 @@ function standardizeExtraData(bgs, extraData, settings) {
       extraData.ar2.forecast.predicted
     ) {
       // AR2
-      // TODO: add check for unit type !!!! or check
       bgs.splice(bgs.length - 6, 6);
       let predictedValues = extraData.ar2.forecast.predicted.length - 1;
       let tempPredictedBG =

@@ -3,15 +3,24 @@
     <div class="q-pa-xl">
       <div class="text-white text-h3 text-center">Gallery</div>
       <div class="q-pb-md text-white text-center full-width">
-        <div
-          class="description-lead text-body1"
-        >
-        Glance is highly customizable allowing for you to change almost any aspect of the watch.
+        <div class="description-lead text-body1">
+          Glance is highly customizable allowing for you to change almost any
+          aspect of the watch.
         </div>
       </div>
       <div class="row gallery-images">
-        <div class="col-xs-12 col-sm-4 col-md-4 q-pa-sm" v-for="(img, i) in galleryImgs" :key="i">
-          <q-img spinner-color="white" class="rounded-borders" rounded :src="img.url" :ratio="174/125" />
+        <div
+          class="col-xs-12 col-sm-4 col-md-4 q-pa-sm"
+          v-for="(img, i) in galleryImgs"
+          :key="i"
+        >
+          <q-img
+            spinner-color="white"
+            class="rounded-borders"
+            rounded
+            :src="img.url"
+            :ratio="174 / 125"
+          />
         </div>
       </div>
     </div>

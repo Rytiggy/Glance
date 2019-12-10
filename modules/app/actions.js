@@ -47,7 +47,7 @@ export default class actions {
     /**
      * Go to Action
      */
-    let goToActions = document.getElementById("goToActions");
+    let goToActions = singleOrMultipleDispaly.getElementById("goToActions");
     goToActions.onclick = evt => {
       vibration.start("bump");
       actionsContainer.style.display = "inline";

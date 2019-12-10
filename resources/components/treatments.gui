@@ -61,7 +61,7 @@
             >
             </text>
         </svg>
-        <svg y="$+10">
+        <svg class="treatment-user-btns">
             <use id="btn-user1" href="#square-button-toggle" value="1" fill="fb-light-gray">
                 <set href="#text" attributeName="text-buffer" to="User 1" />
             </use>
