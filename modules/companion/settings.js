@@ -32,103 +32,35 @@ export default class settings {
       );
       numOfDataSources = 1;
     }
+    // usersOneUrls
+    let userOneUrls = getDataSourceUrls(
+      dataReceivedFromWatch,
+      "dataSource",
+      "nightscoutSiteName",
+      "nightscoutSiteHost",
+      "nightscoutAccessToken",
+      "customEndpoint"
+    );
+    let dataSource = userOneUrls.dataSource;
+    let url = userOneUrls.url;
+    let extraDataUrl = userOneUrls.extraDataUrl;
+    let treatmentUrl = userOneUrls.treatmentUrl;
+    // usersOneUrls End
 
-    let dataSource = null;
-    if (settingsStorage.getItem("dataSource")) {
-      dataSource = JSON.parse(settingsStorage.getItem("dataSource")).values[0]
-        .value;
-    } else if (!dataSource) {
-      settingsStorage.setItem(
-        "dataSource",
-        JSON.stringify({
-          selected: [0],
-          values: [{ name: "Dexcom", value: "dexcom" }]
-        })
-      );
-      dataSource = "dexcom";
-    }
-
-    let url = buildxDripUrl(dataReceivedFromWatch);
-    let extraDataUrl = null;
-    let treatmentUrl = null;
-    if (dataSource === "nightscout") {
-      let nightscoutUrls = buildNightscoutUrls(
-        "nightscoutSiteName",
-        "nightscoutSiteHost",
-        "nightscoutAccessToken"
-      );
-      url = nightscoutUrls.url;
-      extraDataUrl = nightscoutUrls.extraDataUrl;
-      treatmentUrl = nightscoutUrls.treatmentUrl;
-    } else if (dataSource === "xdrip") {
-      url = buildxDripUrl(dataReceivedFromWatch);
-    } else if (dataSource === "spike") {
-      url = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
-    } else if (dataSource === "custom") {
-      let customEndpoint = JSON.parse(
-        settingsStorage.getItem("customEndpoint")
-      );
-      if (customEndpoint) {
-        url = customEndpoint.name + svgCount;
-      }
-      // 47 42
-    } else if (dataSource === "yagi") {
-      //FAB
-      url = "yagi";
-    } else if (dataSource === "dexcom") {
-      url = "dexcom";
-    } else if (dataSource === "tomato") {
-      // tomato
-      url = buildURL("http://127.0.0.1:11111", "", [svgCount]);
-    }
-
-    let dataSourceTwo = null;
-    if (settingsStorage.getItem("dataSourceTwo")) {
-      dataSourceTwo = JSON.parse(settingsStorage.getItem("dataSourceTwo"))
-        .values[0].value;
-    } else if (!dataSourceTwo) {
-      settingsStorage.setItem(
-        "dataSourceTwo",
-        JSON.stringify({
-          selected: [0],
-          values: [{ name: "Dexcom", value: "dexcom" }]
-        })
-      );
-      dataSourceTwo = "dexcom";
-    }
-
-    let urlTwo = buildxDripUrl(dataReceivedFromWatch);
-    let extraDataUrlTwo = null;
-    let treatmentUrlTwo = null;
-    if (dataSourceTwo === "nightscout") {
-      let nightscoutUrls = buildNightscoutUrls(
-        "nightscoutSiteNameTwo",
-        "nightscoutSiteHostTwo",
-        "nightscoutAccessTokenTwo"
-      );
-      urlTwo = nightscoutUrls.url;
-      extraDataUrlTwo = nightscoutUrls.extraDataUrl;
-      treatmentUrlTwo = nightscoutUrls.treatmentUrl;
-    } else if (dataSourceTwo === "xdrip") {
-      urlTwo = buildxDripUrl(dataReceivedFromWatch);
-    } else if (dataSourceTwo === "spike") {
-      urlTwo = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
-    } else if (dataSourceTwo === "custom") {
-      let customEndpointTwo = JSON.parse(
-        settingsStorage.getItem("customEndpointTwo")
-      );
-      if (customEndpointTwo) {
-        urlTwo = customEndpointTwo.name + svgCount;
-      }
-      // 47 42
-    } else if (dataSourceTwo === "dexcom") {
-      urlTwo = "dexcom";
-    } else if (dataSourceTwo === "yagi") {
-      //FAB
-      urlTwo = "yagi";
-    } else if (dataSource === "tomato") {
-      urlTwo = buildURL("http://127.0.0.1:11111", "", [svgCount]);
-    }
+    // usersTwoUrls
+    let userTwoUrls = getDataSourceUrls(
+      dataReceivedFromWatch,
+      "dataSourceTwo",
+      "nightscoutSiteNameTwo",
+      "nightscoutSiteHostTwo",
+      "nightscoutAccessTokenTwo",
+      "customEndpointTwo"
+    );
+    let dataSourceTwo = userTwoUrls.dataSource;
+    let urlTwo = userTwoUrls.url;
+    let extraDataUrlTwo = userTwoUrls.extraDataUrl;
+    let treatmentUrlTwo = userTwoUrls.treatmentUrl;
+    // usersTwoUrls End
 
     let glucoseUnits = null;
     if (settingsStorage.getItem("glucoseUnits")) {
@@ -855,4 +787,69 @@ function buildxDripUrl(dataReceivedFromWatch) {
   } else {
     return buildURL("http://127.0.0.1:17580", "svg.json", [svgCount]);
   }
+}
+
+function getDataSourceUrls(
+  dataReceivedFromWatch,
+  dataSourceSettingsKey = "dataSource",
+  nightscoutSiteNameSettingsKey = "nightscoutSiteName",
+  nightscoutSiteHostSettingsKey = "nightscoutSiteHost",
+  nightscoutAccessTokenSettingsKey = "nightscoutAccessToken",
+  customEndpointSettingsKey = "customEndpoint"
+) {
+  let dataSource = null;
+  let url = null;
+  let extraDataUrl = null;
+  let treatmentUrl = null;
+
+  if (settingsStorage.getItem("dataSource")) {
+    dataSource = JSON.parse(settingsStorage.getItem(dataSourceSettingsKey))
+      .values[0].value;
+  } else if (!dataSource) {
+    settingsStorage.setItem(
+      dataSourceSettingsKey,
+      JSON.stringify({
+        selected: [0],
+        values: [{ name: "Dexcom", value: "dexcom" }]
+      })
+    );
+    dataSource = "dexcom";
+  }
+
+  if (dataSource === "nightscout") {
+    let nightscoutUrls = buildNightscoutUrls(
+      nightscoutSiteNameSettingsKey,
+      nightscoutSiteHostSettingsKey,
+      nightscoutAccessTokenSettingsKey
+    );
+    url = nightscoutUrls.url;
+    extraDataUrl = nightscoutUrls.extraDataUrl;
+    treatmentUrl = nightscoutUrls.treatmentUrl;
+  } else if (dataSource === "xdrip") {
+    url = buildxDripUrl(dataReceivedFromWatch);
+  } else if (dataSource === "spike") {
+    url = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
+  } else if (dataSource === "custom") {
+    let customEndpoint = JSON.parse(
+      settingsStorage.getItem(customEndpointSettingsKey)
+    );
+    if (customEndpoint) {
+      url = customEndpoint.name + svgCount;
+    }
+    // 47 42
+  } else if (dataSource === "yagi") {
+    //FAB
+    url = "yagi";
+  } else if (dataSource === "dexcom") {
+    url = "dexcom";
+  } else if (dataSource === "tomato") {
+    // tomato
+    url = buildURL("http://127.0.0.1:11111", "", [svgCount]);
+  }
+  return {
+    dataSource,
+    url,
+    extraDataUrl,
+    treatmentUrl
+  };
 }
