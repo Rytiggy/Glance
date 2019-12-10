@@ -56,37 +56,19 @@ function mySettings(props) {
             { name: "Two Data Sources", value: 2 }
           ]}
         />
-        {renderDataSource(
-          props,
-          "dataSource",
-          "Data Source One",
-          // [
-          // "customEndpoint",
-          // "nightscoutSiteName",
-          // "nightscoutSiteHost",
-          // "dexcomUsername",
-          // "dexcomPassword",
-          // "USAVSInternational",
-          // "dataSourceName",
-          // "nightscoutSiteTokenTwo",
-          // "nightscoutAccessToken"
-          //  //FAB
-          //  ,"dropboxToken","yagiPatientName"
-          // ],
-          {
-            customEndpoint: "customEndpoint",
-            nightscoutSiteName: "nightscoutSiteName",
-            nightscoutSiteHost: "nightscoutSiteHost",
-            dexcomUsername: "dexcomUsername",
-            dexcomPassword: "dexcomPassword",
-            USAVSInternational: "USAVSInternational",
-            dataSourceName: "dataSourceName",
-            nightscoutAccessToken: "nightscoutAccessToken",
-            //FAB
-            dropboxToken: "dropboxToken",
-            yagiPatientName: "yagiPatientName"
-          }
-        )}
+        {renderDataSource(props, "dataSource", "Data Source One", {
+          customEndpoint: "customEndpoint",
+          nightscoutSiteName: "nightscoutSiteName",
+          nightscoutSiteHost: "nightscoutSiteHost",
+          dexcomUsername: "dexcomUsername",
+          dexcomPassword: "dexcomPassword",
+          USAVSInternational: "USAVSInternational",
+          dataSourceName: "dataSourceName",
+          nightscoutAccessToken: "nightscoutAccessToken",
+          //FAB
+          dropboxToken: "dropboxToken",
+          yagiPatientName: "yagiPatientName"
+        })}
         {props.settings.numOfDataSources
           ? JSON.parse(props.settings.numOfDataSources).values[0].value == 2
             ? renderDataSource(
@@ -115,7 +97,6 @@ function mySettings(props) {
             : null
           : null}
       </Section>
-
       <Section
         title={
           <Text bold align="center">
@@ -223,14 +204,16 @@ function mySettings(props) {
         {props.settings.dataSource ? (
           JSON.parse(props.settings.dataSource).values[0].value ==
             "nightscout" ||
-          JSON.parse(props.settings.dataSourceTwo).values[0].value ==
-            "nightscout" ? (
+          (props.settings.dataSourceTwo &&
+            JSON.parse(props.settings.dataSourceTwo).values[0].value ==
+              "nightscout") ? (
             <Toggle
               settingsKey="enableSmallGraphPrediction"
               label="Main Graph Predictions"
             />
           ) : null
         ) : null}
+
         <Toggle settingsKey="largeGraph" label="Large graph popup screen" />
         <Text>
           Tap the lower right hand side of the watch faces screen to view the
@@ -279,10 +262,11 @@ function mySettings(props) {
           JSON.parse(props.settings.dataSource).values[0].value ==
             "nightscout" ||
           JSON.parse(props.settings.dataSource).values[0].value == "spike" ||
-          JSON.parse(props.settings.dataSourceTwo).values[0].value ==
-            "nightscout" ||
-          JSON.parse(props.settings.dataSourceTwo).values[0].value ==
-            "spike" ? (
+          (props.settings.dataSourceTwo &&
+            (JSON.parse(props.settings.dataSourceTwo).values[0].value ==
+              "nightscout" ||
+              JSON.parse(props.settings.dataSourceTwo).values[0].value ==
+                "spike")) ? (
             <Section>
               <Text bold align="center">
                 Customize
@@ -356,6 +340,7 @@ function mySettings(props) {
           ) : null
         ) : null}
       </Section>
+
       <Section
         title={
           <Text bold align="center">

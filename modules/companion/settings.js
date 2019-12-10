@@ -48,18 +48,25 @@ export default class settings {
     // usersOneUrls End
 
     // usersTwoUrls
-    let userTwoUrls = getDataSourceUrls(
-      dataReceivedFromWatch,
-      "dataSourceTwo",
-      "nightscoutSiteNameTwo",
-      "nightscoutSiteHostTwo",
-      "nightscoutAccessTokenTwo",
-      "customEndpointTwo"
-    );
-    let dataSourceTwo = userTwoUrls.dataSource;
-    let urlTwo = userTwoUrls.url;
-    let extraDataUrlTwo = userTwoUrls.extraDataUrl;
-    let treatmentUrlTwo = userTwoUrls.treatmentUrl;
+    // define these outside the if
+    let dataSourceTwo = null;
+    let urlTwo = null;
+    let extraDataUrlTwo = null;
+    let treatmentUrlTwo = null;
+    if (numOfDataSources == 2) {
+      let userTwoUrls = getDataSourceUrls(
+        dataReceivedFromWatch,
+        "dataSourceTwo",
+        "nightscoutSiteNameTwo",
+        "nightscoutSiteHostTwo",
+        "nightscoutAccessTokenTwo",
+        "customEndpointTwo"
+      );
+      dataSourceTwo = userTwoUrls.dataSource;
+      urlTwo = userTwoUrls.url;
+      extraDataUrlTwo = userTwoUrls.extraDataUrl;
+      treatmentUrlTwo = userTwoUrls.treatmentUrl;
+    }
     // usersTwoUrls End
 
     let glucoseUnits = null;
@@ -580,6 +587,7 @@ export default class settings {
         JSON.stringify({ name: dataSourceName })
       );
     }
+
     let dataSourceNameTwo = null;
     if (settingsStorage.getItem("dataSourceNameTwo")) {
       dataSourceNameTwo = JSON.parse(
@@ -807,11 +815,10 @@ function getDataSourceUrls(
   customEndpointSettingsKey = "customEndpoint"
 ) {
   let dataSource = null;
-  let url = null;
+  let url = "dexcom";
   let extraDataUrl = null;
   let treatmentUrl = null;
-
-  if (settingsStorage.getItem("dataSource")) {
+  if (settingsStorage.getItem(dataSourceSettingsKey)) {
     dataSource = JSON.parse(settingsStorage.getItem(dataSourceSettingsKey))
       .values[0].value;
   } else if (!dataSource) {

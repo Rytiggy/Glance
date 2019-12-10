@@ -45,7 +45,6 @@ const dropbox = new Dropbox();
 
 // const weatherURL = new Weather();
 const logs = new Logs();
-const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
 // weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
 async function sendData() {
