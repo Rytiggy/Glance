@@ -14,7 +14,7 @@
 import { settingsStorage } from "settings";
 import Logs from "./logs.js";
 const logs = new Logs();
-let svgCount = "count=47";
+let sgvCount = "count=47";
 
 export default class settings {
   get(dataReceivedFromWatch) {
@@ -759,20 +759,20 @@ function buildNightscoutUrls(
   url = buildURL(
     `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
     "pebble",
-    [svgCount, nightscoutSiteToken]
+    [sgvCount, nightscoutSiteToken]
   );
   //extra data
   extraDataUrl = buildURL(
     `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
     "api/v2/properties",
-    [svgCount, nightscoutSiteToken]
+    [sgvCount, nightscoutSiteToken]
   );
   // treatment
   if (nightscoutSiteToken) {
     treatmentUrl = buildURL(
       `https://${nightscoutSiteName.toLowerCase()}.${nightscoutSiteHost}`,
       "api/v1/treatments",
-      [svgCount, nightscoutSiteToken]
+      [sgvCount, nightscoutSiteToken]
     );
   }
 
@@ -787,13 +787,13 @@ function buildxDripUrl(dataReceivedFromWatch) {
   if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
     let steps = `steps=${dataReceivedFromWatch.steps}`;
     let heart = `heart=${dataReceivedFromWatch.heart}`;
-    return buildURL("http://127.0.0.1:17580", "svg.json", [
-      svgCount,
+    return buildURL("http://127.0.0.1:17580", "sgv.json", [
+      sgvCount,
       steps,
       heart
     ]);
   } else {
-    return buildURL("http://127.0.0.1:17580", "svg.json", [svgCount]);
+    return buildURL("http://127.0.0.1:17580", "sgv.json", [sgvCount]);
   }
 }
 
@@ -844,7 +844,7 @@ function getDataSourceUrls(
   } else if (dataSource === "xdrip") {
     url = buildxDripUrl(dataReceivedFromWatch);
   } else if (dataSource === "spike") {
-    url = buildURL("http://127.0.0.1:1979", "pebble", [svgCount]);
+    url = buildURL("http://127.0.0.1:1979", "pebble", [sgvCount]);
   } else if (dataSource === "custom") {
     let customEndpoint = JSON.parse(
       settingsStorage.getItem(customEndpointSettingsKey)
@@ -860,7 +860,7 @@ function getDataSourceUrls(
     url = "dexcom";
   } else if (dataSource === "tomato") {
     // tomato
-    url = buildURL("http://127.0.0.1:11111", "", [svgCount]);
+    url = buildURL("http://127.0.0.1:11111", "", [sgvCount]);
   }
   return {
     dataSource,
