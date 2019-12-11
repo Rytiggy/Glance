@@ -144,8 +144,8 @@
         <li>
           <span class="text-subtitle1 text-bold">High threshold:</span>
           <p>
-            <a>**Rapid fall alerts:**</a> Alert to rapid falls in blood sugars
-            (double down)
+            <span class="text-subtitle1 text-bold">Rapid fall alerts:</span>
+            Alert to rapid falls in blood sugars (double down)
           </p>
         </li>
 
@@ -214,7 +214,8 @@
 
         <li>
           <p>
-            <a>**Background color:**</a> Select a color for the watch background
+            <span class="text-subtitle1 text-bold">Background color:</span>
+            Select a color for the watch background
           </p>
           <ul>
             <li>
