@@ -94,20 +94,18 @@ clock.ontick = evt => {
   }
 };
 
+// when the screen is off add a interval to keep fetching data
 let refreshInterval = null;
 display.onchange = function() {
   if (display.on) {
     console.log("on");
     clearInterval(refreshInterval);
     refreshInterval = null;
-    // Screen is on
   } else {
+    console.log("screen off");
     refreshInterval = setInterval(function() {
       transfer.send(dataToSend);
-      console.log("screen off");
     }, 120000);
-
-    // }, 180000);
   }
 };
 
