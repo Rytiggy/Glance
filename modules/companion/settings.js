@@ -609,6 +609,14 @@ export default class settings {
       settingsStorage.setItem("userAgreement", false);
     }
 
+    let logs = null;
+    if (settingsStorage.getItem("logs")) {
+      logs = JSON.parse(settingsStorage.getItem("logs")).name;
+    } else if (!logs) {
+      logs = "[]";
+      settingsStorage.setItem("logs", JSON.stringify({ name: logs }));
+    }
+
     let settings = {
       url,
       extraDataUrl,
@@ -787,12 +795,18 @@ function buildxDripUrl(dataReceivedFromWatch) {
   if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
     let steps = `steps=${dataReceivedFromWatch.steps}`;
     let heart = `heart=${dataReceivedFromWatch.heart}`;
-    return buildURL("http://127.0.0.1:17580", "sgv.json", [
+    // return buildURL("https://192.168.86.153:17581", "sgv.json", [
+    //   sgvCount,
+    //   steps,
+    //   heart
+    // ]);
+    return buildURL("https://127.0.0.1:17581", "sgv.json", [
       sgvCount,
       steps,
       heart
     ]);
   } else {
+    // return buildURL("https://192.168.86.153:17581", "sgv.json", [sgvCount]);
     return buildURL("http://127.0.0.1:17580", "sgv.json", [sgvCount]);
   }
 }

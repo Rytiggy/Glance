@@ -18,34 +18,27 @@ const sizeof = new Sizeof();
 
 export default class logs {
   add(value) {
-    let d = new Date();
-    if (
-      settingsStorage.getItem("logs") &&
-      sizeof.size(settingsStorage.getItem("logs")) > 130000
-    ) {
-      settingsStorage.setItem("logs", JSON.stringify({ name: "" }));
+    // check if value is an object and stringify
+    if (typeof value == "object") {
+      value = JSON.stringify(value);
     }
 
-    if (
-      settingsStorage.getItem("logs") &&
-      JSON.parse(settingsStorage.getItem("logs")).name
-    ) {
-      settingsStorage.setItem(
-        "logs",
-        JSON.stringify({
-          name: `${d.getHours()} : ${d.getMinutes()} ${value} |,| ${
-            JSON.parse(settingsStorage.getItem("logs")).name
-          }`
-        })
-      );
-    } else {
-      // if there are no logs
-      settingsStorage.setItem(
-        "logs",
-        JSON.stringify({
-          name: `${d.getHours()} : ${d.getMinutes()} ${value} `
-        })
-      );
+    let logsStorage = settingsStorage.getItem("logs");
+    // if there are logs and they are larger then 130000 bytes clear them out
+    if (logsStorage && sizeof.size(logsStorage) > 130000) {
+      settingsStorage.setItem("logs", JSON.stringify({ name: "[]" }));
+    }
+
+    if (logsStorage) {
+      let logStorageObject = JSON.parse(JSON.parse(logsStorage).name);
+
+      if (logStorageObject) {
+        logStorageObject.push(`${Date.now()} : ${value}`);
+        let updatedLogs = JSON.stringify({
+          name: JSON.stringify(logStorageObject)
+        });
+        settingsStorage.setItem("logs", updatedLogs);
+      }
     }
   }
 }

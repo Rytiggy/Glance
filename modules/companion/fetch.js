@@ -18,12 +18,14 @@ export default class messaging {
   //Fetch data from an API endpoint and return a promise
   async get(url) {
     const trimmedURL = url.replace(/ /g, "");
+    console.log(trimmedURL);
     return await fetch(trimmedURL)
       .then(handleResponse)
       .then(data => {
         return data;
       })
       .catch(error => {
+        logs.add(error);
         // not found
         if (!error.status) {
           error.status = "404";
@@ -90,7 +92,6 @@ function handleResponse(response) {
 function handleJSONResponse(response) {
   return response.json().then(json => {
     if (response.ok) {
-      logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`);
       return json;
     } else {
       return Promise.reject(
@@ -106,7 +107,6 @@ function handleJSONResponse(response) {
 function handleTextResponse(response) {
   return response.text().then(text => {
     if (response.ok) {
-      logs.add(`Line 98 companion - fetch - handleTextResponse() response.ok`);
       return JSON.parse(text);
     } else {
       return Promise.reject({

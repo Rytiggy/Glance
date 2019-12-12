@@ -14,92 +14,103 @@ import Logs from "./logs.js";
 const logs = new Logs();
 
 export default class dexcom {
-  
   async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    let body =   {
-      accountName : dexcomUsername,
-      applicationId :"d8665ade-9673-4e27-9ff6-92db4ce13d13",
-      password : dexcomPassword
-    }
-    return await fetch(`https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountByName`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'post',
-      body: JSON.stringify(body)
-    }).then(function(response) {
-      return response.text();
-    }).then(function(data) {
-      return data;
-    })
-    
+    let body = {
+      accountName: dexcomUsername,
+      applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
+      password: dexcomPassword
+    };
+    return await fetch(
+      `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountByName`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "post",
+        body: JSON.stringify(body)
+      }
+    )
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(data) {
+        return data;
+      })
+      .catch(error => {
+        logs.add(error);
+      });
   }
-  
+
   async getData(sessionId, subDomain) {
-    let url = (`https://${subDomain}.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues?sessionId=${sessionId}&minutes=1440&maxCount=47`.replace(/"/g, ""));
+    let url = `https://${subDomain}.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues?sessionId=${sessionId}&minutes=1440&maxCount=47`.replace(
+      /"/g,
+      ""
+    );
     return await fetch(url, {
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
-      method: 'post',
-    }).then(handleResponse)
-    .then(function(data) {
-      return data;
-    }).catch(error => {
-      // not found
-      if(!error.status) {
-        error.status = '404'
-      }
-      let errorMsg = {
-        text: 'Error with companion - fetch - get()',
-        error: error,
-      }
-      return errorMsg;
-    });
+      method: "post"
+    })
+      .then(handleResponse)
+      .then(function(data) {
+        return data;
+      })
+      .catch(error => {
+        logs.add(error);
+        // not found
+        if (!error.status) {
+          error.status = "404";
+        }
+        let errorMsg = {
+          text: "Error with companion - fetch - get()",
+          error: error
+        };
+        return errorMsg;
+      });
   }
-
-};
+}
 
 // Helper functions
-function handleResponse (response) {
-  let contentType = response.headers.get('content-type')
-  if (contentType.includes('application/json')) {
-    return handleJSONResponse(response)
-  } else if (contentType.includes('text/html')) {
-    return handleTextResponse(response)
+function handleResponse(response) {
+  let contentType = response.headers.get("content-type");
+  if (contentType.includes("application/json")) {
+    return handleJSONResponse(response);
+  } else if (contentType.includes("text/html")) {
+    return handleTextResponse(response);
   } else {
     // Other response types as necessary. I haven't found a need for them yet though.
-    throw new Error(`Sorry, content-type ${contentType} not supported`)
+    throw new Error(`Sorry, content-type ${contentType} not supported`);
   }
 }
 
-function handleJSONResponse (response) {
-  return response.json()
-    .then(json => {
-      if (response.ok) {
-        return json
-      } else {
-        return Promise.reject(Object.assign({}, json, {
+function handleJSONResponse(response) {
+  return response.json().then(json => {
+    if (response.ok) {
+      return json;
+    } else {
+      return Promise.reject(
+        Object.assign({}, json, {
           status: response.status,
           statusText: response.statusText
-        }))
-      }
-    })
+        })
+      );
+    }
+  });
 }
 // This doesnt work
-function handleTextResponse (response) {
-  return response.text()
-    .then(text => {
-      if (response.ok) {
-        return JSON.parse(text)
-      } else {
-        return Promise.reject({
-          status: response.status,
-          statusText: response.statusText,
-          err: text
-        })
-      }
-    })
-  }
+function handleTextResponse(response) {
+  return response.text().then(text => {
+    if (response.ok) {
+      return JSON.parse(text);
+    } else {
+      return Promise.reject({
+        status: response.status,
+        statusText: response.statusText,
+        err: text
+      });
+    }
+  });
+}
