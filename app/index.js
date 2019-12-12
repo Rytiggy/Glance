@@ -13,6 +13,7 @@
 import Transfer from "../modules/app/transfer.js";
 const transfer = new Transfer();
 import clock from "clock";
+import { display } from "display";
 clock.granularity = "minutes";
 import document from "document";
 import { inbox } from "file-transfer";
@@ -49,9 +50,6 @@ var batteryLevel = document.getElementById("batteryLevel");
 var batteryPercent = document.getElementById("batteryPercent");
 
 loadingScreen();
-// setInterval(function() {
-//   updateDisplay(data);
-// }, 10000);
 
 // On file tranfer
 inbox.onnewfile = () => {
@@ -85,6 +83,7 @@ var dataToSend = {
   }
 };
 
+// update interval
 transfer.send(dataToSend);
 clock.ontick = evt => {
   if (data.settings) {
@@ -94,6 +93,24 @@ clock.ontick = evt => {
     transfer.send(dataToSend);
   }
 };
+
+let refreshInterval = null;
+display.onchange = function() {
+  if (display.on) {
+    console.log("on");
+    clearInterval(refreshInterval);
+    refreshInterval = null;
+    // Screen is on
+  } else {
+    refreshInterval = setInterval(function() {
+      transfer.send(dataToSend);
+      console.log("screen off");
+    }, 120000);
+
+    // }, 180000);
+  }
+};
+
 /**
  * Update watchface display This deals with the BGS data
  * @param {Object} data received from the companion
@@ -366,6 +383,7 @@ function loadingScreen() {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = "Connected";
       clearInterval(checkConnectionInterval);
+      checkConnectionInterval = null;
       statusLead.text = "Loading Data from phone";
       setTimeout(function() {
         if (!data) {
