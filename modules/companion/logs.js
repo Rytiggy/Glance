@@ -31,14 +31,18 @@ export default class logs {
     }
 
     if (logsStorage) {
-      let logStorageObject = JSON.parse(JSON.parse(logsStorage).name);
+      try {
+        let logStorageObject = JSON.parse(JSON.parse(logsStorage).name);
 
-      if (logStorageObject) {
-        logStorageObject.unshift(`${Date.now()} : ${value}`);
-        let updatedLogs = JSON.stringify({
-          name: JSON.stringify(logStorageObject)
-        });
-        settingsStorage.setItem("logs", updatedLogs);
+        if (logStorageObject) {
+          logStorageObject.unshift(`${Date.now()} : ${value}`);
+          let updatedLogs = JSON.stringify({
+            name: JSON.stringify(logStorageObject)
+          });
+          settingsStorage.setItem("logs", updatedLogs);
+        }
+      } catch (e) {
+        settingsStorage.setItem("logs", JSON.stringify({ name: "[]" }));
       }
     }
   }
