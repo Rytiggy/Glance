@@ -27,13 +27,14 @@ export default class logs {
     // if there are logs and they are larger then 130000 bytes clear them out
     if (logsStorage && sizeof.size(logsStorage) > 130000) {
       settingsStorage.setItem("logs", JSON.stringify({ name: "[]" }));
+      logsStorage = settingsStorage.getItem("logs");
     }
 
     if (logsStorage) {
       let logStorageObject = JSON.parse(JSON.parse(logsStorage).name);
 
       if (logStorageObject) {
-        logStorageObject.push(`${Date.now()} : ${value}`);
+        logStorageObject.unshift(`${Date.now()} : ${value}`);
         let updatedLogs = JSON.stringify({
           name: JSON.stringify(logStorageObject)
         });
