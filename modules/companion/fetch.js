@@ -18,7 +18,6 @@ export default class messaging {
   //Fetch data from an API endpoint and return a promise
   async get(url) {
     const trimmedURL = url.replace(/ /g, "");
-    console.log(trimmedURL);
     return await fetch(trimmedURL)
       .then(handleResponse)
       .then(data => {

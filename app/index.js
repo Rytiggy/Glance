@@ -433,10 +433,10 @@ function checkDataState(bloodSugars) {
     );
     if (fistBgNonPredictiveBG.currentbg === "E503") {
       errorCodes = "E503";
-      errorCodesDesc = `Data source configuration error. Check settings.`;
+      errorCodesDesc = `Data source config error. Check settings.`;
     } else if (fistBgNonPredictiveBG.currentbg === "E500") {
       errorCodes = "E500";
-      errorCodesDesc = `Data source configuration error. Check settings.`;
+      errorCodesDesc = `Data source config error. Check settings.`;
     } else if (fistBgNonPredictiveBG.currentbg === "E404") {
       errorCodes = "E404";
       errorCodesDesc = `No Data source found. Check settings.`;
