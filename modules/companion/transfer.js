@@ -21,7 +21,6 @@ import * as messaging from "messaging";
 export default class transfer {
   // Send data to the watchface
   send(data) {
-    logs.add("Line 19: companion - transfer - send()");
     outbox.enqueue("responce2.json", encode(data));
   }
 

@@ -12,53 +12,54 @@
  */
 
 import { settingsStorage } from "settings";
-
-import Settings from "../modules/companion/settings.js";
-import Transfer from "../modules/companion/transfer.js";
-import Fetch from "../modules/companion/fetch.js";
-import Standardize from "../modules/companion/standardize.js";
-// import Weather from "../modules/companion/weather.js";
-import Logs from "../modules/companion/logs.js";
-import Sizeof from "../modules/companion/sizeof.js";
-import Dexcom from "../modules/companion/dexcom.js";
-import Firebase from "../modules/companion/firebase.js";
 import * as messaging from "messaging";
 import { me } from "companion";
+
+import Settings from "../modules/companion/settings.js";
+const settings = new Settings();
+var store = settings.get();
+
+import Transfer from "../modules/companion/transfer.js";
+const transfer = new Transfer();
+
+import Fetch from "../modules/companion/fetch.js";
+const fetch = new Fetch();
+
+import Standardize from "../modules/companion/standardize.js";
+const standardize = new Standardize();
+
+// import Weather from "../modules/companion/weather.js";
+// import * as weather from 'fitbit-weather/companion'
+
+import Logs from "../modules/companion/logs.js";
+const logs = new Logs();
+
+//FAB
+import Dropbox from "../modules/companion/dropbox.js";
+const dropbox = new Dropbox();
+
+import Dexcom from "../modules/companion/dexcom.js";
+const dexcom = new Dexcom();
+
+import Firebase from "../modules/companion/firebase.js";
+const firebase = new Firebase();
+firebase.update(store);
+
 // Helper
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
 // Wake the Companion after 5 minutes
 me.wakeInterval = 5 * MILLISECONDS_PER_MINUTE;
 if (me.launchReasons.wokenUp) {
-  // The companion started due to a periodic timer
-  console.log("Started due to wake interval!");
+  logs.add("Companion woke up.");
 } else {
-  console.log("put companion to sleep");
-  // Close the companion and wait to be awoken
+  logs.add("Companion went to sleep.");
   me.yield();
 }
-// import * as weather from 'fitbit-weather/companion'
 
-//FAB
-import Dropbox from "../modules/companion/dropbox.js";
-
-const settings = new Settings();
-var store = settings.get();
-
-const firebase = new Firebase();
-firebase.update(store);
-
-const transfer = new Transfer();
-const fetch = new Fetch();
-const standardize = new Standardize();
-const dexcom = new Dexcom();
-
-//FAB
-const dropbox = new Dropbox();
-
-// const weatherURL = new Weather();
-const logs = new Logs();
 let dataReceivedFromWatch = null;
-// weather.setup({ provider : weather.Providers.openweathermap, apiKey : '070d27a069823ebe69e5246f91d6f301' })
+/**
+ * Send the data to the watch
+ */
 async function sendData() {
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
@@ -71,77 +72,33 @@ async function sendData() {
     });
   }
   // Get SGV data
-  let bloodsugars = null;
-  let extraData = null;
-  if (store.url === "dexcom") {
-    let USAVSInternational = store.USAVSInternational;
-    let subDomain = "share2";
-    if (USAVSInternational) {
-      subDomain = "shareous1";
-    }
-    let sessionId = await dexcom.getSessionId(
-      store.dexcomUsername,
-      store.dexcomPassword,
-      subDomain
-    );
-    bloodsugars = await dexcom.getData(sessionId, subDomain);
-  } else if (store.url === "yagi") {
-    //FAB
-    if (store.dropboxToken) {
-      bloodsugars = await dropbox.getData(
-        store.dropboxToken,
-        store.yagiPatientName
-      );
-    } else {
-      bloodsugars = {
-        error: {
-          status: "500"
-        }
-      };
-    }
-  } else {
-    bloodsugars = await fetch.get(store.url);
-    if (store.extraDataUrl) {
-      extraData = await fetch.get(store.extraDataUrl);
-    }
-  }
+  let bloodSugarData = await fetchBloodSugarData(
+    "url",
+    "extraDataUrl",
+    "USAVSInternational",
+    "dexcomUsername",
+    "dexcomPassword",
+    "dropboxToken",
+    "yagiPatientName"
+  );
+  let bloodsugars = bloodSugarData.bloodsugars;
+  let extraData = bloodSugarData.extraData;
 
   // Get second SGV data
   let bloodsugarsTwo = null;
   let extraDataTwo = null;
   if (store.numOfDataSources == 2) {
-    if (store.urlTwo === "dexcom") {
-      let USAVSInternationalTwo = store.USAVSInternationalTwo;
-      let subDomainTwo = "share2";
-      if (USAVSInternationalTwo) {
-        subDomainTwo = "shareous1";
-      }
-      let sessionIdTwo = await dexcom.getSessionId(
-        store.dexcomUsernameTwo,
-        store.dexcomPasswordTwo,
-        subDomainTwo
-      );
-      bloodsugarsTwo = await dexcom.getData(sessionIdTwo, subDomainTwo);
-    } else if (store.urlTwo === "yagi") {
-      //FAB
-      if (store.dropboxTokenTwo) {
-        bloodsugarsTwo = await dropbox.getData(
-          store.dropboxTokenTwo,
-          store.yagiPatientNameTwo
-        );
-      } else {
-        bloodsugarsTwo = {
-          error: {
-            status: "500"
-          }
-        };
-      }
-    } else {
-      bloodsugarsTwo = await fetch.get(store.urlTwo);
-      if (store.extraDataUrlTwo) {
-        extraDataTwo = await fetch.get(store.extraDataUrlTwo);
-      }
-    }
+    let bloodSugarDataTwo = await fetchBloodSugarData(
+      "urlTwo",
+      "extraDataUrlTwo",
+      "USAVSInternationalTwo",
+      "dexcomUsernameTwo",
+      "dexcomPasswordTwo",
+      "dropboxTokenTwo",
+      "yagiPatientNameTwo"
+    );
+    bloodsugarsTwo = bloodSugarDataTwo.bloodsugars;
+    extraDataTwo = bloodSugarDataTwo.extraData;
   }
 
   // Get weather data
@@ -178,6 +135,7 @@ async function sendData() {
           }
         ]
       };
+      logs.add(dataToSend);
       transfer.send(dataToSend);
     }
   );
@@ -212,12 +170,9 @@ messaging.peerSocket.onmessage = async function(evt) {
 };
 
 // Listen for the onerror event
-messaging.peerSocket.onerror = function(err) {
-  logs.add("Connection error: " + err.code + " - " + err.message);
-};
+messaging.peerSocket.onerror = function(err) {};
 
 settingsStorage.onchange = function(evt) {
-  logs.add("Settings changed send data to watch");
   sendData();
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token
@@ -238,3 +193,70 @@ if (me.launchReasons.wokenUp) {
 }
 // wait 1 seconds before getting things started
 setTimeout(sendData, 1000);
+
+/**
+ * Fetch all the blood sugar data
+ * @param {String} urlSettingKey a user setting key
+ * @param {String} extraDataUrlSettingKey a user setting key
+ * @param {String} dexcomRegionSettingKey a user setting key
+ * @param {String} dexcomUsernameSettingKey a user setting key
+ * @param {String} dexcomPasswordSettingKey a user setting key
+ * @param {String} dropboxTokenSettingKey a user setting key
+ * @param {String} yagiPatientNameSettingKey a user setting key
+ * @returns {object} the blood sugar object and the extra data a
+ */
+async function fetchBloodSugarData(
+  urlSettingKey,
+  extraDataUrlSettingKey,
+  dexcomRegionSettingKey,
+  dexcomUsernameSettingKey,
+  dexcomPasswordSettingKey,
+  dropboxTokenSettingKey,
+  yagiPatientNameSettingKey
+) {
+  // Get SGV data
+  let bloodsugars = null;
+  let extraData = null;
+  if (store[urlSettingKey] === "dexcom") {
+    let USAVSInternational = store[dexcomRegionSettingKey];
+    let subDomain = "share2";
+    if (USAVSInternational) {
+      subDomain = "shareous1";
+    }
+    let sessionId = await dexcom.getSessionId(
+      store[dexcomUsernameSettingKey],
+      store[dexcomPasswordSettingKey],
+      subDomain
+    );
+    // clear Dexcom password and username so they are not logged
+    store[dexcomUsernameSettingKey] = null;
+    store[dexcomPasswordSettingKey] = null;
+    bloodsugars = await dexcom.getData(sessionId, subDomain);
+  } else if (store[urlSettingKey] === "yagi") {
+    //FAB
+    if (store[dropboxTokenSettingKey]) {
+      bloodsugars = await dropbox.getData(
+        store[dropboxTokenSettingKey],
+        store[yagiPatientNameSettingKey]
+      );
+    } else {
+      bloodsugars = {
+        error: {
+          status: "500"
+        }
+      };
+    }
+  } else {
+    bloodsugars = await fetch.get(store[urlSettingKey]);
+    if (store[extraDataUrlSettingKey]) {
+      extraData = await fetch.get(store[extraDataUrlSettingKey]);
+    }
+  }
+  logs.add(store);
+  logs.add(bloodsugars);
+  logs.add(extraData);
+  return {
+    bloodsugars,
+    extraData
+  };
+}

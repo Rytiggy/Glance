@@ -13,6 +13,7 @@
 import Transfer from "../modules/app/transfer.js";
 const transfer = new Transfer();
 import clock from "clock";
+import { display } from "display";
 clock.granularity = "minutes";
 import document from "document";
 import { inbox } from "file-transfer";
@@ -49,9 +50,6 @@ var batteryLevel = document.getElementById("batteryLevel");
 var batteryPercent = document.getElementById("batteryPercent");
 
 loadingScreen();
-// setInterval(function() {
-//   updateDisplay(data);
-// }, 10000);
 
 // On file tranfer
 inbox.onnewfile = () => {
@@ -85,6 +83,7 @@ var dataToSend = {
   }
 };
 
+// update interval
 transfer.send(dataToSend);
 clock.ontick = evt => {
   if (data.settings) {
@@ -94,6 +93,22 @@ clock.ontick = evt => {
     transfer.send(dataToSend);
   }
 };
+
+// when the screen is off add a interval to keep fetching data
+let refreshInterval = null;
+display.onchange = function() {
+  if (display.on) {
+    console.log("on");
+    clearInterval(refreshInterval);
+    refreshInterval = null;
+  } else {
+    console.log("screen off");
+    refreshInterval = setInterval(function() {
+      transfer.send(dataToSend);
+    }, 120000);
+  }
+};
+
 /**
  * Update watchface display This deals with the BGS data
  * @param {Object} data received from the companion
@@ -366,6 +381,7 @@ function loadingScreen() {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = "Connected";
       clearInterval(checkConnectionInterval);
+      checkConnectionInterval = null;
       statusLead.text = "Loading Data from phone";
       setTimeout(function() {
         if (!data) {
@@ -417,10 +433,10 @@ function checkDataState(bloodSugars) {
     );
     if (fistBgNonPredictiveBG.currentbg === "E503") {
       errorCodes = "E503";
-      errorCodesDesc = `Data source configuration error. Check settings.`;
+      errorCodesDesc = `Data source config error. Check settings.`;
     } else if (fistBgNonPredictiveBG.currentbg === "E500") {
       errorCodes = "E500";
-      errorCodesDesc = `Data source configuration error. Check settings.`;
+      errorCodesDesc = `Data source config error. Check settings.`;
     } else if (fistBgNonPredictiveBG.currentbg === "E404") {
       errorCodes = "E404";
       errorCodesDesc = `No Data source found. Check settings.`;

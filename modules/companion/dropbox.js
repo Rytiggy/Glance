@@ -182,6 +182,9 @@ async function get_data_has_more(
       );
       //To the I hide gates the TAG
       bgs_day[day_nr] = bgs_day[day_nr].split("%DELTA%").join("");
+    })
+    .catch(error => {
+      logs.add(error);
     });
 }
 
@@ -229,6 +232,9 @@ async function getData_first(dropbox_token, days_back) {
       } else {
         return json_response["cursor"];
       }
+    })
+    .catch(error => {
+      logs.add(error);
     });
 }
 

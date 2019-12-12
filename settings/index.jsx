@@ -374,11 +374,11 @@ function mySettings(props) {
             <TextInput disabled label="Unique Identifier" settingsKey="uuid" />
             <Button
               list
-              label="Resync"
+              label="Sync"
               onClick={() =>
                 props.settingsStorage.setItem(
                   "logs",
-                  JSON.stringify({ name: "Resyncing" })
+                  JSON.stringify({ name: `["${Date.now()} : Syncing"]` })
                 )
               }
             />

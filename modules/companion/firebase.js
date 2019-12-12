@@ -32,6 +32,7 @@ export default class firebase {
         data["updatedAt"] = Math.floor(Date.now() / 1000);
         data["userAgreement"] = settings.userAgreement;
         data["dataSource"] = settings.dataSource;
+        data["dataSourceTwo"] = settings.dataSourceTwo;
         data["phoneType"] = companion.host.os.name;
         data["device"] = device.modelName;
         data["version"] = config.version;
@@ -48,6 +49,7 @@ export default class firebase {
         data["updatedAt"] = Math.floor(Date.now() / 1000);
         data["userAgreement"] = settings.userAgreement;
         data["dataSource"] = settings.dataSource;
+        data["dataSourceTwo"] = settings.dataSourceTwo;
         data["phoneType"] = companion.host.os.name;
         data["device"] = device.modelName;
         data["version"] = config.version;

@@ -244,7 +244,6 @@ export default class standardize {
             bgsTemplate.bgs[index].bgdelta = delta;
           }
         });
-        logs.add("Standardized dexcom data " + bgsTemplate.bgs);
         bgs = bgsTemplate.bgs;
       } else if (settings.dataSource === "tomato") {
         // tomato
@@ -376,7 +375,6 @@ export default class standardize {
       }
       return returnBloodsugars;
     }
-    logs.add("Line 63: here reurning error");
     let currentTime = new Date();
     return {
       currentBg: {
@@ -676,7 +674,6 @@ function checkLoopStatus(status) {
 
 // Check The time in betweek each SGV and add LOS value if time is greater then 5 minutes
 function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
-  logs.add("Line 478: companion - standardize - checkTimeBetweenGraphPoints");
   let firstRun = true;
   let firstNonPredictiveBgIndex = bgs.indexOf(firstNonPredictiveBg);
 
@@ -752,7 +749,6 @@ function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 }
 
 function slopeDirection(trend) {
-  logs.add("Dexcom trend: " + trend);
   switch (trend) {
     case 1:
       return "DoubleUp";
