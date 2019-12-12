@@ -228,6 +228,9 @@ async function fetchBloodSugarData(
       store[dexcomPasswordSettingKey],
       subDomain
     );
+    // clear Dexcom password and username so they are not logged
+    store[dexcomUsernameSettingKey] = null;
+    store[dexcomPasswordSettingKey] = null;
     bloodsugars = await dexcom.getData(sessionId, subDomain);
   } else if (store[urlSettingKey] === "yagi") {
     //FAB
