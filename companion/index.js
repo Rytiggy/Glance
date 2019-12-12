@@ -43,7 +43,6 @@ const dexcom = new Dexcom();
 
 import Firebase from "../modules/companion/firebase.js";
 const firebase = new Firebase();
-firebase.update(store);
 
 // Helper
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
@@ -63,7 +62,8 @@ let dataReceivedFromWatch = null;
 async function sendData() {
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
-
+  // update firebase user logs
+  firebase.update(store);
   // send settings
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
