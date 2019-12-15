@@ -49,11 +49,12 @@ function mySettings(props) {
         }
       >
         <Select
-          label={`Number Of Data sources`}
+          label={`Blood Sugar Display type`}
           settingsKey="numOfDataSources"
           options={[
-            { name: "One Data Source", value: 1 },
-            { name: "Two Data Sources", value: 2 }
+            { name: "One Blood Sugar", value: 1 },
+            { name: "Two Blood Sugars", value: 2 },
+            { name: "Larger Blood Sugar", value: 3 }
           ]}
         />
         {renderDataSource(props, "dataSource", "Data Source One", {
@@ -196,8 +197,8 @@ function mySettings(props) {
         {/* <Text align="center" bold>
           Weather
         </Text>
-        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />                                */}
-
+        <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />
+        */}
         <Text bold align="center">
           Graph
         </Text>

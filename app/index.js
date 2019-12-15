@@ -46,8 +46,8 @@ var data = { bloodSugars: null, settings: null };
 
 var singleOrMultipleDispaly = document.getElementById("singleBG");
 var time = singleOrMultipleDispaly.getElementById("time");
-var batteryLevel = document.getElementById("batteryLevel");
-var batteryPercent = document.getElementById("batteryPercent");
+var batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
+var batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
 
 loadingScreen();
 
@@ -61,7 +61,6 @@ inbox.onnewfile = () => {
     }
   } while (fileName);
   updateDisplay(data);
-  console.warn("Interval JS memory: " + memory.js.used + "/" + memory.js.total);
 };
 
 // Listen for messages from the companion
@@ -83,7 +82,6 @@ var dataToSend = {
   }
 };
 
-// update interval
 transfer.send(dataToSend);
 clock.ontick = evt => {
   if (data.settings) {
@@ -98,11 +96,9 @@ clock.ontick = evt => {
 let refreshInterval = null;
 display.onchange = function() {
   if (display.on) {
-    console.log("on");
     clearInterval(refreshInterval);
     refreshInterval = null;
   } else {
-    console.log("screen off");
     refreshInterval = setInterval(function() {
       transfer.send(dataToSend);
     }, 120000);
@@ -129,24 +125,40 @@ function updateDisplay(data) {
 }
 
 /**
- * Update bloodsugar display
- * @param {Object} data recived from the companion
+ * Update blood sugar display
+ * @param {*} bloodSugars received from the companion
+ * @param {*} settings  received from the companion
  */
 function updateBloodSugarDisplay(bloodSugars, settings) {
+  // default eles to update
+  let sgvEle = "sgv";
+  let deltaEle = "delta";
+  let errorLineEle = "errorLine";
+  let timeOfLastSgvEle = "timeOfLastSgv";
+  let arrowsEle = "arrows";
+  if (settings.numOfDataSources == 3) {
+    // if its the large display
+    sgvEle = "largeSgv";
+    deltaEle = "largeDelta";
+    errorLineEle = "largeErrorLine";
+    timeOfLastSgvEle = "largeTimeOfLastSgv";
+    arrowsEle = "largeArrows";
+  }
+
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
   BloodSugarDisplayContainer.forEach((ele, index) => {
     const bloodSugar = bloodSugars[index];
-    const delta = BloodSugarDisplayContainer[index].getElementById("delta");
-    const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
+    const delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
+    const sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
-      "errorLine"
+      errorLineEle
     );
     const timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById(
-      "timeOfLastSgv"
+      timeOfLastSgvEle
     );
-    const arrows = BloodSugarDisplayContainer[index].getElementById("arrows");
+    const arrows = BloodSugarDisplayContainer[index].getElementById(arrowsEle);
     const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
     let deltaText = fistBgNonPredictiveBG.bgdelta;
@@ -175,6 +187,14 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
  * @param {Object} settings recived from the companion
  */
 function updateAlerts(bloodSugars, settings) {
+  let sgvEle = "sgv";
+  let errorLineEle = "errorLine";
+  if (settings.numOfDataSources == 3) {
+    // if its the large display
+    sgvEle = "largeSgv";
+    errorLineEle = "largeErrorLine";
+  }
+
   const alertContainer = singleOrMultipleDispaly.getElementsByClassName(
     "alertContainer"
   );
@@ -184,9 +204,9 @@ function updateAlerts(bloodSugars, settings) {
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
     const bloodSugar = bloodSugars[index];
-    const sgv = BloodSugarDisplayContainer[index].getElementById("sgv");
+    const sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
     const errorLine = BloodSugarDisplayContainer[index].getElementById(
-      "errorLine"
+      errorLineEle
     );
     const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
@@ -353,15 +373,15 @@ function updateBgColor(bgColorOne, bgColorTwo) {
  * @param {string} enableDOW recived from the companion
  */
 function updateHeader(dateFormat, enableDOW) {
-  const date = document.getElementById("date");
-  const weatherText = document.getElementById("weather");
-  const weatherIcon = document.getElementById("weatherIcon");
-  const degreeIcon = document.getElementById("degreeIcon");
-  degreeIcon.style.display = "none";
-  batteryLevel.width = batteryLevels.get().level;
-  batteryLevel.style.fill = batteryLevels.get().color;
-  batteryPercent.text = batteryLevels.get().percent + "%";
-  date.text = dateTime.getDate(dateFormat, enableDOW);
+  if (data.settings.numOfDataSources != 2) {
+    const date = singleOrMultipleDispaly.getElementById("date");
+    batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
+    batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
+    batteryLevel.width = batteryLevels.get().level;
+    batteryLevel.style.fill = batteryLevels.get().color;
+    batteryPercent.text = batteryLevels.get().percent + "%";
+    date.text = dateTime.getDate(dateFormat, enableDOW);
+  }
 }
 
 /**
@@ -409,6 +429,14 @@ function loadingScreen() {
  * @param {Object} bloodSugars recived from the companion
  */
 function checkDataState(bloodSugars) {
+  let errorStatusEle = "errorStatus";
+  let errorStatusLeadEle = "errorStatusLead";
+
+  if (data.settings.numOfDataSources == 3) {
+    errorStatusEle = "largeErrorStatus";
+    errorStatusLeadEle = "largeErrorStatusLead";
+  }
+
   const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
@@ -426,10 +454,10 @@ function checkDataState(bloodSugars) {
       index
     ].getElementById("errorStateContainer");
     const errorStatus = BloodSugarDisplayContainer[index].getElementById(
-      "errorStatus"
+      errorStatusEle
     );
     const errorStatusLead = BloodSugarDisplayContainer[index].getElementById(
-      "errorStatusLead"
+      errorStatusLeadEle
     );
     if (fistBgNonPredictiveBG.currentbg === "E503") {
       errorCodes = "E503";
@@ -490,22 +518,30 @@ function updateSettingSpecificDisplay(settings) {
   if (userAgreement.check(settings)) {
     document.getElementById("userAgreement").style.display = "none";
 
-    console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
+    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
     if (settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById("dualBG");
       document.getElementById("dualBG").style.display = "inline";
       document.getElementById("singleBG").style.display = "none";
+      document.getElementById("largeBG").style.display = "none";
+    } else if (settings.numOfDataSources == 3) {
+      singleOrMultipleDispaly = document.getElementById("largeBG");
+      document.getElementById("singleBG").style.display = "none";
+      document.getElementById("dualBG").style.display = "none";
+      document.getElementById("largeBG").style.display = "inline";
     } else {
       singleOrMultipleDispaly = document.getElementById("singleBG");
       document.getElementById("singleBG").style.display = "inline";
       document.getElementById("dualBG").style.display = "none";
+      document.getElementById("largeBG").style.display = "none";
     }
 
     actions.init(transfer, singleOrMultipleDispaly, settings);
     const treatments = new Treatments(transfer, settings);
 
     time = singleOrMultipleDispaly.getElementById("time");
+
     time.text = dateTime.getTime(settings.timeFormat);
 
     updateBgColor(settings.bgColor, settings.bgColorTwo); // settings only

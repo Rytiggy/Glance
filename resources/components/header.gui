@@ -1,10 +1,10 @@
 <symbol id="header">
-	<svg>
+    <svg>
         <rect id="batteryLevel" />
         <image class="batteryImage" href="img/battery.png" fill="white" />
         <text text-anchor="start" class="subtext1 settingsTextColor" id="batteryPercent"></text>
         <text class="subtext1 settingsTextColor" id="weather"></text>
         <image href="img/degree.png" id="degreeIcon" display="none" />
         <image href="img/weather/1000.png" id="weatherIcon" display="none" />
-	</svg>
+    </svg>
 </symbol>

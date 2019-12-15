@@ -12,7 +12,7 @@
 					<use href="#header" class="header"/>
 					<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
 					<text  class="h1 time settingsTextColor" id="time" pointer-events="visible"></text>
-					<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
+					<use href="#bloodSugarDisplay" class="singleBloodSugarDisplay bloodSugarDisplay"/>
 				</svg>
 				<svg class="row bottom">
 					<use href="#stats" class="stats"/>
@@ -83,6 +83,39 @@
 				</svg>
 			</svg>
 		</svg>
+
+		<svg id="largeBG" display="none">
+			<gradientRect
+				class="bgColor"
+				width="100%"
+				height="100%"
+			/>
+			<svg class="spacing-top-10">
+				<svg class="row top">
+					<use href="#header" class="header"/>
+					<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
+					<text  class="largeBgTime settingsTextColor" id="time" pointer-events="visible"></text>
+					<use href="#largeBloodSugarDisplay" class="bloodSugarDisplay"/>
+				</svg>
+				<svg class="row bottom">
+					<use href="#stats" class="stats"/>
+					<svg class="right width-50">
+						<use pointer-events="visible" href="#graph" class="graph" display="none"/>
+					</svg>
+				</svg>
+			</svg>	
+			<use href="#square-button-neutral" id="goToActions">
+				<set href="#text" attributeName="text-buffer" to="" />
+			</use>
+			<svg class="alertContainer" display="none">
+				<use href="#alerts" class="alerts"/>
+				<svg class="row bottom">
+					<svg class="right width-50">
+						<use href="#graph" id="alertGraph"/>
+					</svg>
+				</svg>
+			</svg>
+		</svg>	
 
 		<!-- <svg id="loadingScreen">
 			<svg class="container">

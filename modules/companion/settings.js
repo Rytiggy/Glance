@@ -22,6 +22,9 @@ export default class settings {
     if (settingsStorage.getItem("numOfDataSources")) {
       numOfDataSources = JSON.parse(settingsStorage.getItem("numOfDataSources"))
         .values[0].value;
+      if (numOfDataSources == 2) {
+        sgvCount = "count=24";
+      }
     } else if (!numOfDataSources) {
       settingsStorage.setItem(
         "numOfDataSources",
