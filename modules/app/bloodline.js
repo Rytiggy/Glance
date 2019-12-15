@@ -95,10 +95,11 @@ export default class bloodline {
 
     graphPoints.forEach((point, index) => {
       let bg = bloodsugars[index];
-      if (bloodsugars[index] === undefined || bloodsugars[index] === "LOS") {
+      if (bg == undefined || bg == "LOS" || isNaN(bg)) {
         graphPoints[index].style.opacity = 0;
       } else {
         graphPoints[index].style.opacity = 1;
+
         let pointY =
           height -
           height * (Math.round(((bg - ymin) / (ymax - ymin)) * 100) / 100);

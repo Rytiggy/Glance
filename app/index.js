@@ -27,12 +27,12 @@ import Errors from "../modules/app/errors.js";
 import UserAgreement from "../modules/app/userAgreement.js";
 import Actions from "../modules/app/actions.js";
 const actions = new Actions();
+
 import Treatments from "../modules/app/treatments.js";
+const treatments = new Treatments();
 
 import * as messaging from "messaging";
-// import * as weather from 'fitbit-weather/app'
 
-// import UserSettings from "../modules/app/userSettings.js";
 import { memory } from "system";
 const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
@@ -110,18 +110,18 @@ display.onchange = function() {
  * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
-  if (data.bloodSugars) {
-    checkDataState(data.bloodSugars);
-    updateAlerts(data.bloodSugars, data.settings);
-    updateBloodSugarDisplay(data.bloodSugars, data.settings);
-    updateStats(data.bloodSugars, data.settings);
-    updateGraph(data.bloodSugars, data.settings);
-    // largeGraphDisplay(data);
-  } else {
-    batteryLevel.width = batteryLevels.get().level;
-    batteryPercent.text = "" + batteryLevels.get().percent + "%";
-    updateTimeDisplay();
-  }
+  // if (data.bloodSugars) {
+  checkDataState(data.bloodSugars);
+  updateAlerts(data.bloodSugars, data.settings);
+  updateBloodSugarDisplay(data.bloodSugars, data.settings);
+  updateStats(data.bloodSugars, data.settings);
+  updateGraph(data.bloodSugars, data.settings);
+  // largeGraphDisplay(data);
+  // } else {
+  //   batteryLevel.width = batteryLevels.get().level;
+  //   batteryPercent.text = "" + batteryLevels.get().percent + "%";
+  //   updateTimeDisplay();
+  // }
 }
 
 /**
@@ -520,26 +520,29 @@ function updateSettingSpecificDisplay(settings) {
 
     console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
+    let singleBG = document.getElementById("singleBG");
+    let dualBG = document.getElementById("dualBG");
+    let largeBG = document.getElementById("largeBG");
+
     if (settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById("dualBG");
-      document.getElementById("dualBG").style.display = "inline";
-      document.getElementById("singleBG").style.display = "none";
-      document.getElementById("largeBG").style.display = "none";
+      singleBG.style.display = "none";
+      dualBG.style.display = "inline";
+      largeBG.style.display = "none";
     } else if (settings.numOfDataSources == 3) {
       singleOrMultipleDispaly = document.getElementById("largeBG");
-      document.getElementById("singleBG").style.display = "none";
-      document.getElementById("dualBG").style.display = "none";
-      document.getElementById("largeBG").style.display = "inline";
+      singleBG.style.display = "none";
+      dualBG.style.display = "none";
+      largeBG.style.display = "inline";
     } else {
       singleOrMultipleDispaly = document.getElementById("singleBG");
-      document.getElementById("singleBG").style.display = "inline";
-      document.getElementById("dualBG").style.display = "none";
-      document.getElementById("largeBG").style.display = "none";
+      singleBG.style.display = "inline";
+      dualBG.style.display = "none";
+      largeBG.style.display = "none";
     }
 
     actions.init(transfer, singleOrMultipleDispaly, settings);
-    const treatments = new Treatments(transfer, settings);
-
+    treatments.init(transfer, settings);
     time = singleOrMultipleDispaly.getElementById("time");
 
     time.text = dateTime.getTime(settings.timeFormat);
@@ -578,9 +581,9 @@ function setTextColor(color) {
   });
 }
 
-function updateTimeDisplay(classes) {
-  time.text = dateTime.getTime();
-}
+// function updateTimeDisplay() {
+//   time.text = dateTime.getTime();
+// }
 
 function isOdd(n) {
   return Math.abs(n % 2) == 1;

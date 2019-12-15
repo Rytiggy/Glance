@@ -361,8 +361,8 @@ export default class standardize {
 
       let returnBloodsugars = {
         currentBg: getfistBgNonPredictiveBG(cleanedBgs),
-        bgs: cleanedBgs.map(bg => bg.sgv),
-        predicted: cleanedBgs.filter(bg => bg.p).map(bg => bg.sgv)
+        bgs: cleanedBgs.map(bg => parseFloat(bg.sgv)),
+        predicted: cleanedBgs.filter(bg => bg.p).map(bg => parseFloat(bg.sgv))
       };
 
       // if small graph predictions is disabled remove them from the blood sugars array
