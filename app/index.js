@@ -145,21 +145,21 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
     arrowsEle = "largeArrows";
   }
 
-  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
+  let BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
   BloodSugarDisplayContainer.forEach((ele, index) => {
-    const bloodSugar = bloodSugars[index];
-    const delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
-    const sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
-    const errorLine = BloodSugarDisplayContainer[index].getElementById(
+    let bloodSugar = bloodSugars[index];
+    let delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
+    let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
+    let errorLine = BloodSugarDisplayContainer[index].getElementById(
       errorLineEle
     );
-    const timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById(
+    let timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById(
       timeOfLastSgvEle
     );
-    const arrows = BloodSugarDisplayContainer[index].getElementById(arrowsEle);
-    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    let arrows = BloodSugarDisplayContainer[index].getElementById(arrowsEle);
+    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
     let deltaText = fistBgNonPredictiveBG.bgdelta;
     // add Plus
@@ -195,20 +195,20 @@ function updateAlerts(bloodSugars, settings) {
     errorLineEle = "largeErrorLine";
   }
 
-  const alertContainer = singleOrMultipleDispaly.getElementsByClassName(
+  let alertContainer = singleOrMultipleDispaly.getElementsByClassName(
     "alertContainer"
   );
-  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
+  let BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
-    const bloodSugar = bloodSugars[index];
-    const sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
-    const errorLine = BloodSugarDisplayContainer[index].getElementById(
+    let bloodSugar = bloodSugars[index];
+    let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
+    let errorLine = BloodSugarDisplayContainer[index].getElementById(
       errorLineEle
     );
-    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
     let userName = null;
     if (index == 0) {
@@ -240,21 +240,19 @@ function updateAlerts(bloodSugars, settings) {
  * @param {Object} settings recived from the companion
  */
 function updateStats(bloodSugars, settings) {
-  const statsContainer = singleOrMultipleDispaly.getElementsByClassName(
-    "stats"
-  );
+  let statsContainer = singleOrMultipleDispaly.getElementsByClassName("stats");
   statsContainer.forEach((ele, index) => {
-    const bloodSugar = bloodSugars[index];
-    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
-    const layoutOne = statsContainer[index].getElementById("layoutOne");
-    const layoutTwo = statsContainer[index].getElementById("layoutTwo");
-    const layoutThree = statsContainer[index].getElementById("layoutThree");
-    const layoutFour = statsContainer[index].getElementById("layoutFour");
-    const layoutFive = statsContainer[index].getElementById("layoutFive");
-    const syringe = statsContainer[index].getElementById("syringe");
-    const hamburger = statsContainer[index].getElementById("hamburger");
-    const step = statsContainer[index].getElementById("step");
-    const heart = statsContainer[index].getElementById("heart");
+    let bloodSugar = bloodSugars[index];
+    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    let layoutOne = statsContainer[index].getElementById("layoutOne");
+    let layoutTwo = statsContainer[index].getElementById("layoutTwo");
+    let layoutThree = statsContainer[index].getElementById("layoutThree");
+    let layoutFour = statsContainer[index].getElementById("layoutFour");
+    let layoutFive = statsContainer[index].getElementById("layoutFive");
+    let syringe = statsContainer[index].getElementById("syringe");
+    let hamburger = statsContainer[index].getElementById("hamburger");
+    let step = statsContainer[index].getElementById("step");
+    let heart = statsContainer[index].getElementById("heart");
 
     let userName = null;
     if (index == 0) {
@@ -334,11 +332,9 @@ function updateStats(bloodSugars, settings) {
  * @param {Object} settings recived from the companion
  */
 function updateGraph(bloodSugars, settings) {
-  const graphContainer = singleOrMultipleDispaly.getElementsByClassName(
-    "graph"
-  );
+  let graphContainer = singleOrMultipleDispaly.getElementsByClassName("graph");
   graphContainer.forEach((ele, index) => {
-    const bloodSugar = bloodSugars[index];
+    let bloodSugar = bloodSugars[index];
     graph.update(
       bloodSugar.user,
       settings.highThreshold,
@@ -355,7 +351,7 @@ function updateGraph(bloodSugars, settings) {
  * @param {string} bgColorTwo hex color two recived from the companion
  */
 function updateBgColor(bgColorOne, bgColorTwo) {
-  const bgColor = singleOrMultipleDispaly.getElementsByClassName("bgColor");
+  let bgColor = singleOrMultipleDispaly.getElementsByClassName("bgColor");
   bgColor.forEach((ele, index) => {
     if (isOdd(index)) {
       bgColor[index].gradient.colors.c1 = bgColorTwo;
@@ -374,7 +370,7 @@ function updateBgColor(bgColorOne, bgColorTwo) {
  */
 function updateHeader(dateFormat, enableDOW) {
   if (data.settings.numOfDataSources != 2) {
-    const date = singleOrMultipleDispaly.getElementById("date");
+    let date = singleOrMultipleDispaly.getElementById("date");
     batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
     batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
     batteryLevel.width = batteryLevels.get().level;
@@ -390,8 +386,8 @@ function updateHeader(dateFormat, enableDOW) {
  */
 function loadingScreen() {
   // let spinner = document.getElementById("spinner");
-  const status = document.getElementById("errorStatus");
-  const statusLead = document.getElementById("errorStatusLead");
+  let status = document.getElementById("errorStatus");
+  let statusLead = document.getElementById("errorStatusLead");
   // Start the spinner
   // spinner.state = "enabled";
   status.text = "Syncing";
@@ -437,26 +433,26 @@ function checkDataState(bloodSugars) {
     errorStatusLeadEle = "largeErrorStatusLead";
   }
 
-  const BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
+  let BloodSugarDisplayContainer = singleOrMultipleDispaly.getElementsByClassName(
     "bloodSugarDisplay"
   );
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
     var errorCodes = "";
     var errorCodesDesc = "";
-    const bloodSugar = bloodSugars[index];
+    let bloodSugar = bloodSugars[index];
 
-    const fistBgNonPredictiveBG = bloodSugar.user.currentBg;
-    const bloodSugarContainer = BloodSugarDisplayContainer[
-      index
-    ].getElementById("bloodSugarContainer");
-    const errorStateContainer = BloodSugarDisplayContainer[
-      index
-    ].getElementById("errorStateContainer");
-    const errorStatus = BloodSugarDisplayContainer[index].getElementById(
+    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    let bloodSugarContainer = BloodSugarDisplayContainer[index].getElementById(
+      "bloodSugarContainer"
+    );
+    let errorStateContainer = BloodSugarDisplayContainer[index].getElementById(
+      "errorStateContainer"
+    );
+    let errorStatus = BloodSugarDisplayContainer[index].getElementById(
       errorStatusEle
     );
-    const errorStatusLead = BloodSugarDisplayContainer[index].getElementById(
+    let errorStatusLead = BloodSugarDisplayContainer[index].getElementById(
       errorStatusLeadEle
     );
     if (fistBgNonPredictiveBG.currentbg === "E503") {
@@ -489,13 +485,13 @@ function checkDataState(bloodSugars) {
  * @param {Object} data recived from the companion
  */
 function largeGraphDisplay(data) {
-  // const graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
-  // const largeGraphDisplay = document.getElementById('largeGraphDisplay');
-  // const largeGraph = document.getElementById('largeGraph');
+  // let graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
+  // let largeGraphDisplay = document.getElementById('largeGraphDisplay');
+  // let largeGraph = document.getElementById('largeGraph');
   // graphContainer.forEach((ele, index) => {
   //   graphContainer[index].onclick = function(evt) {
   //     largeGraphDisplay.style.display = 'inline';
-  //     const bloodSugar = data.bloodSugars[index];
+  //     let bloodSugar = data.bloodSugars[index];
   //     graph.update(bloodSugar.user.bgs,
   //       data.settings.highThreshold,
   //       data.settings.lowThreshold,
