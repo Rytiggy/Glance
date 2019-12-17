@@ -11,6 +11,8 @@
  * ------------------------------------------------
  */
 
+import { preferences } from "user-settings";
+
 export default class dateTime {
   getDate(dateFormat, enableDOW) {
     let dateObj = new Date();
@@ -41,13 +43,13 @@ export default class dateTime {
     return shortDate;
   }
 
-  getTime(timeFormat) {
+  getTime() {
     let timeNow = new Date();
     let hh = timeNow.getHours();
     let mm = timeNow.getMinutes();
     let ss = timeNow.getSeconds();
-    if (!timeFormat) {
-      let formatAMPM = hh >= 12 ? "PM" : "AM";
+    if (preferences.clockDisplay == "12h") {
+      hh = hh >= 12 ? "PM" : "AM";
       hh = hh % 12 || 12;
 
       if (hh < 10) {

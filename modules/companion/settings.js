@@ -205,20 +205,20 @@ export default class settings {
       settingsStorage.setItem("rapidFall", true);
     }
 
-    let timeFormat = null;
-    if (settingsStorage.getItem("timeFormat")) {
-      timeFormat = JSON.parse(settingsStorage.getItem("timeFormat")).values[0]
-        .value;
-    } else if (!timeFormat) {
-      timeFormat = "12hr";
-      settingsStorage.setItem(
-        "timeFormat",
-        JSON.stringify({
-          selected: [0],
-          values: [{ name: timeFormat, value: false }]
-        })
-      );
-    }
+    // let timeFormat = null;
+    // if (settingsStorage.getItem("timeFormat")) {
+    //   timeFormat = JSON.parse(settingsStorage.getItem("timeFormat")).values[0]
+    //     .value;
+    // } else if (!timeFormat) {
+    //   timeFormat = "12hr";
+    //   settingsStorage.setItem(
+    //     "timeFormat",
+    //     JSON.stringify({
+    //       selected: [0],
+    //       values: [{ name: timeFormat, value: false }]
+    //     })
+    //   );
+    // }
 
     let dateFormat = null;
     if (settingsStorage.getItem("dateFormat")) {
@@ -631,7 +631,7 @@ export default class settings {
       lowThreshold,
       glucoseUnits,
       disableAlert,
-      timeFormat,
+      // timeFormat,
       dateFormat,
       tempType,
       bgColor,

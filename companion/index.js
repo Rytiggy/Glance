@@ -134,7 +134,8 @@ async function sendData() {
                 ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
                 : null
           }
-        ]
+        ],
+        settings: standardize.settings(store)
       };
       logs.add(dataToSend);
       transfer.send(dataToSend);

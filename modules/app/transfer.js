@@ -17,6 +17,7 @@ import * as messaging from "messaging";
 export default class transfer {
   // Send data
   send(data) {
+    console.log(JSON.stringify(data));
     if (messaging.peerSocket.readyState == 0) {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       // Send a command to the companion

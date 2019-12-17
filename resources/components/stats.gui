@@ -2,12 +2,12 @@
 	<svg>
 		<text class="leadText settingsTextColor" id="layoutOne" />
 		<text class="leadText settingsTextColor" id="layoutTwo" />
-		<image class="stat-image" href="img/step.png" fill="white" id="step" />
+		<image class="stat-image" href="../../resources/img/step.png" fill="white" id="step" />
 		<text class="leadText settingsTextColor" id="layoutThree" />
-		<image class="stat-image" href="img/heart.png" fill="white" id="heart" />
+		<image class="stat-image" href="../../resources/img/heart.png" fill="white" id="heart" />
 		<text class="leadText settingsTextColor" id="layoutFour" />
-		<image class="stat-image" href="img/hamburger.png" fill="white" id="hamburger" />
+		<image class="stat-image" href="../../resources/img/hamburger.png" fill="white" id="hamburger" />
 		<text class="leadText settingsTextColor" id="layoutFive" />
-		<image class="stat-image" href="img/syringe.png" fill="white" id="syringe" /> 
+		<image class="stat-image" href="../../resources/img/syringe.png" fill="white" id="syringe" /> 
 	</svg>
 </symbol>

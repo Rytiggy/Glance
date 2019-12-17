@@ -166,14 +166,14 @@ function mySettings(props) {
           </Text>
         }
       >
-        <Select
+        {/* <Select
           label={`Time Format`}
           settingsKey="timeFormat"
           options={[
             { name: "12hr", value: false },
             { name: "24hr", value: true }
           ]}
-        />
+        /> */}
         <Select
           label={`Date Format`}
           settingsKey="dateFormat"

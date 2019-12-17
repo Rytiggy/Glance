@@ -1,5 +1,5 @@
 <symbol id="bloodSugarDisplay">
-	<svg id="bloodSugarContainer" display="none">
+	<svg id="bloodSugarContainer">
 		<text class="subtext1 settingsTextColor" text-anchor="end" id="delta" />
 		<text class="h2" id="sgv" pointer-events="all" />
 		<line class="subtext1" stroke-width="4" id="errorLine" display="none" />

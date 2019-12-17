@@ -53,7 +53,7 @@ export default class alerts {
       alertGraphContainer
     );
 
-    alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
+    alertArrows.href = "../../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
 
     let sgvColor = "#75bd78";
@@ -61,9 +61,10 @@ export default class alerts {
     alertLead.text = "Check Blood Sugar!";
     alertUser.text = userName;
     bgAlertColor.gradient.colors.c1 = "#99988e";
-    alertTitle.style.fontSize = 45;
-    alertTitle.x = document.getElementById("glance").width - 6;
 
+    alertTitle.style.fontSize = 45;
+
+    // alertTitle.x = document.getElementById("glance").width - 6;
     /**
      * Checks if the users BG is less then their low threshold
      */
@@ -82,7 +83,7 @@ export default class alerts {
       errorLineColor = "#de4430";
       bgAlertColor.gradient.colors.c1 = "#cc5050";
       alertTitle.style.fontSize = 60;
-      alertTitle.x = document.getElementById("glance").width - 38;
+      // alertTitle.x = document.getElementById("glance").width - 38;
     } else if (bg.sgv >= parseInt(settings.highThreshold) && !staleData) {
       /**
        * Checks if the users BG is greater then their high threshold
@@ -108,7 +109,7 @@ export default class alerts {
         bgAlertColor.gradient.colors.c1 = "#cc5050";
       }
       alertTitle.style.fontSize = 60;
-      alertTitle.x = document.getElementById("glance").width - 38;
+      // alertTitle.x = document.getElementById("glance").width - 38;
     } else if (loopstatus === "Warning" && !staleData) {
       /**
        * check if the loopstatus is in warrning state
@@ -124,7 +125,7 @@ export default class alerts {
           alertTitle.text = loopstatus;
           alertLead.text = "Loop Status";
           alertTitle.style.fontSize = 45;
-          alertTitle.x = document.getElementById("glance").width - 6;
+          // alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
     } else if (bg.direction === "DoubleDown" && !staleData) {
@@ -141,7 +142,7 @@ export default class alerts {
           alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Fall!";
           alertTitle.style.fontSize = 45;
-          alertTitle.x = document.getElementById("glance").width - 6;
+          // alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
     } else if (bg.direction === "DoubleUp" && !staleData) {
@@ -155,7 +156,7 @@ export default class alerts {
           alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Rise!";
           alertTitle.style.fontSize = 45;
-          alertTitle.x = document.getElementById("glance").width - 6;
+          // alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
     } else if (staleData) {
@@ -172,7 +173,7 @@ export default class alerts {
           alertTitle.style.display = "inline";
           alertTitle.text = "Stale data";
           alertTitle.style.fontSize = 45;
-          alertTitle.x = document.getElementById("glance").width - 6;
+          // alertTitle.x = document.getElementById("glance").width - 6;
         }
       }
     } else {
