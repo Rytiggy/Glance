@@ -20,6 +20,7 @@
     <!-- Custom Components -->
     <link rel="import" href="components/header.gui" />
     <link rel="import" href="components/bloodSugar.gui" />
+    <link rel="import" href="components/largeBloodSugar.gui" />
     <link rel="import" href="components/stats.gui" />
     <link rel="import" href="components/graph.gui" />
     <link rel="import" href="components/alerts.gui" />

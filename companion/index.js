@@ -50,6 +50,7 @@ const MILLISECONDS_PER_MINUTE = 1000 * 60;
 me.wakeInterval = 5 * MILLISECONDS_PER_MINUTE;
 if (me.launchReasons.wokenUp) {
   logs.add("Companion woke up.");
+  sendData();
 } else {
   logs.add("Companion went to sleep.");
   me.yield();
@@ -133,7 +134,8 @@ async function sendData() {
                 ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
                 : null
           }
-        ]
+        ],
+        settings: standardize.settings(store)
       };
       logs.add(dataToSend);
       transfer.send(dataToSend);

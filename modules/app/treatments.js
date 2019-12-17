@@ -40,7 +40,7 @@ let actionsContainer = document.getElementById("actions");
 let homeContainer = document.getElementById("home");
 
 export default class treatments {
-  constructor(transfer, settings) {
+  init(transfer, settings) {
     if (settings.numOfDataSources == 2) {
       if (settings.dataSource == "nightscout" && settings.treatmentUrl) {
         btnUser1.value = 1;
