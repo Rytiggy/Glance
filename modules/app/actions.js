@@ -12,6 +12,12 @@ export default class actions {
    * @param {notsure} transfer module used for sending data back to the phone
    */
   init(transfer, singleOrMultipleDispaly, settings) {
+    let arrowsEle = "arrows";
+    if (settings.numOfDataSources == 3) {
+      // if its the large display
+      arrowsEle = "largeArrows";
+    }
+
     // check to see if one of the users is using nightscout and that they have ented a token
     if (
       (settings.dataSource == "nightscout" && settings.treatmentUrl) ||
@@ -39,7 +45,7 @@ export default class actions {
         "bloodSugarDisplay"
       );
       BloodSugarDisplayContainer.forEach((container, index) => {
-        container.getElementById("arrows").href =
+        container.getElementById(arrowsEle).href =
           "../resources/img/arrows/loading.png";
       });
     };
