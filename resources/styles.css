@@ -134,20 +134,20 @@
 #largeDelta {
   text-anchor: "end";
   x: 97%;
-  y: 38%;
+  y: 41%;
 }
 
 #largeTimeOfLastSgv {
   text-anchor: "end";
   x: 97%;
-  y: 56%;
+  y: 59%;
 }
 
 #largeArrows {
-  x: 82%;
-  y: 53%;
-  width: 60;
-  height: 60;
+  x: 84%;
+  y: 55%;
+  width: 55;
+  height: 55;
   fill: white;
 }
 
@@ -165,7 +165,7 @@
 /* large bg display */
 .largeBgTime {
   x: 97%;
-  y: 23%;
+  y: 26%;
   font-size: 40;
   text-anchor: end;
   text-length: 65;
