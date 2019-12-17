@@ -1,0 +1,20 @@
+<symbol id="largeBloodSugarDisplay">
+	<svg id="bloodSugarContainer">
+		<text class="subtext1 settingsTextColor" text-anchor="end" id="largeDelta" />
+		<text class="h3" id="largeSgv" pointer-events="all" />
+		<line class="subtext1" id="largeErrorLine" display="none" />
+		<text class="subtext1 settingsTextColor" text-anchor="end" id="largeTimeOfLastSgv" />
+		<image id="largeArrows" />
+	</svg>
+	<svg id="errorStateContainer">
+		<!-- <use id="spinner" href="#spinner" /> -->
+		<text 
+			id="largeErrorStatus"
+			class="subtext1"
+		/>
+		<textarea
+			id="largeErrorStatusLead"
+			class="leadText"
+		/>
+	</svg>
+</symbol>

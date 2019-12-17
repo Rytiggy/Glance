@@ -542,6 +542,7 @@ function standardizeExtraData(bgs, extraData, settings) {
     ) {
       // AR2
       bgs.splice(bgs.length - 6, 6);
+      // TODO could be a bug here with ar2
       let predictedValues = extraData.ar2.forecast.predicted.length - 1;
       let tempPredictedBG =
         extraData.ar2.forecast.predicted[predictedValues].mgdl;
