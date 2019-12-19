@@ -11,7 +11,14 @@
  * ------------------------------------------------
  */
 
+import document from "document";
+
 export default class dateTime {
+  constructor() {
+    document.getElementById("time").text = this.getTime();
+    document.getElementById("date").text = this.getDate();
+  }
+
   getDate(dateFormat, enableDOW) {
     let dateObj = new Date();
     let month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
