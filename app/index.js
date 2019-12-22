@@ -19,7 +19,7 @@ import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
 import DateTime from "../modules/app/dateTime.js";
-import BatteryLevels from "../modules/app/batteryLevels.js";
+import * as batteryLevels from "../modules/app/batteryLevels.js";
 import * as graph from "../modules/app/bloodline.js";
 import UserActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
@@ -35,7 +35,7 @@ import * as messaging from "messaging";
 
 import { memory } from "system";
 const dateTime = new DateTime();
-const batteryLevels = new BatteryLevels();
+// const batteryLevels = new BatteryLevels();
 // const graph = new Graph();
 const userActivity = new UserActivity();
 const errors = new Errors();
@@ -46,8 +46,6 @@ var data = { bloodSugars: null, settings: null };
 
 var singleOrMultipleDispaly = document.getElementById("singleBG");
 var time = singleOrMultipleDispaly.getElementById("time");
-var batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
-var batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
 
 loadingScreen();
 
@@ -371,12 +369,8 @@ function updateBgColor(bgColorOne, bgColorTwo) {
 function updateHeader(dateFormat, enableDOW) {
   if (data.settings.numOfDataSources != 2) {
     let date = singleOrMultipleDispaly.getElementById("date");
-    batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
-    batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
-    batteryLevel.width = batteryLevels.get().level;
-    batteryLevel.style.fill = batteryLevels.get().color;
-    batteryPercent.text = batteryLevels.get().percent + "%";
     date.text = dateTime.getDate(dateFormat, enableDOW);
+    batteryLevels.get(singleOrMultipleDispaly);
   }
 }
 
