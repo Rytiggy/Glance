@@ -306,9 +306,7 @@ export default class settings {
       }
     } else if (!bgColor) {
       bgColor = "#1F618D";
-
       settingsStorage.setItem("bgColor", JSON.stringify(bgColor));
-      console.log(settingsStorage.getItem("bgColor"));
     }
 
     let textColor = null;

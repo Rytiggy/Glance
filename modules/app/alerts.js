@@ -23,7 +23,6 @@ const dateTime = new DateTime();
 // figure out if the watch is on the users wrist
 let isOnWrist = true;
 if (BodyPresenceSensor) {
-  console.log("This device has a BodyPresenceSensor!");
   const bodyPresence = new BodyPresenceSensor();
   bodyPresence.addEventListener("reading", () => {
     isOnWrist = bodyPresence.present;
