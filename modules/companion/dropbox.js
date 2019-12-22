@@ -11,8 +11,7 @@
  *
  * ------------------------------------------------ //
  */
-import Logs from "./logs.js";
-const logs = new Logs();
+import * as logs from "./logs.js";
 
 var bgs_day = [];
 var object_count = 0;

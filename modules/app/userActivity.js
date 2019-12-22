@@ -11,20 +11,18 @@
  * ------------------------------------------------
  */
 
-
-
-import { today } from 'user-activity';
+import { today } from "user-activity";
 import { HeartRateSensor } from "heart-rate";
 
 let hrm = new HeartRateSensor();
 hrm.start();
 
-export default class userActivity { 
+export default class userActivity {
   get() {
     const userActivity = {
       steps: today.adjusted.steps,
-      heartRate: hrm.heartRate,
-    }
+      heartRate: hrm.heartRate
+    };
     return userActivity;
   }
-};
+}

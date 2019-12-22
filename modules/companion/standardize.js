@@ -11,11 +11,10 @@
  * ------------------------------------------------
  */
 
-import Logs from "./logs.js";
+import * as logs from "./logs.js";
 import Sizeof from "./sizeof.js";
 
 const sizeof = new Sizeof();
-const logs = new Logs();
 
 // this module handles standardizing return data from various APIS
 export default class standardize {

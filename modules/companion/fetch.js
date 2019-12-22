@@ -11,8 +11,7 @@
  * ------------------------------------------------
  */
 
-import Logs from "./logs.js";
-const logs = new Logs();
+import * as logs from "./logs.js";
 
 export default class messaging {
   //Fetch data from an API endpoint and return a promise

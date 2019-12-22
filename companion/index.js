@@ -31,8 +31,7 @@ const standardize = new Standardize();
 // import Weather from "../modules/companion/weather.js";
 // import * as weather from 'fitbit-weather/companion'
 
-import Logs from "../modules/companion/logs.js";
-const logs = new Logs();
+import * as logs from "../modules/companion/logs.js";
 
 //FAB
 import Dropbox from "../modules/companion/dropbox.js";
@@ -49,10 +48,8 @@ const MILLISECONDS_PER_MINUTE = 1000 * 60;
 // Wake the Companion after 5 minutes
 me.wakeInterval = 5 * MILLISECONDS_PER_MINUTE;
 if (me.launchReasons.wokenUp) {
-  logs.add("Companion woke up.");
   sendData();
 } else {
-  logs.add("Companion went to sleep.");
   me.yield();
 }
 
