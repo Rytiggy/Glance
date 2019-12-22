@@ -13,14 +13,25 @@
 
 import document from "document";
 import { vibration } from "haptics";
-import Transfer from "./transfer.js";
 import DateTime from "./dateTime.js";
 import * as graph from "./bloodline.js";
 import { display } from "display";
+import { BodyPresenceSensor } from "body-presence";
 
-// const graph = new Graph();
-const transfer = new Transfer();
 const dateTime = new DateTime();
+
+// figure out if the watch is on the users wrist
+let isOnWrist = true;
+if (BodyPresenceSensor) {
+  console.log("This device has a BodyPresenceSensor!");
+  const bodyPresence = new BodyPresenceSensor();
+  bodyPresence.addEventListener("reading", () => {
+    isOnWrist = bodyPresence.present;
+  });
+  bodyPresence.start();
+} else {
+  console.log("This device does NOT have a BodyPresenceSensor!");
+}
 
 export default class alerts {
   constructor(DISABLE_ALERTS) {
@@ -33,6 +44,18 @@ export default class alerts {
   }
 
   check(user, errorLine, sgv, bg, settings, userName, alertContainer) {
+    // should we allow alerts to fire?
+    let allowAlertToFire = true;
+    if (settings.disableAlertsWhenNotOnWrist == true) {
+      allowAlertToFire = true;
+      if (isOnWrist == false) {
+        allowAlertToFire = false;
+      }
+    }
+    if (settings.disableAlert) {
+      allowAlertToFire = false;
+    }
+
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
     const alertTitle = alertContainer.getElementById("alertTitle");
@@ -69,7 +92,7 @@ export default class alerts {
      * Checks if the users BG is less then their low threshold
      */
     if (bg.sgv <= parseInt(settings.lowThreshold) && !staleData) {
-      if (!self.DISABLE_LOW_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_LOW_ALERTS && allowAlertToFire) {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
           vibration.start("ring");
@@ -89,7 +112,7 @@ export default class alerts {
       /**
        * Checks if the users BG is greater then their high threshold
        */
-      if (!self.DISABLE_HIGH_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_HIGH_ALERTS && allowAlertToFire) {
         if (settings.highAlerts) {
           vibration.start("ring");
           display.poke();
@@ -116,7 +139,7 @@ export default class alerts {
       /**
        * check if the loopstatus is in warrning state
        */
-      if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && allowAlertToFire) {
         if (settings.loopstatus) {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
@@ -135,7 +158,7 @@ export default class alerts {
       /**
        * Check for rapid change in bg
        */
-      if (!self.DISABLE_DOUBLEDOWN_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_DOUBLEDOWN_ALERTS && allowAlertToFire) {
         if (settings.rapidFall) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
@@ -150,7 +173,7 @@ export default class alerts {
         }
       }
     } else if (bg.direction === "DoubleUp" && !staleData) {
-      if (!self.DISABLE_DOUBLEUP_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_DOUBLEUP_ALERTS && allowAlertToFire) {
         if (settings.rapidRise) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
@@ -168,7 +191,7 @@ export default class alerts {
       /**
        * Check if stale data
        */
-      if (!self.DISABLE_STALEDATA_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_STALEDATA_ALERTS && allowAlertToFire) {
         if (settings.staleData) {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";

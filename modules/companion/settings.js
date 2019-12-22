@@ -12,8 +12,7 @@
  */
 
 import { settingsStorage } from "settings";
-import Logs from "./logs.js";
-const logs = new Logs();
+import * as logs from "./logs.js";
 let sgvCount = "count=47";
 
 export default class settings {
@@ -620,6 +619,16 @@ export default class settings {
       settingsStorage.setItem("logs", JSON.stringify({ name: logs }));
     }
 
+    let disableAlertsWhenNotOnWrist = null;
+    if (settingsStorage.getItem("disableAlertsWhenNotOnWrist")) {
+      disableAlertsWhenNotOnWrist = JSON.parse(
+        settingsStorage.getItem("disableAlertsWhenNotOnWrist")
+      );
+    } else if (!disableAlertsWhenNotOnWrist) {
+      disableAlertsWhenNotOnWrist = false;
+      settingsStorage.setItem("disableAlertsWhenNotOnWrist", false);
+    }
+
     let settings = {
       url,
       extraDataUrl,
@@ -671,7 +680,8 @@ export default class settings {
       dataSourceNameTwo,
       userAgreement,
       treatmentUrl,
-      treatmentUrlTwo
+      treatmentUrlTwo,
+      disableAlertsWhenNotOnWrist
     };
     return settings;
   }

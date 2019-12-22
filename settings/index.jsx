@@ -154,6 +154,10 @@ function mySettings(props) {
                 settingsKey="resetAlertDismissal"
                 label="Dismiss alarm when back in range"
               />
+              <Toggle
+                settingsKey="disableAlertsWhenNotOnWrist"
+                label="Disable Alerts when not wearing watch"
+              />
             </Section>
           ) : null
         ) : null}
