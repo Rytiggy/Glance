@@ -12,9 +12,9 @@
  */
 import Transfer from "../modules/app/transfer.js";
 const transfer = new Transfer();
-import clock from "clock";
+// import clock from "clock";
 import { display } from "display";
-clock.granularity = "minutes";
+// clock.granularity = "minutes";
 import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
@@ -81,45 +81,44 @@ var dataToSend = {
 };
 
 transfer.send(dataToSend);
-clock.ontick = evt => {
-  if (data.settings) {
-    updateSettingSpecificDisplay(data.settings);
-    updateDisplay(data);
-    // request new data
-    transfer.send(dataToSend);
-  }
-};
+// clock.ontick = evt => {
+//   if (data.settings) {
+//     updateSettingSpecificDisplay(data.settings);
+//     updateDisplay(data);
+//     // request new data
+//     transfer.send(dataToSend);
+//   }
+// };
 
 // when the screen is off add a interval to keep fetching data
-let refreshInterval = null;
-display.onchange = function() {
-  if (display.on) {
-    clearInterval(refreshInterval);
-    refreshInterval = null;
-  } else {
-    refreshInterval = setInterval(function() {
-      transfer.send(dataToSend);
-    }, 120000);
-  }
-};
+// let refreshInterval = null;
+// display.onchange = function() {
+// if (display.on) {
+// clearInterval(refreshInterval);
+// refreshInterval = null;
+// } else {
+setInterval(function() {
+  transfer.send(dataToSend);
+}, 180000);
+setInterval(function() {
+  updateSettingSpecificDisplay(data.settings);
+  updateDisplay(data);
+}, 10000);
+// }
+// };
 
 /**
  * Update watchface display This deals with the BGS data
  * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
-  // if (data.bloodSugars) {
   checkDataState(data.bloodSugars);
   updateAlerts(data.bloodSugars, data.settings);
   updateBloodSugarDisplay(data.bloodSugars, data.settings);
   updateStats(data.bloodSugars, data.settings);
   updateGraph(data.bloodSugars, data.settings);
   // largeGraphDisplay(data);
-  // } else {
-  //   batteryLevel.width = batteryLevels.get().level;
-  //   batteryPercent.text = "" + batteryLevels.get().percent + "%";
-  //   updateTimeDisplay();
-  // }
+  console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 }
 
 /**
@@ -506,8 +505,6 @@ function updateSettingSpecificDisplay(settings) {
   // Check if user has agreed to user agreement
   if (userAgreement.check(settings)) {
     document.getElementById("userAgreement").style.display = "none";
-
-    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 
     let singleBG = document.getElementById("singleBG");
     let dualBG = document.getElementById("dualBG");
