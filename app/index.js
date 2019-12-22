@@ -20,7 +20,7 @@ import { inbox } from "file-transfer";
 import fs from "fs";
 import DateTime from "../modules/app/dateTime.js";
 import BatteryLevels from "../modules/app/batteryLevels.js";
-import Graph from "../modules/app/bloodline.js";
+import * as graph from "../modules/app/bloodline.js";
 import UserActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
@@ -36,7 +36,7 @@ import * as messaging from "messaging";
 import { memory } from "system";
 const dateTime = new DateTime();
 const batteryLevels = new BatteryLevels();
-const graph = new Graph();
+// const graph = new Graph();
 const userActivity = new UserActivity();
 const errors = new Errors();
 const userAgreement = new UserAgreement();
@@ -481,29 +481,28 @@ function checkDataState(bloodSugars) {
   });
 }
 /**
- *  Validate data is not in error state
- * @param {Object} data recived from the companion
+] * @param {Object} data recived from the companion
  */
-function largeGraphDisplay(data) {
-  // let graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
-  // let largeGraphDisplay = document.getElementById('largeGraphDisplay');
-  // let largeGraph = document.getElementById('largeGraph');
-  // graphContainer.forEach((ele, index) => {
-  //   graphContainer[index].onclick = function(evt) {
-  //     largeGraphDisplay.style.display = 'inline';
-  //     let bloodSugar = data.bloodSugars[index];
-  //     graph.update(bloodSugar.user.bgs,
-  //       data.settings.highThreshold,
-  //       data.settings.lowThreshold,
-  //       data.settings,
-  //       largeGraph
-  //     );
-  //   }
-  // });
-  // largeGraph.onclick = function(evt) {
-  //   largeGraphDisplay.style.display = 'none';
-  // }
-}
+// function largeGraphDisplay(data) {
+//   let graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
+//   let largeGraphDisplay = document.getElementById('largeGraphDisplay');
+//   let largeGraph = document.getElementById('largeGraph');
+//   graphContainer.forEach((ele, index) => {
+//     graphContainer[index].onclick = function(evt) {
+//       largeGraphDisplay.style.display = 'inline';
+//       let bloodSugar = data.bloodSugars[index];
+//       graph.update(bloodSugar.user.bgs,
+//         data.settings.highThreshold,
+//         data.settings.lowThreshold,
+//         data.settings,
+//         largeGraph
+//       );
+//     }
+//   });
+//   largeGraph.onclick = function(evt) {
+//     largeGraphDisplay.style.display = 'none';
+//   }
+// }
 
 /**
  * Update settings specific UI elements

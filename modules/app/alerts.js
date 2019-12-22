@@ -15,9 +15,10 @@ import document from "document";
 import { vibration } from "haptics";
 import Transfer from "./transfer.js";
 import DateTime from "./dateTime.js";
-import Graph from "./bloodline.js";
+import * as graph from "./bloodline.js";
+import { display } from "display";
 
-const graph = new Graph();
+// const graph = new Graph();
 const transfer = new Transfer();
 const dateTime = new DateTime();
 
@@ -72,6 +73,7 @@ export default class alerts {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
           vibration.start("ring");
+          display.poke();
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
           alertTitle.text = currentBG;
@@ -90,6 +92,7 @@ export default class alerts {
       if (!self.DISABLE_HIGH_ALERTS && !settings.disableAlert) {
         if (settings.highAlerts) {
           vibration.start("ring");
+          display.poke();
           setAlertDurationValues([60, 120, 240, 30]);
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
@@ -119,6 +122,7 @@ export default class alerts {
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
           vibration.start("ring");
+          display.poke();
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
           alertTitle.text = loopstatus;
@@ -137,6 +141,7 @@ export default class alerts {
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
           vibration.start("ring");
+          display.poke();
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Fall!";
@@ -151,6 +156,7 @@ export default class alerts {
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
           vibration.start("ring");
+          display.poke();
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Rise!";
@@ -168,6 +174,7 @@ export default class alerts {
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
           vibration.start("ring");
+          display.poke();
           alertContainer.style.display = "inline";
           alertTitle.style.display = "inline";
           alertTitle.text = "Stale data";

@@ -544,13 +544,16 @@ function standardizeExtraData(bgs, extraData, settings) {
       bgs.splice(bgs.length - 6, 6);
       // TODO could be a bug here with ar2
       let predictedValues = extraData.ar2.forecast.predicted.length - 1;
-      let tempPredictedBG =
-        extraData.ar2.forecast.predicted[predictedValues].mgdl;
-      predictedBg =
-        checkForMmol(tempPredictedBG, settings) +
-        " in " +
-        ((predictedValues * 5) / 60).toFixed(1) +
-        "h";
+      if (extraData.ar2.forecast.predicted.length > 0) {
+        let tempPredictedBG =
+          extraData.ar2.forecast.predicted[predictedValues].mgdl;
+        predictedBg =
+          checkForMmol(tempPredictedBG, settings) +
+          " in " +
+          ((predictedValues * 5) / 60).toFixed(1) +
+          "h";
+      }
+
       if (predictedValues >= 24) {
         predictedValues = 24;
       }
