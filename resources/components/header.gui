@@ -1,7 +1,7 @@
 <symbol id="header">
 	<svg>
         <rect id="batteryLevel" />
-        <image class="batteryImage" href="img/battery.png" fill="white" />
+        <image id="batteryIcon" class="batteryImage" href="img/battery.png" fill="white" />
         <text text-anchor="start" class="subtext1 settingsTextColor" id="batteryPercent"></text>
         <text class="subtext1 settingsTextColor" id="weather"></text>
         <image href="img/degree.png" id="degreeIcon" display="none" />
