@@ -117,7 +117,7 @@
 			</svg>
 		</svg>
 
-		<!-- <svg id="largeGraphDisplay" display="none">
+		<!-- <svg id="largeGraphDisplay">
 			<rect class="full-size" fill="fb-black" />
 			<svg class="spacing-top-10">
 				<svg class="row top">

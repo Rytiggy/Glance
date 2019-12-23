@@ -11,9 +11,7 @@
  * ------------------------------------------------
  */
 import document from "document";
-import Transfer from "./transfer.js";
-
-let transfer = new Transfer();
+import * as transfer from "./transfer.js";
 
 export let check = settings => {
   const agreeToPrompt = document.getElementById("agreeToUserAgreement");

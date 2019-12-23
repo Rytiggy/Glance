@@ -13,12 +13,10 @@
 
 import document from "document";
 import { vibration } from "haptics";
-import DateTime from "./dateTime.js";
+import * as dateTime from "./dateTime.js";
 import * as graph from "./bloodline.js";
 import { display } from "display";
 import { BodyPresenceSensor } from "body-presence";
-
-const dateTime = new DateTime();
 
 // figure out if the watch is on the users wrist
 let isOnWrist = true;
