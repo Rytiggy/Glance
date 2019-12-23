@@ -402,6 +402,7 @@
 }
 .graphPoints {
   opacity: 0;
+  r: 3;
 }
 /* Graph CSS End */
 

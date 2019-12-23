@@ -10,6 +10,7 @@
  *
  * ------------------------------------------------
  */
+import document from "document";
 
 export let update = (user, high, low, settings, graphContainer) => {
   let bloodsugars = user.bgs;
@@ -92,7 +93,9 @@ export let update = (user, high, low, settings, graphContainer) => {
 
   highNumber.text = tempHigh;
   lowNumber.text = tempLow;
-
+  let screenWidth = document.getElementById("glance").width / 2;
+  let pointGap = screenWidth / graphPoints.length;
+  let pointX1 = screenWidth;
   graphPoints.forEach((point, index) => {
     let bg = bloodsugars[index];
     let isLOS =
@@ -114,6 +117,7 @@ export let update = (user, high, low, settings, graphContainer) => {
       // update the points and lines positions
       graphPoints[index].cy = pointY;
 
+      graphPoints[index].cx = pointX1;
       // hide the line if the previous point was a los
       if (isLastLOS) {
         graphLines[index].style.opacity = 0;
@@ -121,7 +125,13 @@ export let update = (user, high, low, settings, graphContainer) => {
         graphLines[index].style.opacity = 1;
         graphLines[index].y1 = pointY - 0.5;
         graphLines[index].y2 = graphPoints[index - 1].cy - 1;
+
+        graphLines[index].x1 = pointX1;
+        let pointX2 = pointX1 + pointGap;
+        graphLines[index].x2 = pointX2;
       }
+      // the x to place the point
+      pointX1 = pointX1 - pointGap;
 
       let color = "#708090"; // gray
       //  - check sgv point is in range if not change color
