@@ -68,13 +68,7 @@ export default class alerts {
     const staleData =
       parseInt(timeSinceLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
     const self = this;
-    graph.update(
-      user,
-      settings.highThreshold,
-      settings.lowThreshold,
-      settings,
-      alertGraphContainer
-    );
+    let didAlertFire = false;
 
     alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
@@ -94,11 +88,8 @@ export default class alerts {
       if (!self.DISABLE_LOW_ALERTS && allowAlertToFire) {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
-          vibration.start("ring");
-          display.poke();
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = currentBG;
+          didAlertFire = true;
         }
       }
       sgvColor = "#de4430";
@@ -113,12 +104,9 @@ export default class alerts {
        */
       if (!self.DISABLE_HIGH_ALERTS && allowAlertToFire) {
         if (settings.highAlerts) {
-          vibration.start("ring");
-          display.poke();
           setAlertDurationValues([60, 120, 240, 30]);
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = currentBG;
+          didAlertFire = true;
         }
       }
       sgv.style.fill = "orange";
@@ -143,14 +131,11 @@ export default class alerts {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
-          vibration.start("ring");
-          display.poke();
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = loopstatus;
           alertLead.text = "Loop Status";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (bg.direction === "DoubleDown" && !staleData) {
@@ -162,13 +147,10 @@ export default class alerts {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
-          vibration.start("ring");
-          display.poke();
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Fall!";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (bg.direction === "DoubleUp" && !staleData) {
@@ -177,13 +159,10 @@ export default class alerts {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
-          vibration.start("ring");
-          display.poke();
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Rise!";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (staleData) {
@@ -195,13 +174,10 @@ export default class alerts {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
-          vibration.start("ring");
-          display.poke();
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Stale data";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else {
@@ -211,6 +187,20 @@ export default class alerts {
     alertTitle.style.fill = sgvColor;
     errorLine.style.fill = errorLineColor;
     sgv.style.fill = sgvColor;
+
+    if (didAlertFire) {
+      vibration.start("ring");
+      display.poke();
+      alertContainer.style.display = "inline";
+      alertTitle.style.display = "inline";
+      graph.update(
+        user,
+        settings.highThreshold,
+        settings.lowThreshold,
+        settings,
+        alertGraphContainer
+      );
+    }
 
     dismiss.onclick = function(evt) {
       alertContainer.style.display = "none";
