@@ -12,9 +12,6 @@
  */
 import Transfer from "../modules/app/transfer.js";
 const transfer = new Transfer();
-// import clock from "clock";
-import { display } from "display";
-// clock.granularity = "minutes";
 import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
@@ -24,7 +21,7 @@ import * as graph from "../modules/app/bloodline.js";
 import UserActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
 import Errors from "../modules/app/errors.js";
-import UserAgreement from "../modules/app/userAgreement.js";
+import * as userAgreement from "../modules/app/userAgreement.js";
 import Actions from "../modules/app/actions.js";
 const actions = new Actions();
 
@@ -35,11 +32,9 @@ import * as messaging from "messaging";
 
 import { memory } from "system";
 const dateTime = new DateTime();
-// const batteryLevels = new BatteryLevels();
-// const graph = new Graph();
+
 const userActivity = new UserActivity();
 const errors = new Errors();
-const userAgreement = new UserAgreement();
 
 var alerts = [];
 var data = { bloodSugars: null, settings: null };
@@ -81,22 +76,6 @@ var dataToSend = {
 };
 
 transfer.send(dataToSend);
-// clock.ontick = evt => {
-//   if (data.settings) {
-//     updateSettingSpecificDisplay(data.settings);
-//     updateDisplay(data);
-//     // request new data
-//     transfer.send(dataToSend);
-//   }
-// };
-
-// when the screen is off add a interval to keep fetching data
-// let refreshInterval = null;
-// display.onchange = function() {
-// if (display.on) {
-// clearInterval(refreshInterval);
-// refreshInterval = null;
-// } else {
 setInterval(function() {
   transfer.send(dataToSend);
 }, 180000);
@@ -104,8 +83,6 @@ setInterval(function() {
   updateSettingSpecificDisplay(data.settings);
   updateDisplay(data);
 }, 10000);
-// }
-// };
 
 /**
  * Update watchface display This deals with the BGS data
