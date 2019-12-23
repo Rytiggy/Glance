@@ -395,6 +395,14 @@
   width: 40;
 }
 
+.graphLines {
+  stroke-width: 2;
+  fill: white;
+  opacity: 0;
+}
+.graphPoints {
+  opacity: 0;
+}
 /* Graph CSS End */
 
 /* Alert CSS */

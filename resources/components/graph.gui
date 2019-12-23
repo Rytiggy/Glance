@@ -9,29 +9,54 @@
         </use>
         <text id="high" class="subtext2 settingsTextColor" text-anchor="end" />
         <text id="low" class="subtext2 settingsTextColor" text-anchor="end" />
+        
         <circle class="graphPoints" cx="4%" cy="50%" r="3" />
+        <line x1="4%" y1="50%" x2="8%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="8%" cy="50%" r="3" />
+        <line x1="8%" y1="50%" x2="12%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="12%" cy="50%" r="3" />
+        <line x1="12%" y1="50%" x2="16%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="16%" cy="50%" r="3" />
+        <line x1="16%" y1="50%" x2="20%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="20%" cy="50%" r="3" />
+        <line x1="20%" y1="50%" x2="24%" y2="50%" class="graphLines" /> 
         <circle class="graphPoints" cx="24%" cy="50%" r="3" />
+        <line x1="24%" y1="50%" x2="28%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="28%" cy="50%" r="3" />
+        <line x1="28%" y1="50%" x2="32%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="32%" cy="50%" r="3" />
+        <line x1="32%" y1="50%" x2="36%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="36%" cy="50%" r="3" />
+        <line x1="36%" y1="50%" x2="40%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="40%" cy="50%" r="3" />
+        <line x1="40%" y1="50%" x2="44%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="44%" cy="50%" r="3" />
+        <line x1="44%" y1="50%" x2="48%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="48%" cy="50%" r="3" />
+        <line x1="48%" y1="50%" x2="52%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="52%" cy="50%" r="3" />
+        <line x1="52%" y1="50%" x2="56%" y2="50%" class="graphLines" /> 
         <circle class="graphPoints" cx="56%" cy="50%" r="3" />
+        <line x1="56%" y1="50%" x2="60%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="60%" cy="50%" r="3" />
+        <line x1="60%" y1="50%" x2="64%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="64%" cy="50%" r="3" />
+        <line x1="64%" y1="50%" x2="68%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="68%" cy="50%" r="3" />
+        <line x1="68%" y1="50%" x2="72%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="72%" cy="50%" r="3" />
+        <line x1="72%" y1="50%" x2="76%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="76%" cy="50%" r="3" />
+        <line x1="76%" y1="50%" x2="80%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="80%" cy="50%" r="3" />
+        <line x1="80%" y1="50%" x2="84%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="84%" cy="50%" r="3" />
+        <line x1="84%" y1="50%" x2="88%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="88%" cy="50%" r="3" />
+        <line x1="88%" y1="50%" x2="92%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="92%" cy="50%" r="3" />
+        <line x1="92%" y1="50%" x2="96%" y2="50%" class="graphLines" />
         <circle class="graphPoints" cx="96%" cy="50%" r="3" />
+        <line x1="96%" y1="50%" x2="100%" y2="50%" class="graphLines" />
 	</svg>
 </symbol>
