@@ -67,11 +67,17 @@ var dataToSend = {
   }
 };
 
-transfer.send(dataToSend);
 setInterval(function() {
-  transfer.send(dataToSend);
-}, 180000);
-setInterval(function() {
+  // check if the data is older then 5 minutes and fetch more data
+  if (data.bloodSugars) {
+    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(
+      data.bloodSugars[0].user.currentBg.datetime
+    )[1];
+    if (timeSenseLastSGV >= 5) {
+      console.log("request more data please!");
+      transfer.send(dataToSend);
+    }
+  }
   updateSettingSpecificDisplay(data.settings);
   updateDisplay(data);
 }, 10000);
@@ -213,6 +219,7 @@ function updateStats(bloodSugars, settings) {
   let statsContainer = singleOrMultipleDispaly.getElementsByClassName("stats");
   statsContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
+    // todo add check here for blood sugar at this index
     let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
     let layoutOne = statsContainer[index].getElementById("layoutOne");
     let layoutTwo = statsContainer[index].getElementById("layoutTwo");
@@ -483,22 +490,32 @@ function updateSettingSpecificDisplay(settings) {
     let singleBG = document.getElementById("singleBG");
     let dualBG = document.getElementById("dualBG");
     let largeBG = document.getElementById("largeBG");
+    let largeGraph = document.getElementById("largeGraph");
 
     if (settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById("dualBG");
       singleBG.style.display = "none";
       dualBG.style.display = "inline";
       largeBG.style.display = "none";
+      largeGraph.style.display = "none";
     } else if (settings.numOfDataSources == 3) {
       singleOrMultipleDispaly = document.getElementById("largeBG");
       singleBG.style.display = "none";
       dualBG.style.display = "none";
       largeBG.style.display = "inline";
+      largeGraph.style.display = "none";
+    } else if (settings.numOfDataSources == 4) {
+      singleOrMultipleDispaly = document.getElementById("largeGraph");
+      singleBG.style.display = "none";
+      dualBG.style.display = "none";
+      largeBG.style.display = "none";
+      largeGraph.style.display = "inline";
     } else {
       singleOrMultipleDispaly = document.getElementById("singleBG");
       singleBG.style.display = "inline";
       dualBG.style.display = "none";
       largeBG.style.display = "none";
+      largeGraph.style.display = "none";
     }
 
     actions.init(transfer, singleOrMultipleDispaly, settings);
@@ -548,18 +565,3 @@ function setTextColor(color) {
 function isOdd(n) {
   return Math.abs(n % 2) == 1;
 }
-
-// var dataToSend = {
-//   command: "refreshData",
-//   data: {
-//     heart: 0,
-//     steps: userActivity.get().steps
-//   }
-// };
-// Request data every 5 mins from companion
-// setTimeout(function() {
-//   transfer.send(dataToSend);
-// }, 1500);
-// setInterval(function() {
-//   transfer.send(dataToSend);
-// }, 180000);
