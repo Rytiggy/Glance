@@ -1,3 +1,13 @@
+import largeBg from "../resources/display types/largeBg.png";
+import smallBg from "../resources/display types/smallBg.png";
+import dualBg from "../resources/display types/dualBg.png";
+import largeGraph from "../resources/display types/largeGraph.png";
+let displayTypes = {
+  largeBg,
+  smallBg,
+  dualBg,
+  largeGraph
+};
 function mySettings(props) {
   let template = (
     <Page>
@@ -51,11 +61,16 @@ function mySettings(props) {
         <Select
           label={`Blood Sugar Display type`}
           settingsKey="numOfDataSources"
+          selectViewTitle="Select a display type"
           options={[
-            { name: "One Blood Sugar", value: 1 },
-            { name: "Two Blood Sugars", value: 2 },
-            { name: "Larger Blood Sugar", value: 3 }
+            { img: "smallBg", name: "One Blood Sugar", value: 1 },
+            { img: "dualBg", name: "Two Blood Sugars", value: 2 },
+            { img: "largeBg", name: "Large Blood Sugar", value: 3 },
+            { img: "largeGraph", name: "Large Graph", value: 4 }
           ]}
+          renderItem={option => (
+            <TextImageRow label={option.name} icon={displayTypes[option.img]} />
+          )}
         />
         {renderDataSource(props, "dataSource", "Data Source One", {
           customEndpoint: "customEndpoint",
