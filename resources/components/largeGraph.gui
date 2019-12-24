@@ -1,0 +1,105 @@
+<symbol id="largeGraph">
+	<svg>
+        <line id="highLine" x1="0" y1="40%+1" x2="100%" y2="40%+1" fill="#FFA500" stroke-width="1" />
+        <line id="meanLine" x1="0" y1="100%+4" x2="100%" y2="100%+4" fill="#616161" stroke-width="1" />
+        <line id="lowLine" x1="0" y1="100%+4" x2="100%" y2="100%+4" fill="#de4430" stroke-width="1" />   
+
+        <text id="high" class="subtext2 settingsTextColor" text-anchor="end" />
+        <text id="low" class="subtext2 settingsTextColor" text-anchor="end" />
+        
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />   
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />    
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />   
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" />
+        <circle class="graphPoints" />
+        <line class="graphLines" />  
+        <circle class="graphPoints" />
+        <line class="graphLines" /> 
+    </svg>
+</symbol>

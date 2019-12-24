@@ -291,6 +291,12 @@
 }
 /* End large bg display */
 
+.largeGraphTime {
+  x: 50%;
+  y: 15%;
+  text-anchor: middle;
+}
+
 /* Large Error Status */
 #largeErrorStatus {
   text-anchor: start;
@@ -307,6 +313,9 @@
 /* Error Large error status */
 
 /* Stats CSS */
+.topStats {
+  y: 30%;
+}
 .stat-image {
   width: 16;
   height: 16;
@@ -377,6 +386,11 @@
 /* Stats CSS End */
 
 /* Graph CSS */
+.largeGraphContainer {
+  width: 93%;
+  x: 3%;
+  y: 10%;
+}
 
 #graph {
   width: 100%;

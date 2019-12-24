@@ -117,20 +117,41 @@
 			</svg>
 		</svg>
 
-		<!-- <svg id="largeGraphDisplay">
-			<rect class="full-size" fill="fb-black" />
+
+		<svg id="largeGraph" display="none">
+			<gradientRect
+				class="bgColor"
+				width="100%"
+				height="100%"
+			/>
 			<svg class="spacing-top-10">
 				<svg class="row top">
 					<use href="#header" class="header"/>
 					<text text-anchor="start" class="subtext1 settingsTextColor" id="date" />
-					<use href="#bloodSugarDisplay" class="bloodSugarDisplay"/>
-					<use href="#stats" class="stats"/>
+					<text class="subtext1 largeGraphTime settingsTextColor" id="time" pointer-events="visible"></text>
+					<use href="#stats" class="stats topStats"/> 
+					<use href="#bloodSugarDisplay" class="singleBloodSugarDisplay bloodSugarDisplay"/>
 				</svg>
 				<svg class="row bottom">
-					<use pointer-events="visible" href="#graph" class="graph" id="largeGraph" display="none"/>
+					<!-- -->
+					<svg class="largeGraphContainer">
+						<use pointer-events="visible" href="#largeGraph" class="graph" />
+					</svg>
+				</svg>
+			</svg>	
+			<use href="#square-button-neutral" id="goToActions">
+				<set href="#text" attributeName="text-buffer" to="" />
+			</use>
+			<svg class="alertContainer" display="none">
+				<use href="#alerts" class="alerts"/>
+				<svg class="row bottom">
+					<svg class="alertRight alertGraphWidth">
+						<use href="#graph" id="alertGraph"/>
+					</svg>
 				</svg>
 			</svg>
-		</svg> -->
+		</svg>
+
 		<!-- User Agreement -->
 		<svg id="userAgreement" display="none">
 			<rect class="full-size" fill="fb-black" />
@@ -145,7 +166,6 @@
 				<set href="#text" attributeName="text-buffer" to="I Agree" />
 			</use>
 		</svg>
-
     </svg>
     <svg id="actions" display="none">
       <rect width="100%" height="100%" fill="black" />
