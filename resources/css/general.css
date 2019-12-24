@@ -76,7 +76,7 @@
 }
 
 .right {
-  x: 50%;
+  x: 47%;
 }
 
 .left {
@@ -377,6 +377,7 @@
 /* Stats CSS End */
 
 /* Graph CSS */
+
 #graph {
   width: 100%;
   y: 10%;
@@ -384,13 +385,13 @@
 }
 
 #high {
-  x: 97%;
+  x: 100%;
   y: 5%;
   width: 40;
 }
 
 #low {
-  x: 97%;
+  x: 100%;
   y: 88%;
   width: 40;
 }

@@ -10,7 +10,6 @@
  *
  * ------------------------------------------------
  */
-import document from "document";
 
 export let update = (user, high, low, settings, graphContainer) => {
   let bloodsugars = user.bgs;
@@ -93,7 +92,7 @@ export let update = (user, high, low, settings, graphContainer) => {
 
   highNumber.text = tempHigh;
   lowNumber.text = tempLow;
-  let screenWidth = document.getElementById("glance").width / 2;
+  let screenWidth = graphContainer.getBBox().width;
   let pointGap = screenWidth / graphPoints.length;
   let pointX1 = screenWidth;
   graphPoints.forEach((point, index) => {
