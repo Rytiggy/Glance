@@ -10,9 +10,7 @@
  *
  * ------------------------------------------------
  */
-
-import Logs from "./logs.js";
-const logs = new Logs();
+import * as logs from "./logs.js";
 // This module handles all messaging protocols
 import { outbox } from "file-transfer";
 import { encode } from "cbor";

@@ -13,13 +13,22 @@
 
 import document from "document";
 import { vibration } from "haptics";
-import Transfer from "./transfer.js";
-import DateTime from "./dateTime.js";
-import Graph from "./bloodline.js";
+import * as dateTime from "./dateTime.js";
+import * as graph from "./bloodline.js";
+import { display } from "display";
+import { BodyPresenceSensor } from "body-presence";
 
-const graph = new Graph();
-const transfer = new Transfer();
-const dateTime = new DateTime();
+// figure out if the watch is on the users wrist
+let isOnWrist = true;
+if (BodyPresenceSensor) {
+  const bodyPresence = new BodyPresenceSensor();
+  bodyPresence.addEventListener("reading", () => {
+    isOnWrist = bodyPresence.present;
+  });
+  bodyPresence.start();
+} else {
+  console.log("This device does NOT have a BodyPresenceSensor!");
+}
 
 export default class alerts {
   constructor(DISABLE_ALERTS) {
@@ -32,6 +41,18 @@ export default class alerts {
   }
 
   check(user, errorLine, sgv, bg, settings, userName, alertContainer) {
+    // should we allow alerts to fire?
+    let allowAlertToFire = true;
+    if (settings.disableAlertsWhenNotOnWrist == true) {
+      allowAlertToFire = true;
+      if (isOnWrist == false) {
+        allowAlertToFire = false;
+      }
+    }
+    if (settings.disableAlert) {
+      allowAlertToFire = false;
+    }
+
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
     const alertTitle = alertContainer.getElementById("alertTitle");
@@ -45,13 +66,7 @@ export default class alerts {
     const staleData =
       parseInt(timeSinceLastSGV, 10) >= settings.staleDataAlertAfter; // Boolean true if  timeSenseLastSGV > 15
     const self = this;
-    graph.update(
-      user,
-      settings.highThreshold,
-      settings.lowThreshold,
-      settings,
-      alertGraphContainer
-    );
+    let didAlertFire = false;
 
     alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
@@ -68,13 +83,11 @@ export default class alerts {
      * Checks if the users BG is less then their low threshold
      */
     if (bg.sgv <= parseInt(settings.lowThreshold) && !staleData) {
-      if (!self.DISABLE_LOW_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_LOW_ALERTS && allowAlertToFire) {
         if (settings.lowAlerts) {
           setAlertDurationValues([15, 30, 60, 5]);
-          vibration.start("ring");
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = currentBG;
+          didAlertFire = true;
         }
       }
       sgvColor = "#de4430";
@@ -87,13 +100,11 @@ export default class alerts {
       /**
        * Checks if the users BG is greater then their high threshold
        */
-      if (!self.DISABLE_HIGH_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_HIGH_ALERTS && allowAlertToFire) {
         if (settings.highAlerts) {
-          vibration.start("ring");
           setAlertDurationValues([60, 120, 240, 30]);
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = currentBG;
+          didAlertFire = true;
         }
       }
       sgv.style.fill = "orange";
@@ -113,66 +124,58 @@ export default class alerts {
       /**
        * check if the loopstatus is in warrning state
        */
-      if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_LOOPSTATUS_WARNING_ALERTS && allowAlertToFire) {
         if (settings.loopstatus) {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
-          vibration.start("ring");
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = loopstatus;
           alertLead.text = "Loop Status";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (bg.direction === "DoubleDown" && !staleData) {
       /**
        * Check for rapid change in bg
        */
-      if (!self.DISABLE_DOUBLEDOWN_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_DOUBLEDOWN_ALERTS && allowAlertToFire) {
         if (settings.rapidFall) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
-          vibration.start("ring");
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Fall!";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (bg.direction === "DoubleUp" && !staleData) {
-      if (!self.DISABLE_DOUBLEUP_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_DOUBLEUP_ALERTS && allowAlertToFire) {
         if (settings.rapidRise) {
           alertArrows.style.display = "none";
           setAlertDurationValues([15, 30, 60, 5]);
           sgvColor = "#de4430";
-          vibration.start("ring");
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Rapid Rise!";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else if (staleData) {
       /**
        * Check if stale data
        */
-      if (!self.DISABLE_STALEDATA_ALERTS && !settings.disableAlert) {
+      if (!self.DISABLE_STALEDATA_ALERTS && allowAlertToFire) {
         if (settings.staleData) {
           setAlertDurationValues([60, 120, 240, 30]);
           alertArrows.style.display = "none";
           sgvColor = "#de4430";
-          vibration.start("ring");
-          alertContainer.style.display = "inline";
-          alertTitle.style.display = "inline";
           alertTitle.text = "Stale data";
           alertTitle.style.fontSize = 45;
           alertTitle.x = document.getElementById("glance").width - 6;
+          didAlertFire = true;
         }
       }
     } else {
@@ -182,6 +185,20 @@ export default class alerts {
     alertTitle.style.fill = sgvColor;
     errorLine.style.fill = errorLineColor;
     sgv.style.fill = sgvColor;
+
+    if (didAlertFire) {
+      vibration.start("ring");
+      display.poke();
+      alertContainer.style.display = "inline";
+      alertTitle.style.display = "inline";
+      graph.update(
+        user,
+        settings.highThreshold,
+        settings.lowThreshold,
+        settings,
+        alertGraphContainer
+      );
+    }
 
     dismiss.onclick = function(evt) {
       alertContainer.style.display = "none";

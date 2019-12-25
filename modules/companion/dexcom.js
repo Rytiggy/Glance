@@ -10,8 +10,7 @@
  *
  * ------------------------------------------------
  */
-import Logs from "./logs.js";
-const logs = new Logs();
+import * as logs from "./logs.js";
 
 export default class dexcom {
   async getSessionId(dexcomUsername, dexcomPassword, subDomain) {

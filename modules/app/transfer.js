@@ -14,16 +14,13 @@
 // Import the messaging module
 import * as messaging from "messaging";
 
-export default class transfer {
-  // Send data
-  send(data) {
-    if (messaging.peerSocket.readyState == 0) {
-      // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-      // Send a command to the companion
-      messaging.peerSocket.send(data);
-    }
+export let send = data => {
+  if (messaging.peerSocket.readyState == 0) {
+    // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    // Send a command to the companion
+    messaging.peerSocket.send(data);
   }
-}
+};
 
 // Events
 

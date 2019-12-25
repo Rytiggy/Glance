@@ -1,3 +1,11 @@
+.width-50 {
+  width: 62%;
+}
+
+.right {
+  x: 35%;
+}
+
 #delta {
   x: 98%;
   y: 15%;
@@ -73,7 +81,7 @@
 #batteryLevel {
   width: 30;
   height: 15;
-  fill: white;
+  fill: #75bd78;
   x: 3%;
   y: 3%;
 }

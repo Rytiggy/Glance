@@ -5,9 +5,13 @@ import { device } from "peer";
 import Fetch from "./fetch.js";
 const fetch = new Fetch();
 import config from "../../resources/config.js";
+import * as logs from "./logs.js";
 
 export default class firebase {
   async update(settings) {
+    logs.add(
+      `dataSource: ${settings.dataSource} dataSourceTwo: ${settings.dataSourceTwo} PhoneType: ${companion.host.os.name} modelName: ${device.modelName} version: ${config.version} build: ${config.build}`
+    );
     // check to see if there is a token
     if (config.firebase_token.length > 0) {
       // ----------------------------------------hr---min--sec--ms
@@ -29,7 +33,7 @@ export default class firebase {
             .toUpperCase();
           settingsStorage.setItem("uuid", JSON.stringify({ name: uuid }));
         }
-        let url = `https://fitbitglance.firebaseio.com/${config.build}/${uuid}.json?auth=${config.firebase_token}`;
+        let url = `${config.baseUrl}/${config.build}/${uuid}.json?auth=${config.firebase_token}`;
         let data = {};
         if (didCreateNewUuid) {
           // new record

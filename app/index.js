@@ -10,44 +10,29 @@
  *
  * ------------------------------------------------
  */
-import Transfer from "../modules/app/transfer.js";
-const transfer = new Transfer();
-import clock from "clock";
-import { display } from "display";
-clock.granularity = "minutes";
+import * as transfer from "../modules/app/transfer.js";
 import document from "document";
 import { inbox } from "file-transfer";
 import fs from "fs";
-import DateTime from "../modules/app/dateTime.js";
-import BatteryLevels from "../modules/app/batteryLevels.js";
-import Graph from "../modules/app/bloodline.js";
-import UserActivity from "../modules/app/userActivity.js";
+import * as dateTime from "../modules/app/dateTime.js";
+dateTime.init();
+import * as batteryLevels from "../modules/app/batteryLevels.js";
+import * as graph from "../modules/app/bloodline.js";
+import * as userActivity from "../modules/app/userActivity.js";
 import Alerts from "../modules/app/alerts.js";
-import Errors from "../modules/app/errors.js";
-import UserAgreement from "../modules/app/userAgreement.js";
-import Actions from "../modules/app/actions.js";
-const actions = new Actions();
-
-import Treatments from "../modules/app/treatments.js";
-const treatments = new Treatments();
-
+import * as errors from "../modules/app/errors.js";
+import * as userAgreement from "../modules/app/userAgreement.js";
+import * as actions from "../modules/app/actions.js";
+import * as treatments from "../modules/app/treatments.js";
 import * as messaging from "messaging";
 
 import { memory } from "system";
-const dateTime = new DateTime();
-const batteryLevels = new BatteryLevels();
-const graph = new Graph();
-const userActivity = new UserActivity();
-const errors = new Errors();
-const userAgreement = new UserAgreement();
 
 var alerts = [];
 var data = { bloodSugars: null, settings: null };
 
 var singleOrMultipleDispaly = document.getElementById("singleBG");
 var time = singleOrMultipleDispaly.getElementById("time");
-var batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
-var batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
 
 loadingScreen();
 
@@ -82,46 +67,33 @@ var dataToSend = {
   }
 };
 
-transfer.send(dataToSend);
-clock.ontick = evt => {
-  if (data.settings) {
-    updateSettingSpecificDisplay(data.settings);
-    updateDisplay(data);
-    // request new data
-    transfer.send(dataToSend);
-  }
-};
-
-// when the screen is off add a interval to keep fetching data
-let refreshInterval = null;
-display.onchange = function() {
-  if (display.on) {
-    clearInterval(refreshInterval);
-    refreshInterval = null;
-  } else {
-    refreshInterval = setInterval(function() {
+setInterval(function() {
+  // check if the data is older then 5 minutes and fetch more data
+  if (data.bloodSugars) {
+    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(
+      data.bloodSugars[0].user.currentBg.datetime
+    )[1];
+    if (timeSenseLastSGV >= 5) {
+      console.log("request more data please!");
       transfer.send(dataToSend);
-    }, 120000);
+    }
   }
-};
+  updateSettingSpecificDisplay(data.settings);
+  updateDisplay(data);
+}, 10000);
 
 /**
  * Update watchface display This deals with the BGS data
  * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
-  // if (data.bloodSugars) {
   checkDataState(data.bloodSugars);
   updateAlerts(data.bloodSugars, data.settings);
   updateBloodSugarDisplay(data.bloodSugars, data.settings);
   updateStats(data.bloodSugars, data.settings);
   updateGraph(data.bloodSugars, data.settings);
   // largeGraphDisplay(data);
-  // } else {
-  //   batteryLevel.width = batteryLevels.get().level;
-  //   batteryPercent.text = "" + batteryLevels.get().percent + "%";
-  //   updateTimeDisplay();
-  // }
+  console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 }
 
 /**
@@ -150,34 +122,36 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
   );
   BloodSugarDisplayContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
-    let delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
-    let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
-    let errorLine = BloodSugarDisplayContainer[index].getElementById(
-      errorLineEle
-    );
-    let timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById(
-      timeOfLastSgvEle
-    );
-    let arrows = BloodSugarDisplayContainer[index].getElementById(arrowsEle);
-    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    if (bloodSugar.user) {
+      let delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
+      let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
+      let errorLine = BloodSugarDisplayContainer[index].getElementById(
+        errorLineEle
+      );
+      let timeOfLastSgv = BloodSugarDisplayContainer[index].getElementById(
+        timeOfLastSgvEle
+      );
+      let arrows = BloodSugarDisplayContainer[index].getElementById(arrowsEle);
+      let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
-    let deltaText = fistBgNonPredictiveBG.bgdelta;
-    // add Plus
-    if (deltaText > 0) {
-      deltaText = "+" + deltaText;
+      let deltaText = fistBgNonPredictiveBG.bgdelta;
+      // add Plus
+      if (deltaText > 0) {
+        deltaText = "+" + deltaText;
+      }
+      delta.text = deltaText + " " + settings.glucoseUnits;
+      sgv.text = fistBgNonPredictiveBG.currentbg;
+      timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(
+        fistBgNonPredictiveBG.datetime
+      )[0];
+      arrows.href =
+        "../resources/img/arrows/" + fistBgNonPredictiveBG.direction + ".png";
+
+      let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(
+        fistBgNonPredictiveBG.datetime
+      )[1];
+      errors.check(timeSenseLastSGV, sgv, errorLine);
     }
-    delta.text = deltaText + " " + settings.glucoseUnits;
-    sgv.text = fistBgNonPredictiveBG.currentbg;
-    timeOfLastSgv.text = dateTime.getTimeSenseLastSGV(
-      fistBgNonPredictiveBG.datetime
-    )[0];
-    arrows.href =
-      "../resources/img/arrows/" + fistBgNonPredictiveBG.direction + ".png";
-
-    let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(
-      fistBgNonPredictiveBG.datetime
-    )[1];
-    errors.check(timeSenseLastSGV, sgv, errorLine);
   });
 }
 
@@ -204,33 +178,35 @@ function updateAlerts(bloodSugars, settings) {
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
-    let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
-    let errorLine = BloodSugarDisplayContainer[index].getElementById(
-      errorLineEle
-    );
-    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+    if (bloodSugar.user) {
+      let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
+      let errorLine = BloodSugarDisplayContainer[index].getElementById(
+        errorLineEle
+      );
+      let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
 
-    let userName = null;
-    if (index == 0) {
-      userName = settings.dataSourceName;
-    } else {
-      userName = settings.dataSourceNameTwo;
+      let userName = null;
+      if (index == 0) {
+        userName = settings.dataSourceName;
+      } else {
+        userName = settings.dataSourceNameTwo;
+      }
+
+      if (typeof alerts[index] === "undefined") {
+        let newAlert = new Alerts(false, 120, 15);
+        alerts.push(newAlert);
+      }
+
+      alerts[index].check(
+        bloodSugar.user,
+        errorLine,
+        sgv,
+        fistBgNonPredictiveBG,
+        settings,
+        userName,
+        alertContainer[index]
+      );
     }
-
-    if (typeof alerts[index] === "undefined") {
-      let newAlert = new Alerts(false, 120, 15);
-      alerts.push(newAlert);
-    }
-
-    alerts[index].check(
-      bloodSugar.user,
-      errorLine,
-      sgv,
-      fistBgNonPredictiveBG,
-      settings,
-      userName,
-      alertContainer[index]
-    );
   });
 }
 
@@ -243,6 +219,7 @@ function updateStats(bloodSugars, settings) {
   let statsContainer = singleOrMultipleDispaly.getElementsByClassName("stats");
   statsContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
+    // todo add check here for blood sugar at this index
     let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
     let layoutOne = statsContainer[index].getElementById("layoutOne");
     let layoutTwo = statsContainer[index].getElementById("layoutTwo");
@@ -371,12 +348,8 @@ function updateBgColor(bgColorOne, bgColorTwo) {
 function updateHeader(dateFormat, enableDOW) {
   if (data.settings.numOfDataSources != 2) {
     let date = singleOrMultipleDispaly.getElementById("date");
-    batteryLevel = singleOrMultipleDispaly.getElementById("batteryLevel");
-    batteryPercent = singleOrMultipleDispaly.getElementById("batteryPercent");
-    batteryLevel.width = batteryLevels.get().level;
-    batteryLevel.style.fill = batteryLevels.get().color;
-    batteryPercent.text = batteryLevels.get().percent + "%";
     date.text = dateTime.getDate(dateFormat, enableDOW);
+    batteryLevels.get(singleOrMultipleDispaly);
   }
 }
 
@@ -441,69 +414,69 @@ function checkDataState(bloodSugars) {
     var errorCodes = "";
     var errorCodesDesc = "";
     let bloodSugar = bloodSugars[index];
+    if (bloodSugar.user) {
+      let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+      let bloodSugarContainer = BloodSugarDisplayContainer[
+        index
+      ].getElementById("bloodSugarContainer");
+      let errorStateContainer = BloodSugarDisplayContainer[
+        index
+      ].getElementById("errorStateContainer");
+      let errorStatus = BloodSugarDisplayContainer[index].getElementById(
+        errorStatusEle
+      );
+      let errorStatusLead = BloodSugarDisplayContainer[index].getElementById(
+        errorStatusLeadEle
+      );
+      if (fistBgNonPredictiveBG.currentbg === "E503") {
+        errorCodes = "E503";
+        errorCodesDesc = `Data source config error. Check settings.`;
+      } else if (fistBgNonPredictiveBG.currentbg === "E500") {
+        errorCodes = "E500";
+        errorCodesDesc = `Data source config error. Check settings.`;
+      } else if (fistBgNonPredictiveBG.currentbg === "E404") {
+        errorCodes = "E404";
+        errorCodesDesc = `No Data source found. Check settings.`;
+      } else if (fistBgNonPredictiveBG.currentbg === "E400") {
+        errorCodes = "E400";
+        errorCodesDesc = ` Bad request - Check data source login info.`;
+      }
 
-    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
-    let bloodSugarContainer = BloodSugarDisplayContainer[index].getElementById(
-      "bloodSugarContainer"
-    );
-    let errorStateContainer = BloodSugarDisplayContainer[index].getElementById(
-      "errorStateContainer"
-    );
-    let errorStatus = BloodSugarDisplayContainer[index].getElementById(
-      errorStatusEle
-    );
-    let errorStatusLead = BloodSugarDisplayContainer[index].getElementById(
-      errorStatusLeadEle
-    );
-    if (fistBgNonPredictiveBG.currentbg === "E503") {
-      errorCodes = "E503";
-      errorCodesDesc = `Data source config error. Check settings.`;
-    } else if (fistBgNonPredictiveBG.currentbg === "E500") {
-      errorCodes = "E500";
-      errorCodesDesc = `Data source config error. Check settings.`;
-    } else if (fistBgNonPredictiveBG.currentbg === "E404") {
-      errorCodes = "E404";
-      errorCodesDesc = `No Data source found. Check settings.`;
-    } else if (fistBgNonPredictiveBG.currentbg === "E400") {
-      errorCodes = "E400";
-      errorCodesDesc = ` Bad request - Check data source login info.`;
-    }
-
-    if (errorCodes.length > 0) {
-      errorStatus.text = errorCodes;
-      errorStatusLead.text = errorCodesDesc;
-      errorStateContainer.style.display = "inline";
-      bloodSugarContainer.style.display = "none";
-    } else {
-      errorStateContainer.style.display = "none";
-      bloodSugarContainer.style.display = "inline";
+      if (errorCodes.length > 0) {
+        errorStatus.text = errorCodes;
+        errorStatusLead.text = errorCodesDesc;
+        errorStateContainer.style.display = "inline";
+        bloodSugarContainer.style.display = "none";
+      } else {
+        errorStateContainer.style.display = "none";
+        bloodSugarContainer.style.display = "inline";
+      }
     }
   });
 }
 /**
- *  Validate data is not in error state
- * @param {Object} data recived from the companion
+] * @param {Object} data recived from the companion
  */
-function largeGraphDisplay(data) {
-  // let graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
-  // let largeGraphDisplay = document.getElementById('largeGraphDisplay');
-  // let largeGraph = document.getElementById('largeGraph');
-  // graphContainer.forEach((ele, index) => {
-  //   graphContainer[index].onclick = function(evt) {
-  //     largeGraphDisplay.style.display = 'inline';
-  //     let bloodSugar = data.bloodSugars[index];
-  //     graph.update(bloodSugar.user.bgs,
-  //       data.settings.highThreshold,
-  //       data.settings.lowThreshold,
-  //       data.settings,
-  //       largeGraph
-  //     );
-  //   }
-  // });
-  // largeGraph.onclick = function(evt) {
-  //   largeGraphDisplay.style.display = 'none';
-  // }
-}
+// function largeGraphDisplay(data) {
+//   let graphContainer = singleOrMultipleDispaly.getElementsByClassName('graph');
+//   let largeGraphDisplay = document.getElementById('largeGraphDisplay');
+//   let largeGraph = document.getElementById('largeGraph');
+//   graphContainer.forEach((ele, index) => {
+//     graphContainer[index].onclick = function(evt) {
+//       largeGraphDisplay.style.display = 'inline';
+//       let bloodSugar = data.bloodSugars[index];
+//       graph.update(bloodSugar.user.bgs,
+//         data.settings.highThreshold,
+//         data.settings.lowThreshold,
+//         data.settings,
+//         largeGraph
+//       );
+//     }
+//   });
+//   largeGraph.onclick = function(evt) {
+//     largeGraphDisplay.style.display = 'none';
+//   }
+// }
 
 /**
  * Update settings specific UI elements
@@ -514,27 +487,35 @@ function updateSettingSpecificDisplay(settings) {
   if (userAgreement.check(settings)) {
     document.getElementById("userAgreement").style.display = "none";
 
-    console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
-
     let singleBG = document.getElementById("singleBG");
     let dualBG = document.getElementById("dualBG");
     let largeBG = document.getElementById("largeBG");
+    let largeGraph = document.getElementById("largeGraph");
 
     if (settings.numOfDataSources == 2) {
       singleOrMultipleDispaly = document.getElementById("dualBG");
       singleBG.style.display = "none";
       dualBG.style.display = "inline";
       largeBG.style.display = "none";
+      largeGraph.style.display = "none";
     } else if (settings.numOfDataSources == 3) {
       singleOrMultipleDispaly = document.getElementById("largeBG");
       singleBG.style.display = "none";
       dualBG.style.display = "none";
       largeBG.style.display = "inline";
+      largeGraph.style.display = "none";
+    } else if (settings.numOfDataSources == 4) {
+      singleOrMultipleDispaly = document.getElementById("largeGraph");
+      singleBG.style.display = "none";
+      dualBG.style.display = "none";
+      largeBG.style.display = "none";
+      largeGraph.style.display = "inline";
     } else {
       singleOrMultipleDispaly = document.getElementById("singleBG");
       singleBG.style.display = "inline";
       dualBG.style.display = "none";
       largeBG.style.display = "none";
+      largeGraph.style.display = "none";
     }
 
     actions.init(transfer, singleOrMultipleDispaly, settings);
@@ -584,18 +565,3 @@ function setTextColor(color) {
 function isOdd(n) {
   return Math.abs(n % 2) == 1;
 }
-
-// var dataToSend = {
-//   command: "refreshData",
-//   data: {
-//     heart: 0,
-//     steps: userActivity.get().steps
-//   }
-// };
-// Request data every 5 mins from companion
-// setTimeout(function() {
-//   transfer.send(dataToSend);
-// }, 1500);
-// setInterval(function() {
-//   transfer.send(dataToSend);
-// }, 180000);

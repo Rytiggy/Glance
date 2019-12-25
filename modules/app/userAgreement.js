@@ -11,27 +11,22 @@
  * ------------------------------------------------
  */
 import document from "document";
-import Transfer from "./transfer.js";
+import * as transfer from "./transfer.js";
 
-let transfer = new Transfer();
+export let check = settings => {
+  const agreeToPrompt = document.getElementById("agreeToUserAgreement");
 
-export default class userAgreement {
-  // Send data
-  check(settings) {
-    const agreeToPrompt = document.getElementById("agreeToUserAgreement");
-
-    agreeToPrompt.onclick = function(evt) {
-      document.getElementById("userAgreement").style.display = "none";
-      let dataToSend = {
-        command: "agreedToUserAgreement",
-        data: {
-          userAgreement: true
-        }
-      };
-      transfer.send(dataToSend);
-      // hasAgreed = true;
+  agreeToPrompt.onclick = function(evt) {
+    document.getElementById("userAgreement").style.display = "none";
+    let dataToSend = {
+      command: "agreedToUserAgreement",
+      data: {
+        userAgreement: true
+      }
     };
+    transfer.send(dataToSend);
+    // hasAgreed = true;
+  };
 
-    return settings.userAgreement;
-  }
-}
+  return settings.userAgreement;
+};

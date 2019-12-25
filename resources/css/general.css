@@ -76,7 +76,7 @@
 }
 
 .right {
-  x: 50%;
+  x: 47%;
 }
 
 .left {
@@ -117,7 +117,7 @@
   gradient-y1: "0";
   gradient-x2: "0";
   gradient-y2: "100%";
-  gradient-color1: "#390263";
+  gradient-color1: "#1F618D";
   gradient-color2: "black";
 }
 
@@ -134,7 +134,7 @@
 #batteryLevel {
   width: 30;
   height: 15;
-  fill: white;
+  fill: #75bd78;
   x: 3%;
   y: 5%;
 }
@@ -291,6 +291,12 @@
 }
 /* End large bg display */
 
+.largeGraphTime {
+  x: 50%;
+  y: 15%;
+  text-anchor: middle;
+}
+
 /* Large Error Status */
 #largeErrorStatus {
   text-anchor: start;
@@ -307,6 +313,9 @@
 /* Error Large error status */
 
 /* Stats CSS */
+.topStats {
+  y: 30%;
+}
 .stat-image {
   width: 16;
   height: 16;
@@ -377,6 +386,12 @@
 /* Stats CSS End */
 
 /* Graph CSS */
+.largeGraphContainer {
+  width: 93%;
+  x: 3%;
+  y: 10%;
+}
+
 #graph {
   width: 100%;
   y: 10%;
@@ -384,17 +399,26 @@
 }
 
 #high {
-  x: 97%;
+  x: 100%;
   y: 5%;
   width: 40;
 }
 
 #low {
-  x: 97%;
+  x: 100%;
   y: 88%;
   width: 40;
 }
 
+.graphLines {
+  stroke-width: 2;
+  fill: white;
+  opacity: 0;
+}
+.graphPoints {
+  opacity: 0;
+  r: 3;
+}
 /* Graph CSS End */
 
 /* Alert CSS */
@@ -434,6 +458,13 @@
   y: 60%;
   width: 100;
   height: 100;
+}
+
+.alertRight {
+  width: 47%;
+}
+.alertGraphWidth {
+  x: 50%;
 }
 /* #dismiss {
 	x: 3%;
