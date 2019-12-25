@@ -37,6 +37,7 @@ export default class dexcom {
         return data;
       })
       .catch(error => {
+        console.log(error);
         logs.add(error);
       });
   }
@@ -58,6 +59,7 @@ export default class dexcom {
         return data;
       })
       .catch(error => {
+        console.log(error);
         logs.add(error);
         // not found
         if (!error.status) {

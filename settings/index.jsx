@@ -229,16 +229,16 @@ function mySettings(props) {
               "nightscout") ? (
             <Toggle
               settingsKey="enableSmallGraphPrediction"
-              label="Main Graph Predictions"
+              label="Graph Predictions"
             />
           ) : null
         ) : null}
 
-        <Toggle settingsKey="largeGraph" label="Large graph popup screen" />
-        <Text>
+        {/* <Toggle settingsKey="largeGraph" label="Large graph popup screen" /> */}
+        {/* <Text>
           Tap the lower right hand side of the watch faces screen to view the
           larger graph popup screen.
-        </Text>
+        </Text> */}
 
         <Text bold align="center">
           Background Color
@@ -374,10 +374,6 @@ function mySettings(props) {
         <Link source="https://glancewatchface.com/#setup">
           How to set up Glance
         </Link>
-        <Text>
-          Note: Tapping on the time should try to force the watch to sync.
-          You'll feel the watch vibrate.
-        </Text>
       </Section>
 
       <Toggle settingsKey="advanced" label="Advanced" />

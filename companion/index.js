@@ -28,9 +28,6 @@ const fetch = new Fetch();
 import Standardize from "../modules/companion/standardize.js";
 const standardize = new Standardize();
 
-// import Weather from "../modules/companion/weather.js";
-// import * as weather from 'fitbit-weather/companion'
-
 import * as logs from "../modules/companion/logs.js";
 
 //FAB
@@ -131,8 +128,7 @@ async function sendData() {
                 ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
                 : null
           }
-        ],
-        settings: standardize.settings(store)
+        ]
       };
       logs.add(dataToSend);
       transfer.send(dataToSend);
@@ -151,7 +147,6 @@ messaging.peerSocket.onmessage = async function(evt) {
     settings.setToggle("userAgreement", true);
     sendData();
   } else if (evt.data.command === "postTreatment") {
-    console.log("postTreatment", evt.data);
     // which user should we send the treatment to
     let treatmentUrl = store.treatmentUrl;
     if (evt.data.data.user == 1) {
