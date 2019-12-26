@@ -40,6 +40,8 @@ const dexcom = new Dexcom();
 import Firebase from "../modules/companion/firebase.js";
 const firebase = new Firebase();
 
+import * as predictions from "../modules/companion/predictions.js";
+
 // Helper
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
 // Wake the Companion after 5 minutes
@@ -55,6 +57,9 @@ let dataReceivedFromWatch = null;
  * Send the data to the watch
  */
 async function sendData() {
+  // predictions
+  predictions.checkTreatments();
+
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
   // update firebase user logs
@@ -148,21 +153,35 @@ messaging.peerSocket.onmessage = async function(evt) {
     sendData();
   } else if (evt.data.command === "postTreatment") {
     // which user should we send the treatment to
-    let treatmentUrl = store.treatmentUrl;
+    let treatmentUrl = null;
     if (evt.data.data.user == 1) {
       treatmentUrl = store.treatmentUrl;
     } else {
       treatmentUrl = store.treatmentUrlTwo;
     }
-    let data = await fetch.post(treatmentUrl, {
+    let treatment = {
       enteredBy: "Glance",
       carbs: evt.data.data.carbs,
       insulin: evt.data.data.insulin
-    });
+    };
+    await logTreatment(treatmentUrl, evt.data.data.user, treatment);
     sendData();
   }
 };
 
+async function logTreatment(treatmentUrl, user, treatment) {
+  // if the user has nightscout configured
+
+  if (
+    (user == 1 && settings.treatmentUrl) ||
+    (user == 2 && settings.treatmentUrlTwo)
+  ) {
+    await fetch.post(treatmentUrl, treatment);
+  } else {
+    predictions.addIOB(treatment.insulin, user);
+    predictions.addCOB(treatment.carbs, user);
+  }
+}
 // Listen for the onerror event
 messaging.peerSocket.onerror = function(err) {};
 

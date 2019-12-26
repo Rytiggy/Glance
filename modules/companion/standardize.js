@@ -11,7 +11,6 @@
  * ------------------------------------------------
  */
 
-import * as logs from "./logs.js";
 import Sizeof from "./sizeof.js";
 
 const sizeof = new Sizeof();
@@ -226,8 +225,6 @@ export default class standardize {
             }
           ]
         };
-        // bgs.length = 47;
-        // bgsTemplate
         bgs.forEach((bg, index) => {
           bgsTemplate.bgs[index].sgv = bg.Value;
           let dateTime = bg.ST.substring(
@@ -263,6 +260,48 @@ export default class standardize {
           bgs = null;
         }
       }
+
+      // Glance prediction model
+      // use Glance prediction model
+      // if (true && settings.enableSmallGraphPrediction) {
+      //   // Duration of Insulin Activity
+      //   let durationOfInsulin = 3;
+      //   // Carbs activity / absorption rate: [g/hour]
+      //   let carbsPerHour = 20;
+      //   // Insulin to carb ratio (I:C) [g]:(1/X)
+      //   let insulinToCarb = 10;
+
+      //   let predictedValues = [
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100,
+      //     100
+      //   ];
+      //   bgs.splice(bgs.length - 18, 18);
+      //   predictedValues.forEach((predictedbg, index) => {
+      //     if (!(index > 17)) {
+      //       bgs.unshift({
+      //         sgv: "" + predictedbg,
+      //         p: true
+      //       });
+      //     }
+      //   });
+      // }
 
       // Look for current non Predictive bg and not the last 5 predictions
       // this works because only the current bg has a delta so we can filter for it
@@ -534,92 +573,94 @@ function standardizeExtraData(bgs, extraData, settings) {
   let sage = "";
   // add prediction for nightscout
   if (extraData) {
-    if (
-      extraData.ar2 &&
-      extraData.ar2.forecast &&
-      extraData.ar2.forecast.predicted
-    ) {
-      // AR2
-      bgs.splice(bgs.length - 6, 6);
-      // TODO could be a bug here with ar2
-      let predictedValues = extraData.ar2.forecast.predicted.length - 1;
-      if (extraData.ar2.forecast.predicted.length > 0) {
-        let tempPredictedBG =
-          extraData.ar2.forecast.predicted[predictedValues].mgdl;
-        predictedBg =
-          checkForMmol(tempPredictedBG, settings) +
-          " in " +
-          ((predictedValues * 5) / 60).toFixed(1) +
-          "h";
-      }
+    if (settings.enableSmallGraphPrediction) {
+      if (
+        extraData.ar2 &&
+        extraData.ar2.forecast &&
+        extraData.ar2.forecast.predicted
+      ) {
+        // AR2
+        bgs.splice(bgs.length - 6, 6);
+        // TODO could be a bug here with ar2
+        let predictedValues = extraData.ar2.forecast.predicted.length - 1;
+        if (extraData.ar2.forecast.predicted.length > 0) {
+          let tempPredictedBG =
+            extraData.ar2.forecast.predicted[predictedValues].mgdl;
+          predictedBg =
+            checkForMmol(tempPredictedBG, settings) +
+            " in " +
+            ((predictedValues * 5) / 60).toFixed(1) +
+            "h";
+        }
 
-      if (predictedValues >= 24) {
-        predictedValues = 24;
-      }
-      extraData.ar2.forecast.predicted.forEach((predictedbg, index) => {
-        bgs.unshift({
-          sgv: predictedbg.mgdl,
-          p: true
+        if (predictedValues >= 24) {
+          predictedValues = 24;
+        }
+        extraData.ar2.forecast.predicted.forEach((predictedbg, index) => {
+          bgs.unshift({
+            sgv: predictedbg.mgdl,
+            p: true
+          });
         });
-      });
-    } else if (extraData.loop && extraData.loop.lastPredicted) {
-      // Loop
-      let predictedValues = extraData.loop.lastPredicted.values;
-      let modeValue = mode(predictedValues);
-      let indexOfModeValue = predictedValues.findIndex(
-        pbg => pbg === modeValue
-      );
-      predictedBg =
-        checkForMmol(modeValue, settings) +
-        " in " +
-        ((indexOfModeValue * 5) / 60).toFixed(1) +
-        "h";
-      if (extraData.loop.display) {
-        loopStatus = extraData.loop.display.label;
-      }
-
-      bgs.splice(bgs.length - 18, 18);
-      predictedValues.forEach((predictedbg, index) => {
-        if (!(index > 17)) {
-          bgs.unshift({
-            sgv: "" + predictedbg,
-            p: true
-          });
+      } else if (extraData.loop && extraData.loop.lastPredicted) {
+        // Loop
+        let predictedValues = extraData.loop.lastPredicted.values;
+        let modeValue = mode(predictedValues);
+        let indexOfModeValue = predictedValues.findIndex(
+          pbg => pbg === modeValue
+        );
+        predictedBg =
+          checkForMmol(modeValue, settings) +
+          " in " +
+          ((indexOfModeValue * 5) / 60).toFixed(1) +
+          "h";
+        if (extraData.loop.display) {
+          loopStatus = extraData.loop.display.label;
         }
-      });
-    } else if (
-      extraData.openaps &&
-      extraData.openaps.lastPredBGs &&
-      extraData.openaps.lastPredBGs.IOB
-    ) {
-      // OpenAPS
-      let predictedValues = extraData.openaps.lastPredBGs.IOB;
-      if (extraData.openaps.lastPredBGs.aCOB) {
-        predictedValues = extraData.openaps.lastPredBGs.aCOB;
-      }
-      let modeValue = mode(predictedValues);
-      let indexOfModeValue = predictedValues.findIndex(
-        pbg => pbg === modeValue
-      );
-      predictedBg =
-        checkForMmol(modeValue, settings) +
-        " in " +
-        ((indexOfModeValue * 5) / 60).toFixed(1) +
-        "h";
 
-      if (extraData.openaps.status) {
-        loopStatus = extraData.openaps.status.label;
-      }
-
-      bgs.splice(bgs.length - 18, 18);
-      predictedValues.forEach((predictedbg, index) => {
-        if (!(index > 17)) {
-          bgs.unshift({
-            sgv: "" + predictedbg,
-            p: true
-          });
+        bgs.splice(bgs.length - 18, 18);
+        predictedValues.forEach((predictedbg, index) => {
+          if (!(index > 17)) {
+            bgs.unshift({
+              sgv: "" + predictedbg,
+              p: true
+            });
+          }
+        });
+      } else if (
+        extraData.openaps &&
+        extraData.openaps.lastPredBGs &&
+        extraData.openaps.lastPredBGs.IOB
+      ) {
+        // OpenAPS
+        let predictedValues = extraData.openaps.lastPredBGs.IOB;
+        if (extraData.openaps.lastPredBGs.aCOB) {
+          predictedValues = extraData.openaps.lastPredBGs.aCOB;
         }
-      });
+        let modeValue = mode(predictedValues);
+        let indexOfModeValue = predictedValues.findIndex(
+          pbg => pbg === modeValue
+        );
+        predictedBg =
+          checkForMmol(modeValue, settings) +
+          " in " +
+          ((indexOfModeValue * 5) / 60).toFixed(1) +
+          "h";
+
+        if (extraData.openaps.status) {
+          loopStatus = extraData.openaps.status.label;
+        }
+
+        bgs.splice(bgs.length - 18, 18);
+        predictedValues.forEach((predictedbg, index) => {
+          if (!(index > 17)) {
+            bgs.unshift({
+              sgv: "" + predictedbg,
+              p: true
+            });
+          }
+        });
+      }
     }
     // check for raw BG if there add to data
     if (extraData.rawbg) {

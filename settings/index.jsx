@@ -209,6 +209,34 @@ function mySettings(props) {
       <Section
         title={
           <Text bold align="center">
+            Local treatments
+          </Text>
+        }
+      >
+        <Text>
+          Local treatments are saved on the phone and not published anywhere.
+          This data can not be shared among followers, but will allow you to log
+          and track treatments on your watch.
+        </Text>
+        <Toggle settingsKey="localTreatments" label="Enable local treatments" />
+
+        <TextInput
+          label="Duration of Insulin Activity (DIA) [hours]"
+          settingsKey="dia"
+        />
+        <TextInput
+          label="Insulin to carb ratio (I:C) [g]"
+          settingsKey="insulinToCarb"
+        />
+        <TextInput
+          label="Carbs activity / absorption rate: [g/hour]"
+          settingsKey="carbsPerHour"
+        />
+      </Section>
+
+      <Section
+        title={
+          <Text bold align="center">
             Layout
           </Text>
         }

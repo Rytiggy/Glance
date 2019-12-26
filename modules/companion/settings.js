@@ -627,6 +627,62 @@ export default class settings {
       settingsStorage.setItem("disableAlertsWhenNotOnWrist", false);
     }
 
+    //////////////
+    // treatments
+    //////////////
+    let localTreatments = null;
+    if (settingsStorage.getItem("localTreatments")) {
+      localTreatments = JSON.parse(settingsStorage.getItem("localTreatments"));
+    } else if (!localTreatments) {
+      localTreatments = false;
+      settingsStorage.setItem("localTreatments", false);
+    }
+
+    // should we allow treatments?
+    let allowUserOneTreatments = null;
+    if ((dataSource == "nightscout" && treatmentUrl) || localTreatments) {
+      allowUserOneTreatments = true;
+    } else {
+      allowUserOneTreatments = false;
+    }
+
+    let allowUserTwoTreatments = null;
+    if ((dataSourceTwo == "nightscout" && treatmentUrlTwo) || localTreatments) {
+      allowUserTwoTreatments = true;
+    } else {
+      allowUserTwoTreatments = false;
+    }
+
+    let dia = null;
+    if (settingsStorage.getItem("dia")) {
+      dia = JSON.parse(settingsStorage.getItem("dia")).name;
+    } else if (!dia) {
+      dia = 3;
+      settingsStorage.setItem("dia", JSON.stringify({ name: dia }));
+    }
+
+    let carbsPerHour = null;
+    if (settingsStorage.getItem("carbsPerHour")) {
+      carbsPerHour = JSON.parse(settingsStorage.getItem("carbsPerHour")).name;
+    } else if (!carbsPerHour) {
+      carbsPerHour = 20;
+      settingsStorage.setItem(
+        "carbsPerHour",
+        JSON.stringify({ name: carbsPerHour })
+      );
+    }
+
+    let insulinToCarb = null;
+    if (settingsStorage.getItem("insulinToCarb")) {
+      insulinToCarb = JSON.parse(settingsStorage.getItem("insulinToCarb")).name;
+    } else if (!insulinToCarb) {
+      insulinToCarb = 10;
+      settingsStorage.setItem(
+        "insulinToCarb",
+        JSON.stringify({ name: insulinToCarb })
+      );
+    }
+
     let settings = {
       url,
       extraDataUrl,
@@ -679,7 +735,13 @@ export default class settings {
       userAgreement,
       treatmentUrl,
       treatmentUrlTwo,
-      disableAlertsWhenNotOnWrist
+      disableAlertsWhenNotOnWrist,
+      allowUserOneTreatments,
+      allowUserTwoTreatments,
+      localTreatments,
+      dia,
+      carbsPerHour,
+      insulinToCarb
     };
     return settings;
   }

@@ -73,6 +73,9 @@ setInterval(function() {
     let timeSenseLastSGV = dateTime.getTimeSenseLastSGV(
       data.bloodSugars[0].user.currentBg.datetime
     )[1];
+
+    //todo account for user 2 if it exists
+
     if (timeSenseLastSGV >= 5) {
       console.log("request more data please!");
       transfer.send(dataToSend);
