@@ -8,3 +8,6 @@ build
 
 # ignore the config 
 config.js
+
+# ignore the algorithms 
+algorithms.js
