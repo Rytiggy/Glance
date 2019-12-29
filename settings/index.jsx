@@ -8,8 +8,13 @@ let displayTypes = {
   dualBg,
   largeGraph
 };
+// init settings
+
+let template = "homePage";
+renderPage("homePage");
+
 function mySettings(props) {
-  let template = (
+  let homePage = (
     <Page>
       <Text>
         <TextImageRow
@@ -50,6 +55,42 @@ function mySettings(props) {
         </Text>
         <Toggle settingsKey="userAgreement" label="Agree to user agreement" />
       </Section>
+
+      <Button
+        list
+        label="Data Source Settings"
+        onClick={() => renderPage("dataSourcePage")}
+      />
+
+      <Button
+        list
+        label="Glucose Settings"
+        onClick={() => renderPage("glucoseSettings")}
+      />
+
+      <Button
+        list
+        label="Alert Settings"
+        onClick={() => renderPage("alerts")}
+      />
+
+      <Button
+        list
+        label="Interface Customization Settings"
+        onClick={() => renderPage("interfaceCustomization")}
+      />
+
+      <Button
+        list
+        label="Advanced Settings"
+        onClick={() => renderPage("advancedPage")}
+      />
+    </Page>
+  );
+
+  let dataSourcePage = (
+    <Page>
+      <Button list label="Back" onClick={() => renderPage("homePage")} />
 
       <Section
         title={
@@ -113,6 +154,71 @@ function mySettings(props) {
             : null
           : null}
       </Section>
+
+      <Section
+        title={
+          <Text bold align="center">
+            Treatments
+          </Text>
+        }
+      >
+        <Text>
+          Local treatments are saved on the phone and not published anywhere.
+          This data can not be shared among followers, but will allow you to log
+          and track treatments on your watch.
+        </Text>
+        <Toggle settingsKey="localTreatments" label="Enable local treatments" />
+        {props.settings.localTreatments &&
+        JSON.parse(props.settings.localTreatments) == true ? (
+          <Section>
+            <Text bold align="center">
+              Profile
+            </Text>
+            <TextInput
+              label="Duration of Insulin Activity (DIA) [hours]"
+              settingsKey="dia"
+            />
+            <TextInput
+              label="Insulin to carb ratio (I:C) [g]"
+              settingsKey="insulinToCarb"
+            />
+            <TextInput
+              label="Insulin Sensitivity Factor (ISF) [mg/dL/U,mmol/L/U]"
+              settingsKey="isf"
+            />
+            <TextInput
+              label="Carbs activity / absorption rate: [g/hour]"
+              settingsKey="carbsPerHour"
+            />
+            <TextInput label="Basal rates [unit/hour]" settingsKey="basal" />
+          </Section>
+        ) : null}
+        {props.settings.dataSource ? (
+          JSON.parse(props.settings.dataSource).values[0].value ==
+            "nightscout" ||
+          (props.settings.dataSourceTwo &&
+            JSON.parse(props.settings.dataSourceTwo).values[0].value ==
+              "nightscout") ||
+          (props.settings.localTreatments &&
+            JSON.parse(props.settings.localTreatments) == true) ? (
+            <Section>
+              <Text bold align="center">
+                Graph
+              </Text>
+              <Toggle
+                settingsKey="enableSmallGraphPrediction"
+                label="Graph Predictions"
+              />
+            </Section>
+          ) : null
+        ) : null}
+      </Section>
+    </Page>
+  );
+  let glucoseSettings = (
+    <Page>
+      <Button list label="Back" onClick={() => renderPage("homePage")} />
+
       <Section
         title={
           <Text bold align="center">
@@ -130,114 +236,58 @@ function mySettings(props) {
         />
         <TextInput label="High Threshold" settingsKey="highThreshold" />
         <TextInput label="Low Threshold" settingsKey="lowThreshold" />
-        <Toggle settingsKey="disableAlert" label="Disable Alerts" />
-        <Toggle
-          settingsKey="extraGlucoseSettings"
-          label="Extra Glucose Settings"
-        />
+      </Section>
+    </Page>
+  );
 
-        {props.settings.extraGlucoseSettings ? (
-          JSON.parse(props.settings.extraGlucoseSettings) == true ? (
-            <Section
-              title={
-                <Text bold align="center">
-                  Extra Glucose Settings
-                </Text>
-              }
-            >
-              <Text bold align="center">
-                Alerts
-              </Text>
-              <Toggle settingsKey="highAlerts" label="High Alerts" />
-              {/* <TextInput label="Dismiss high alerts for n minutes" settingsKey="dismissHighFor" />  */}
-              <Toggle settingsKey="lowAlerts" label="Low Alerts" />
-              {/* <TextInput label="Dismiss low alerts for n minutes" settingsKey="dismissLowFor" /> */}
-              <Toggle settingsKey="rapidRise" label="Rapid Rise Alerts" />
-              <Toggle settingsKey="rapidFall" label="Rapid Fall Alerts" />
-              {props.settings.dataSource ? (
-                JSON.parse(props.settings.dataSource).values[0].value ==
-                "nightscout" ? (
-                  <Toggle settingsKey="loopstatus" label="Loop Status Alerts" />
-                ) : null
-              ) : null}
-              <Toggle settingsKey="staleData" label="Stale Data Alerts" />
-              <TextInput
-                label="Stale data alerts after n minutes"
-                settingsKey="staleDataAlertAfter"
-              />
-              <Toggle
-                settingsKey="resetAlertDismissal"
-                label="Dismiss alarm when back in range"
-              />
-              <Toggle
-                settingsKey="disableAlertsWhenNotOnWrist"
-                label="Disable Alerts when not wearing watch"
-              />
-            </Section>
+  let alerts = (
+    <Page>
+      <Button list label="Back" onClick={() => renderPage("homePage")} />
+
+      <Section
+        title={
+          <Text bold align="center">
+            Alerts
+          </Text>
+        }
+      >
+        <Toggle settingsKey="disableAlert" label="Disable Alerts" />
+        <Toggle settingsKey="highAlerts" label="High Alerts" />
+        {/* <TextInput label="Dismiss high alerts for n minutes" settingsKey="dismissHighFor" />  */}
+        <Toggle settingsKey="lowAlerts" label="Low Alerts" />
+        {/* <TextInput label="Dismiss low alerts for n minutes" settingsKey="dismissLowFor" /> */}
+        <Toggle settingsKey="rapidRise" label="Rapid Rise Alerts" />
+        <Toggle settingsKey="rapidFall" label="Rapid Fall Alerts" />
+        {props.settings.dataSource ? (
+          JSON.parse(props.settings.dataSource).values[0].value ==
+          "nightscout" ? (
+            <Toggle settingsKey="loopstatus" label="Loop Status Alerts" />
           ) : null
         ) : null}
+        <Toggle settingsKey="staleData" label="Stale Data Alerts" />
+        <TextInput
+          label="Stale data alerts after n minutes"
+          settingsKey="staleDataAlertAfter"
+        />
+        <Toggle
+          settingsKey="resetAlertDismissal"
+          label="Dismiss alarm when back in range"
+        />
+        <Toggle
+          settingsKey="disableAlertsWhenNotOnWrist"
+          label="Disable Alerts when not wearing watch"
+        />
       </Section>
+    </Page>
+  );
 
+  let interfaceCustomization = (
+    <Page>
+      <Button list label="Back" onClick={() => renderPage("homePage")} />
       <Section
         title={
           <Text bold align="center">
-            Date/Time Settings
-          </Text>
-        }
-      >
-        {/* <Select
-          label={`Time Format`}
-          settingsKey="timeFormat"
-          options={[
-            { name: "12hr", value: false },
-            { name: "24hr", value: true }
-          ]}
-        /> */}
-        <Select
-          label={`Date Format`}
-          settingsKey="dateFormat"
-          options={[
-            { name: "MM/DD/YYYY", value: "MM/DD/YYYY" },
-            { name: "DD/MM/YYYY", value: "DD/MM/YYYY" },
-            { name: "YYYY/MM/DD", value: "YYYY/MM/DD" },
-            { name: "DD.MM.YYYY", value: "DD.MM.YYYY" }
-          ]}
-        />
-        <Toggle settingsKey="enableDOW" label="Day of week at end of date" />
-      </Section>
-
-      <Section
-        title={
-          <Text bold align="center">
-            Local treatments
-          </Text>
-        }
-      >
-        <Text>
-          Local treatments are saved on the phone and not published anywhere.
-          This data can not be shared among followers, but will allow you to log
-          and track treatments on your watch.
-        </Text>
-        <Toggle settingsKey="localTreatments" label="Enable local treatments" />
-
-        <TextInput
-          label="Duration of Insulin Activity (DIA) [hours]"
-          settingsKey="dia"
-        />
-        <TextInput
-          label="Insulin to carb ratio (I:C) [g]"
-          settingsKey="insulinToCarb"
-        />
-        <TextInput
-          label="Carbs activity / absorption rate: [g/hour]"
-          settingsKey="carbsPerHour"
-        />
-      </Section>
-
-      <Section
-        title={
-          <Text bold align="center">
-            Layout
+            Interface Customization
           </Text>
         }
       >
@@ -246,21 +296,6 @@ function mySettings(props) {
         </Text>
         <Select label={`Temperature units`} settingsKey="tempType" options={[ {name:"Fahrenheit", value:"f"}, {name:"Celsius", value:"c"} ]} />
         */}
-        <Text bold align="center">
-          Graph
-        </Text>
-        {props.settings.dataSource ? (
-          JSON.parse(props.settings.dataSource).values[0].value ==
-            "nightscout" ||
-          (props.settings.dataSourceTwo &&
-            JSON.parse(props.settings.dataSourceTwo).values[0].value ==
-              "nightscout") ? (
-            <Toggle
-              settingsKey="enableSmallGraphPrediction"
-              label="Graph Predictions"
-            />
-          ) : null
-        ) : null}
 
         {/* <Toggle settingsKey="largeGraph" label="Large graph popup screen" /> */}
         {/* <Text>
@@ -317,7 +352,7 @@ function mySettings(props) {
                 "spike")) ? (
             <Section>
               <Text bold align="center">
-                Customize
+                Stat Layout Settings
               </Text>
               <Text>
                 The customize section is used for customizing the user interface
@@ -388,59 +423,67 @@ function mySettings(props) {
           ) : null
         ) : null}
       </Section>
-
-      <Section
-        title={
-          <Text bold align="center">
-            Helpful links
-          </Text>
-        }
-      >
-        <Text>
-          If you need help getting started with Glance follow the links below!
+      <Section>
+        <Text bold align="center">
+          Date Time Settings
         </Text>
-        <Link source="https://glancewatchface.com/#setup">
-          How to set up Glance
-        </Link>
+        <Select
+          label={`Date Format`}
+          settingsKey="dateFormat"
+          options={[
+            { name: "MM/DD/YYYY", value: "MM/DD/YYYY" },
+            { name: "DD/MM/YYYY", value: "DD/MM/YYYY" },
+            { name: "YYYY/MM/DD", value: "YYYY/MM/DD" },
+            { name: "DD.MM.YYYY", value: "DD.MM.YYYY" }
+          ]}
+        />
+        <Toggle settingsKey="enableDOW" label="Day of week at end of date" />
       </Section>
-
-      <Toggle settingsKey="advanced" label="Advanced" />
-      {props.settings.advanced ? (
-        JSON.parse(props.settings.advanced) == true ? (
-          <Section
-            title={
-              <Text bold align="center">
-                Logs
-              </Text>
-            }
-          >
-            <TextInput label="logs" settingsKey="logs" />
-            <TextInput disabled label="Unique Identifier" settingsKey="uuid" />
-            <Button
-              list
-              label="Sync"
-              onClick={() =>
-                props.settingsStorage.setItem(
-                  "logs",
-                  JSON.stringify({ name: `["${Date.now()} : Syncing"]` })
-                )
-              }
-            />
-            <Button
-              list
-              label="Reset settings to defaults"
-              onClick={() => clearSettings(props)}
-            />
-          </Section>
-        ) : null
-      ) : null}
     </Page>
   );
 
-  return template;
-}
+  let advancedPage = (
+    <Page>
+      <Button list label="Back" onClick={() => renderPage("homePage")} />
+      <Section
+        title={
+          <Text bold align="center">
+            Logs
+          </Text>
+        }
+      >
+        <TextInput label="logs" settingsKey="logs" />
+        <TextInput disabled label="Unique Identifier" settingsKey="uuid" />
+        <Button
+          list
+          label="Sync"
+          onClick={() =>
+            props.settingsStorage.setItem(
+              "logs",
+              JSON.stringify({ name: `["${Date.now()} : Syncing"]` })
+            )
+          }
+        />
+        <Button
+          list
+          label="Reset settings to defaults"
+          onClick={() => clearSettings(props)}
+        />
+      </Section>
+    </Page>
+  );
 
-registerSettingsPage(mySettings);
+  let pages = {
+    homePage,
+    dataSourcePage,
+    glucoseSettings,
+    alerts,
+    interfaceCustomization,
+    advancedPage
+  };
+
+  return pages[template];
+}
 
 function renderDataSource(props, id, title, keys) {
   // keys: Object of Element Ids (used for targeting the value)
@@ -565,4 +608,10 @@ function clearSettings(props) {
   let uuid = props.settings.uuid;
   props.settingsStorage.clear();
   props.settingsStorage.setItem("uuid", uuid);
+  renderPage("homePage");
+}
+
+function renderPage(temp) {
+  template = temp;
+  registerSettingsPage(mySettings);
 }
