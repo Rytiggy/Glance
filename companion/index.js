@@ -198,12 +198,12 @@ async function logTreatment(treatmentUrl, user, treatment) {
 messaging.peerSocket.onerror = function(err) {};
 
 settingsStorage.onchange = function(evt) {
-  sendData();
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token
     let data = JSON.parse(evt.newValue);
     dexcom.getAccessToken(data.name);
   }
+  sendData();
 };
 
 const MINUTE = 1000 * 60;
