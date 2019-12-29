@@ -15,10 +15,10 @@ export let init = (transfer, singleOrMultipleDispaly, settings) => {
     arrowsEle = "largeArrows";
   }
 
-  // check to see if one of the users is using nightscout and that they have ented a token
   if (
-    (settings.dataSource == "nightscout" && settings.treatmentUrl) ||
-    (settings.dataSourceTwo == "nightscout" && settings.treatmentUrlTwo)
+    settings.allowUserTwoTreatments ||
+    settings.allowUserOneTreatments ||
+    settings.localTreatments
   ) {
     logTreatmentBtn.style.display = "inline";
   } else {

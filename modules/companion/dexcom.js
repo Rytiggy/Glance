@@ -37,6 +37,7 @@ export default class dexcom {
         return data;
       })
       .catch(error => {
+        console.log(error);
         logs.add(error);
       });
   }
@@ -58,6 +59,7 @@ export default class dexcom {
         return data;
       })
       .catch(error => {
+        console.log(error);
         logs.add(error);
         // not found
         if (!error.status) {
@@ -75,13 +77,15 @@ export default class dexcom {
 // Helper functions
 function handleResponse(response) {
   let contentType = response.headers.get("content-type");
-  if (contentType.includes("application/json")) {
-    return handleJSONResponse(response);
-  } else if (contentType.includes("text/html")) {
-    return handleTextResponse(response);
-  } else {
-    // Other response types as necessary. I haven't found a need for them yet though.
-    throw new Error(`Sorry, content-type ${contentType} not supported`);
+  if (contentType) {
+    if (contentType.includes("application/json")) {
+      return handleJSONResponse(response);
+    } else if (contentType.includes("text/html")) {
+      return handleTextResponse(response);
+    } else {
+      // Other response types as necessary. I haven't found a need for them yet though.
+      throw new Error(`Sorry, content-type ${contentType} not supported`);
+    }
   }
 }
 

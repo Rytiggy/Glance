@@ -40,19 +40,20 @@ export let init = (transfer, settings) => {
   let actionsContainer = document.getElementById("actions");
   let homeContainer = document.getElementById("home");
   if (settings.numOfDataSources == 2) {
-    if (settings.dataSource == "nightscout" && settings.treatmentUrl) {
+    if (settings.allowUserOneTreatments || settings.localTreatments) {
       btnUser1.value = 1;
       btnUser1.style.display = "inline";
     } else {
       btnUser1.style.display = "none";
     }
-    if (settings.dataSourceTwo == "nightscout" && settings.treatmentUrlTwo) {
+    if (settings.allowUserTwoTreatments || settings.localTreatments) {
       btnUser2.value = 1;
       btnUser2.style.display = "inline";
     } else {
       btnUser2.style.display = "none";
     }
   } else {
+    // only one user
     btnUser1.style.display = "none";
     btnUser2.style.display = "none";
   }

@@ -16,7 +16,7 @@ import * as messaging from "messaging";
 import { me } from "companion";
 
 import Settings from "../modules/companion/settings.js";
-const settings = new Settings();
+let settings = new Settings();
 var store = settings.get();
 
 import Transfer from "../modules/companion/transfer.js";
@@ -27,9 +27,6 @@ const fetch = new Fetch();
 
 import Standardize from "../modules/companion/standardize.js";
 const standardize = new Standardize();
-
-// import Weather from "../modules/companion/weather.js";
-// import * as weather from 'fitbit-weather/companion'
 
 import * as logs from "../modules/companion/logs.js";
 
@@ -42,6 +39,8 @@ const dexcom = new Dexcom();
 
 import Firebase from "../modules/companion/firebase.js";
 const firebase = new Firebase();
+
+import * as predictions from "../modules/companion/predictions.js";
 
 // Helper
 const MILLISECONDS_PER_MINUTE = 1000 * 60;
@@ -58,6 +57,9 @@ let dataReceivedFromWatch = null;
  * Send the data to the watch
  */
 async function sendData() {
+  // predictions
+  predictions.updateTreatments();
+
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
   // update firebase user logs
@@ -123,16 +125,27 @@ async function sendData() {
       let dataToSend = {
         bloodSugars: [
           {
-            user: standardize.bloodsugars(values[0], values[1], store, keysOne)
+            user: standardize.bloodsugars(
+              values[0],
+              values[1],
+              store,
+              keysOne,
+              "userOne"
+            )
           },
           {
             user:
               store.numOfDataSources == 2
-                ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
+                ? standardize.bloodsugars(
+                    values[2],
+                    values[3],
+                    store,
+                    keysTwo,
+                    "userTwo"
+                  )
                 : null
           }
-        ],
-        settings: standardize.settings(store)
+        ]
       };
       logs.add(dataToSend);
       transfer.send(dataToSend);
@@ -151,33 +164,46 @@ messaging.peerSocket.onmessage = async function(evt) {
     settings.setToggle("userAgreement", true);
     sendData();
   } else if (evt.data.command === "postTreatment") {
-    console.log("postTreatment", evt.data);
     // which user should we send the treatment to
-    let treatmentUrl = store.treatmentUrl;
+    let treatmentUrl = null;
     if (evt.data.data.user == 1) {
       treatmentUrl = store.treatmentUrl;
     } else {
       treatmentUrl = store.treatmentUrlTwo;
     }
-    let data = await fetch.post(treatmentUrl, {
+    let treatment = {
       enteredBy: "Glance",
       carbs: evt.data.data.carbs,
       insulin: evt.data.data.insulin
-    });
+    };
+    await logTreatment(treatmentUrl, evt.data.data.user, treatment);
     sendData();
   }
 };
 
+async function logTreatment(treatmentUrl, user, treatment) {
+  // if the user has nightscout configured
+  if (
+    (user == 1 && store.treatmentUrl) ||
+    (user == 2 && store.treatmentUrlTwo)
+  ) {
+    console.log("post log treatment");
+    await fetch.post(treatmentUrl, treatment);
+  } else {
+    predictions.addIOB(treatment.insulin, user);
+    predictions.addCOB(treatment.carbs, user);
+  }
+}
 // Listen for the onerror event
 messaging.peerSocket.onerror = function(err) {};
 
 settingsStorage.onchange = function(evt) {
-  sendData();
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token
     let data = JSON.parse(evt.newValue);
     dexcom.getAccessToken(data.name);
   }
+  sendData();
 };
 
 const MINUTE = 1000 * 60;
@@ -191,7 +217,7 @@ if (me.launchReasons.wokenUp) {
   me.yield();
 }
 // wait 1 seconds before getting things started
-setTimeout(sendData, 1000);
+setTimeout(sendData, 500);
 
 /**
  * Fetch all the blood sugar data

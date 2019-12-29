@@ -17,15 +17,5 @@
     <link rel="import" href="/mnt/sysassets/widgets/tumblerview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/spinner_widget.gui" />
 
-    <!-- Custom Components -->
-    <link rel="import" href="components/header.gui" />
-    <link rel="import" href="components/bloodSugar.gui" />
-    <link rel="import" href="components/largeBloodSugar.gui" />
-    <link rel="import" href="components/stats.gui" />
-    <link rel="import" href="components/graph.gui" />
-    <link rel="import" href="components/largeGraph.gui" />
-    <link rel="import" href="components/alerts.gui" />
-    <link rel="import" href="components/treatments.gui" />
-
   </defs>
 </svg>
