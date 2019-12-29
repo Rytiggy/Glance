@@ -11,9 +11,7 @@
  * ------------------------------------------------
  */
 
-import Sizeof from "./sizeof.js";
-
-const sizeof = new Sizeof();
+import * as predictions from "./predictions.js";
 
 // this module handles standardizing return data from various APIS
 export default class standardize {
@@ -21,7 +19,7 @@ export default class standardize {
   // sgv:
   // datetime:
   // bgdelta:
-  bloodsugars(data, extraData, settings, keys) {
+  bloodsugars(data, extraData, settings, keys, user) {
     settings[keys.dexcomUsername] = "";
     settings[keys.dexcomPassword] = "";
     let bgs = data;
@@ -261,48 +259,6 @@ export default class standardize {
         }
       }
 
-      // Glance prediction model
-      // use Glance prediction model
-      // if (true && settings.enableSmallGraphPrediction) {
-      //   // Duration of Insulin Activity
-      //   let durationOfInsulin = 3;
-      //   // Carbs activity / absorption rate: [g/hour]
-      //   let carbsPerHour = 20;
-      //   // Insulin to carb ratio (I:C) [g]:(1/X)
-      //   let insulinToCarb = 10;
-
-      //   let predictedValues = [
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100,
-      //     100
-      //   ];
-      //   bgs.splice(bgs.length - 18, 18);
-      //   predictedValues.forEach((predictedbg, index) => {
-      //     if (!(index > 17)) {
-      //       bgs.unshift({
-      //         sgv: "" + predictedbg,
-      //         p: true
-      //       });
-      //     }
-      //   });
-      // }
-
       // Look for current non Predictive bg and not the last 5 predictions
       // this works because only the current bg has a delta so we can filter for it
       let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];
@@ -411,9 +367,64 @@ export default class standardize {
         );
         returnBloodsugars.predicted = [];
       }
+
+      // Allow Glance to make local treatments
+      if (
+        settings.localTreatments &&
+        (!settings.treatmentUrl || !settings.treatmentUrlTwo)
+      ) {
+        let treatments = predictions.getTotalTreatments();
+        returnBloodsugars.currentBg.iob = treatments[user].iob;
+        returnBloodsugars.currentBg.cob = treatments[user].cob;
+
+        //   // Duration of Insulin Activity
+        //   let durationOfInsulin = 3;
+        //   // Carbs activity / absorption rate: [g/hour]
+        //   let carbsPerHour = 20;
+        //   // Insulin to carb ratio (I:C) [g]:(1/X)
+        //   let insulinToCarb = 10;
+        //   let predictedValues = [
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100,
+        //     100
+        //   ];
+        //   bgs.splice(bgs.length - 18, 18);
+        //   predictedValues.forEach((predictedbg, index) => {
+        //     if (!(index > 17)) {
+        //       bgs.unshift({
+        //         sgv: "" + predictedbg,
+        //         p: true
+        //       });
+        //     }
+        //   });
+      }
+
       return returnBloodsugars;
     }
     let currentTime = new Date();
+    if (typeof data == "undefined") {
+      data = {
+        error: {
+          status: "DSE"
+        }
+      };
+    }
     return {
       currentBg: {
         sgv: "120",

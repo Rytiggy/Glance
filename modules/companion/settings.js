@@ -672,6 +672,14 @@ export default class settings {
       );
     }
 
+    let isf = null;
+    if (settingsStorage.getItem("isf")) {
+      isf = JSON.parse(settingsStorage.getItem("isf")).name;
+    } else if (!isf) {
+      isf = 50;
+      settingsStorage.setItem("isf", JSON.stringify({ name: isf }));
+    }
+
     let insulinToCarb = null;
     if (settingsStorage.getItem("insulinToCarb")) {
       insulinToCarb = JSON.parse(settingsStorage.getItem("insulinToCarb")).name;
@@ -683,6 +691,13 @@ export default class settings {
       );
     }
 
+    let basal = null;
+    if (settingsStorage.getItem("basal")) {
+      basal = JSON.parse(settingsStorage.getItem("basal")).name;
+    } else if (!basal) {
+      basal = 0.85;
+      settingsStorage.setItem("basal", JSON.stringify({ name: basal }));
+    }
     let settings = {
       url,
       extraDataUrl,
@@ -740,8 +755,10 @@ export default class settings {
       allowUserTwoTreatments,
       localTreatments,
       dia,
+      isf,
       carbsPerHour,
-      insulinToCarb
+      insulinToCarb,
+      basal
     };
     return settings;
   }
@@ -931,6 +948,7 @@ function getDataSourceUrls(
   } else if (dataSource === "xdrip") {
     url = buildxDripUrl(dataReceivedFromWatch);
   } else if (dataSource === "spike") {
+    // todo see if we can log treatments to spike
     url = buildURL("http://127.0.0.1:1979", "pebble", [sgvCount]);
   } else if (dataSource === "custom") {
     let customEndpoint = JSON.parse(

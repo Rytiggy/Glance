@@ -27,6 +27,5 @@ export let check = settings => {
     transfer.send(dataToSend);
     // hasAgreed = true;
   };
-
   return settings.userAgreement;
 };

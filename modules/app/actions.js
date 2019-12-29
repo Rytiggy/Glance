@@ -15,7 +15,11 @@ export let init = (transfer, singleOrMultipleDispaly, settings) => {
     arrowsEle = "largeArrows";
   }
 
-  if (settings.allowUserTwoTreatments || settings.localTreatments) {
+  if (
+    settings.allowUserTwoTreatments ||
+    settings.allowUserOneTreatments ||
+    settings.localTreatments
+  ) {
     logTreatmentBtn.style.display = "inline";
   } else {
     logTreatmentBtn.style.display = "none";

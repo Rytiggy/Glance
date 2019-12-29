@@ -81,8 +81,12 @@ setInterval(function() {
       transfer.send(dataToSend);
     }
   }
-  updateSettingSpecificDisplay(data.settings);
-  updateDisplay(data);
+  if (data.settings) {
+    updateSettingSpecificDisplay(data.settings);
+  }
+  if (data.bloodSugars && data.settings) {
+    updateDisplay(data);
+  }
 }, 10000);
 
 /**
@@ -90,12 +94,14 @@ setInterval(function() {
  * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
-  checkDataState(data.bloodSugars);
-  updateAlerts(data.bloodSugars, data.settings);
-  updateBloodSugarDisplay(data.bloodSugars, data.settings);
-  updateStats(data.bloodSugars, data.settings);
-  updateGraph(data.bloodSugars, data.settings);
-  // largeGraphDisplay(data);
+  if (data.settings) {
+    checkDataState(data.bloodSugars);
+    updateAlerts(data.bloodSugars, data.settings);
+    updateBloodSugarDisplay(data.bloodSugars, data.settings);
+    updateStats(data.bloodSugars, data.settings);
+    updateGraph(data.bloodSugars, data.settings);
+  }
+
   console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
 }
 
@@ -111,7 +117,7 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
   let errorLineEle = "errorLine";
   let timeOfLastSgvEle = "timeOfLastSgv";
   let arrowsEle = "arrows";
-  if (settings.numOfDataSources == 3) {
+  if (settings && settings.numOfDataSources == 3) {
     // if its the large display
     sgvEle = "largeSgv";
     deltaEle = "largeDelta";
@@ -125,7 +131,7 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
   );
   BloodSugarDisplayContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
-    if (bloodSugar.user) {
+    if (settings && bloodSugar.user) {
       let delta = BloodSugarDisplayContainer[index].getElementById(deltaEle);
       let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
       let errorLine = BloodSugarDisplayContainer[index].getElementById(
@@ -166,7 +172,7 @@ function updateBloodSugarDisplay(bloodSugars, settings) {
 function updateAlerts(bloodSugars, settings) {
   let sgvEle = "sgv";
   let errorLineEle = "errorLine";
-  if (settings.numOfDataSources == 3) {
+  if (settings && settings.numOfDataSources == 3) {
     // if its the large display
     sgvEle = "largeSgv";
     errorLineEle = "largeErrorLine";
@@ -181,7 +187,7 @@ function updateAlerts(bloodSugars, settings) {
 
   BloodSugarDisplayContainer.forEach((ele, index) => {
     let bloodSugar = bloodSugars[index];
-    if (bloodSugar.user) {
+    if (settings && bloodSugar.user) {
       let sgv = BloodSugarDisplayContainer[index].getElementById(sgvEle);
       let errorLine = BloodSugarDisplayContainer[index].getElementById(
         errorLineEle
@@ -220,90 +226,92 @@ function updateAlerts(bloodSugars, settings) {
  */
 function updateStats(bloodSugars, settings) {
   let statsContainer = singleOrMultipleDispaly.getElementsByClassName("stats");
-  statsContainer.forEach((ele, index) => {
-    let bloodSugar = bloodSugars[index];
-    // todo add check here for blood sugar at this index
-    let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
-    let layoutOne = statsContainer[index].getElementById("layoutOne");
-    let layoutTwo = statsContainer[index].getElementById("layoutTwo");
-    let layoutThree = statsContainer[index].getElementById("layoutThree");
-    let layoutFour = statsContainer[index].getElementById("layoutFour");
-    let layoutFive = statsContainer[index].getElementById("layoutFive");
-    let syringe = statsContainer[index].getElementById("syringe");
-    let hamburger = statsContainer[index].getElementById("hamburger");
-    let step = statsContainer[index].getElementById("step");
-    let heart = statsContainer[index].getElementById("heart");
+  if (settings) {
+    statsContainer.forEach((ele, index) => {
+      let bloodSugar = bloodSugars[index];
+      // todo add check here for blood sugar at this index
+      let fistBgNonPredictiveBG = bloodSugar.user.currentBg;
+      let layoutOne = statsContainer[index].getElementById("layoutOne");
+      let layoutTwo = statsContainer[index].getElementById("layoutTwo");
+      let layoutThree = statsContainer[index].getElementById("layoutThree");
+      let layoutFour = statsContainer[index].getElementById("layoutFour");
+      let layoutFive = statsContainer[index].getElementById("layoutFive");
+      let syringe = statsContainer[index].getElementById("syringe");
+      let hamburger = statsContainer[index].getElementById("hamburger");
+      let step = statsContainer[index].getElementById("step");
+      let heart = statsContainer[index].getElementById("heart");
 
-    let userName = null;
-    if (index == 0) {
-      userName = settings.dataSourceName;
-    } else {
-      userName = settings.dataSourceNameTwo;
-    }
-    layoutOne.text = userName;
-
-    if (
-      fistBgNonPredictiveBG[settings.layoutOne] &&
-      settings.layoutOne != "iob"
-    ) {
-      layoutTwo.text = fistBgNonPredictiveBG[settings.layoutOne];
-      layoutTwo.x = 8;
-      syringe.style.display = "none";
-    } else {
-      if (fistBgNonPredictiveBG.iob != 0) {
-        layoutTwo.text = fistBgNonPredictiveBG.iob;
-        layoutTwo.x = 30;
-        syringe.style.display = "inline";
+      let userName = null;
+      if (index == 0) {
+        userName = settings.dataSourceName;
       } else {
-        layoutTwo.text = "";
+        userName = settings.dataSourceNameTwo;
+      }
+      layoutOne.text = userName;
+
+      if (
+        fistBgNonPredictiveBG[settings.layoutOne] &&
+        settings.layoutOne != "iob"
+      ) {
+        layoutTwo.text = fistBgNonPredictiveBG[settings.layoutOne];
+        layoutTwo.x = 8;
         syringe.style.display = "none";
-      }
-    }
-
-    if (
-      fistBgNonPredictiveBG[settings.layoutTwo] &&
-      settings.layoutTwo != "cob"
-    ) {
-      layoutThree.text = fistBgNonPredictiveBG[settings.layoutTwo];
-      layoutThree.x = 8;
-      hamburger.style.display = "none";
-    } else {
-      if (fistBgNonPredictiveBG.cob != 0) {
-        layoutThree.text = fistBgNonPredictiveBG.cob;
-        layoutThree.x = 30;
-        hamburger.style.display = "inline";
       } else {
-        layoutThree.text = "";
-        hamburger.style.display = "none";
+        if (fistBgNonPredictiveBG.iob != 0) {
+          layoutTwo.text = fistBgNonPredictiveBG.iob;
+          layoutTwo.x = 30;
+          syringe.style.display = "inline";
+        } else {
+          layoutTwo.text = "";
+          syringe.style.display = "none";
+        }
       }
-    }
 
-    if (
-      fistBgNonPredictiveBG[settings.layoutThree] &&
-      settings.layoutThree != "steps"
-    ) {
-      layoutFour.text = fistBgNonPredictiveBG[settings.layoutThree];
-      layoutFour.x = 8;
-      step.style.display = "none";
-    } else {
-      layoutFour.text = commas(userActivity.get().steps);
-      layoutFour.x = 30;
-      step.style.display = "inline";
-    }
+      if (
+        fistBgNonPredictiveBG[settings.layoutTwo] &&
+        settings.layoutTwo != "cob"
+      ) {
+        layoutThree.text = fistBgNonPredictiveBG[settings.layoutTwo];
+        layoutThree.x = 8;
+        hamburger.style.display = "none";
+      } else {
+        if (fistBgNonPredictiveBG.cob != 0) {
+          layoutThree.text = fistBgNonPredictiveBG.cob;
+          layoutThree.x = 30;
+          hamburger.style.display = "inline";
+        } else {
+          layoutThree.text = "";
+          hamburger.style.display = "none";
+        }
+      }
 
-    if (
-      fistBgNonPredictiveBG[settings.layoutFour] &&
-      settings.layoutFour != "heart"
-    ) {
-      layoutFive.text = fistBgNonPredictiveBG[settings.layoutFour];
-      layoutFive.x = 8;
-      heart.style.display = "none";
-    } else {
-      layoutFive.text = userActivity.get().heartRate;
-      layoutFive.x = 30;
-      heart.style.display = "inline";
-    }
-  });
+      if (
+        fistBgNonPredictiveBG[settings.layoutThree] &&
+        settings.layoutThree != "steps"
+      ) {
+        layoutFour.text = fistBgNonPredictiveBG[settings.layoutThree];
+        layoutFour.x = 8;
+        step.style.display = "none";
+      } else {
+        layoutFour.text = commas(userActivity.get().steps);
+        layoutFour.x = 30;
+        step.style.display = "inline";
+      }
+
+      if (
+        fistBgNonPredictiveBG[settings.layoutFour] &&
+        settings.layoutFour != "heart"
+      ) {
+        layoutFive.text = fistBgNonPredictiveBG[settings.layoutFour];
+        layoutFive.x = 8;
+        heart.style.display = "none";
+      } else {
+        layoutFive.text = userActivity.get().heartRate;
+        layoutFive.x = 30;
+        heart.style.display = "inline";
+      }
+    });
+  }
 }
 
 /**
@@ -404,7 +412,7 @@ function checkDataState(bloodSugars) {
   let errorStatusEle = "errorStatus";
   let errorStatusLeadEle = "errorStatusLead";
 
-  if (data.settings.numOfDataSources == 3) {
+  if (data.settings && data.settings.numOfDataSources == 3) {
     errorStatusEle = "largeErrorStatus";
     errorStatusLeadEle = "largeErrorStatusLead";
   }
@@ -487,7 +495,7 @@ function checkDataState(bloodSugars) {
  */
 function updateSettingSpecificDisplay(settings) {
   // Check if user has agreed to user agreement
-  if (userAgreement.check(settings)) {
+  if (settings && userAgreement.check(settings)) {
     document.getElementById("userAgreement").style.display = "none";
 
     let singleBG = document.getElementById("singleBG");

@@ -16,7 +16,7 @@ import * as messaging from "messaging";
 import { me } from "companion";
 
 import Settings from "../modules/companion/settings.js";
-const settings = new Settings();
+let settings = new Settings();
 var store = settings.get();
 
 import Transfer from "../modules/companion/transfer.js";
@@ -58,7 +58,7 @@ let dataReceivedFromWatch = null;
  */
 async function sendData() {
   // predictions
-  predictions.checkTreatments();
+  predictions.updateTreatments();
 
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
@@ -125,12 +125,24 @@ async function sendData() {
       let dataToSend = {
         bloodSugars: [
           {
-            user: standardize.bloodsugars(values[0], values[1], store, keysOne)
+            user: standardize.bloodsugars(
+              values[0],
+              values[1],
+              store,
+              keysOne,
+              "userOne"
+            )
           },
           {
             user:
               store.numOfDataSources == 2
-                ? standardize.bloodsugars(values[2], values[3], store, keysTwo)
+                ? standardize.bloodsugars(
+                    values[2],
+                    values[3],
+                    store,
+                    keysTwo,
+                    "userTwo"
+                  )
                 : null
           }
         ]
@@ -171,11 +183,11 @@ messaging.peerSocket.onmessage = async function(evt) {
 
 async function logTreatment(treatmentUrl, user, treatment) {
   // if the user has nightscout configured
-
   if (
-    (user == 1 && settings.treatmentUrl) ||
-    (user == 2 && settings.treatmentUrlTwo)
+    (user == 1 && store.treatmentUrl) ||
+    (user == 2 && store.treatmentUrlTwo)
   ) {
+    console.log("post log treatment");
     await fetch.post(treatmentUrl, treatment);
   } else {
     predictions.addIOB(treatment.insulin, user);
@@ -205,7 +217,7 @@ if (me.launchReasons.wokenUp) {
   me.yield();
 }
 // wait 1 seconds before getting things started
-setTimeout(sendData, 1000);
+setTimeout(sendData, 500);
 
 /**
  * Fetch all the blood sugar data
