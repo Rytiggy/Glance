@@ -957,7 +957,6 @@ function getDataSourceUrls(
     if (customEndpoint) {
       url = customEndpoint.name;
     }
-    // 47 42
   } else if (dataSource === "yagi") {
     //FAB
     url = "yagi";
