@@ -634,8 +634,8 @@ export default class settings {
     if (settingsStorage.getItem("localTreatments")) {
       localTreatments = JSON.parse(settingsStorage.getItem("localTreatments"));
     } else if (!localTreatments) {
-      localTreatments = false;
-      settingsStorage.setItem("localTreatments", false);
+      localTreatments = true;
+      settingsStorage.setItem("localTreatments", localTreatments);
     }
 
     // should we allow treatments?
