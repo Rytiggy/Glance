@@ -61,7 +61,7 @@ export let updateTreatments = () => {
       // update treatment IOB / COB based on algorithm
       // update IOB
       algorithms.updateIOB(entry, store);
-      if (checkForOldTreatment(entry.iob)) {
+      if (checkForOldTreatment(entry)) {
         // Delete treatment if its 0
         iob.splice(index, 1);
       }
@@ -79,7 +79,7 @@ export let updateTreatments = () => {
       algorithms.updateCOB(entry, store);
       console.log(entry.cob);
 
-      if (checkForOldTreatment(entry.cob)) {
+      if (checkForOldTreatment(entry)) {
         // Delete treatment if its 0
         cob.splice(index, 1);
       }
@@ -136,8 +136,17 @@ export let getTotalTreatments = () => {
  * @returns {boolean} if we should remove the treatment because its old
  */
 function checkForOldTreatment(treatment) {
-  if (treatment <= 0) {
-    return true;
+  if (treatment.iob) {
+    console.log(treatment.createdAt);
+    let dia_ms = parseFloat(store.dia) * 3600000;
+    if (Date.now() >= treatment.createdAt + dia_ms) {
+      return true;
+    }
+  }
+  if (treatment.cob) {
+    if (treatment.cob <= 0) {
+      return true;
+    }
   }
   return false;
 }
