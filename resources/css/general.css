@@ -186,7 +186,7 @@
   height: 20;
   fill: #b8c3c4;
   x: 90%;
-  y: 2%;
+  y: 6%;
 }
 
 /* #alarmIcon {
@@ -561,6 +561,7 @@
 /* Treatment */
 .treatmentBtn {
   width: "33%";
+  height: "33%";
 }
 
 .treatmentText {
@@ -568,6 +569,35 @@
   x: "$+38";
   font-size: 30;
   text-length: "80";
+  font-family: SevilleSharp-Regular;
+}
+
+#submitTreatment {
+  height: 30%;
+  x: "$";
+  y: 68%;
+}
+#cancelSubmitTreatment {
+  height: 30%;
+  y: 68%;
+}
+#btn-user1 {
+  height: 30%;
+  y: -6%;
+}
+#btn-user2 {
+  height: 30%;
+  x: "$";
+  y: -6%;
+}
+#cancelReviewTreatment {
+  height: 30%;
+  y: 68%;
+}
+#reviewTreatment {
+  x: "$";
+  y: 68%;
+  height: 30%;
 }
 
 /* Treatment End */

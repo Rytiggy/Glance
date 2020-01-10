@@ -2,12 +2,13 @@
 	<svg>
 	    <rect width="100%" height="100%" fill="black" />
    
-        <use id="treatmentIobBtnSubtract" class="treatmentBtn" href="#square-button-icon" y="20" fill="coral">
+        <use id="treatmentIobBtnSubtract" class="treatmentBtn" href="#square-button-icon" y="2%" fill="coral">
             <set href="#text"  attributeName="text-buffer" to=".25 -" />
             <set href="#image" attributeName="href" to="img/syringe.png" />
         </use>
         <text id="treatmentIob" y="20%" class="treatmentText" fill="white" font-family="System-Regular">0</text>
-        <use id="treatmentIobBtnPlus" class="treatmentBtn" href="#square-button-icon" y="20" x="$-38" fill="coral">
+        
+        <use id="treatmentIobBtnPlus" class="treatmentBtn" href="#square-button-icon" y="2%" x="$-34" fill="coral">
             <set href="#text"  attributeName="text-buffer" to="1 +" />
             <set href="#image" attributeName="href" to="img/syringe.png" />
         </use>
@@ -17,7 +18,7 @@
                 <set href="#image" attributeName="href" to="img/hamburger.png" />
             </use>
             <text id="treatmentCob" y="15%" class="treatmentText" fill="white" font-family="System-Regular">0</text>
-            <use id="treatmentCobBtnPlus" x="$-38" class="treatmentBtn" href="#square-button-icon" fill="coral">
+            <use id="treatmentCobBtnPlus" x="$-34" class="treatmentBtn" href="#square-button-icon" fill="coral">
                 <set href="#text"  attributeName="text-buffer" to="5 +" />
                 <set href="#image" attributeName="href" to="img/hamburger.png" />
             </use>
@@ -65,7 +66,7 @@
             <use id="btn-user1" href="#square-button-toggle" value="1" fill="fb-light-gray">
                 <set href="#text" attributeName="text-buffer" to="User 1" />
             </use>
-            <use id="btn-user2" href="#square-button-toggle" x="50%" fill="fb-light-gray">
+            <use id="btn-user2" href="#square-button-toggle" fill="fb-light-gray">
                 <set href="#text" attributeName="text-buffer" to="User 2" />
             </use>
         </svg>
