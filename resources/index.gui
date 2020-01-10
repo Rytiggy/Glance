@@ -187,15 +187,18 @@
 		<use href="#view-header" height="40" fill="black">
 			<set href="#text" attributeName="text-buffer" to="Actions" />
 		</use>
-		<use href="#square-button-neutral" y="$" id="refreshDataBtn">
-			<set href="#text" attributeName="text-buffer" to="Refresh Data"/>
-		</use>
-		<use href="#square-button-neutral" y="$" id="logTreatmentBtn" display="none">
-			<set href="#text" attributeName="text-buffer" to="Log Treatment" />
-		</use>
-		<use href="#square-button-neutral" y="$" id="goHomeBtn">
-			<set href="#text" attributeName="text-buffer" to="Go Home" />
-		</use>
+		<svg y="$">
+			<use href="#square-button-neutral" x="0" width="50%" height="40%" id="refreshDataBtn">
+				<set href="#text" attributeName="text-buffer" to="Refresh Data"/>
+			</use>
+			<use href="#square-button-neutral" x="50%" width="50%" height="40%" id="goHomeBtn">
+				<set href="#text" attributeName="text-buffer" to="Go Home" />
+			</use>
+			<use href="#square-button-neutral" y="$" height="40%" id="logTreatmentBtn" display="none">
+				<set href="#text" attributeName="text-buffer" to="Log Treatment" />
+			</use>
+		</svg>
+	
 		<use href="#treatments" id="treatmentsScreen"  display="none"/>
     </svg>
   <!-- </use> -->
