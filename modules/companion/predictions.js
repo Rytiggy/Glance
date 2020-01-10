@@ -118,14 +118,16 @@ export let getTotalTreatments = () => {
       }
     });
   }
+
+  // TODO: round to 2nd place here
   return {
     userOne: {
-      iob: totalIob,
-      cob: totalCob
+      iob: Math.ceil(totalIob * 100) / 100,
+      cob: Math.ceil(totalCob * 100) / 100
     },
     userTwo: {
-      iob: totalIobTwo,
-      cob: totalCobTwo
+      iob: Math.ceil(totalIobTwo * 100) / 100,
+      cob: Math.ceil(totalCobTwo * 100) / 100
     }
   };
 };
