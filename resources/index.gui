@@ -184,9 +184,10 @@
 				<text id="text" x="5" y="50%+10" fill="white" font-size="30" font-weight="bold" />
 			</symbol>
 		</defs>
-		<use href="#view-header" height="40" fill="black">
-			<set href="#text" attributeName="text-buffer" to="Actions" />
-		</use>
+			<use y="-2%" href="#view-header" height="40" fill="black">
+				<set href="#text" attributeName="text-buffer" to="Actions" />
+			</use>
+		<image href="img/alarm.png" id="alarmIcon" />
 		<svg y="$">
 			<use href="#square-button-neutral" x="0" width="50%" height="40%" id="refreshDataBtn">
 				<set href="#text" attributeName="text-buffer" to="Refresh Data"/>
