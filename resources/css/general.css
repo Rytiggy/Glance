@@ -181,6 +181,21 @@
   x: 53%;
   y: 2%;
 }
+#alarmIcon {
+  width: 20;
+  height: 20;
+  fill: #b8c3c4;
+  x: 90%;
+  y: 2%;
+}
+
+/* #alarmIcon {
+  width: 20;
+  height: 20;
+  fill: #b8c3c4;
+  x: 34%;
+  y: 0%;
+} */
 
 /* Header CSS End*/
 

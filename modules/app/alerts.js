@@ -52,6 +52,12 @@ export default class alerts {
     if (settings.disableAlert) {
       allowAlertToFire = false;
     }
+    if (allowAlertToFire) {
+      document.getElementById("alarmIcon").href = "../resources/img/alarm.png";
+    } else {
+      document.getElementById("alarmIcon").href =
+        "../resources/img/disable.png";
+    }
 
     const alertGraphContainer = alertContainer.getElementById("alertGraph");
     const alertUser = alertContainer.getElementById("alertUser");
