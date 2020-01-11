@@ -35,16 +35,14 @@ function update(batteryLevel, batteryPercent, batteryIcon) {
     color = "red";
   }
   if (chargeLevel <= 16 || charger.connected) {
-    percent = false;
-  }
-  if (percent) {
+    batteryIcon.style.display = "none";
+    batteryLevel.style.display = "none";
+    batteryPercent.text = percent + "%";
+  } else {
     batteryLevel.width = level;
     batteryLevel.style.fill = color;
     batteryPercent.text = percent + "%";
     batteryIcon.style.display = "inline";
     batteryLevel.style.display = "inline";
-  } else {
-    batteryIcon.style.display = "none";
-    batteryLevel.style.display = "none";
   }
 }
