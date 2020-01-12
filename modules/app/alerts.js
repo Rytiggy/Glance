@@ -278,9 +278,12 @@ export default class alerts {
 
     // high or low or other
     function setAlertDurationValues(durations) {
+      console.log(durations);
+      //TODO figure out why treatment intervals arn't being set
       let tumbler = document.getElementById("tumbler");
       durations.forEach((time, index) => {
         let selectedItem = tumbler.getElementById("item" + index);
+        console.log(time);
         selectedItem.getElementById("content").text = time + " min";
       });
     }

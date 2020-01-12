@@ -81,6 +81,11 @@ function mySettings(_props) {
             label="Alert Settings"
             onClick={() => renderPage("alerts")}
           />
+          <Button
+            list
+            label="Treatment Settings"
+            onClick={() => renderPage("treatment")}
+          />
 
           <Button
             list
@@ -95,6 +100,78 @@ function mySettings(_props) {
           />
         </Page>
       ) : null}
+
+      {pageToDisplay == "account" ? (
+        <Page>
+          <Button list label="< Back" onClick={() => renderPage("treatment")} />
+
+          <Section
+            title={
+              <Text bold align="center">
+                Glance Account
+              </Text>
+            }
+          >
+            <Text>
+              Login to your Glance account to save your treatments to the cloud.
+              This allows you to share your treatments with followers using the
+              same account.
+            </Text>
+            <Text bold align="center">
+              Login
+            </Text>
+            <TextInput label="Email" settingsKey="email" />
+            <TextInput label="Password" settingsKey="password" />
+            <TextInput label="Status" settingsKey="status" />
+            <Text bold align="center">
+              Register
+            </Text>
+            <Text>
+              Create a Glance account to log your treatments to the cloud.
+            </Text>
+            <Button
+              list
+              label="Create Account"
+              onClick={() => renderPage("register")}
+            />
+          </Section>
+        </Page>
+      ) : null}
+
+      {pageToDisplay == "register" ? (
+        <Page>
+          <Button list label="< Back" onClick={() => renderPage("account")} />
+
+          <Section
+            title={
+              <Text bold align="center">
+                Register
+              </Text>
+            }
+          >
+            <Text>
+              Create a Glance account to log your treatments to the cloud.
+            </Text>
+            <TextInput label="Email" settingsKey="email" />
+            <TextInput label="Password" settingsKey="password" />
+            <TextInput label="Verify password" settingsKey="passwordTwo" />
+            <Button
+              list
+              label="Register"
+              onClick={() =>
+                props.settingsStorage.setItem(
+                  "registerStatus",
+                  JSON.stringify({
+                    name: "Creating Account"
+                  })
+                )
+              }
+            />
+            <TextInput label="Status" settingsKey="registerStatus" />
+          </Section>
+        </Page>
+      ) : null}
+
       {pageToDisplay == "dataSourcePage" ? (
         <Page>
           <Button list label="< Back" onClick={() => renderPage("homePage")} />
@@ -164,73 +241,9 @@ function mySettings(_props) {
                 : null
               : null}
           </Section>
-
-          <Section
-            title={
-              <Text bold align="center">
-                Treatments
-              </Text>
-            }
-          >
-            <Text>
-              Local treatments are saved on the phone and not published
-              anywhere. This data can not be shared among followers, but will
-              allow you to log and track treatments on your watch.
-            </Text>
-            <Toggle
-              settingsKey="localTreatments"
-              label="Enable local treatments"
-            />
-            {props.settings.localTreatments &&
-            JSON.parse(props.settings.localTreatments) == true ? (
-              <Section>
-                <Text bold align="center">
-                  Profile
-                </Text>
-                <TextInput
-                  label="Duration of Insulin Activity (DIA) [hours]"
-                  settingsKey="dia"
-                />
-                <TextInput
-                  label="Insulin to carb ratio (I:C) [g]"
-                  settingsKey="insulinToCarb"
-                />
-                <TextInput
-                  label="Insulin Sensitivity Factor (ISF) [mg/dL/U,mmol/L/U]"
-                  settingsKey="isf"
-                />
-                <TextInput
-                  label="Carbs activity / absorption rate: [g/hour]"
-                  settingsKey="carbsPerHour"
-                />
-                <TextInput
-                  label="Basal rates [unit/hour]"
-                  settingsKey="basal"
-                />
-              </Section>
-            ) : null}
-            {props.settings.dataSource ? (
-              JSON.parse(props.settings.dataSource).values[0].value ==
-                "nightscout" ||
-              (props.settings.dataSourceTwo &&
-                JSON.parse(props.settings.dataSourceTwo).values[0].value ==
-                  "nightscout") ||
-              (props.settings.localTreatments &&
-                JSON.parse(props.settings.localTreatments) == true) ? (
-                <Section>
-                  <Text bold align="center">
-                    Graph
-                  </Text>
-                  <Toggle
-                    settingsKey="enableSmallGraphPrediction"
-                    label="Graph Predictions"
-                  />
-                </Section>
-              ) : null
-            ) : null}
-          </Section>
         </Page>
       ) : null}
+
       {pageToDisplay == "glucoseSettings" ? (
         <Page>
           <Button list label="< Back" onClick={() => renderPage("homePage")} />
@@ -293,6 +306,87 @@ function mySettings(_props) {
               settingsKey="disableAlertsWhenNotOnWrist"
               label="Disable Alerts when not wearing watch"
             />
+          </Section>
+        </Page>
+      ) : null}
+
+      {pageToDisplay == "treatment" ? (
+        <Page>
+          <Button list label="< Back" onClick={() => renderPage("homePage")} />
+
+          <Section
+            title={
+              <Text bold align="center">
+                Treatments
+              </Text>
+            }
+          >
+            <Text>
+              Treatments are saved on the phone and not published anywhere
+              unless you login/create to a Glance account.
+            </Text>
+            <Toggle settingsKey="localTreatments" label="Glance treatments" />
+            {props.settings.localTreatments &&
+            JSON.parse(props.settings.localTreatments) == true ? (
+              <Section>
+                <Text bold align="center">
+                  Glance Account
+                </Text>
+                <Text>
+                  Creating a Glance account will save your IOB and COB
+                  treatments to the cloud and allow you to share them with
+                  followers.
+                </Text>
+                <Button
+                  list
+                  label="Login/Register"
+                  onClick={() => renderPage("account")}
+                />
+
+                <Text bold align="center">
+                  Profile
+                </Text>
+                <TextInput
+                  label="Duration of Insulin Activity (DIA) [hours]"
+                  settingsKey="dia"
+                />
+                <TextInput
+                  label="Insulin to carb ratio (I:C) [g]"
+                  settingsKey="insulinToCarb"
+                />
+                <TextInput
+                  label="Insulin Sensitivity Factor (ISF) [mg/dL/U,mmol/L/U]"
+                  settingsKey="isf"
+                />
+                <TextInput
+                  label="Carbs activity / absorption rate: [g/hour]"
+                  settingsKey="carbsPerHour"
+                />
+                <TextInput
+                  label="Basal rates [unit/hour]"
+                  settingsKey="basal"
+                />
+              </Section>
+            ) : null}
+            {props.settings.dataSource ? (
+              JSON.parse(props.settings.dataSource).values[0].value ==
+                "nightscout" ||
+              (props.settings.dataSourceTwo &&
+                JSON.parse(props.settings.dataSourceTwo).values[0].value ==
+                  "nightscout") ||
+              (props.settings.localTreatments &&
+                JSON.parse(props.settings.localTreatments) == true) ? (
+                <Section>
+                  <Text bold align="center">
+                    Graph
+                  </Text>
+                  <Toggle
+                    settingsKey="enableSmallGraphPrediction"
+                    label="Graph Predictions"
+                  />
+                </Section>
+              ) : null
+            ) : null}
           </Section>
         </Page>
       ) : null}

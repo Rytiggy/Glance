@@ -37,8 +37,8 @@ const dropbox = new Dropbox();
 import Dexcom from "../modules/companion/dexcom.js";
 const dexcom = new Dexcom();
 
-import Firebase from "../modules/companion/firebase.js";
-const firebase = new Firebase();
+import Database from "../modules/companion/database.js";
+const database = new Database();
 
 import * as predictions from "../modules/companion/predictions.js";
 
@@ -57,13 +57,28 @@ let dataReceivedFromWatch = null;
  * Send the data to the watch
  */
 async function sendData() {
-  // predictions
-  predictions.updateTreatments();
-
+  console.log("[Sending data] Preparing data to send.");
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
-  // update firebase user logs
-  firebase.update(store);
+  // login the user
+  await database.login(store.email, store.password);
+
+  // update database user logs
+  database.update(store);
+
+  // predictions
+  if (store.localTreatments) {
+    if (await database.isLoggedIn()) {
+      console.log("[Sending data] Using cloud treatments.");
+      // push to cloud
+      await database.updateTreatments(store);
+    } else {
+      console.log("[Sending data] Using local treatments.");
+      // save locally to phone
+      predictions.updateTreatments();
+    }
+  }
+
   // send settings
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
@@ -105,7 +120,7 @@ async function sendData() {
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
 
   Promise.all([bloodsugars, extraData, bloodsugarsTwo, extraDataTwo]).then(
-    function(values) {
+    async function(values) {
       let keysOne = {
         dexcomUsername: "dexcomUsername",
         dexcomPassword: "dexcomPassword",
@@ -125,23 +140,25 @@ async function sendData() {
       let dataToSend = {
         bloodSugars: [
           {
-            user: standardize.bloodsugars(
+            user: await standardize.bloodsugars(
               values[0],
               values[1],
               store,
               keysOne,
-              "userOne"
+              "userOne",
+              database
             )
           },
           {
             user:
               store.numOfDataSources == 2
-                ? standardize.bloodsugars(
+                ? await standardize.bloodsugars(
                     values[2],
                     values[3],
                     store,
                     keysTwo,
-                    "userTwo"
+                    "userTwo",
+                    database
                   )
                 : null
           }
@@ -184,12 +201,16 @@ messaging.peerSocket.onmessage = async function(evt) {
 async function logTreatment(treatmentUrl, user, treatment) {
   // if the user has nightscout configured
   if (
-    (user == 1 && store.treatmentUrl) ||
+    (!store.localTreatments && user == 1 && store.treatmentUrl) ||
     (user == 2 && store.treatmentUrlTwo)
   ) {
     console.log("post log treatment");
     await fetch.post(treatmentUrl, treatment);
+  } else if (await database.isLoggedIn()) {
+    database.addIOB(treatment.insulin, user);
+    database.addCOB(treatment.carbs, user);
   } else {
+    // save locally to phone
     predictions.addIOB(treatment.insulin, user);
     predictions.addCOB(treatment.carbs, user);
   }
@@ -198,10 +219,15 @@ async function logTreatment(treatmentUrl, user, treatment) {
 messaging.peerSocket.onerror = function(err) {};
 
 settingsStorage.onchange = function(evt) {
+  let data = JSON.parse(evt.newValue);
+
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token
-    let data = JSON.parse(evt.newValue);
     dexcom.getAccessToken(data.name);
+  }
+  if (evt.key == "registerStatus" && data.name == "Creating Account") {
+    console.log(evt);
+    database.register(store.email, store.password, store.passwordTwo);
   }
   sendData();
 };

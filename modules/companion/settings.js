@@ -698,6 +698,35 @@ export default class settings {
       basal = 0.85;
       settingsStorage.setItem("basal", JSON.stringify({ name: basal }));
     }
+
+    let email = null;
+    if (settingsStorage.getItem("email")) {
+      email = JSON.parse(settingsStorage.getItem("email")).name;
+    } else if (!email) {
+      email = "";
+      settingsStorage.setItem("email", JSON.stringify({ name: email }));
+    }
+
+    let password = null;
+    if (settingsStorage.getItem("password")) {
+      password = JSON.parse(settingsStorage.getItem("password")).name;
+    } else if (!password) {
+      password = "";
+      settingsStorage.setItem("password", JSON.stringify({ name: password }));
+    }
+
+    let passwordTwo = null;
+    if (settingsStorage.getItem("passwordTwo")) {
+      passwordTwo = JSON.parse(settingsStorage.getItem("passwordTwo")).name;
+    } else if (!passwordTwo) {
+      passwordTwo = "";
+      settingsStorage.setItem(
+        "passwordTwo",
+        JSON.stringify({ name: passwordTwo })
+      );
+    }
+
+    // TODO remove password and username from logs
     let settings = {
       url,
       extraDataUrl,
@@ -758,7 +787,10 @@ export default class settings {
       isf,
       carbsPerHour,
       insulinToCarb,
-      basal
+      basal,
+      email,
+      password,
+      passwordTwo
     };
     return settings;
   }

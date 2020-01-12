@@ -13,7 +13,6 @@
 
 import document from "document";
 import { preferences } from "user-settings";
-console.log(preferences.clockDisplay);
 export let init = () => {
   document.getElementById("time").text = getTime();
   document.getElementById("date").text = getDate();

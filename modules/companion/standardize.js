@@ -10,7 +10,6 @@
  *
  * ------------------------------------------------
  */
-
 import * as predictions from "./predictions.js";
 
 // this module handles standardizing return data from various APIS
@@ -19,7 +18,7 @@ export default class standardize {
   // sgv:
   // datetime:
   // bgdelta:
-  bloodsugars(data, extraData, settings, keys, user) {
+  async bloodsugars(data, extraData, settings, keys, user, database) {
     settings[keys.dexcomUsername] = "";
     settings[keys.dexcomPassword] = "";
     let bgs = data;
@@ -369,13 +368,16 @@ export default class standardize {
       }
 
       // Allow Glance to make local treatments
-      if (
-        settings.localTreatments &&
-        (!settings.treatmentUrl || !settings.treatmentUrlTwo)
-      ) {
-        let treatments = predictions.getTotalTreatments();
-        returnBloodsugars.currentBg.iob = treatments[user].iob;
-        returnBloodsugars.currentBg.cob = treatments[user].cob;
+      if (settings.localTreatments) {
+        if (await database.isLoggedIn()) {
+          let treatments = await database.getTotalTreatments();
+          returnBloodsugars.currentBg.iob = treatments[user].iob;
+          returnBloodsugars.currentBg.cob = treatments[user].cob;
+        } else {
+          let treatments = predictions.getTotalTreatments();
+          returnBloodsugars.currentBg.iob = treatments[user].iob;
+          returnBloodsugars.currentBg.cob = treatments[user].cob;
+        }
 
         //   // Duration of Insulin Activity
         //   let durationOfInsulin = 3;
