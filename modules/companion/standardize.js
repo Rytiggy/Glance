@@ -11,6 +11,7 @@
  * ------------------------------------------------
  */
 import * as predictions from "./predictions.js";
+import * as logs from "./logs.js";
 
 // this module handles standardizing return data from various APIS
 export default class standardize {
@@ -288,7 +289,7 @@ export default class standardize {
 
       checkTimeBetweenGraphPoints(bgs, nonPredictiveBg);
 
-      // remove any keys/values that we dont use from responce
+      // remove any keys/values that we dont use from response
       let propsToRemove = [
         "date",
         "delta",
@@ -369,16 +370,17 @@ export default class standardize {
 
       // Allow Glance to make local treatments
       if (settings.localTreatments) {
-        if (await database.isLoggedIn()) {
-          let treatments = await database.getTotalTreatments();
-          returnBloodsugars.currentBg.iob = treatments[user].iob;
-          returnBloodsugars.currentBg.cob = treatments[user].cob;
-        } else {
-          let treatments = predictions.getTotalTreatments();
-          returnBloodsugars.currentBg.iob = treatments[user].iob;
-          returnBloodsugars.currentBg.cob = treatments[user].cob;
+        if (typeof database != "undefined") {
+          if (await database.isLoggedIn()) {
+            let treatments = await database.getTotalTreatments();
+            returnBloodsugars.currentBg.iob = treatments[user].iob;
+            returnBloodsugars.currentBg.cob = treatments[user].cob;
+          } else {
+            let treatments = predictions.getTotalTreatments();
+            returnBloodsugars.currentBg.iob = treatments[user].iob;
+            returnBloodsugars.currentBg.cob = treatments[user].cob;
+          }
         }
-
         //   // Duration of Insulin Activity
         //   let durationOfInsulin = 3;
         //   // Carbs activity / absorption rate: [g/hour]
@@ -512,13 +514,21 @@ export default class standardize {
       "url",
       "urlTwo",
       "yagiPatientName",
-      "yagiPatientNameTwo"
+      "yagiPatientNameTwo",
+      // added more here
+      "treatmentUrlTwo",
+      "treatmentUrl",
+      "email",
+      "password",
+      "passwordTwo",
+      "dataSource"
     ];
     Object.keys(settings).forEach(key => {
       if (!blackList.includes(key)) {
         tempSettings[key] = settings[key];
       }
     });
+
     // Convert any values to desired units type
     if (tempSettings.glucoseUnits === "mmol") {
       tempSettings.highThreshold = mgdl(tempSettings.highThreshold);

@@ -1,4 +1,5 @@
 <svg id="glance">
+  <defs>
   <!-- Custom Components -->
     <link rel="import" href="components/header.gui" />
     <link rel="import" href="components/bloodSugar.gui" />
@@ -8,6 +9,7 @@
     <link rel="import" href="components/largeGraph.gui" />
     <link rel="import" href="components/alerts.gui" />
     <link rel="import" href="components/treatments.gui" />
+  </defs>
   <!-- <use id="container"> -->
      <svg id="home">
 		<svg id="singleBG">

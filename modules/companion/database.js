@@ -7,18 +7,21 @@ const fetch = new Fetch();
 import config from "../../resources/config.js";
 import * as logs from "./logs.js";
 
-import firebase from "firebase";
-import "firebase/database";
+// import firebase from "firebase";
 
+// import firebase from "firebase/app";
+// import "firebase/auth";
+// import "firebase/database";
+var firebase = require("firebase");
+
+// Initialize firebase from settings
+firebase.initializeApp(config.firebaseConfig);
+let db = firebase.database();
 import * as predictions from "./predictions.js";
 import * as algorithms from "../../resources/algorithms.js";
 
 export default class database {
-  constructor() {
-    // Initialize firebase from settings
-    firebase.initializeApp(config.firebaseConfig);
-    this.database = firebase.database();
-  }
+  constructor() {}
   async update(settings) {
     logs.add(
       `dataSource: ${settings.dataSource} dataSourceTwo: ${settings.dataSourceTwo} PhoneType: ${companion.host.os.name} modelName: ${device.modelName} version: ${config.version} build: ${config.build}`
@@ -85,29 +88,36 @@ export default class database {
   }
   // Login the user to their account
   async login(email, password) {
-    console.log("[Login] Trying to login Glance user.");
-    if (email.length > 0 || password.length > 0) {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(response => {
-          // console.log(response);
-          settingsStorage.setItem(
-            "status",
-            JSON.stringify({ name: "connected" })
-          );
-          console.log("[Login] Connected");
-        })
-        .catch(async error => {
-          settingsStorage.setItem(
-            "status",
-            JSON.stringify({ name: error.message })
-          );
-          await firebase.auth().signOut();
-          console.warn(`[Login] ${error.message}`);
-        });
+    logs.add("[Login] Trying to login Glance user.");
+    if (email.length > 0 && password.length > 0) {
+      try {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(response => {
+            // console.log(response);
+            settingsStorage.setItem(
+              "status",
+              JSON.stringify({ name: "connected" })
+            );
+            logs.add("[Login] Connected");
+          })
+          .catch(async error => {
+            logs.add(error);
+            settingsStorage.setItem(
+              "status",
+              JSON.stringify({ name: error.message })
+            );
+            await firebase.auth().signOut();
+            logs.add(`[Login] ${error.message}`);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     } else {
-      console.warn(`[Login] No email or password.`);
+      logs.add(
+        `[Login] Email and/or password are blank. Using local treatments.`
+      );
       settingsStorage.setItem("status", JSON.stringify({ name: "" }));
       await firebase.auth().signOut();
     }
@@ -144,11 +154,11 @@ export default class database {
 
     await firebase.auth().onAuthStateChanged(function(u) {
       if (u) {
-        console.log("[Login Check] User is logged in...");
+        logs.add("[Login Check] User is logged in...");
         user = true;
         // User is signed in.
       } else {
-        console.log("[Login Check] No user found...");
+        logs.add("[Login Check] No user found...");
         user = false;
         // No user is signed in.
       }
@@ -158,7 +168,7 @@ export default class database {
   // Setters
   async addIOB(iob, user) {
     var userId = firebase.auth().currentUser.uid;
-    var userRef = this.database.ref(`treatments/${userId}`);
+    var userRef = db.ref(`treatments/${userId}`);
     var iobRef = userRef.child("iob");
     iobRef.push().set({
       createdAt: Math.floor(Date.now()),
@@ -169,7 +179,7 @@ export default class database {
   }
   async addCOB(cob, user) {
     var userId = firebase.auth().currentUser.uid;
-    var userRef = this.database.ref(`treatments/${userId}`);
+    var userRef = db.ref(`treatments/${userId}`);
     var cobRef = userRef.child("cob");
     cobRef.push().set({
       createdAt: Math.floor(Date.now()),
@@ -227,7 +237,7 @@ export default class database {
   // Getters
   async getIOB() {
     var userId = firebase.auth().currentUser.uid;
-    return await this.database
+    return await db
       .ref(`treatments/${userId}/iob`)
       .once("value")
       .then(function(snapshot) {
@@ -237,7 +247,7 @@ export default class database {
   }
   async getCOB() {
     var userId = firebase.auth().currentUser.uid;
-    return await this.database
+    return await db
       .ref(`treatments/${userId}/cob`)
       .once("value")
       .then(function(snapshot) {
@@ -249,12 +259,12 @@ export default class database {
   }
 
   updateTreatments = async settings => {
-    console.log("[Treatments] Updating treatments.");
+    logs.add("[Treatments] Updating treatments.");
     var userId = firebase.auth().currentUser.uid;
 
     //iob
     let iob = await this.getIOB();
-    console.log("[Treatments] Computing IOB");
+    logs.add("[Treatments] Computing IOB");
     if (iob) {
       let iobKeys = Object.keys(iob);
       iob = Object.values(iob);
@@ -262,14 +272,14 @@ export default class database {
         // update treatment IOB / COB based on algorithm
         // update IOB
         entry = algorithms.updateIOB(entry, settings);
-        var userRef = this.database.ref(`treatments/${userId}/iob`);
+        var userRef = db.ref(`treatments/${userId}/iob`);
         var iobRef = userRef.child(iobKeys[index]);
         if (predictions.checkForOldTreatment(entry)) {
-          console.log(`[Treatments] Old treatment remove #${index}`);
+          logs.add(`[Treatments] Old treatment remove #${index}`);
           // Delete treatment if its 0
           iobRef.remove();
         } else {
-          console.log(`[Treatments] update decayed treatment #${index}`);
+          logs.add(`[Treatments] update decayed treatment #${index}`);
           iobRef.set(entry);
         }
       });
@@ -277,22 +287,20 @@ export default class database {
 
     // cob
     let cob = await this.getCOB();
-    console.log("[Treatments] Computing COB.");
+    logs.add("[Treatments] Computing COB.");
     if (cob) {
       let cobKeys = Object.keys(cob);
       cob = Object.values(cob);
       cob.forEach((entry, index) => {
         // update treatment COB based on algorithm
         entry = algorithms.updateCOB(entry, settings);
-        var cobRef = this.database.ref(
-          `treatments/${userId}/cob/${cobKeys[index]}`
-        );
+        var cobRef = db.ref(`treatments/${userId}/cob/${cobKeys[index]}`);
         if (predictions.checkForOldTreatment(entry)) {
-          console.log(`[Treatments] Old treatment remove #${index}`);
+          logs.add(`[Treatments] Old treatment remove #${index}`);
           // Delete treatment if its 0
           cobRef.remove();
         } else {
-          console.log(`[Treatments] update decayed treatment #${index}`);
+          logs.add(`[Treatments] update decayed treatment #${index}`);
           cobRef.set(entry);
         }
       });

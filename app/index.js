@@ -36,6 +36,16 @@ var time = singleOrMultipleDispaly.getElementById("time");
 
 loadingScreen();
 
+// Listen for messages from the companion
+messaging.peerSocket.onmessage = function(evt) {
+  if (evt.data) {
+    if (evt.data.key == "settings") {
+      // update the settings to the data object
+      data.settings = evt.data.data;
+      updateSettingSpecificDisplay(data.settings);
+    }
+  }
+};
 // On file tranfer
 inbox.onnewfile = () => {
   let fileName;
@@ -46,17 +56,6 @@ inbox.onnewfile = () => {
     }
   } while (fileName);
   updateDisplay(data);
-};
-
-// Listen for messages from the companion
-messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data) {
-    if (evt.data.key == "settings") {
-      // update the settings to the data object
-      data.settings = evt.data.data;
-      updateSettingSpecificDisplay(data.settings);
-    }
-  }
 };
 
 var dataToSend = {
@@ -94,6 +93,8 @@ setInterval(function() {
  * @param {Object} data received from the companion
  */
 function updateDisplay(data) {
+  console.log("update display");
+  console.log(JSON.stringify(data));
   if (data.settings) {
     checkDataState(data.bloodSugars);
     updateAlerts(data.bloodSugars, data.settings);
@@ -377,6 +378,8 @@ function loadingScreen() {
   status.text = "Syncing";
 
   let checkConnection = function() {
+    updateSettingSpecificDisplay({});
+    // TODO add way to update time (It freezes now)
     if (messaging.peerSocket.readyState == 0) {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       status.text = "Connected";
@@ -395,6 +398,7 @@ function loadingScreen() {
       // loadingScreenContainer.style.display = "inline";
       status.text = "Phone unreachable";
       statusLead.text = "Please wait or try restarting the watch";
+      //TODO: Try to wake of the phone
     }
   };
   var checkConnectionInterval = setInterval(checkConnection, 5000);

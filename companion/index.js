@@ -57,35 +57,37 @@ let dataReceivedFromWatch = null;
  * Send the data to the watch
  */
 async function sendData() {
-  console.log("[Sending data] Preparing data to send.");
+  logs.add("[Sending data] Preparing data to send.");
   // Get settings
   store = await settings.get(dataReceivedFromWatch);
+  // send settings
+  if (messaging.peerSocket.readyState == 0) {
+    messaging.peerSocket.send({
+      key: "settings",
+      data: standardize.settings(store)
+    });
+    logs.add("[Sending data] Settings sent.");
+  }
+
   // login the user
   await database.login(store.email, store.password);
 
   // update database user logs
-  database.update(store);
+  // database.update(store);
 
   // predictions
   if (store.localTreatments) {
     if (await database.isLoggedIn()) {
-      console.log("[Sending data] Using cloud treatments.");
+      logs.add("[Sending data] Using cloud treatments.");
       // push to cloud
       await database.updateTreatments(store);
     } else {
-      console.log("[Sending data] Using local treatments.");
+      logs.add("[Sending data] Using local treatments.");
       // save locally to phone
       predictions.updateTreatments();
     }
   }
 
-  // send settings
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({
-      key: "settings",
-      data: standardize.settings(store)
-    });
-  }
   // Get SGV data
   let bloodSugarData = await fetchBloodSugarData(
     "url",
@@ -166,6 +168,7 @@ async function sendData() {
       };
       logs.add(dataToSend);
       transfer.send(dataToSend);
+      logs.add("[Sending data] data sent.");
     }
   );
 }
@@ -173,7 +176,6 @@ async function sendData() {
 // Listen for messages from the device
 messaging.peerSocket.onmessage = async function(evt) {
   if (evt.data.command === "refreshData") {
-    console.log("refresh data");
     // pass in data that was recieved from the watch
     dataReceivedFromWatch = evt.data.data;
     sendData();
@@ -204,7 +206,6 @@ async function logTreatment(treatmentUrl, user, treatment) {
     (!store.localTreatments && user == 1 && store.treatmentUrl) ||
     (user == 2 && store.treatmentUrlTwo)
   ) {
-    console.log("post log treatment");
     await fetch.post(treatmentUrl, treatment);
   } else if (await database.isLoggedIn()) {
     database.addIOB(treatment.insulin, user);
@@ -226,7 +227,6 @@ settingsStorage.onchange = function(evt) {
     dexcom.getAccessToken(data.name);
   }
   if (evt.key == "registerStatus" && data.name == "Creating Account") {
-    console.log(evt);
     database.register(store.email, store.password, store.passwordTwo);
   }
   sendData();

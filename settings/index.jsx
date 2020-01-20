@@ -72,15 +72,10 @@ function mySettings(_props) {
 
           <Button
             list
-            label="Glucose Settings"
-            onClick={() => renderPage("glucoseSettings")}
-          />
-
-          <Button
-            list
             label="Alert Settings"
             onClick={() => renderPage("alerts")}
           />
+
           <Button
             list
             label="Treatment Settings"
@@ -240,21 +235,9 @@ function mySettings(_props) {
                   )
                 : null
               : null}
-          </Section>
-        </Page>
-      ) : null}
-
-      {pageToDisplay == "glucoseSettings" ? (
-        <Page>
-          <Button list label="< Back" onClick={() => renderPage("homePage")} />
-
-          <Section
-            title={
-              <Text bold align="center">
-                Glucose Settings
-              </Text>
-            }
-          >
+            <Text bold align="center">
+              Glucose Settings
+            </Text>
             <Select
               label={`Glucose Units`}
               settingsKey="glucoseUnits"
@@ -263,8 +246,6 @@ function mySettings(_props) {
                 { name: "mmol", value: "mmol" }
               ]}
             />
-            <TextInput label="High Threshold" settingsKey="highThreshold" />
-            <TextInput label="Low Threshold" settingsKey="lowThreshold" />
           </Section>
         </Page>
       ) : null}
@@ -280,6 +261,8 @@ function mySettings(_props) {
               </Text>
             }
           >
+            <TextInput label="High Threshold" settingsKey="highThreshold" />
+            <TextInput label="Low Threshold" settingsKey="lowThreshold" />
             <Toggle settingsKey="disableAlert" label="Disable Alerts" />
             <Toggle settingsKey="highAlerts" label="High Alerts" />
             {/* <TextInput label="Dismiss high alerts for n minutes" settingsKey="dismissHighFor" />  */}

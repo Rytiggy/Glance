@@ -2,13 +2,14 @@ import { localStorage } from "local-storage";
 import Settings from "./settings.js";
 let settings = new Settings();
 var store = settings.get();
+import * as logs from "./logs.js";
 
 import * as algorithms from "../../resources/algorithms.js";
 
 // INSULIN ON BOARD
 export let addIOB = (iob, user) => {
   let treatments = getIOB();
-  console.log(treatments);
+  logs.add(`[Treatments] ${treatments}`);
   if (!treatments) {
     treatments = [];
   } else {
@@ -32,7 +33,7 @@ export let getIOB = () => {
 // CARBS ON BOARD
 export let addCOB = (cob, user) => {
   let treatments = getCOB();
-  console.log(treatments);
+  logs.add(`[Treatments] ${treatments}`);
   if (!treatments) {
     treatments = [];
   } else {
@@ -54,11 +55,11 @@ export let getCOB = () => {
 };
 
 export let updateTreatments = () => {
-  console.log("[Treatments] Updating treatments.");
+  logs.add("[Treatments] Updating treatments.");
   //iob
   let iob = JSON.parse(getIOB());
   if (iob) {
-    console.log("[Treatments] computing iob");
+    logs.add("[Treatments] computing iob");
     iob.forEach((entry, index) => {
       // update treatment IOB / COB based on algorithm
       // update IOB
@@ -66,11 +67,11 @@ export let updateTreatments = () => {
       if (checkForOldTreatment(entry)) {
         // Delete treatment if its 0
         iob.splice(index, 1);
-        console.log(`[Treatments] Old treatment remove #${index}`);
+        logs.add(`[Treatments] Old treatment remove #${index}`);
       }
     });
     iob = JSON.stringify(iob);
-    console.log(`[Treatments] update decayed treatments`);
+    logs.add(`[Treatments] update decayed treatments`);
     localStorage.setItem("iob", iob);
   }
 
@@ -79,18 +80,18 @@ export let updateTreatments = () => {
   if (cob) {
     cob.forEach((entry, index) => {
       // update treatment COB based on algorithm
-      console.log(entry.cob);
+      logs.add(entry.cob);
       algorithms.updateCOB(entry, store);
 
       if (checkForOldTreatment(entry)) {
         // Delete treatment if its 0
         cob.splice(index, 1);
-        console.log(`[Treatments] Old treatment remove #${index}`);
+        logs.add(`[Treatments] Old treatment remove #${index}`);
       }
     });
     cob = JSON.stringify(cob);
     localStorage.setItem("cob", cob);
-    console.log(`[Treatments] update decayed treatment`);
+    logs.add(`[Treatments] update decayed treatment`);
   }
 };
 
@@ -145,20 +146,20 @@ export let getTotalTreatments = () => {
 export let checkForOldTreatment = treatment => {
   store = settings.get();
   if (typeof treatment.iob !== "undefined") {
-    console.log("[Predictions] Checking for old IOB.");
+    logs.add("[Predictions] Checking for old IOB.");
     let dia_ms = parseFloat(store.dia) * 3600000;
     if (treatment.iob <= 0 || Date.now() >= treatment.createdAt + dia_ms) {
-      console.log("[Predictions] Found old IOB");
+      logs.add("[Predictions] Found old IOB");
       return true;
     }
   }
   if (typeof treatment.cob !== "undefined") {
-    console.log("[Predictions] Checking for old COB.");
+    logs.add("[Predictions] Checking for old COB.");
     if (treatment.cob <= 0) {
-      console.log("[Predictions] Found old COB");
+      logs.add("[Predictions] Found old COB");
       return true;
     }
   }
-  console.log("[Predictions] Active treatment.");
+  logs.add("[Predictions] Active treatment.");
   return false;
 };
