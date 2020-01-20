@@ -17,7 +17,7 @@ import Sizeof from "./sizeof.js";
 const sizeof = new Sizeof();
 
 export let add = value => {
-  console.log(value);
+  // console.log(value);
   // check if value is an object and stringify
   if (typeof value == "object") {
     value = JSON.stringify(value);

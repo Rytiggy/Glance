@@ -104,7 +104,7 @@ export default class database {
           logs.add("[Login] Connected");
         }
       } catch (e) {
-        console.log(e);
+        logs.add(`[Login] ${e}`);
       }
     } else {
       logs.add(
@@ -238,7 +238,6 @@ export default class database {
     logs.add("[Treatments] Updating treatments.");
     //iob
     let iob = await this.getIOB();
-    console.log(iob);
     logs.add("[Treatments] Computing IOB");
     if (iob) {
       let iobKeys = Object.keys(iob);
@@ -250,8 +249,6 @@ export default class database {
         entry = algorithms.updateIOB(entry, settings);
         if (predictions.checkForOldTreatment(entry)) {
           logs.add(`[Treatments] Old treatment remove #${index}`);
-          // Delete treatment if its 0
-          // iobRef.remove();
           await fetch.delete(url);
         } else {
           logs.add(`[Treatments] update decayed treatment #${index}`);
@@ -270,11 +267,9 @@ export default class database {
         let key = cobKeys[index];
         let userId = localStorage.getItem("localId");
         let url = `${config.baseUrl}/treatments/${userId}/cob/${key}.json?auth=${config.firebase_token}`;
-        entry = algorithms.updateIOB(entry, settings);
+        entry = algorithms.updateCOB(entry, settings);
         if (predictions.checkForOldTreatment(entry)) {
           logs.add(`[Treatments] Old treatment remove #${index}`);
-          // Delete treatment if its 0
-          // iobRef.remove();
           await fetch.delete(url);
         } else {
           logs.add(`[Treatments] update decayed treatment #${index}`);
