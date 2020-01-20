@@ -35,7 +35,5 @@
     "build-and-install": "printf 'build-and-install' | npx fitbit",
     "install": "printf 'install' | npx fitbit"
   },
-  "dependencies": {
-    "firebase": "^7.6.2"
-  }
+  "dependencies": {}
 }

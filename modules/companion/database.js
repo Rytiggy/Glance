@@ -6,22 +6,10 @@ import Fetch from "./fetch.js";
 const fetch = new Fetch();
 import config from "../../resources/config.js";
 import * as logs from "./logs.js";
-
-// import firebase from "firebase";
-
-// import firebase from "firebase/app";
-// import "firebase/auth";
-// import "firebase/database";
-var firebase = require("firebase");
-
-// Initialize firebase from settings
-firebase.initializeApp(config.firebaseConfig);
-let db = firebase.database();
 import * as predictions from "./predictions.js";
 import * as algorithms from "../../resources/algorithms.js";
 
 export default class database {
-  constructor() {}
   async update(settings) {
     logs.add(
       `dataSource: ${settings.dataSource} dataSourceTwo: ${settings.dataSourceTwo} PhoneType: ${companion.host.os.name} modelName: ${device.modelName} version: ${config.version} build: ${config.build}`
@@ -91,26 +79,30 @@ export default class database {
     logs.add("[Login] Trying to login Glance user.");
     if (email.length > 0 && password.length > 0) {
       try {
-        await firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password)
-          .then(response => {
-            // console.log(response);
-            settingsStorage.setItem(
-              "status",
-              JSON.stringify({ name: "connected" })
-            );
-            logs.add("[Login] Connected");
-          })
-          .catch(async error => {
-            logs.add(error);
-            settingsStorage.setItem(
-              "status",
-              JSON.stringify({ name: error.message })
-            );
-            await firebase.auth().signOut();
-            logs.add(`[Login] ${error.message}`);
-          });
+        let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${config.apiKey}`;
+        let data = {
+          email,
+          password,
+          returnSecureToken: true
+        };
+        let response = await fetch.post(url, data);
+        if (response.error) {
+          // ERROR
+          let error = response.error;
+          settingsStorage.setItem(
+            "status",
+            JSON.stringify({ name: error.message })
+          );
+          localStorage.setItem("localId", null);
+          logs.add(`[Login] ${error.message}`);
+        } else {
+          settingsStorage.setItem(
+            "status",
+            JSON.stringify({ name: "connected" })
+          );
+          localStorage.setItem("localId", response.localId);
+          logs.add("[Login] Connected");
+        }
       } catch (e) {
         console.log(e);
       }
@@ -119,28 +111,31 @@ export default class database {
         `[Login] Email and/or password are blank. Using local treatments.`
       );
       settingsStorage.setItem("status", JSON.stringify({ name: "" }));
-      await firebase.auth().signOut();
+      localStorage.setItem("localId", null);
     }
   }
 
   async register(email, password, passwordTwo) {
     if (email.length > 0 && password.length > 0 && password == passwordTwo) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(response => {
-          settingsStorage.setItem(
-            "registerStatus",
-            JSON.stringify({ name: "Successfully created Glance account." })
-          );
-        })
-        .catch(function(error) {
-          // Handle Errors here.
-          settingsStorage.setItem(
-            "registerStatus",
-            JSON.stringify({ name: error.message })
-          );
-        });
+      let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${config.apiKey}`;
+      let data = {
+        email,
+        password,
+        returnSecureToken: true
+      };
+      let response = await fetch.post(url, data);
+      if (response.error) {
+        let error = response.error;
+        settingsStorage.setItem(
+          "registerStatus",
+          JSON.stringify({ name: error.message })
+        );
+      } else {
+        settingsStorage.setItem(
+          "registerStatus",
+          JSON.stringify({ name: "Successfully created Glance account." })
+        );
+      }
     } else {
       settingsStorage.setItem(
         "registerStatus",
@@ -151,42 +146,36 @@ export default class database {
 
   async isLoggedIn() {
     var user;
-
-    await firebase.auth().onAuthStateChanged(function(u) {
-      if (u) {
-        logs.add("[Login Check] User is logged in...");
-        user = true;
-        // User is signed in.
-      } else {
-        logs.add("[Login Check] No user found...");
-        user = false;
-        // No user is signed in.
-      }
-    });
+    if (localStorage.getItem("localId")) {
+      user = true;
+    } else {
+      user = false;
+    }
     return user;
   }
   // Setters
   async addIOB(iob, user) {
-    var userId = firebase.auth().currentUser.uid;
-    var userRef = db.ref(`treatments/${userId}`);
-    var iobRef = userRef.child("iob");
-    iobRef.push().set({
+    let userId = localStorage.getItem("localId");
+    let url = `${config.baseUrl}/treatments/${userId}/iob.json?auth=${config.firebase_token}`;
+    let data = {
       createdAt: Math.floor(Date.now()),
       user,
       iob,
       startIob: iob
-    });
+    };
+    await fetch.post(url, data);
   }
+
   async addCOB(cob, user) {
-    var userId = firebase.auth().currentUser.uid;
-    var userRef = db.ref(`treatments/${userId}`);
-    var cobRef = userRef.child("cob");
-    cobRef.push().set({
+    let userId = localStorage.getItem("localId");
+    let url = `${config.baseUrl}/treatments/${userId}/cob.json?auth=${config.firebase_token}`;
+    let data = {
       createdAt: Math.floor(Date.now()),
       user,
       cob,
       startCob: cob
-    });
+    };
+    await fetch.post(url, data);
   }
 
   /**
@@ -221,7 +210,6 @@ export default class database {
       });
     }
 
-    // TODO: round to 2nd place here
     return {
       userOne: {
         iob: Math.ceil(totalIob * 100) / 100,
@@ -236,51 +224,38 @@ export default class database {
 
   // Getters
   async getIOB() {
-    var userId = firebase.auth().currentUser.uid;
-    return await db
-      .ref(`treatments/${userId}/iob`)
-      .once("value")
-      .then(function(snapshot) {
-        var userIOB = snapshot.val();
-        return userIOB;
-      });
+    let userId = localStorage.getItem("localId");
+    let url = `${config.baseUrl}/treatments/${userId}/iob.json?auth=${config.firebase_token}`;
+    return await fetch.get(url);
   }
   async getCOB() {
-    var userId = firebase.auth().currentUser.uid;
-    return await db
-      .ref(`treatments/${userId}/cob`)
-      .once("value")
-      .then(function(snapshot) {
-        var userCOB = snapshot.val();
-        return userCOB;
-        //(snapshot.val() && snapshot.val().username) || 'Anonymous';
-        // ...
-      });
+    let userId = localStorage.getItem("localId");
+    let url = `${config.baseUrl}/treatments/${userId}/cob.json?auth=${config.firebase_token}`;
+    return await fetch.get(url);
   }
 
   updateTreatments = async settings => {
     logs.add("[Treatments] Updating treatments.");
-    var userId = firebase.auth().currentUser.uid;
-
     //iob
     let iob = await this.getIOB();
+    console.log(iob);
     logs.add("[Treatments] Computing IOB");
     if (iob) {
       let iobKeys = Object.keys(iob);
       iob = Object.values(iob);
-      iob.forEach((entry, index) => {
-        // update treatment IOB / COB based on algorithm
-        // update IOB
+      iob.forEach(async (entry, index) => {
+        let key = iobKeys[index];
+        let userId = localStorage.getItem("localId");
+        let url = `${config.baseUrl}/treatments/${userId}/iob/${key}.json?auth=${config.firebase_token}`;
         entry = algorithms.updateIOB(entry, settings);
-        var userRef = db.ref(`treatments/${userId}/iob`);
-        var iobRef = userRef.child(iobKeys[index]);
         if (predictions.checkForOldTreatment(entry)) {
           logs.add(`[Treatments] Old treatment remove #${index}`);
           // Delete treatment if its 0
-          iobRef.remove();
+          // iobRef.remove();
+          await fetch.delete(url);
         } else {
           logs.add(`[Treatments] update decayed treatment #${index}`);
-          iobRef.set(entry);
+          await fetch.put(url, entry);
         }
       });
     }
@@ -291,17 +266,19 @@ export default class database {
     if (cob) {
       let cobKeys = Object.keys(cob);
       cob = Object.values(cob);
-      cob.forEach((entry, index) => {
-        // update treatment COB based on algorithm
-        entry = algorithms.updateCOB(entry, settings);
-        var cobRef = db.ref(`treatments/${userId}/cob/${cobKeys[index]}`);
+      cob.forEach(async (entry, index) => {
+        let key = cobKeys[index];
+        let userId = localStorage.getItem("localId");
+        let url = `${config.baseUrl}/treatments/${userId}/cob/${key}.json?auth=${config.firebase_token}`;
+        entry = algorithms.updateIOB(entry, settings);
         if (predictions.checkForOldTreatment(entry)) {
           logs.add(`[Treatments] Old treatment remove #${index}`);
           // Delete treatment if its 0
-          cobRef.remove();
+          // iobRef.remove();
+          await fetch.delete(url);
         } else {
           logs.add(`[Treatments] update decayed treatment #${index}`);
-          cobRef.set(entry);
+          await fetch.put(url, entry);
         }
       });
     }

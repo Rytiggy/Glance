@@ -94,7 +94,6 @@ setInterval(function() {
  */
 function updateDisplay(data) {
   console.log("update display");
-  console.log(JSON.stringify(data));
   if (data.settings) {
     checkDataState(data.bloodSugars);
     updateAlerts(data.bloodSugars, data.settings);
@@ -378,7 +377,7 @@ function loadingScreen() {
   status.text = "Syncing";
 
   let checkConnection = function() {
-    updateSettingSpecificDisplay({});
+    updateSettingSpecificDisplay(data.settings);
     // TODO add way to update time (It freezes now)
     if (messaging.peerSocket.readyState == 0) {
       // if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -404,7 +403,8 @@ function loadingScreen() {
   var checkConnectionInterval = setInterval(checkConnection, 5000);
 
   messaging.peerSocket.onerror = function(err) {
-    status.text = "Connection error: " + err.code + " - " + err.message;
+    status.text = err.code;
+    statusLead.text = err.message;
   };
 }
 
