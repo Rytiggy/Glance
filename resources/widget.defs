@@ -1,0 +1,19 @@
+<svg>
+  <defs>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- <link rel="stylesheet" href="/mnt/sysassets/widgets/dynamic_textarea.css" /> -->
+    <!-- Additional Imports -->
+    <link rel="import" href="/mnt/sysassets/system_widget.defs" />
+    <link rel="import" href="/mnt/sysassets/widgets/text_button.defs" />
+
+    <!-- <link rel="import" href="/mnt/sysassets/widgets/dynamic_textarea.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/square_button_widget.gui" />
+    <link rel="import" href="/mnt/sysassets/widgets/mixed_text_widget.gui" />   
+    <link rel='import' href='/mnt/sysassets/widgets/baseview_widget.defs'/>
+     -->
+ <!-- Additional Imports -->
+    <!-- <link rel="import" href="/mnt/sysassets/widgets/combo_button_widget.gui" /> -->
+    
+    
+  </defs>
+</svg>

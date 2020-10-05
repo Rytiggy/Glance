@@ -2,7 +2,7 @@
   "fitbit": {
     "appUUID": "7b5d9822-7e8e-41f9-a2a7-e823548c001c",
     "appType": "clockface",
-    "appDisplayName": "Glance 2.1.114",
+    "appDisplayName": "Glance 2.1.115",
     "iconFile": "resources/icon.png",
     "wipeColor": "#673ab7",
     "requestedPermissions": [
@@ -14,9 +14,8 @@
       "access_heart_rate"
     ],
     "buildTargets": [
-      "higgs",
-      "meson",
-      "gemini"
+      "vulcan",
+      "atlas"
     ],
     "i18n": {
       "en": {
@@ -25,7 +24,7 @@
     }
   },
   "devDependencies": {
-    "@fitbit/sdk": "^4.2.1",
+    "@fitbit/sdk": "~5.0.1",
     "@fitbit/sdk-cli": "^1.7.3"
   },
   "scripts": {

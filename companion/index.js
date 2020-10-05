@@ -51,8 +51,12 @@ async function sendData() {
       subDomain = "shareous1";
     }
 
-    let dexcomUsername = store.dexcomUsername.replace(/\s+/g, "");
-    let dexcomPassword = store.dexcomPassword.replace(/\s+/g, "");
+    let dexcomUsername = store.dexcomUsername
+      ? store.dexcomUsername.replace(/\s+/g, "")
+      : "";
+    let dexcomPassword = store.dexcomPassword
+      ? store.dexcomPassword.replace(/\s+/g, "")
+      : "";
     let sessionId = await dexcom.getSessionId(
       dexcomUsername,
       dexcomPassword,
