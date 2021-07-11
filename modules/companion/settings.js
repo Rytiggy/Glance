@@ -92,6 +92,8 @@ export default class settings {
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {
         queryParms = `?count=47&steps=${dataReceivedFromWatch.steps}&heart=${dataReceivedFromWatch.heart}`;
       }
+      // Include data even if not from the current sensor (e.g. if there's no sensor)
+      queryParms += "&all_data=true";
       url = "http://127.0.0.1:17580/sgv.json" + queryParms;
     } else if (dataSource === "spike") {
       // spike
