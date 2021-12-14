@@ -59,7 +59,7 @@ export default class standardize {
 				predictedBg = standardizedExtraData.predictedBg;
 				loopStatus = standardizedExtraData.loopStatus;
 				upbat = standardizedExtraData.upbat;
-        sage = standardizedExtraData.sage;
+        		sage = standardizedExtraData.sage;
 				// add any extra data
 			} else if (settings.dataSource === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
@@ -241,7 +241,7 @@ export default class standardize {
 
 						let delta = (bgs[0].Value - bgs[1].Value);
 						// Set values to template
-						bgsTemplate.bgs[index].direction = slopeDirection(bgs[0].Trend);
+						bgsTemplate.bgs[index].direction = bgs[0].Trend //slopeDirection(bgs[0].Trend);
 						bgsTemplate.bgs[index].bgdelta = delta;
 					}
 				})
@@ -763,24 +763,25 @@ function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 }
 
 
-function slopeDirection(trend) {
-	logs.add('Dexcom trend: ' + trend)
-	switch(trend) {
-		case 1:
-			return "DoubleUp";
-		case 2:
-			return "SingleUp";
-		case 3:
-			return "FortyFiveUp";
-		case 4:
-			return "Flat";
-		case 5:
-			return "FortyFiveDown";
-		case 6:
-			return "SingleDown";
-		case 7:
-			return "DoubleDown";
-		default:
-			return "";
-	}
+// function slopeDirection(trend) {
+// 	logs.add('Dexcom trend: ' + trend)
+// 	return trend
+	// switch(trend) {
+	// 	case 1:
+	// 		return "DoubleUp";
+	// 	case 2:
+	// 		return "SingleUp";
+	// 	case 3:
+	// 		return "FortyFiveUp";
+	// 	case 4:
+	// 		return "Flat";
+	// 	case 5:
+	// 		return "FortyFiveDown";
+	// 	case 6:
+	// 		return "SingleDown";
+	// 	case 7:
+	// 		return "DoubleDown";
+	// 	default:
+	// 		return "";
+	// }
 }

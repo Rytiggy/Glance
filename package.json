@@ -2,7 +2,7 @@
   "fitbit": {
     "appUUID": "7b5d9822-7e8e-41f9-a2a7-e823548c001c",
     "appType": "clockface",
-    "appDisplayName": "Glance 2.1.115",
+    "appDisplayName": "Glance 2.1.2",
     "iconFile": "resources/icon.png",
     "wipeColor": "#673ab7",
     "requestedPermissions": [
