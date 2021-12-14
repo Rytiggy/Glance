@@ -784,4 +784,4 @@ function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 	// 	default:
 	// 		return "";
 	// }
-}
+// }
