@@ -14,8 +14,10 @@
       "access_heart_rate"
     ],
     "buildTargets": [
-      "vulcan",
-      "atlas"
+      "higgs",
+      "meson",
+      "gemini",
+      "mira"
     ],
     "i18n": {
       "en": {
@@ -24,8 +26,8 @@
     }
   },
   "devDependencies": {
-    "@fitbit/sdk": "~5.0.1",
-    "@fitbit/sdk-cli": "^1.7.3"
+    "@fitbit/sdk": "^4.0.1",
+    "@fitbit/sdk-cli": "^1.7.1"
   },
   "scripts": {
     "build": "fitbit-build",

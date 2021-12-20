@@ -1,0 +1,567 @@
+.glance {
+  y: 5%;
+  width: 100%;
+  height: 100%;
+}
+
+.h1 {
+  font-size: 110;
+  font-family: Tungsten-Medium;
+  fill: white;
+  text-length: 64;
+  width: 100%;
+  height: 100%;
+}
+
+.h2 {
+  font-size: 60;
+  font-family: SevilleSharp-Regular;
+  fill: white;
+  text-length: 64;
+}
+
+.h3 {
+  font-size: 110;
+  font-family: System-Bold;
+  fill: white;
+  text-length: 64;
+  width: 100%;
+  height: 100%;
+}
+
+.subtext1 {
+  font-size: 23;
+  font-family: Colfax-Medium;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+.subtext2 {
+  font-size: 15;
+  font-family: Seville-Condensed;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+.leadText {
+  font-size: 20;
+  font-family: Colfax-Medium;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: #9e9e9e;
+  text-length: 64;
+}
+
+.text-gray {
+  fill: gray;
+}
+.row {
+  width: 100%;
+  height: 50%;
+}
+
+.top {
+  y: 0%;
+}
+
+.bottom {
+  y: 50%;
+}
+
+.right {
+  x: 47%;
+}
+
+.left {
+  x: 0%;
+  width: 50%;
+}
+
+.center {
+  x: 33%;
+}
+
+.fit {
+  y: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+.width-30 {
+  width: 30%;
+}
+
+.width-40 {
+  width: 40%;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.spacing-top-10 {
+  y: 3%;
+}
+
+.bgColor {
+  gradient-type: "linear";
+  x: 0;
+  gradient-x1: "0";
+  gradient-y1: "0";
+  gradient-x2: "0";
+  gradient-y2: "100%";
+  gradient-color1: "#1F618D";
+  gradient-color2: "black";
+}
+
+.bgColorReverse {
+  gradient-color1: "black";
+  gradient-color2: "#390263";
+}
+
+.settingsTextColor {
+  fill: white;
+}
+
+/* Header CSS */
+#batteryLevel {
+  width: 30;
+  height: 15;
+  fill: #75bd78;
+  x: 3%;
+  y: 5%;
+}
+
+.batteryImage {
+  width: 32;
+  height: 20;
+  x: 3%;
+  y: 3%;
+}
+#batteryPercent {
+  /*   x: 13%-2;
+       y: 7%+2;  */
+  x: 15%;
+  y: 15%;
+  /*   font-size: 11;
+       fill: #7f7f7f;
+       font-family: Colfax-Medium; */
+}
+
+#date {
+  x: 3%;
+  y: 33%;
+}
+
+#weather {
+  x: 48%;
+  y: 15%;
+  text-anchor: "end";
+}
+
+#degreeIcon {
+  width: 8;
+  height: 8;
+  fill: #b8c3c4;
+  x: 49%;
+  y: 5%;
+}
+
+#weatherIcon {
+  width: 24;
+  height: 24;
+  fill: #b8c3c4;
+  x: 53%;
+  y: 2%;
+}
+
+/* Header CSS End*/
+
+/* BloodSugars Display CSS */
+#delta {
+  text-anchor: "end";
+  x: 97%;
+  y: 15%;
+}
+
+#sgv {
+  text-anchor: "end";
+  x: 97%;
+  y: 50%;
+}
+
+#timeOfLastSgv {
+  text-anchor: "end";
+  x: 97%;
+  y: 65%;
+}
+
+#arrows {
+  x: 83%;
+  y: 65%;
+  width: 45;
+  height: 45;
+  fill: white;
+}
+
+.dualTime {
+  text-anchor: start;
+  x: 3%;
+  y: 3%;
+  font-family: Colfax-Medium;
+  font-size: 32;
+  font-weight: regular;
+  width: 100%;
+  height: 100%;
+  fill: white;
+  text-length: 64;
+}
+
+#errorLine {
+  x1: 68%;
+  y1: 38%;
+  x2: 96%;
+  y2: 38%;
+  fill: white;
+  stroke-width: 4;
+}
+
+.errorStateContainer {
+}
+
+#errorStatus {
+  text-anchor: end;
+  x: 97%;
+  y: 15%;
+}
+
+/* -> Large Blood sugar display CSS */
+#largeSgv {
+  text-anchor: "start";
+  x: 3%;
+  y: 90%;
+}
+
+#largeDelta {
+  text-anchor: "end";
+  x: 97%;
+  y: 38%;
+}
+
+#largeTimeOfLastSgv {
+  text-anchor: "end";
+  x: 97%;
+  y: 56%;
+}
+
+#largeArrows {
+  x: 80%;
+  y: 55%;
+  width: 60;
+  height: 60;
+  fill: white;
+}
+
+#largeErrorLine {
+  x1: 6%;
+  x2: 66%;
+  y1: 65%;
+  y2: 65%;
+  fill: white;
+  stroke-width: 8;
+}
+/* -> Large Blood sugar display CSS End */
+/* BloodSugars Display CSS End */
+
+/* large bg display */
+.largeBgTime {
+  x: 97%;
+  y: 23%;
+  font-size: 40;
+  text-anchor: end;
+  text-length: 65;
+  font-family: Colfax-Medium;
+}
+/* End large bg display */
+
+.largeGraphTime {
+  x: 50%;
+  y: 15%;
+  text-anchor: middle;
+}
+
+/* Large Error Status */
+#largeErrorStatus {
+  text-anchor: start;
+  x: 3%;
+  y: 47%;
+}
+#largeErrorStatusLead {
+  text-anchor: start;
+  x: 3%;
+  y: 50%;
+  text-length: "80";
+  width: 70%;
+}
+/* Error Large error status */
+
+/* Stats CSS */
+.topStats {
+  y: 35%;
+}
+.stat-image {
+  width: 16;
+  height: 16;
+}
+
+#layoutOne {
+  text-anchor: "start";
+  x: 3%;
+  y: 15%;
+}
+
+#layoutTwo {
+  text-anchor: "start";
+  /* x: 3%; */
+  x: 10%;
+  y: 32%;
+}
+
+#layoutThree {
+  text-anchor: "start";
+  x: 10%;
+  y: 49%;
+}
+
+#layoutFour {
+  text-anchor: "start";
+  x: 10%;
+  y: 66%;
+}
+
+#layoutFive {
+  text-anchor: "start";
+  x: 10%;
+  y: 83%;
+}
+
+#syringe {
+  x: 3%;
+  y: 22%;
+  display: none;
+}
+
+#hamburger {
+  x: 3%;
+  y: 38%;
+  display: none;
+}
+
+#step {
+  x: 3%;
+  y: 56%;
+  /* 15 */
+  display: none;
+}
+
+#heart {
+  x: 3%;
+  y: 73%;
+  display: none;
+}
+
+.dualStatsTop {
+  y: -5%;
+}
+.dualStatsBottom {
+  y: 5%;
+}
+/* Stats CSS End */
+
+/* Graph CSS */
+.largeGraphContainer {
+  width: 93%;
+  x: 3%;
+  y: 10%;
+}
+
+#graph {
+  width: 100%;
+  y: 10%;
+  pointer-events: "visible";
+}
+
+#high {
+  x: 100%;
+  y: 5%;
+  width: 40;
+}
+
+#low {
+  x: 100%;
+  y: 88%;
+  width: 40;
+}
+
+.graphLines {
+  stroke-width: 2;
+  fill: white;
+  opacity: 0;
+}
+.graphPoints {
+  opacity: 0;
+  r: 3;
+}
+/* Graph CSS End */
+
+/* Alert CSS */
+.bgAlertColor {
+  gradient-type: "linear";
+  x: 0;
+  gradient-x1: "0";
+  gradient-y1: "0";
+  gradient-x2: "0";
+  gradient-y2: "100%";
+  gradient-color1: "#cc5050";
+  gradient-color2: "black";
+}
+
+#alertUser {
+  x: 97%;
+  y: 10%;
+  text-anchor: "end";
+}
+
+#alertTitle {
+  text-anchor: "end";
+  x: 88%;
+  y: 26%;
+}
+
+#alertLead {
+  text-anchor: end;
+  x: 50%;
+  y: 28%;
+  text-length: "80";
+  width: 47%;
+}
+
+#dismiss {
+  x: 2%;
+  y: 60%;
+  width: 100;
+  height: 100;
+}
+
+.alertRight {
+  width: 47%;
+}
+.alertGraphWidth {
+  x: 50%;
+}
+/* #dismiss {
+      x: 3%;
+        y: 59%;
+        width: 100;
+        height: 115;
+  } */
+#alertArrows {
+  x: 87%;
+  y: 13%;
+  width: 45;
+  height: 45;
+}
+
+.tumblerContainer {
+  y: 20%;
+  height: 100%;
+}
+
+#tumbler {
+  y: 10%;
+  height: 20%;
+}
+
+.item {
+  height: 45;
+}
+.item text {
+  font-size: 40;
+  fill: white;
+  x: 3%;
+}
+/* Alert CSS End */
+
+/* Loading Screen CSS */
+#loadingScreen {
+  width: 100%;
+  height: 100%;
+}
+.container {
+  width: 100%;
+  height: 60%;
+  x: 0%;
+  y: 20%;
+}
+
+.loadingScreenBackground {
+  width: 100%;
+  height: 100%;
+  x: 0;
+  y: 0;
+  fill: #454545;
+  opacity: 0.86;
+}
+
+#spinner {
+  x: 50%-25;
+  y: 10%;
+  width: 50;
+  height: 50;
+  fill: fb-white;
+}
+
+#loadingStatus {
+  text-anchor: "middle";
+  x: 50%;
+  y: 50%;
+}
+
+#loadingStatusLead {
+  text-anchor: "middle";
+  width: "100%";
+  x: 0%;
+  y: 55%;
+  text-length: "80";
+}
+/* Loading Screen CSS End*/
+
+/* Treatment */
+.treatmentBtn {
+  width: "33%";
+}
+
+.treatmentText {
+  width: "33%";
+  x: "$+38";
+  font-size: 30;
+  text-length: "80";
+}
+
+/* Treatment End */
+
+/* Actions */
+
+#goToActions {
+  y: 0;
+  height: 50%;
+  opacity: 0;
+}
+/* Actions End */
