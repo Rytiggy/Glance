@@ -13,14 +13,21 @@
 import Logs from "./logs.js";
 const logs = new Logs();
 
+const applicationId = "d8665ade-9673-4e27-9ff6-92db4ce13d13";
 export default class dexcom {
   async login(dexcomUsername, dexcomPassword, subDomain) {
+    // let body = {
+    //   accountName: dexcomUsername,
+    //   applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
+    //   password: dexcomPassword,
+    // };
+
     let body = {
       accountName: dexcomUsername,
-      applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
+      applicationId: applicationId,
       password: dexcomPassword,
     };
-    return await fetch(
+    let accountId = await fetch(
       `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
       {
         body: JSON.stringify(body),
@@ -29,49 +36,51 @@ export default class dexcom {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        method: "POST",
+        method: "post",
         rejectUnauthorized: false,
       }
     )
       .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-        return data;
-      });
-  }
-
-  async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    console.error(dexcomUsername, dexcomPassword, subDomain);
-    let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain);
-    console.log(accountId);
-
-    var body = {
-      password: dexcomPassword,
-      applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
-      accountId: accountId,
-    };
-    return await fetch(
-      `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountById`,
-      {
-        body: JSON.stringify(body),
-        json: true,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        rejectUnauthorized: false,
-      }
-    )
-      .then(function (response) {
-        console.log(response);
         return response.text();
       })
       .then(function (data) {
         return data;
-      });
+      })
+      .catch((e) => console.error(e));
+      return accountId.replace(/['"]+/g, '')
+  }
+
+  async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
+    let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain);
+    console.log(accountId);
+
+    let body = {
+      password: dexcomPassword,
+      applicationId: applicationId,
+      accountId: accountId,
+    };
+    console.log(applicationId, dexcomPassword, accountId.toString())
+    let url = `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountById`;
+    let sessionId = await fetch(url, {
+      body: JSON.stringify(body),
+      json: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "post",
+      rejectUnauthorized: false,
+    })
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (data) {
+        return data;
+      })
+      .catch((e) => console.error("here", e));
+
+    console.log(sessionId);
+    return sessionId;
   }
 
   async getData(sessionId, subDomain) {
@@ -91,8 +100,8 @@ export default class dexcom {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
         return data;
-      });
+      })
+      .catch((e) => console.error(e));
   }
 }

@@ -37,7 +37,6 @@ const sizeof = new Sizeof();
 let dataReceivedFromWatch = null;
 
 async function sendData() {
-  logs.add("companion - sendData: Version: 2.1.100");
   // Get settings
   const store = await settings.get(dataReceivedFromWatch);
 
