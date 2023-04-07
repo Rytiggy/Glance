@@ -38,26 +38,6 @@ export default class settings {
     let extraDataUrl = null;
     if (dataSource === "nightscout") {
       // Nightscout
-      let nightscoutSiteName = null;
-      if (
-        settingsStorage.getItem("nightscoutSiteName") &&
-        JSON.parse(settingsStorage.getItem("nightscoutSiteName")).name
-      ) {
-        nightscoutSiteName = JSON.parse(
-          settingsStorage.getItem("nightscoutSiteName")
-        ).name;
-        if (isURL(nightscoutSiteName)) {
-          nightscoutSiteName = nightscoutSiteName.split(".")[0];
-          nightscoutSiteName = nightscoutSiteName.split("//")[1];
-          console.log(nightscoutSiteName);
-        }
-      } else if (!nightscoutSiteName) {
-        nightscoutSiteName = "placeholder";
-        settingsStorage.setItem(
-          "nightscoutSiteName",
-          JSON.stringify({ name: "" })
-        );
-      }
       let nightscoutSiteHost = null;
       if (settingsStorage.getItem("nightscoutSiteHost")) {
         nightscoutSiteHost = JSON.parse(
@@ -74,19 +54,52 @@ export default class settings {
         );
       }
 
-      url =
-        "https://" +
-        nightscoutSiteName.toLowerCase() +
-        "." +
-        nightscoutSiteHost +
-        "/pebble" +
-        queryParms;
-      extraDataUrl =
-        "https://" +
-        nightscoutSiteName.toLowerCase() +
-        "." +
-        nightscoutSiteHost +
-        "/api/v2/properties";
+      let nightscoutSiteName = null;
+      if (
+        settingsStorage.getItem("nightscoutSiteName") &&
+        JSON.parse(settingsStorage.getItem("nightscoutSiteName")).name
+      ) {
+        nightscoutSiteName = JSON.parse(
+          settingsStorage.getItem("nightscoutSiteName")
+        ).name;
+        if (isURL(nightscoutSiteName)) {
+          if(nightscoutSiteHost !== "") {
+            nightscoutSiteName = nightscoutSiteName.split(".")[0];
+            nightscoutSiteName = nightscoutSiteName.split("//")[1];
+          }
+          console.log(nightscoutSiteName);
+        }
+      } else if (!nightscoutSiteName) {
+        nightscoutSiteName = "placeholder";
+        settingsStorage.setItem(
+          "nightscoutSiteName",
+          JSON.stringify({ name: "" })
+        );
+      }
+
+      if(nightscoutSiteHost === "") {
+        url =
+          nightscoutSiteName.toLowerCase() +
+          "/pebble" +
+          queryParms;
+        extraDataUrl =
+          nightscoutSiteName.toLowerCase() +
+          "/api/v2/properties";
+      } else {
+        url =
+          "https://" +
+          nightscoutSiteName.toLowerCase() +
+          "." +
+          nightscoutSiteHost +
+          "/pebble" +
+          queryParms;
+        extraDataUrl =
+          "https://" +
+          nightscoutSiteName.toLowerCase() +
+          "." +
+          nightscoutSiteHost +
+          "/api/v2/properties";
+      }
     } else if (dataSource === "xdrip") {
       // xDrip+
       if (dataReceivedFromWatch && dataReceivedFromWatch != null) {

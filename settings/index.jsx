@@ -55,26 +55,6 @@ function mySettings(props) {
           JSON.parse(props.settings.dataSource).values[0].value ==
           "nightscout" ? (
             <Text text="center">
-              https://<Text bold>SiteName</Text>.NightscoutHostSite.com
-            </Text>
-          ) : null
-        ) : null}
-
-        {props.settings.dataSource ? (
-          JSON.parse(props.settings.dataSource).values[0].value ==
-          "nightscout" ? (
-            <TextInput
-              title="Nightscout"
-              label="Site Name"
-              settingsKey="nightscoutSiteName"
-            />
-          ) : null
-        ) : null}
-
-        {props.settings.dataSource ? (
-          JSON.parse(props.settings.dataSource).values[0].value ==
-          "nightscout" ? (
-            <Text text="center">
               https://SiteName.<Text bold>NightscoutHostSite</Text>.com
             </Text>
           ) : null
@@ -83,12 +63,38 @@ function mySettings(props) {
           JSON.parse(props.settings.dataSource).values[0].value ==
           "nightscout" ? (
             <Select
-              label="Nightscout Host Site"
+              label="Nightscout Host"
               settingsKey="nightscoutSiteHost"
               options={[
                 { name: "Heroku", value: "herokuapp.com" },
                 { name: "Azure", value: "azurewebsites.net" },
+                { name: "Full Custom Domain", value: "" },
               ]}
+            />
+          ) : null
+        ) : null}
+
+        {props.settings.dataSource ? (
+          JSON.parse(props.settings.dataSource).values[0].value ==
+          "nightscout" ? ( (JSON.parse(props.settings.nightscoutSiteHost).values[0].value == "" ? (
+            <Text text="center">
+              <Text bold>https://FullCustomDomain.com</Text>
+            </Text>
+          ) : (
+            <Text text="center">
+              https://<Text bold>SiteName</Text>.NightscoutHostSite.com
+            </Text>
+            )
+          )
+          ) : null
+        ) : null}
+        {props.settings.dataSource ? (
+          JSON.parse(props.settings.dataSource).values[0].value ==
+          "nightscout" ? (
+            <TextInput
+              title="Nightscout"
+              label="Site Name"
+              settingsKey="nightscoutSiteName"
             />
           ) : null
         ) : null}
