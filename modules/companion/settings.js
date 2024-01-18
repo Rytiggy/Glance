@@ -77,6 +77,13 @@ export default class settings {
         );
       }
 
+      if (settingsStorage.getItem("nightscoutToken")) {
+        let nightscoutToken = JSON.parse(
+          settingsStorage.getItem("nightscoutToken")
+        ).name;
+        queryParms += "&token=" + nightscoutToken;
+      }
+
       if(nightscoutSiteHost === "") {
         url =
           nightscoutSiteName.toLowerCase() +

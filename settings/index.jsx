@@ -100,6 +100,17 @@ function mySettings(props) {
         ) : null}
 
         {props.settings.dataSource ? (
+          JSON.parse(props.settings.dataSource).values[0].value ==
+          "nightscout" ? (
+            <TextInput
+              title="Nightscout Token"
+              label="Nightscout Token"
+              settingsKey="nightscoutToken"
+            />
+          ) : null
+        ) : null}
+
+        {props.settings.dataSource ? (
           JSON.parse(props.settings.dataSource).values[0].value == "dexcom" ? (
             <Section
               title={
