@@ -166,7 +166,6 @@ function update() {
   };
 
   if (data) {
-    console.warn("GOT DATA");
     batteryLevel.width = batteryLevels.get().level;
     batteryLevel.style.fill = batteryLevels.get().color;
     batteryPercent.text = "" + batteryLevels.get().percent + "%";
