@@ -16,18 +16,12 @@ const logs = new Logs();
 const applicationId = "d8665ade-9673-4e27-9ff6-92db4ce13d13";
 export default class dexcom {
   async login(dexcomUsername, dexcomPassword, subDomain) {
-    // let body = {
-    //   accountName: dexcomUsername,
-    //   applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
-    //   password: dexcomPassword,
-    // };
-
     let body = {
       accountName: dexcomUsername,
       applicationId: applicationId,
       password: dexcomPassword,
     };
-    let accountId = await fetch(
+    let data = await fetch(
       `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
       {
         body: JSON.stringify(body),
@@ -35,31 +29,47 @@ export default class dexcom {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "cache-control": "no-cache",
+          agent: "Glance",
         },
         method: "post",
         rejectUnauthorized: false,
       }
     )
       .then(function (response) {
-        return response.text();
+        return response.json();
       })
-      .then(function (data) {
-        return data;
-      })
-      .catch((e) => console.error(e));
-      return accountId.replace(/['"]+/g, '')
+      .catch((e) => {
+        return e;
+      });
+    console.log("Debug 3 accountId", data.Code);
+    if (!data?.Code) {
+      return {
+        accountId: data.replace(/['"]+/g, ""),
+      };
+    } else {
+      return Promise.reject(data)
+    }
   }
 
   async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain);
-    console.log(accountId);
-
+    // TODO: add failure logic
+    let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain)
+      .then((res) => {
+        console.log("Debug: 4", res);
+        return res.accountId
+      })
+      .catch((e) => {
+        console.error("Debug: 4", e);
+        return Promise.reject(e)
+      });
     let body = {
       password: dexcomPassword,
       applicationId: applicationId,
       accountId: accountId,
     };
-    console.log(applicationId, dexcomPassword, accountId.toString())
+    console.log("Debug: accountId", accountId);
+    console.log(applicationId, dexcomPassword);
     let url = `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountById`;
     let sessionId = await fetch(url, {
       body: JSON.stringify(body),
@@ -67,6 +77,8 @@ export default class dexcom {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "cache-control": "no-cache",
+        agent: "Glance",
       },
       method: "post",
       rejectUnauthorized: false,
@@ -77,7 +89,7 @@ export default class dexcom {
       .then(function (data) {
         return data;
       })
-      .catch((e) => console.error("here", e));
+      .catch((e) => console.error("dexcom error", e));
 
     console.log(sessionId);
     return sessionId;
@@ -93,6 +105,8 @@ export default class dexcom {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "cache-control": "no-cache",
+        agent: "Glance",
       },
       method: "post",
     })

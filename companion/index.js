@@ -53,49 +53,69 @@ async function sendData() {
     let dexcomUsername = store.dexcomUsername
       ? store.dexcomUsername.replace(/\s+/g, "")
       : "";
+
     let dexcomPassword = store.dexcomPassword
       ? store.dexcomPassword.replace(/\s+/g, "")
       : "";
-    let sessionId = await dexcom.getSessionId(
-      dexcomUsername,
-      dexcomPassword,
-      subDomain
-    );
+
     if (store.dexcomUsername && store.dexcomPassword) {
-      bloodsugars = await dexcom.getData(sessionId, subDomain);
+      try {
+        let sessionId = await dexcom.getSessionId(
+          dexcomUsername,
+          dexcomPassword,
+          subDomain
+        )
+        if (sessionId) {
+          bloodsugars = await dexcom.getData(sessionId, subDomain);
+        }
+      } catch (e) {
+        // Error with auth
+        let status = e?.Code
+        if (e?.Code === "AccountPasswordInvalid")
+          status = "ATH"
+        bloodsugars = {
+          error: {
+            status: status,
+            message: e.Message
+          },
+        };
+
+      }
     } else {
       bloodsugars = {
         error: {
-          status: "500",
+          status: "D1",// TODO: Note error codes; D1 No dexcom password or username present
+          message: "Dexcom auth missing"
         },
       };
     }
   } else {
-    bloodsugars = await fetch.get(store.url);
+    await fetch.get(store.url).then((res) => {
+      bloodsugars = res
+    }).catch((err) => {
+      bloodsugars = {
+        error: {
+          status: err.status,
+        },
+      };
+    })
     if (store.extraDataUrl) {
       extraData = await fetch.get(store.extraDataUrl);
     }
   }
 
+
   // Get weather data
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
-  Promise.all([bloodsugars, extraData]).then(function (values) {
-    let dataToSend = {
-      bloodSugars: standardize.bloodsugars(values[0], values[1], store),
-      settings: standardize.settings(store),
-      // weather: values[2].query.results.channel.item.condition,
-    };
-    logs.add(
-      "Line 59: companion - sendData - DataToSend size: " +
-        sizeof.size(dataToSend) +
-        " bytes"
-    );
-    logs.add(
-      "Line 60: companion - sendData - DataToSend: " +
-        JSON.stringify(dataToSend)
-    );
-    transfer.send(dataToSend);
-  });
+  let dataToSend = {
+    bloodSugars: standardize.bloodsugars(bloodsugars, extraData, store),
+    settings: standardize.settings(store),
+    // weather: values[2].query.results.channel.item.condition,
+  };
+  console.log("DEBUG - dataToSend:", dataToSend)
+
+
+  transfer.send(dataToSend);
 }
 
 // Listen for messages from the device
