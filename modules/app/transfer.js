@@ -16,16 +16,15 @@
 // Import the messaging module
 import * as messaging from "messaging";
 
-export default class transfer { 
+export default class transfer {
   // Send data
   send(data) {
-    console.log('app - transfer - send')
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       // Send a command to the companion
       messaging.peerSocket.send({
         command: 'forceCompanionTransfer',
         data: data,
-    });
+      });
     }
   }
 };
@@ -42,13 +41,11 @@ export default class transfer {
 // Listen for messages from the companion
 // messaging.peerSocket.onmessage = function(evt) {
 //   if (evt.data) {
-//   console.log("The temperature is: " + evt.data.temperature);
 //   }
 // }
 
 // // Listen for the onerror event
 // messaging.peerSocket.onerror = function(err) {
 //   // Handle any errors
-//   console.log("Connection error: " + err.code + " - " + err.message);
 // }
 

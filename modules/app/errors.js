@@ -20,9 +20,8 @@ let largeGraphErrorLine = document.getElementById("largeGraphErrorLine");
 let sgv = document.getElementById("sgv");
 let largeGraphsSgv = document.getElementById("largeGraphsSgv");
 
-export default class errors { 
+export default class errors {
   check(timeSenseLastSGV) {
-    console.log('app - errors - check()')   
     // if the bloodsugar is stale 
     if (parseInt(timeSenseLastSGV, 10) >= 15) {
       errorLine.style.display = "inline";

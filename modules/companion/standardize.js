@@ -269,7 +269,6 @@ export default class standardize {
 					hasFoundFirstDelta = true;
 				}
 			})
-			console.log(nonPredictiveBg)
 			// Look at the data that we are getting and if the SGV is below 25 we know the unit type is mmol
 			if (nonPredictiveBg.sgv < 25) {
 				bgs.forEach((bg) => {
@@ -340,25 +339,17 @@ export default class standardize {
 			let returnBloodsugars = {
 				bgs: cleanedBgs,
 			}
-
-			// console.warn(sizeof.size(returnBloodsugars) + ' bytes')
-			// logs.add(JSON.stringify(cleanedBgs))
-			// console.warn(sizeof.size(cleanedBgs) + ' bytes')
-			// console.warn(sizeof.size(JSON.stringify(cleanedBgs)) + ' bytes')
-
-
 			return returnBloodsugars;
 			//}
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
-		console.log("Debug: data", data)
 		return {
 			bgs: [{
 				sgv: '120',
 				bgdelta: 0,
 				iob: 0,
-				cob: (data.error ? (data?.error?.message) : 0),
+				cob: (data?.error ? (data?.error?.message) : 0),
 				datetime: currentTime.getTime(),
 				direction: 'warning',
 				currentbg: (data?.error ? ('E' + data?.error?.status) : 'DSE'),
@@ -567,7 +558,6 @@ function countInArray(array, what) {
 			count++;
 		}
 	}
-	console.error(count, what)
 	return count;
 }
 
@@ -645,7 +635,6 @@ function standardizeExtraData(bgs, extraData, settings) {
 			}
 		}
 		// check for basal if there add to data
-		// console.log(extraData.basal)
 		if (extraData.basal && extraData.basal.display) {
 			tempBasal = '' + extraData.basal.display;
 		} else {

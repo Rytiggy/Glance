@@ -13,7 +13,6 @@
 
 export default class dateTime {
   getDate(dateFormat, enableDOW) {
-    console.log("app - dateTime - getDate()");
     let dateObj = new Date();
     let month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
     let date = ("0" + dateObj.getDate()).slice(-2);
@@ -43,7 +42,6 @@ export default class dateTime {
   }
 
   getTime(timeFormat) {
-    console.log("app - dateTime - getTime()");
     let timeNow = new Date();
     let hh = timeNow.getHours();
     let mm = timeNow.getMinutes();
@@ -63,7 +61,6 @@ export default class dateTime {
   }
 
   getTimeSenseLastSGV(sgvDateTime) {
-    console.log("app - dateTime - getTimeSenseLastSGV()");
     let currentTime = new Date();
     let lastSGVTime = new Date(sgvDateTime);
     let secondsDiff = (currentTime.getTime() - lastSGVTime.getTime()) / 1000;

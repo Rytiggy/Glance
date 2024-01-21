@@ -93,7 +93,6 @@ let dataToSend = {
   steps: userActivity.get().steps,
 };
 dismiss.onclick = function (evt) {
-  console.log("DISMISS");
   popup.style.display = "none";
   popupTitle.style.display = "none";
   vibration.stop();
@@ -101,11 +100,9 @@ dismiss.onclick = function (evt) {
   let currentBgFromBloodSugars = getFistBgNonpredictiveBG(data.bloodSugars.bgs);
 
   if (currentBgFromBloodSugars.sgv >= parseInt(data.settings.highThreshold)) {
-    console.log("HIGH " + dismissHighFor);
     setTimeout(disableAlertsFalse, dismissHighFor * 1000 * 60);
   } else {
     // 15 mins
-    console.log("LOW " + dismissLowFor);
 
     setTimeout(disableAlertsFalse, dismissLowFor * 1000 * 60);
   }
@@ -140,7 +137,6 @@ largeGraphTime.text = dateTime.getTime();
 batteryLevel.width = batteryLevels.get().level;
 
 inbox.onnewfile = () => {
-  console.log("New file!");
   let fileName;
   do {
     // If there is a file, move it from staging into the application folder
@@ -153,8 +149,6 @@ inbox.onnewfile = () => {
 };
 
 function update() {
-  console.log("app - update()");
-  console.warn("JS memory: " + memory.js.used + "/" + memory.js.total);
   let heartrate = userActivity.get().heartRate;
   if (!heartrate) {
     heartrate = 0;
@@ -314,7 +308,6 @@ function update() {
           currentBgFromBloodSugars.sgv < parseInt(data.settings.highThreshold)
         ) {
           // if the BG is between the threshold
-          console.error("here", DISABLE_ALERTS, parseInt(timeSenseLastSGV, 10));
           disableAlertsFalse();
         }
       }
@@ -419,21 +412,18 @@ function setTextColor(color) {
 }
 
 goToLargeGraph.onclick = (e) => {
-  console.log("goToLargeGraph Activated!");
   vibration.start("bump");
   largeGraphView.style.display = "inline";
   main.style.display = "none";
 };
 
 exitLargeGraph.onclick = (e) => {
-  console.log("exitLargeGraph Activated!");
   vibration.start("bump");
   largeGraphView.style.display = "none";
   main.style.display = "inline";
 };
 
 timeElement.onclick = (e) => {
-  console.log("FORCE Activated!");
   transfer.send(dataToSend);
   vibration.start("bump");
   arrows.href = "../resources/img/arrows/loading.png";

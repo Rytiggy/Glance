@@ -20,7 +20,7 @@ const logs = new Logs();
 export default class messaging {
   //Fetch data from an API endpoint and return a promise
   async get(url) {
-    const trimmedURL = url.replace(/ /g,"");
+    const trimmedURL = url.replace(/ /g, "");
     logs.add('Line 16: companion - fetch - get() ' + trimmedURL)
     return await fetch(trimmedURL)
       .then(handleResponse)
@@ -29,7 +29,7 @@ export default class messaging {
         return data;
       }).catch((error) => {
         // not found
-        if(!error.status) {
+        if (!error.status) {
           error.status = '404'
         }
         logs.add(`Line 35 ERROR companion - fetch - get() ${JSON.stringify(error)}`)
@@ -43,7 +43,7 @@ export default class messaging {
   };
 };
 
-function handleResponse (response) {
+function handleResponse(response) {
   let contentType = response.headers.get('content-type')
   if (contentType.includes('application/json')) {
     return handleJSONResponse(response)
@@ -55,13 +55,11 @@ function handleResponse (response) {
   }
 }
 
-function handleJSONResponse (response) {
+function handleJSONResponse(response) {
   return response.json()
     .then(json => {
-      // console.error(JSON.stringify(json))
-
       if (response.ok) {
-         logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`)
+        logs.add(`Line 83 companion - fetch - handleJSONResponse() response.ok`)
         return json
       } else {
         return Promise.reject(Object.assign({}, json, {
@@ -72,7 +70,7 @@ function handleJSONResponse (response) {
     })
 }
 // This doesnt work
-function handleTextResponse (response) {
+function handleTextResponse(response) {
   return response.text()
     .then(text => {
       if (response.ok) {
@@ -86,4 +84,4 @@ function handleTextResponse (response) {
         })
       }
     })
-  }
+}
