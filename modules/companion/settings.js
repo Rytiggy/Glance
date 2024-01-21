@@ -63,11 +63,10 @@ export default class settings {
           settingsStorage.getItem("nightscoutSiteName")
         ).name;
         if (isURL(nightscoutSiteName)) {
-          if(nightscoutSiteHost !== "") {
+          if (nightscoutSiteHost !== "") {
             nightscoutSiteName = nightscoutSiteName.split(".")[0];
             nightscoutSiteName = nightscoutSiteName.split("//")[1];
           }
-          console.log(nightscoutSiteName);
         }
       } else if (!nightscoutSiteName) {
         nightscoutSiteName = "placeholder";
@@ -84,7 +83,7 @@ export default class settings {
         queryParms += "&token=" + nightscoutToken;
       }
 
-      if(nightscoutSiteHost === "") {
+      if (nightscoutSiteHost === "") {
         url =
           nightscoutSiteName.toLowerCase() +
           "/pebble" +
@@ -238,7 +237,6 @@ export default class settings {
       settingsStorage.setItem("highAlerts", true);
     }
 
-    console.log(settingsStorage.getItem("lowAlerts"));
     let lowAlerts = null;
     if (settingsStorage.getItem("lowAlerts")) {
       lowAlerts = JSON.parse(settingsStorage.getItem("lowAlerts"));
@@ -490,7 +488,6 @@ export default class settings {
 
     let dexcomUsername = null;
     if (settingsStorage.getItem("dexcomUsername")) {
-      console.log(settingsStorage.getItem("dexcomUsername"));
       dexcomUsername = JSON.parse(settingsStorage.getItem("dexcomUsername"))
         .name;
     } else if (!dexcomUsername) {
@@ -503,7 +500,6 @@ export default class settings {
 
     let dexcomPassword = null;
     if (settingsStorage.getItem("dexcomPassword")) {
-      console.log(settingsStorage.getItem("dexcomPassword"));
       dexcomPassword = JSON.parse(settingsStorage.getItem("dexcomPassword"))
         .name;
     } else if (!dexcomPassword) {
@@ -617,7 +613,6 @@ function isURL(s) {
 
 function validateHexCode(code, text) {
   var isOk = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(code);
-  console.log(isOk);
   if (isOk) {
     logs.add("companion - validateHexCode - Hex code valid");
     return code;

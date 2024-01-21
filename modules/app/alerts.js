@@ -41,7 +41,6 @@ export default class alerts {
 
     alertArrows.href = "../resources/img/arrows/" + bg.direction + ".png";
     alertArrows.style.display = "inline";
-    console.log("app - Alerts - Check()");
     sgv.style.fill = "#75bd78";
     largeGraphsSgv.style.fill = "#75bd78";
     errorLine.style.fill = "#75bd78";
@@ -54,7 +53,6 @@ export default class alerts {
         if (!DISABLE_ALERTS) {
           if (settings.lowAlerts) {
             if (timeSenseLastSGV <= 8) {
-              console.log("low BG");
               vibration.start("ring");
               popup.style.display = "inline";
               popupTitle.style.display = "inline";
@@ -75,7 +73,6 @@ export default class alerts {
         if (!DISABLE_ALERTS) {
           if (settings.highAlerts) {
             if (timeSenseLastSGV <= 8) {
-              console.log("high BG");
               vibration.start("ring");
               popup.style.display = "inline";
               popupTitle.style.display = "inline";
@@ -106,7 +103,6 @@ export default class alerts {
       if (!settings.disableAlert) {
         if (!DISABLE_ALERTS) {
           if (settings.loopstatus) {
-            console.log("loopstatus");
             alertArrows.style.display = "none";
             popupTitle.style.fill = "#de4430";
             vibration.start("ring");
@@ -125,7 +121,6 @@ export default class alerts {
         if (!DISABLE_ALERTS) {
           if (settings.rapidFall) {
             alertArrows.style.display = "none";
-            console.log("Double Down");
             popupTitle.style.fill = "#de4430";
             vibration.start("ring");
             popup.style.display = "inline";
@@ -139,7 +134,6 @@ export default class alerts {
         if (!DISABLE_ALERTS) {
           if (settings.rapidRise) {
             alertArrows.style.display = "none";
-            console.log("Double Up");
             popupTitle.style.fill = "#de4430";
             vibration.start("ring");
             popup.style.display = "inline";
@@ -167,7 +161,6 @@ export default class alerts {
     }
   }
   stop() {
-    console.log("app - Alerts - stop()");
     vibration.stop();
   }
 }

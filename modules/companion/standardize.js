@@ -39,7 +39,7 @@ export default class standardize {
 		let loopStatus = '';
 		let upbat = '';
 		let sage = ''
-		logs.add(`BGS: ${bgs} !data.error: ${!data.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
+		logs.add(`BGS: ${bgs} !data.error: ${!data?.error} data: ${data} bgs !== 'undefined': ${bgs !== 'undefined'}`);
 		if (bgs && !data.error && data && bgs !== 'undefined') {
 			if (settings.dataSource === 'nightscout') {
 				bgs = data.bgs;
@@ -59,7 +59,7 @@ export default class standardize {
 				predictedBg = standardizedExtraData.predictedBg;
 				loopStatus = standardizedExtraData.loopStatus;
 				upbat = standardizedExtraData.upbat;
-        		sage = standardizedExtraData.sage;
+				sage = standardizedExtraData.sage;
 				// add any extra data
 			} else if (settings.dataSource === 'xdrip') { // xdrip using the sgv endpoint still
 				bgs = data;
@@ -76,155 +76,155 @@ export default class standardize {
 			} else if (settings.dataSource === 'dexcom') {
 				let bgsTemplate = {
 					bgs: [{
-							sgv: '120',
-							bgdelta: 0,
-							iob: 0,
-							cob: 0,
-							datetime: null,
-							direction: 'flat',
-							currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-							rawbg: '',
-							tempbasal: '',
-							loopstatus: '',
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						},
-						{
-							sgv: '120'
-						}
+						sgv: '120',
+						bgdelta: 0,
+						iob: 0,
+						cob: 0,
+						datetime: null,
+						direction: 'flat',
+						currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
+						rawbg: '',
+						tempbasal: '',
+						loopstatus: '',
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					},
+					{
+						sgv: '120'
+					}
 					]
 				}
 				// bgs.length = 47;
@@ -245,7 +245,7 @@ export default class standardize {
 						bgsTemplate.bgs[index].bgdelta = delta;
 					}
 				})
-        logs.add("Standardized dexcom data "+ bgsTemplate.bgs)
+				logs.add("Standardized dexcom data " + bgsTemplate.bgs)
 				bgs = bgsTemplate.bgs;
 			} else if (settings.dataSource === 'tomato') { // tomato
 				bgs = data.bgs;
@@ -257,19 +257,18 @@ export default class standardize {
 				}
 			}
 
-			
+
 			// Look for current non Predictive bg and not the last 5 predictions
 			// this works because only the current bg has a delta so we can filter for it
 			let nonPredictiveBg = bgs.filter(bg => bg.bgdelta)[0];
 
-      let hasFoundFirstDelta = false;
+			let hasFoundFirstDelta = false;
 			bgs.forEach((bg) => {
 				if (bg.bgdelta != null && !hasFoundFirstDelta) {
 					nonPredictiveBg = bg;
 					hasFoundFirstDelta = true;
 				}
 			})
-      console.log(nonPredictiveBg)
 			// Look at the data that we are getting and if the SGV is below 25 we know the unit type is mmol
 			if (nonPredictiveBg.sgv < 25) {
 				bgs.forEach((bg) => {
@@ -308,17 +307,17 @@ export default class standardize {
 				if (bg.bgdelta != null) {
 					// any values put here will be able to be entered in the layout
 					bg.sgv = bg.sgv;
-          if(bg.iob) { 
-            bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
-          } else {
-             bg.iob = 0;
-          }
-          if(bg.cob) {
-             bg.cob =  Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
-          } else {
-             bg.cob = 0;
-          }
-          bg.datetime = nonPredictiveBg.datetime;
+					if (bg.iob) {
+						bg.iob = Math.round((Number(bg.iob) + 0.00001) * 100) / 100 //parseInt(bg.iob, 10).toFixed(1);
+					} else {
+						bg.iob = 0;
+					}
+					if (bg.cob) {
+						bg.cob = Math.round((Number(bg.cob, 10) + 0.00001) * 100) / 100
+					} else {
+						bg.cob = 0;
+					}
+					bg.datetime = nonPredictiveBg.datetime;
 					bg.direction = nonPredictiveBg.direction;
 					bg.rawbg = ((rawbg && rawbg !== '0.0') ? (rawbg + ' raw') : '');
 					bg.tempbasal = tempBasal;
@@ -326,7 +325,7 @@ export default class standardize {
 					bg.predictedbg = predictedBg;
 					bg.loopstatus = checkLoopStatus(loopStatus);
 					bg.upbat = upbat;
-					bg.sage = ((sage) ? ( 'SA:' + sage) : '');
+					bg.sage = ((sage) ? ('SA:' + sage) : '');
 					if (nonPredictiveBg.direction === 'NOT COMPUTABLE') {
 						bg.direction = 'none';
 					}
@@ -340,171 +339,162 @@ export default class standardize {
 			let returnBloodsugars = {
 				bgs: cleanedBgs,
 			}
-
-			// console.warn(sizeof.size(returnBloodsugars) + ' bytes')
-			// logs.add(JSON.stringify(cleanedBgs))
-			// console.warn(sizeof.size(cleanedBgs) + ' bytes')
-			// console.warn(sizeof.size(JSON.stringify(cleanedBgs)) + ' bytes')
-
-
 			return returnBloodsugars;
 			//}
 		}
 		logs.add('Line 63: here reurning error')
 		let currentTime = new Date();
-		console.error("currentTime---------------------------")
-		console.error(currentTime)
 		return {
 			bgs: [{
-					sgv: '120',
-					bgdelta: 0,
-					iob: 0,
-					cob: 0,
-					datetime: currentTime.getTime(),
-					direction: 'warning',
-					currentbg: (data.error ? ('E' + data.error.status) : 'DSE'),
-					rawbg: '',
-					tempbasal: '',
-					loopstatus: '',
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				},
-				{
-					sgv: '120'
-				}
+				sgv: '120',
+				bgdelta: 0,
+				iob: 0,
+				cob: (data?.error ? (data?.error?.message) : 0),
+				datetime: currentTime.getTime(),
+				direction: 'warning',
+				currentbg: (data?.error ? ('E' + data?.error?.status) : 'DSE'),
+				rawbg: '',
+				tempbasal: '',
+				loopstatus: '',
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			},
+			{
+				sgv: '120'
+			}
 			]
 		}
 	}
@@ -568,7 +558,6 @@ function countInArray(array, what) {
 			count++;
 		}
 	}
-	console.error(count, what)
 	return count;
 }
 
@@ -578,7 +567,7 @@ function standardizeExtraData(bgs, extraData, settings) {
 	let predictedBg = '';
 	let loopStatus = '';
 	let upbat = '';
-  let sage = '';
+	let sage = '';
 	// add prediction for nightscout
 	if (extraData) {
 		if (extraData.ar2 && extraData.ar2.forecast && extraData.ar2.forecast.predicted) { // AR2
@@ -646,7 +635,6 @@ function standardizeExtraData(bgs, extraData, settings) {
 			}
 		}
 		// check for basal if there add to data
-		// console.log(extraData.basal)
 		if (extraData.basal && extraData.basal.display) {
 			tempBasal = '' + extraData.basal.display;
 		} else {
@@ -660,14 +648,14 @@ function standardizeExtraData(bgs, extraData, settings) {
 		} else {
 			upbat = '';
 		}
-    
-    // check if uploader upbat is there
+
+		// check if uploader upbat is there
 		if (extraData.sage && extraData.sage['Sensor Start'] && extraData.sage['Sensor Start'].display) {
 			sage = '' + extraData.sage['Sensor Start'].display;
 		} else {
 			sage = '';
 		}
-    
+
 	}
 
 	return {
@@ -677,7 +665,7 @@ function standardizeExtraData(bgs, extraData, settings) {
 		predictedBg,
 		loopStatus,
 		upbat,
-    sage,
+		sage,
 	};
 }
 
@@ -693,69 +681,69 @@ function checkLoopStatus(status) {
 // Check The time in betweek each SGV and add LOS value if time is greater then 5 minutes 
 function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 	logs.add('Line 478: companion - standardize - checkTimeBetweenGraphPoints');
-  let firstRun = true;
-  let firstNonPredictiveBgIndex = bgs.indexOf(firstNonPredictiveBg);
+	let firstRun = true;
+	let firstNonPredictiveBgIndex = bgs.indexOf(firstNonPredictiveBg);
 
 	bgs.forEach((bg, index) => {
-    let nextIndex = index + 1;
+		let nextIndex = index + 1;
 		// No need to run on predicted BGS
 		if (!bg.p && bgs[nextIndex]) {
-   		let bgOne = new Date(bgs[index].datetime);
-			let bgTwo = new Date(bgs[nextIndex].datetime);  
-      let bgMinutesDiff = Math.floor((((bgOne.getTime() - bgTwo.getTime()) / 1000) / 60));
-      // pointsToSkip: count of how many points in array we did not have a bg
-      let pointsToSkip = Math.ceil(bgMinutesDiff / 5) - 2;
-      let indexToMoveTo = index + pointsToSkip;
+			let bgOne = new Date(bgs[index].datetime);
+			let bgTwo = new Date(bgs[nextIndex].datetime);
+			let bgMinutesDiff = Math.floor((((bgOne.getTime() - bgTwo.getTime()) / 1000) / 60));
+			// pointsToSkip: count of how many points in array we did not have a bg
+			let pointsToSkip = Math.ceil(bgMinutesDiff / 5) - 2;
+			let indexToMoveTo = index + pointsToSkip;
 
-      if(firstRun) {
-        firstRun = false;   
-        
-        if(pointsToSkip === -1) {// if there are more then 2 points that are not LOS from first point  
-          bgOne = new Date(); // current time
-          bgTwo = new Date(bgs[index].datetime); 
-          bgMinutesDiff = Math.floor((((bgOne.getTime() - bgTwo.getTime()) / 1000) / 60));
-          // pointsToSkip: count of how many points in array we did not have a bg
-          pointsToSkip = Math.ceil(bgMinutesDiff / 5) - 2;
-          indexToMoveTo = index + pointsToSkip;
-          
-          if (pointsToSkip >= 1) {
-            for (let i = index; i <= indexToMoveTo; i++) {
-              if(i === firstNonPredictiveBgIndex) {
-                bgs.splice(i, 0, {
-                  ...bgs[i],
-                  sgv: "LOS",
-                  datetime: bgs[i].datetime
-                })
-              } else {
-                 bgs.splice(i, 0, {
-                  // ...bgs[i],
-                  sgv: "LOS",
-                  datetime: bgs[i].datetime
-                }) 
-              }
-            }
-          }
-          
-        } else { // if its the first point with LOS after it
-          if (pointsToSkip >= 1) {
-            for (let i = index; i <= indexToMoveTo; i++) {
-              bgs.splice(i+1, 0, {
-                sgv: "LOS",
-                datetime: bgs[i + 1].datetime
-              })
-            }
-          }
-        }
-      } else {   
-        if (pointsToSkip >= 1) {
-          for (let i = index; i <= indexToMoveTo; i++) {
-            bgs.splice(i+1, 0, {
-              sgv: "LOS",
-              datetime: bgs[i + 1].datetime
-            })
-          }
-        }
-      }
+			if (firstRun) {
+				firstRun = false;
+
+				if (pointsToSkip === -1) {// if there are more then 2 points that are not LOS from first point  
+					bgOne = new Date(); // current time
+					bgTwo = new Date(bgs[index].datetime);
+					bgMinutesDiff = Math.floor((((bgOne.getTime() - bgTwo.getTime()) / 1000) / 60));
+					// pointsToSkip: count of how many points in array we did not have a bg
+					pointsToSkip = Math.ceil(bgMinutesDiff / 5) - 2;
+					indexToMoveTo = index + pointsToSkip;
+
+					if (pointsToSkip >= 1) {
+						for (let i = index; i <= indexToMoveTo; i++) {
+							if (i === firstNonPredictiveBgIndex) {
+								bgs.splice(i, 0, {
+									...bgs[i],
+									sgv: "LOS",
+									datetime: bgs[i].datetime
+								})
+							} else {
+								bgs.splice(i, 0, {
+									// ...bgs[i],
+									sgv: "LOS",
+									datetime: bgs[i].datetime
+								})
+							}
+						}
+					}
+
+				} else { // if its the first point with LOS after it
+					if (pointsToSkip >= 1) {
+						for (let i = index; i <= indexToMoveTo; i++) {
+							bgs.splice(i + 1, 0, {
+								sgv: "LOS",
+								datetime: bgs[i + 1].datetime
+							})
+						}
+					}
+				}
+			} else {
+				if (pointsToSkip >= 1) {
+					for (let i = index; i <= indexToMoveTo; i++) {
+						bgs.splice(i + 1, 0, {
+							sgv: "LOS",
+							datetime: bgs[i + 1].datetime
+						})
+					}
+				}
+			}
 		}
 	});
 	// remove any values after 47
@@ -766,22 +754,22 @@ function checkTimeBetweenGraphPoints(bgs, firstNonPredictiveBg) {
 // function slopeDirection(trend) {
 // 	logs.add('Dexcom trend: ' + trend)
 // 	return trend
-	// switch(trend) {
-	// 	case 1:
-	// 		return "DoubleUp";
-	// 	case 2:
-	// 		return "SingleUp";
-	// 	case 3:
-	// 		return "FortyFiveUp";
-	// 	case 4:
-	// 		return "Flat";
-	// 	case 5:
-	// 		return "FortyFiveDown";
-	// 	case 6:
-	// 		return "SingleDown";
-	// 	case 7:
-	// 		return "DoubleDown";
-	// 	default:
-	// 		return "";
-	// }
+// switch(trend) {
+// 	case 1:
+// 		return "DoubleUp";
+// 	case 2:
+// 		return "SingleUp";
+// 	case 3:
+// 		return "FortyFiveUp";
+// 	case 4:
+// 		return "Flat";
+// 	case 5:
+// 		return "FortyFiveDown";
+// 	case 6:
+// 		return "SingleDown";
+// 	case 7:
+// 		return "DoubleDown";
+// 	default:
+// 		return "";
+// }
 // }

@@ -10,6 +10,7 @@
  *
  * ------------------------------------------------
  */
+import { localStorage } from "local-storage";
 
 import { settingsStorage } from "settings";
 
@@ -53,49 +54,70 @@ async function sendData() {
     let dexcomUsername = store.dexcomUsername
       ? store.dexcomUsername.replace(/\s+/g, "")
       : "";
+
     let dexcomPassword = store.dexcomPassword
       ? store.dexcomPassword.replace(/\s+/g, "")
       : "";
-    let sessionId = await dexcom.getSessionId(
-      dexcomUsername,
-      dexcomPassword,
-      subDomain
-    );
+
     if (store.dexcomUsername && store.dexcomPassword) {
-      bloodsugars = await dexcom.getData(sessionId, subDomain);
+      try {
+        let sessionId = await dexcom.getSessionId(
+          dexcomUsername,
+          dexcomPassword,
+          subDomain
+        )
+        if (sessionId) {
+          bloodsugars = await dexcom.getData(sessionId, subDomain);
+        }
+      } catch (e) {
+        // Error with auth
+        let status = e?.Code
+        let message = e?.Message
+        if (e?.Code === "AccountPasswordInvalid") {
+          status = "ATH"
+          message = e?.Code
+        }
+        bloodsugars = {
+          error: {
+            status: status,
+            message: message
+          },
+        };
+      }
     } else {
       bloodsugars = {
         error: {
-          status: "500",
+          status: "DM",
+          message: "Dexcom auth missing"
         },
       };
     }
   } else {
-    bloodsugars = await fetch.get(store.url);
+    await fetch.get(store.url).then((res) => {
+      bloodsugars = res
+    }).catch((err) => {
+      bloodsugars = {
+        error: {
+          status: err.status,
+        },
+      };
+    })
     if (store.extraDataUrl) {
       extraData = await fetch.get(store.extraDataUrl);
     }
   }
 
+
   // Get weather data
   // let weather = await fetch.get(await weatherURL.get(store.tempType));
-  Promise.all([bloodsugars, extraData]).then(function (values) {
-    let dataToSend = {
-      bloodSugars: standardize.bloodsugars(values[0], values[1], store),
-      settings: standardize.settings(store),
-      // weather: values[2].query.results.channel.item.condition,
-    };
-    logs.add(
-      "Line 59: companion - sendData - DataToSend size: " +
-        sizeof.size(dataToSend) +
-        " bytes"
-    );
-    logs.add(
-      "Line 60: companion - sendData - DataToSend: " +
-        JSON.stringify(dataToSend)
-    );
-    transfer.send(dataToSend);
-  });
+  let dataToSend = {
+    bloodSugars: standardize.bloodsugars(bloodsugars, extraData, store),
+    settings: standardize.settings(store),
+    // weather: values[2].query.results.channel.item.condition,
+  };
+
+
+  transfer.send(dataToSend);
 }
 
 // Listen for messages from the device
@@ -103,7 +125,6 @@ messaging.peerSocket.onmessage = function (evt) {
   if (evt.data.command === "forceCompanionTransfer") {
     logs.add("Line 58: companion - Watch to Companion Transfer request");
     // pass in data that was recieved from the watch
-    console.log(JSON.stringify(evt.data.data));
     dataReceivedFromWatch = evt.data.data;
     sendData();
   }
@@ -111,17 +132,23 @@ messaging.peerSocket.onmessage = function (evt) {
 
 // Listen for the onerror event
 messaging.peerSocket.onerror = function (err) {
-  // Handle any errors
-  console.log("Connection error: " + err.code + " - " + err.message);
+  // TODO: Handle errors
+  console.error("Connection error: " + err.code + " - " + err.message);
 };
 
 settingsStorage.onchange = function (evt) {
-  logs.add("Line 70: companion - Settings changed send to watch");
   sendData();
+  let data = JSON.parse(evt.newValue);
+  logs.add(`Line 70: companion - Settings changed send to watch ${evt.newValue}`);
+
   if (evt.key === "authorizationCode") {
     // Settings page sent us an oAuth token
-    let data = JSON.parse(evt.newValue);
     dexcom.getAccessToken(data.name);
+  }
+
+  // This is a way to reset the timeout if it gets messed up in testing
+  if (data.name === "Resyncing") {
+    localStorage.removeItem("timeout")
   }
 };
 
@@ -130,7 +157,6 @@ me.wakeInterval = 5 * MINUTE;
 
 if (me.launchReasons.wokenUp) {
   // The companion started due to a periodic timer
-  console.error("Started due to wake interval!");
   sendData();
 } else {
   // Close the companion and wait to be awoken
