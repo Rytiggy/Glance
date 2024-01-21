@@ -10,66 +10,100 @@
  *
  * ------------------------------------------------
  */
+import { localStorage } from "local-storage";
+
 import Logs from "./logs.js";
 const logs = new Logs();
+const errorThreshold = 5;
+let errors = 0
+let timeout = localStorage.getItem("timeout")
 
 const applicationId = "d8665ade-9673-4e27-9ff6-92db4ce13d13";
 export default class dexcom {
   async login(dexcomUsername, dexcomPassword, subDomain) {
+    timeout = localStorage.getItem("timeout")
+
     let body = {
       accountName: dexcomUsername,
       applicationId: applicationId,
       password: dexcomPassword,
     };
-    let data = await fetch(
-      `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
-      {
-        body: JSON.stringify(body),
-        json: true,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "cache-control": "no-cache",
-          agent: "Glance",
-        },
-        method: "post",
-        rejectUnauthorized: false,
+    if (timeout === null) {
+      let data = await fetch(
+        `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
+        {
+          body: JSON.stringify(body),
+          json: true,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "cache-control": "no-cache",
+            agent: "Glance",
+          },
+          method: "post",
+          rejectUnauthorized: false,
+        }
+      )
+        .then(function (response) {
+          if (response.status === 200) {
+            errors = 0;
+            return response.json();
+          } else {
+            // Adds a throttle on API calls to if PW or UN or wrong or API is down / having issues
+            if (errors >= errorThreshold) {
+              timeout = Date.now()
+              localStorage.setItem("timeout", timeout);
+            }
+            errors++
+            // Throw api Error
+            throw response.json();
+          }
+        })
+        .catch((e) => {
+          console.error(e)
+          return e;
+        });
+      if (!data?.Code) {
+        return {
+          accountId: data.replace(/['"]+/g, ""),
+        };
+      } else {
+        return Promise.reject(data)
       }
-    )
-      .then(function (response) {
-        return response.json();
-      })
-      .catch((e) => {
-        return e;
-      });
-    console.log("Debug 3 accountId", data.Code);
-    if (!data?.Code) {
-      return {
-        accountId: data.replace(/['"]+/g, ""),
-      };
     } else {
-      return Promise.reject(data)
+      let now = Date.now()
+      let FIVE_MIN = 5 * 60 * 1000;
+      if ((now - timeout) > FIVE_MIN) {
+        // Reset stuff to allow API requests again
+        timeout = null
+        localStorage.removeItem("timeout")
+        errors = 0
+        throw { Code: "429", Message: "Retrying soon" }
+      } else {
+        const waitTimeMs = FIVE_MIN - (now - timeout);
+        const min = Math.floor((waitTimeMs / 1000 / 60) << 0)
+        const sec = Math.floor((waitTimeMs / 1000) % 60);
+        throw { Code: "429", Message: "Server Error W8-" + min + ':' + sec }
+      }
     }
+
   }
 
   async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    // TODO: add failure logic
     let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain)
       .then((res) => {
-        console.log("Debug: 4", res);
         return res.accountId
       })
       .catch((e) => {
-        console.error("Debug: 4", e);
-        return Promise.reject(e)
+        throw e
       });
+
     let body = {
       password: dexcomPassword,
       applicationId: applicationId,
       accountId: accountId,
     };
-    console.log("Debug: accountId", accountId);
-    console.log(applicationId, dexcomPassword);
+
     let url = `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountById`;
     let sessionId = await fetch(url, {
       body: JSON.stringify(body),
@@ -89,9 +123,7 @@ export default class dexcom {
       .then(function (data) {
         return data;
       })
-      .catch((e) => console.error("dexcom error", e));
-
-    console.log(sessionId);
+      .catch((e) => { throw e });
     return sessionId;
   }
 
@@ -114,8 +146,12 @@ export default class dexcom {
         return response.json();
       })
       .then(function (data) {
-        return data;
+        if (data.length > 0) {
+          return data;
+        } else {
+          throw { Code: "ND", Message: "Logged in: No Data from API" }
+        }
       })
-      .catch((e) => console.error(e));
+
   }
 }
