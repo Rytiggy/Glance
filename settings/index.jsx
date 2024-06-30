@@ -280,7 +280,7 @@ function mySettings(props) {
 
         {props.settings.bgColor ? (
           JSON.parse(props.settings.bgColor) == "#FFFFFF" ? (
-            <Section title={}>
+            <Section>
               <Text bold align="center">
                 Random Color Generator
               </Text>
