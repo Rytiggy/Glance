@@ -1,5 +1,5 @@
 <template>
-  <q-layout @scroll="scrollHandler" view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf">
     <!-- <q-header class="glance-navebar"> -->
     <!-- </q-header> -->
     <!-- <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">

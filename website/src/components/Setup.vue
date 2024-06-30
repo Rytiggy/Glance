@@ -129,7 +129,7 @@
                   <div class="text-subtitle1">
                     {{ dataSoure.shortDescription }}
                   </div>
-                  <spn
+                  <span
                     v-for="(tag, t) in dataSoure.tags"
                     :key="t"
                     class="text-subtitle1 text-bold q-pr-sm"
@@ -140,7 +140,7 @@
                       :color="tag.color"
                       >{{ tag.title }}</q-badge
                     >
-                  </spn>
+                  </span>
                 </q-card-section>
               </q-card>
             </div>
@@ -585,7 +585,7 @@ export default {
     };
   },
   watch: {
-    step: (newVal, oldVal) => {
+    step(newVal, oldVal) {
       if (this.selectedDataSouce != null) {
         return newVal;
       }

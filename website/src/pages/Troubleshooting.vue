@@ -5,7 +5,7 @@
       <div class="text-h6 text-grey-10">Sync Issue/Not connecting:</div>
       <q-carousel
         v-model="troubleshootingSlide"
-        :fullscreen.sync="troubleshootingFullscreen"
+        v-model:fullscreen="troubleshootingFullscreen"
         infinite
         class="bg-white"
       >

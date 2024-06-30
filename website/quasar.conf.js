@@ -1,6 +1,8 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+const ESLintPlugin = require('eslint-webpack-plugin')
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -78,21 +80,15 @@ module.exports = function (ctx) {
 
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
-      extendWebpack(cfg) {
-        cfg.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          loader: "eslint-loader",
-          exclude: /node_modules/,
-          options: {
-            formatter: require("eslint").CLIEngine.getFormatter("stylish")
-          }
-        });
+
+      chainWebpack (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
       }
     },
 
@@ -106,12 +102,23 @@ module.exports = function (ctx) {
     animations: [],
 
     ssr: {
-      pwa: false
+      pwa: false,
+
+      chainWebpackWebserver (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
     },
 
     pwa: {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
+
+      chainWebpackCustomSW (chain) {
+        chain.plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: [ 'js' ] }])
+      },
+
       manifest: {
         // name: 'Glance Watchface',
         // short_name: 'Glance Watchface',
