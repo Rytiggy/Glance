@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.12",
-    "axios": "^1.7.4",
+    "axios": "^1.7.5",
     "quasar": "^2.16.9",
     "stylus-loader": "^8.1.0",
     "vue": "^3.4.38",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
     "@quasar/app-webpack": "^3.13.4",
-    "eslint": "^9.9.0",
+    "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.27.0",
     "eslint-webpack-plugin": "^4.2.0",
