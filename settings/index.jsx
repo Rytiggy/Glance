@@ -136,6 +136,19 @@ function mySettings(props) {
                 settingsKey="USAVSInternational"
                 label="International (Not in USA)"
               />
+              {props.settings.USAVSInternational ? (
+                JSON.parse(props.settings.USAVSInternational) == true ? (
+                  <Select
+                    label="Region"
+                    settingsKey="dexcomInternationalRegion"
+                    options={[
+                      { name: "Asia Pacific (APAC)", value: "apac" },
+                      { name: "Outside APAC", value: "other" }
+                    ]}
+                  />
+                  ) : null
+                ) : null
+              }
             </Section>
           ) : null
         ) : null}

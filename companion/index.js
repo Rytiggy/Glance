@@ -44,10 +44,15 @@ async function sendData() {
   let bloodsugars = null;
   let extraData = null;
   if (store.url === "dexcom") {
+    let dexcomDomain = "share2.dexcom.com";
     let USAVSInternational = store.USAVSInternational;
-    let subDomain = "share2";
+    let dexcomInternationalRegion = store.dexcomInternationalRegion;
     if (USAVSInternational) {
-      subDomain = "shareous1";
+      if (dexcomInternationalRegion == "apac") {
+        dexcomDomain = "share.dexcom.jp";
+      } else {
+        dexcomDomain = "shareous1.dexcom.com";
+      }
     }
 
     let dexcomUsername = store.dexcomUsername
@@ -59,10 +64,10 @@ async function sendData() {
     let sessionId = await dexcom.getSessionId(
       dexcomUsername,
       dexcomPassword,
-      subDomain
+      dexcomDomain
     );
     if (store.dexcomUsername && store.dexcomPassword) {
-      bloodsugars = await dexcom.getData(sessionId, subDomain);
+      bloodsugars = await dexcom.getData(sessionId, dexcomDomain);
     } else {
       bloodsugars = {
         error: {
