@@ -15,7 +15,7 @@ const logs = new Logs();
 
 const applicationId = "d8665ade-9673-4e27-9ff6-92db4ce13d13";
 export default class dexcom {
-  async login(dexcomUsername, dexcomPassword, subDomain) {
+  async login(dexcomUsername, dexcomPassword, dexcomDomain) {
     // let body = {
     //   accountName: dexcomUsername,
     //   applicationId: "d8665ade-9673-4e27-9ff6-92db4ce13d13",
@@ -28,7 +28,7 @@ export default class dexcom {
       password: dexcomPassword,
     };
     let accountId = await fetch(
-      `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
+      `https://${dexcomDomain}/ShareWebServices/Services/General/AuthenticatePublisherAccount`,
       {
         body: JSON.stringify(body),
         json: true,
@@ -50,8 +50,8 @@ export default class dexcom {
       return accountId.replace(/['"]+/g, '')
   }
 
-  async getSessionId(dexcomUsername, dexcomPassword, subDomain) {
-    let accountId = await this.login(dexcomUsername, dexcomPassword, subDomain);
+  async getSessionId(dexcomUsername, dexcomPassword, dexcomDomain) {
+    let accountId = await this.login(dexcomUsername, dexcomPassword, dexcomDomain);
     console.log(accountId);
 
     let body = {
@@ -60,7 +60,7 @@ export default class dexcom {
       accountId: accountId,
     };
     console.log(applicationId, dexcomPassword, accountId.toString())
-    let url = `https://${subDomain}.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountById`;
+    let url = `https://${dexcomDomain}/ShareWebServices/Services/General/LoginPublisherAccountById`;
     let sessionId = await fetch(url, {
       body: JSON.stringify(body),
       json: true,
@@ -83,9 +83,9 @@ export default class dexcom {
     return sessionId;
   }
 
-  async getData(sessionId, subDomain) {
+  async getData(sessionId, dexcomDomain) {
     let url =
-      `https://${subDomain}.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues?sessionId=${sessionId}&minutes=1440&maxCount=47`.replace(
+      `https://${dexcomDomain}/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues?sessionId=${sessionId}&minutes=1440&maxCount=47`.replace(
         /"/g,
         ""
       );
