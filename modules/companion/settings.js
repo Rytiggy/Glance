@@ -523,6 +523,13 @@ export default class settings {
       USAVSInternational = false;
     }
 
+    let dexcomInternationalRegion = null;
+    if (settingsStorage.getItem("dexcomInternationalRegion")) {
+      dexcomInternationalRegion = JSON.parse(settingsStorage.getItem("dexcomInternationalRegion")).values[0].value;
+    } else if (!dexcomInternationalRegion) {
+      dexcomInternationalRegion = "other";
+    }
+
     let resetAlertDismissal = null;
     if (settingsStorage.getItem("resetAlertDismissal")) {
       resetAlertDismissal = JSON.parse(
@@ -586,6 +593,7 @@ export default class settings {
       dexcomUsername,
       dexcomPassword,
       USAVSInternational,
+      dexcomInternationalRegion,
       resetAlertDismissal,
       staleData,
       staleDataAlertAfter,
