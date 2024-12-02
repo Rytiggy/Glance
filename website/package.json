@@ -16,7 +16,7 @@
     "quasar": "^2.17.1",
     "stylus-loader": "^8.1.1",
     "vue": "^3.5.12",
-    "vue-i18n": "^10.0.4"
+    "vue-i18n": "^10.0.5"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
